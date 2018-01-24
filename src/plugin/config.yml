@@ -1,0 +1,31 @@
+## YAML Template.
+---
+package:
+    author: Erik Pearson
+    name: data-search
+    description: The next generation data search tool, working against the KBaseSearchEngine module
+source:
+    styles:
+        -
+            file: styles.css
+install:
+    widgets:
+        -
+            id: data-search_panel
+            module: panel
+            type: factory
+    routes:
+        -
+            path: [data-search]
+            queryParams: 
+                param1: {}
+            widget: data-search_panel
+            authorization: true
+    menu:
+        -
+            name: data-search
+            definition:
+                path: [data-search]
+                label: Search
+                icon: search
+        
