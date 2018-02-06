@@ -3,8 +3,8 @@ define([
     'kb_common/html',
     '../lib/nanoBus',
     './tabset',
-    './narrativeResults',
-    './referenceDataResults'
+    './narrative/main',
+    './reference/main'
 ], function (
     ko,
     html,
@@ -20,7 +20,6 @@ define([
 
     function viewModel(params) {
         var tabsetBus = NanoBus();
-
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
                 tab: {
@@ -28,12 +27,16 @@ define([
                     component: {
                         name: NarrativeResultsComponent.name(),
                         // NB these params are bound here, not in the tabset.
+                        // TODO: this should be named viewModel since that is what it is...
                         params: {
-
+                            view: params.view,
+                            searchInput: params.searchInput,
+                            overlayComponent: params.overlayComponent,
+                            selectedObjects: params.selectedObjects
                         }
                     }
                 }
-            });
+            }, false);
             tabsetBus.send('add-tab', {
                 tab: {
                     label: 'Reference Data',
@@ -41,14 +44,19 @@ define([
                         name: ReferenceDataResultsComponent.name(),
                         // NB these params are bound here, not in the tabset.
                         params: {
-
+                            view: params.view,
+                            searchInput: params.searchInput,
+                            overlayComponent: params.overlayComponent,
+                            selectedObjects: params.selectedObjects
                         }
                     }
                 }
-            });
+            }, false);
+            tabsetBus.send('select-tab', 0);
         });
 
         return {
+            view: params.view,
             tabsetBus: tabsetBus
         };
     }
@@ -57,7 +65,8 @@ define([
         return ko.kb.komponent({
             name: TabsetComponent.name(),
             params: {
-                bus: 'tabsetBus'
+                bus: 'tabsetBus',
+                view: 'view'
             }
         });
     }
@@ -67,8 +76,7 @@ define([
             style: {
                 flex: '1 1 0px',
                 display: 'flex',
-                flexDirection: 'column',
-                border: '1px red solid'
+                flexDirection: 'column'
             }
         }, [
             buildTabset()

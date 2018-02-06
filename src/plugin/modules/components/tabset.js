@@ -1,6 +1,7 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    'css!./tabset.css'
 ], function (
     ko,
     html
@@ -82,12 +83,12 @@ define([
             currentTab.active(true);
         }
 
-        // bootstrap tabs implemeneted in knockout.
+        // bootstrap tabs implemeneted in knockout. tricky...
         function makeTab(params) {
             if (!params.component.params) {
                 params.component.params = {};
             }
-            params.component.params = params;
+            // params.component.params = params;
             return {
                 label: params.label,
                 component: params.component,
@@ -97,11 +98,13 @@ define([
             };
         }
 
-        function addTab(tab) {
+        function addTab(tab, activate) {
             var newTab = makeTab(tab);
             tabs.push(newTab);
-            deactivateCurrentTab();
-            activateTab(newTab);
+            if (activate) {
+                deactivateCurrentTab();
+                activateTab(newTab);
+            }
         }
 
         function activateTab(tab) {
@@ -186,39 +189,58 @@ define([
             ])),
             div({
                 class: 'tab-content',
+                style: {
+                    position: 'relative'
+                },
                 dataBind: {
                     foreach: 'tabs'
                 }
-            }, div({
-                dataBind: {
-                    attr: {
-                        active: 'active'
-                    },
-                    css: { in: 'active',
-                        active: 'active'
-                    }
-                },
-                class: 'tab-pane fade',
-                role: 'tabpanel'
-            }, [
-                '<!-- ko if: $data.component -->',
+            },  [
+                '<!-- ko if: active -->',
                 div({
                     dataBind: {
-                        component: {
-                            name: 'component.name',
-                            params: 'component.params'
+                        attr: {
+                            active: 'active'
+                        },
+                        css: { 
+                            in: 'active',
+                            active: 'active'
                         }
-                    }
-                }),
-                '<!-- /ko -->',
-                '<!-- ko if: $data.content -->',
-                div({
-                    dataBind: {
-                        html: '$data.content'
-                    }
-                }),
-                '<!-- /ko -->',
-            ]))
+                    },
+                    class: 'tab-pane fade',
+                    role: 'tabpanel'
+                }, [
+                    
+                    '<!-- ko if: $data.component -->',
+                    div({
+                        style: {
+                            flex: '1 1 0px',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        },
+                        dataBind: {
+                            component: {
+                                name: 'component.name',
+                                params: 'component.params'
+                            }
+                        }
+                    }),
+                    '<!-- /ko -->',
+                    '<!-- ko if: $data.content -->',
+                    div({
+                        style: {
+                            flex: '1 1 0px',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        },
+                        dataBind: {
+                            html: '$data.content'
+                        }
+                    }),
+                    '<!-- /ko -->'
+                ]),
+                '<!-- /ko -->'
+            ])
         ]);
     }
 

@@ -17,6 +17,7 @@ define([
         div = t('div');
 
     function viewModel(params) {
+        // console.log('main', params);
         // OVERLAY
         var overlayComponent = ko.observable();
         // var showOverlay = ko.observable();
@@ -32,6 +33,8 @@ define([
 
         var resultsView = ko.observable('list');
 
+        var selectedObjects = ko.observableArray();
+
         return {
             // search: {
 
@@ -42,7 +45,8 @@ define([
             searchInput: searchInput,
             searchHistory: searchHistory,
             overlayComponent: overlayComponent,
-            resultsView: resultsView
+            resultsView: resultsView,
+            selectedObjects: selectedObjects
         };
     }
 
@@ -54,26 +58,21 @@ define([
         },
         searchArea: {
             flex: '0 0 50px',
-            // border: '1px red solid'
         },
         filterArea: {
             flex: '0 0 50px',
             textAlign: 'left'
-            // border: '1px blue dashed'
         },
         resultArea: {
             flex: '1 1 0px',
-            // border: '1px green dotted',
             display: 'flex',
             flexDirection: 'column'
         },
         activeFilterInput: {
-            // fontFamily: 'monospace',
             backgroundColor: 'rgba(209, 226, 255, 1)',
             color: '#000'
         },
         modifiedFilterInput: {
-            // fontFamily: 'monospace',
             backgroundColor: 'rgba(255, 245, 158, 1)',
             color: '#000'
         },
@@ -101,7 +100,9 @@ define([
             name: ToolBarComponent.name(),
             params: {
                 // search: 'search'
-                resultsView: 'resultsView'
+                resultsView: 'resultsView',
+                overlayComponent: 'overlayComponent',
+                selectedObjects: 'selectedObjects'
             }
         });
     }
@@ -111,7 +112,12 @@ define([
             name: SearchResultsComponent.name(),
             params: {
                 // search: 'search'
-                
+                // search inputs
+                searchInput: 'searchInput',
+
+                view: 'resultsView',
+                overlayComponent: 'overlayComponent',
+                selectedObjects: 'selectedObjects'
             }
         });
     }

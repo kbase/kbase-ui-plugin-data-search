@@ -37,9 +37,33 @@ define([
             });
         }
 
-
+        // Root viewmodel
         function viewModel() {
-            return {};
+            return {
+                runtime: runtime,
+                labels: {
+                    narrative: {
+                        singular: 'Narrative',
+                        plural: 'Narratives'
+                    },
+                    genome: {
+                        singular: 'Genome',
+                        plural: 'Genomes'
+                    },
+                    assembly: {
+                        singular: 'Assembly',
+                        plural: 'Assemblies'
+                    },
+                    pairedendlibrary: {
+                        singular: 'Paired End Library',
+                        plural: 'Paired End Libraries'
+                    },
+                    singleendlibrary: {
+                        singular: 'Single End Library',
+                        plural: 'Single End Libraries'
+                    }
+                }
+            };
         }
 
         function attach(node) {
@@ -51,7 +75,9 @@ define([
         }
         function start(params) {
             container.innerHTML = [styles.sheet, template()].join('');
-            ko.applyBindings(viewModel, container);
+            ko.applyBindings(viewModel, container, function (context) {
+                context.runtime = runtime;
+            });
 
             runtime.send('ui', 'setTitle', 'Data Search');
         }

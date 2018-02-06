@@ -1,9 +1,11 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    './dialogs/copyObjects'
 ], function(
     ko,
-    html
+    html,
+    CopyObjectsComponent
 ) {
     'use strict';
 
@@ -16,9 +18,21 @@ define([
 
     function viewModel(params) {
         var resultsView = params.resultsView;
-        console.log('results view', resultsView);
+        console.log('results view', params);
+
+        function doCopyObjects(data) {
+            params.overlayComponent({
+                name: CopyObjectsComponent.name(),
+                viewModel: {
+                    selectedObjects: params.selectedObjects
+                }
+            });
+        }
+
         return { 
-            resultsView: resultsView
+            resultsView: resultsView,
+            doCopyObjects: doCopyObjects,
+            selectedObjects: params.selectedObjects
         };
     }
 
@@ -61,7 +75,11 @@ define([
 
     function buildCopyButton() {
         return button({
-            class: 'btn btn-default'
+            class: 'btn btn-default',
+            dataBind: {
+                click: '$component.doCopyObjects',
+                enable: 'selectedObjects().length > 0'
+            }
         }, 'Copy Selected...');
     }
 
@@ -143,12 +161,12 @@ define([
                     flex: '1 1 0px'
                 }
             }, buildCopyButton()),
-            div({
-                style: {
-                    flex: '1 1 0px',
-                    textAlign: 'right'
-                }
-            }, buildViewSelector())
+            // div({
+            //     style: {
+            //         flex: '1 1 0px',
+            //         textAlign: 'right'
+            //     }
+            // }, buildViewSelector())
         ]);
     }
 

@@ -94,6 +94,7 @@ define([
 
         function doClearInput() {
             searchControlValue('');
+            doRunSearch();
         }
 
         function doRunSearch() {
@@ -352,7 +353,7 @@ define([
                     click: 'doHelp'
                 }
             }, span({
-                class: 'fa fa-info'
+                class: 'fa fa-question'
             }))
         ]));
     }
