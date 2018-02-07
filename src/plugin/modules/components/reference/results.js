@@ -15,6 +15,8 @@ define([
         div = t('div'),
         span = t('span'),
         a = t('a'),
+        ul = t('ul'),
+        li = t('li'),
         table = t('table'),
         tbody = t('tbody'),
         tr = t('tr'),
@@ -88,7 +90,7 @@ define([
                     border: '1px gray solid'
                 }
             },
-            innerClasses: {
+            inner: {
                 td: {
                     padding: '4px'
                 },
@@ -100,7 +102,7 @@ define([
                     wordBreak: 'break-word'
                 }
             }
-        }
+        },
     });        
 
     function viewModel(params) {
@@ -108,10 +110,6 @@ define([
         // the first node in the template can be found as the next sibling.
         
         var searchState = params.searchState;
-
-        searchState.status.subscribe(function (newValue) {
-            console.log('status', newValue);
-        });
 
         // ACTIONS
 
@@ -122,6 +120,10 @@ define([
                     ref: data.matchClass.ref
                 }
             });
+        }
+
+        function doViewObject(data) {
+            window.open(data.url, '_blank');
         }
 
         function doToggleShowMatches(data, ev) {
@@ -186,7 +188,7 @@ define([
         }
 
         function descendantsComplete() {
-            console.log('completed?');
+            // console.log('completed?');
             // updateScroller();
         }
 
@@ -197,6 +199,7 @@ define([
 
             // ACTIONS
             doCopyObject: doCopyObject,
+            doViewObject: doViewObject,
 
             doNextPage: doNextPage,
             doPreviousPage: doPreviousPage,
@@ -238,6 +241,41 @@ define([
 
             '<!-- /ko -->'
         ];
+    }
+
+    function buildOptionsColumn() {
+        return div({
+        }, [
+            div({
+                class: 'btn-group'
+            }, [
+                button({
+                    type: 'button',
+                    class: 'btn btn-default btn-sm dropdown-toggle btn-kb-toggle-dropdown',
+                    dataToggle: 'dropdown',
+                    ariaHasPopup: 'true',
+                    areaExpanded: 'false'
+                }, [
+                    span({
+                        class: 'fa fa-bars'
+                    })
+                ]),
+                ul({
+                    class: 'dropdown-menu dropdown-menu-right'
+                }, [
+                    li(a({
+                        dataBind: {
+                            click: '$component.doCopyObject'
+                        }
+                    }, 'copy...')),
+                    li(a({
+                        dataBind: {
+                            click: '$component.doViewObject'
+                        }
+                    }, 'view object'))
+                ])
+            ])
+        ]);
     }
 
     function buildObjectCheckbox() {
@@ -319,7 +357,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 2em'
                 }
             }, buildObjectCheckbox()),
             div({
@@ -334,13 +372,13 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '3'
+                    flex: '2'
                 }
             }, buildObjectLink()),
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1.5'
+                    flex: '3'
                 }
             }, div({
                 dataBind: {
@@ -350,7 +388,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1.5'
+                    flex: '1'
                 },
                 dataBind: {
                     typedText: {
@@ -363,9 +401,10 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 4em',
+                    textAlign: 'right'
                 }
-            }, buildObjectButton()),
+            }, buildOptionsColumn()),
         ]);
     }
 
@@ -438,6 +477,88 @@ define([
                 class: styles.classes.rowCell,
                 style: {
                     flex: '1'
+                }
+            })
+        ]);
+    }
+
+    function buildViewToggles() {
+        return div({
+            // class: styles.classes.rowCell,
+            style: {
+                fontStyle: 'italic',
+                display: 'inline-block'
+            }
+        }, [            
+            button({
+                class: 'btn btn-default btn-kb-toggle-dropdown',
+                dataBind: {
+                    click: '$component.doToggleShowMatches',
+                    enable: 'active',
+                    class: 'showMatches() ? "active" : null'
+                }
+            }, [
+                'matches',
+                span({
+                    class: 'fa',
+                    style: {
+                        marginLeft: '3px',
+                        width: '1em'
+                    },
+                    dataBind: {
+                        class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
+                    }
+                })
+            ]),
+            button({
+                class: 'btn btn-default btn-kb-toggle-dropdown',
+                dataBind: {
+                    click: '$component.doToggleShowDetails',
+                    enable: 'active',
+                    class: 'showDetails() ? "active" : null'
+                }
+            }, [
+                'detail',
+                span({
+                    class: 'fa',
+                    style: {
+                        marginLeft: '3px',
+                        width: '1em'
+                    },
+                    dataBind: {
+                        class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
+                    }
+                })
+            ])          
+        ]);
+    }
+
+    function buildToolbarRow() {
+        return  div({
+            style: {
+                flex: '1 1 auto',
+                display: 'flex',
+                flexDirection: 'row'
+            }
+        }, [
+            div({
+                style: {
+                    flex: '0 0 2em',
+                }
+            }),
+            div({
+                style: {
+                    flex: '1 1 0px',
+                }
+            }),
+            div({
+                style: {
+                    flex: '6 1 0px'
+                }
+            }, buildViewToggles()),
+            div({
+                style: {
+                    flex: '0 0 4em'
                 }
             })
         ]);
@@ -597,19 +718,13 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 2em'
                 }
-            }, ''),
+            }, ''),            
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '4.5'
+                    flex: '5'
                 }
             }, buildMatchViewDetailTable()),
             div({
@@ -621,7 +736,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 4em'
                 }
             }),
         ]);
@@ -629,21 +744,63 @@ define([
 
     function buildViewRow() {
         return div({
-            class: styles.classes.body,
-            style: {
-                // marginTop: '5px',
-                marginBottom: '15px'
-            }
+            class: styles.classes.row
         }, [
-            buildSummaryView(),
-            '<!-- ko if: showMatches -->',
-            buildMatchViewMatches(),
-            '<!-- /ko -->',
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '0 0 2em'
+                }
+            }),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
+                }
+            }),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '5'
+                }
+            }, [
+                '<!-- ko if: showMatches -->',
+                buildMatchHighlightsTable(),
+                '<!-- /ko -->',
 
-            '<!-- ko if: showDetails -->',
-            buildMatchViewDetail(),
-            '<!-- /ko -->',
+                '<!-- ko if: showDetails -->',
+                buildMatchViewDetailTable(),
+                '<!-- /ko -->',
+            ]),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
+                }
+            }, ''),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: ' 0 0 4em'
+                }
+            })
         ]);
+        
+        // return div({
+        //     class: styles.classes.body,
+        //     style: {
+        //         // marginTop: '5px',
+        //         // marginBottom: '15px'
+        //     }
+        // }, [
+        //     '<!-- ko if: showMatches -->',
+        //     buildMatchViewMatches(),
+        //     '<!-- /ko -->',
+
+        //     '<!-- ko if: showDetails -->',
+        //     buildMatchViewDetail(),
+        //     '<!-- /ko -->',
+        // ]);
     }
 
     function buildRow() {
@@ -658,7 +815,10 @@ define([
             }
         }, [
             buildObjectView(),
-            buildViewRow()
+            buildToolbarRow(),
+            '<!-- ko if: showMatches() || showDetails() -->',
+            buildViewRow(),
+            '<!-- /ko -->'
         ]);
     }
 

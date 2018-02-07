@@ -71,7 +71,6 @@ define([
                 ignoreErrors: 1
             })
                 .spread(function (result) {
-                    console.log('result', result);
                     if (result.infos.length === 0) {
                         throw new Error('No object found with reference ' + ref);
                     }

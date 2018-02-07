@@ -51,7 +51,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 2em'
                 }
             }),
             div({
@@ -63,7 +63,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '3'
+                    flex: '2'
                 }
             }, [
                 'Name'
@@ -71,7 +71,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1.5'
+                    flex: '3'
                 }
             }, [
                 'Scientific name'
@@ -79,7 +79,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1.5'
+                    flex: '1'
                 }
             }, [
                 'Date'
@@ -87,7 +87,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 4em'
                 }
             })
         ]);

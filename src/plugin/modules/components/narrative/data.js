@@ -9,7 +9,7 @@ define([
     // 'json!./data/search_objects-fixed.json',
     'json!../../data/search/workspaces.json',
     'json!../../data/search/objects.json',
-    'json!../../data/stopWords.json'
+    'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
     moment,
@@ -559,6 +559,7 @@ define([
                 // TODO:
                 matches: obj.matches,
                 detail: type.methods.detail(obj),
+                url: window.location.origin + '#dataview/' + ref.workspaceId + '/' + ref.objectId + '/' + ref.version,
                 selected: ko.observable()
             };
         }
@@ -652,6 +653,7 @@ define([
                         username: narrative.owner,
                         realName: narrative.owner_real_name
                     },
+                    url: window.location.origin + '/narrative/ws.' + narrative.workspace_id + '.obj.' + narrative.object_id,
                     showObjects: ko.observable(false),
                     showMatches: ko.observable(false),
                     showDetails: ko.observable(false),

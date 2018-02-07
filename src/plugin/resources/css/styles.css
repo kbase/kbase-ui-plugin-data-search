@@ -2,3 +2,14 @@
 .plugin_simple-sample_panel h2 {
     color: red;
 }
+
+.btn.btn-kb {
+    border-radius: 0;
+}
+
+.btn.btn-kb-toggle-dropdown {
+    border-radius: 0;
+    border: none;
+    margin: 2px;
+    background-color: transparent;
+}

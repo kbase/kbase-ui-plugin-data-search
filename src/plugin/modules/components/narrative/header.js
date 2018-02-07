@@ -48,34 +48,34 @@ define([
         return div({
             class: styles.classes.header
         }, [
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '5'
-                }
-            }, 'Narrative'),            
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '1'
-                }
-            }, [
-                'Owner'
-            ]),
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '1.5'
-                }
-            }, [
-                'Last saved'
-            ]),
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '1'
-                }
-            }, '')
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '5'
+            //     }
+            // }, 'Narrative'),            
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1'
+            //     }
+            // }, [
+            //     'Owner'
+            // ]),
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1.5'
+            //     }
+            // }, [
+            //     'Last saved'
+            // ]),
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1'
+            //     }
+            // }, '')
         ]);
     }
 

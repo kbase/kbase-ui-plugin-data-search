@@ -25,7 +25,8 @@ define([
                 flex: '1 1 0px',
                 display: 'flex',
                 flexDirection: 'row',
-                marginBottom: '10px'
+                marginBottom: '10px',
+                alignItems: 'center'
             }
         },
         cell: {
@@ -108,26 +109,7 @@ define([
                 }
             }, span({
                 class: 'fa fa-step-forward'
-            })),
-            div({
-                style: {
-                    display: 'inline-block',
-                    marginLeft: '6px'
-                }
-            }, [
-                ' On page ',
-                span({
-                    dataBind: {
-                        text: 'page'
-                    }
-                }), 
-                ' of ',
-                span({
-                    dataBind: {
-                        text: 'totalPages'
-                    }
-                })
-            ])
+            }))
         ]);
     }
 
@@ -138,15 +120,45 @@ define([
             div({
                 class: styles.classes.cell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 auto'
                 }
             }, buildNavButtons()),            
             div({
                 class: styles.classes.cell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 auto'
                 }
-            })
+            }, [
+                '<!-- ko if: totalPages() === null || totalPages() === undefined -->',
+                'no search',
+                '<!-- /ko -->',
+
+                '<!-- ko if: totalPages() === 0 -->',
+                'no pages',
+                '<!-- /ko -->',
+
+                '<!-- ko if: totalPages() > 0 -->',
+                div({
+                    style: {
+                        display: 'inline-block',
+                        marginLeft: '6px'
+                    }
+                }, [
+                    ' On page ',
+                    span({
+                        dataBind: {
+                            text: 'page'
+                        }
+                    }), 
+                    ' of ',
+                    span({
+                        dataBind: {
+                            text: 'totalPages'
+                        }
+                    })
+                ]),
+                '<!-- /ko -->'
+            ])
         ]);
     }
 

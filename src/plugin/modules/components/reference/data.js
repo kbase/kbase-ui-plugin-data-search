@@ -529,6 +529,8 @@ define([
                 // Detail, type-specific
                 detail: detail,
 
+                url: window.location.origin + '#dataview/' + ref.workspaceId + '/' + ref.objectId + '/' + ref.version,
+
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
                 name: obj.object_name,                

@@ -57,7 +57,6 @@ define([
         }
 
         function getObjectInfo(ref) {
-            console.log('getting object info', ref);
             return rpc.call('Workspace', 'get_object_info3', {
                 objects: [{
                     wsid: ref.workspaceId,
@@ -67,7 +66,6 @@ define([
                 ignoreErrors: 1
             })
                 .spread(function (result) {
-                    console.log('result', result);
                     if (result.infos.length === 0) {
                         throw new Error('No object found with reference ' + ref);
                     }

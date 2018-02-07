@@ -89,7 +89,6 @@ define([
             if (typeof totalItems !== 'number') {
                 return;
             }
-            console.log('total items', totalItems);
             return Math.ceil(totalItems / pageSize());
         });
 
@@ -129,7 +128,6 @@ define([
         });
 
         function runSearch(query) {
-            console.log('run search with', query);
             // ensure search is runnable
             if (!query.input) {
                 searchState.status('none');
@@ -142,8 +140,6 @@ define([
                 return;
             }
 
-
-            console.log('run search', query);
             searchState.searching(true);
             searchState.status('searching');
             return data.search({
@@ -152,7 +148,6 @@ define([
                 terms: query.terms
             })
                 .then(function (result) {
-                    console.log('result', result);
                     searchState.buffer(result.items);
                     // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);
@@ -219,27 +214,12 @@ define([
 
         // // ACTIONS
         
-        function doToggleShowObjects(currentlyShowingObjects) {
-            searchState.buffer().forEach(function (item) {
-                if (currentlyShowingObjects) {
-                    item.showObjects(false);
-                    item.showMatches(false);
-                    item.showDetails(false);
-                } else {
-                    item.showObjects(true);
-                    item.showMatches(false);
-                    item.showDetails(false);
-                }
-            });
-        }
         function doToggleShowMatches(currentlyShowing) {
             searchState.buffer().forEach(function (item) {
                 if (currentlyShowing) {
-                    item.showObjects(false);
                     item.showMatches(false);
                     item.showDetails(false);
                 } else {
-                    item.showObjects(false);
                     item.showMatches(true);
                     item.showDetails(false);
                 }
@@ -248,11 +228,9 @@ define([
         function doToggleShowDetails(currentlyShowing) {
             searchState.buffer().forEach(function (item) {
                 if (currentlyShowing) {
-                    item.showObjects(false);
                     item.showMatches(false);
                     item.showDetails(false);
                 } else {
-                    item.showObjects(false);
                     item.showMatches(false);
                     item.showDetails(true);
                 }
@@ -272,7 +250,6 @@ define([
             // ACTIONS
             // doNextPage: doNextPage,
             // doPreviousPage: doPreviousPage
-            doToggleShowObjects: doToggleShowObjects,
             doToggleShowMatches: doToggleShowMatches,
             doToggleShowDetails: doToggleShowDetails
         };
@@ -402,7 +379,6 @@ define([
                     view: 'view',
                     overlayComponent: 'overlayComponent',
                     selectedObjects: 'selectedObjects',
-                    doToggleShowObjects: 'doToggleShowObjects',
                     doToggleShowMatches: 'doToggleShowMatches',
                     doToggleShowDetails: 'doToggleShowDetails'
                 }
