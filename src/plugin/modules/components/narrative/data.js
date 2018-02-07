@@ -636,10 +636,6 @@ define([
                 break;
             }
 
-            console.log('GOT', items.length, grouped, fullyMatched);
-           
-
-
             // Now we have are full simulation of the entire search space!
 
             // Get summary.
