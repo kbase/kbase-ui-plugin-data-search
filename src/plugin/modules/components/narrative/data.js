@@ -149,6 +149,15 @@ define([
                 obj.ref.ref = [obj.ref.workspaceId, obj.ref.objectId, obj.ref.version].join('/');
                 obj.ref.dataviewId = obj.ref.ref;
 
+                // add some other properties to the key_props.
+
+                obj.key_props['username'] = obj.x.workspace.owner;
+                var sharedWith = obj.x.workspace['shared-with'] || [];
+                obj.key_props['shared-with'] = sharedWith.map(function (share) {
+                    return share[0];
+                });
+                
+
                 // A lower case version of the props, for case insensitive searching.
                 obj.key_props_lc = Object.keys(obj.key_props).reduce(function (acc, key) {
                     var keyPropValue = obj.key_props[key];
@@ -297,27 +306,8 @@ define([
                     // we should now have the matches for this term.
 
                     // Apply the operator logic at the object level
-
-                    switch (operator) {
-                    case 'or':
-                        if (matches.length === 0) {
-                            return;
-                        }
-                        break;
-                    case 'and':
-                        var matchedTerms = matches.reduce(function (terms, match) {
-                            if (!terms[match.term]) {
-                                terms[match.term] = 0;
-                            }
-                            terms[match.term] += 1;
-                            return terms;
-                        }, {});
-                        if (matchedTerms.length !== terms.length) {
-                            return;
-                        }
-                        break;
-                    default: 
-                        throw new Error('Invalid operator: ' + operator);
+                    if (matches.length === 0) {
+                        return;
                     }
 
                     return matches;
@@ -326,19 +316,46 @@ define([
                     return x ? true : false;
                 });
 
-                if (termMatches.length > 0) {
-                    var matches = termMatches.reduce(function (accum, matches) {
-                        matches.forEach(function (match) {
-                            accum.push(match);
-                        });
-                        return accum;
-                    }, []);
-                    obj.matches = matches;
-                } else {
+                if (termMatches.length === 0) {
                     obj.matches = [];
+                    return obj;
                 }
-               
+
+
+                // Here we flatten out the lists of lists of matches into a single list of matches.
+                var matches = termMatches.reduce(function (accum, matches) {
+                    matches.forEach(function (match) {
+                        accum.push(match);
+                    });
+                    return accum;
+                }, []);
+
+                switch (operator) {
+                case 'and':
+                    // Apply object level "and"ing across all matches.
+                    // Actually, this is simply the condition that all terms have at least one match.
+                    var termsMatched = matches.reduce(function (terms, match) {
+                        if (!terms[match.term]) {
+                            terms[match.term] = 0;
+                        }
+                        terms[match.term] += 1;
+                        return terms;
+                    }, {});
+
+                    if (Object.keys(termsMatched).length !== terms.length) {
+                        obj.matches = [];
+                    } else {
+                        obj.matches = matches;
+                    }
+                    break;
+                case 'or':
+                    obj.matches = matches;
+                    break;
+                default:
+                    throw new Error('Invalid operator: ' + operator);
+                }
                 return obj;
+ 
             }).filter(function (obj) {
                 if (!obj) {
                     return false;
@@ -568,13 +585,14 @@ define([
         function narrativeSearch(query) {
             var fixed = fixupObjects(JSON.parse(JSON.stringify(objectsDb)));
 
+
             var searchQuery = {
                 terms: query.terms,
                 workspaceType: 'narrative',
-                operator: 'or',
+                operator: 'and',
                 username: query.username,
                 withPrivateData: query.withPrivateData,
-                withPublicData: query.withPublicData
+                withPublicData: query.withPublicData,
             };
 
             var items = filterData(fixed, searchQuery);
@@ -599,12 +617,27 @@ define([
 
             // Only keep groups (narratives) for which the # of matched terms is the
             // same as the # of query terms.
-            var fullyMatched = Object.keys(grouped).reduce(function (accum, groupId) {
-                if (Object.keys(grouped[groupId].matchedTerms).length === query.terms.length) {
-                    accum[groupId] = grouped[groupId];
-                }
-                return accum;
-            }, {});
+            
+            var andLogic = 'narrative';
+            var fullyMatched;
+            switch (andLogic) {
+            case 'narrative':
+                // we "and" across all the objects.
+                fullyMatched = Object.keys(grouped).reduce(function (accum, groupId) {
+                    if (Object.keys(grouped[groupId].matchedTerms).length === query.terms.length) {
+                        accum[groupId] = grouped[groupId];
+                    }
+                    return accum;
+                }, {});
+                break;
+            case 'object':
+                // if we are using object level anding, we have already applied it.
+                fullyMatched = grouped;
+                break;
+            }
+
+            console.log('GOT', items.length, grouped, fullyMatched);
+           
 
 
             // Now we have are full simulation of the entire search space!
