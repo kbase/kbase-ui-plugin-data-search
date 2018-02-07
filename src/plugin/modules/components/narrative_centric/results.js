@@ -147,28 +147,28 @@ define([
     });
 
     function viewModel(params) {
-        // var view = ko.pureComputed(function () {
-        //     switch (params.view()) {
-        //     case 'list':
-        //         return {
-        //             summary: true,
-        //             matches: false,
-        //             detail: false
-        //         };
-        //     case 'matches': 
-        //         return {
-        //             summary: false,
-        //             matches: true,
-        //             detail: false
-        //         };
-        //     case 'detail':
-        //         return {
-        //             summary: false,
-        //             matches: false,
-        //             detail: true
-        //         };
-        //     }
-        // });
+        var view = ko.pureComputed(function () {
+            switch (params.view()) {
+            case 'list':
+                return {
+                    summary: true,
+                    matches: false,
+                    detail: false
+                };
+            case 'matches': 
+                return {
+                    summary: false,
+                    matches: true,
+                    detail: false
+                };
+            case 'detail':
+                return {
+                    summary: false,
+                    matches: false,
+                    detail: true
+                };
+            }
+        });
 
 
         // If this is not an Element, it was installed with a comment and 
@@ -220,21 +220,59 @@ define([
             window.open(data.url, '_blank');
         }
 
-        var view = params.view;
-
-        function doShowObjects(data) {
-            view('list');
+        function doToggleShowObjects(data, ev) {
+            if (ev.originalEvent.altKey) {
+                params.doToggleShowObjects(data.showObjects());
+                return;
+            }
+            if (data.showObjects()) {
+                data.showObjects(false);
+                data.showMatches(false);
+                data.showDetails(false);
+            } else {
+                data.showObjects(true);
+                data.showMatches(false);
+                data.showDetails(false);
+            }
         }
 
-        function doShowMatches(data) {
-            view('matches');
+        function doToggleShowMatches(data, ev) {
+            if (ev.originalEvent.altKey) {
+                params.doToggleShowMatches(data.showMatches());
+                return;
+            }
+            if (data.showMatches()) {
+                data.showObjects(false);
+                data.showMatches(false);
+                data.showDetails(false);
+            } else {
+                data.showObjects(false);
+                data.showMatches(true);
+                data.showDetails(false);
+            }
         }
 
-        function doShowDetails(data) {
-            view('detail');
+        function doToggleShowDetails(data, ev) {
+            if (ev.originalEvent.altKey) {
+                params.doToggleShowDetails(data.showDetails());
+                return;
+            }
+            if (data.showDetails()) {
+                data.showObjects(false);
+                data.showMatches(false);
+                data.showDetails(false);
+            } else {
+                data.showObjects(false);
+                data.showMatches(false);
+                // if (!data.showObjects()) {
+                // data.showObjects(true);
+                // }
+                data.showDetails(true);
+            }
         }
        
-        function doNextPage() {            
+        function doNextPage() {
+            
             params.doNextPage();
         }
 
@@ -288,9 +326,9 @@ define([
 
             doToggleSelected: doToggleSelected,
 
-            doShowObjects: doShowObjects,
-            doShowMatches: doShowMatches,
-            doShowDetails: doShowDetails,
+            doToggleShowObjects: doToggleShowObjects,
+            doToggleShowMatches: doToggleShowMatches,
+            doToggleShowDetails: doToggleShowDetails,
 
             doMouseOverRow: doMouseOverRow,
             doMouseOutRow: doMouseOutRow,
@@ -413,120 +451,120 @@ define([
         ]);
     }
 
-    // function buildSummaryRow() {
-    //     return div({
-    //         class: styles.classes.row
-    //     }, [           
-    //         div({
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 flex: '7.5'
-    //             }
-    //         }, div({
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 fontStyle: 'italic',
-    //                 display: 'inline-block'
-    //             }
-    //         }, [
-    //             // 'Show ',
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowObjects',
-    //                     enable: 'active',
-    //                     class: 'showObjects() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'objects',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showObjects() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowMatches',
-    //                     enable: 'active',
-    //                     class: 'showMatches() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'matches',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowDetails',
-    //                     enable: 'active',
-    //                     class: 'showDetails() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'detail',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             // span({
-    //             //     style: {
-    //             //         marginLeft: '6px'
-    //             //     }
-    //             // }, 'Matched on '),
-    //             // '<!-- ko foreach: summary -->',
-    //             // span({
-    //             //     style: {
-    //             //         fontWeight: 'bold'
-    //             //     },
-    //             //     dataBind: {
-    //             //         text: 'count'
-    //             //     }
-    //             // }), 
-    //             // ' ',
-    //             // span({
-    //             //     dataBind: {
-    //             //         labelText: {
-    //             //             label: 'id',
-    //             //             quantity: 'count',
-    //             //             labels: '$root.labels'
-    //             //         }
-    //             //     }
-    //             // }),
-    //             // '<!-- ko if: $index() !== $parent.summary.length - 1 -->',
-    //             // ', ',
-    //             // '<!-- /ko -->',
-    //             // '<!-- /ko -->',
-    //         ])),
-    //         div({                
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 flex: '1'
-    //             }
-    //         }, '')
-    //     ]);
-    // }
+    function buildSummaryRow() {
+        return div({
+            class: styles.classes.row
+        }, [           
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '7.5'
+                }
+            }, div({
+                class: styles.classes.rowCell,
+                style: {
+                    fontStyle: 'italic',
+                    display: 'inline-block'
+                }
+            }, [
+                // 'Show ',
+                button({
+                    class: 'btn btn-default btn-kb-toggle-dropdown',
+                    dataBind: {
+                        click: '$component.doToggleShowObjects',
+                        enable: 'active',
+                        class: 'showObjects() ? "active" : null'
+                    }
+                }, [
+                    'objects',
+                    span({
+                        class: 'fa',
+                        style: {
+                            marginLeft: '3px',
+                            width: '1em'
+                        },
+                        dataBind: {
+                            class: 'showObjects() ? "fa-caret-down" : "fa-caret-right"'
+                        }
+                    })
+                ]),
+                button({
+                    class: 'btn btn-default btn-kb-toggle-dropdown',
+                    dataBind: {
+                        click: '$component.doToggleShowMatches',
+                        enable: 'active',
+                        class: 'showMatches() ? "active" : null'
+                    }
+                }, [
+                    'matches',
+                    span({
+                        class: 'fa',
+                        style: {
+                            marginLeft: '3px',
+                            width: '1em'
+                        },
+                        dataBind: {
+                            class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
+                        }
+                    })
+                ]),
+                button({
+                    class: 'btn btn-default btn-kb-toggle-dropdown',
+                    dataBind: {
+                        click: '$component.doToggleShowDetails',
+                        enable: 'active',
+                        class: 'showDetails() ? "active" : null'
+                    }
+                }, [
+                    'detail',
+                    span({
+                        class: 'fa',
+                        style: {
+                            marginLeft: '3px',
+                            width: '1em'
+                        },
+                        dataBind: {
+                            class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
+                        }
+                    })
+                ]),
+                // span({
+                //     style: {
+                //         marginLeft: '6px'
+                //     }
+                // }, 'Matched on '),
+                // '<!-- ko foreach: summary -->',
+                // span({
+                //     style: {
+                //         fontWeight: 'bold'
+                //     },
+                //     dataBind: {
+                //         text: 'count'
+                //     }
+                // }), 
+                // ' ',
+                // span({
+                //     dataBind: {
+                //         labelText: {
+                //             label: 'id',
+                //             quantity: 'count',
+                //             labels: '$root.labels'
+                //         }
+                //     }
+                // }),
+                // '<!-- ko if: $index() !== $parent.summary.length - 1 -->',
+                // ', ',
+                // '<!-- /ko -->',
+                // '<!-- /ko -->',
+            ])),
+            div({                
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
+                }
+            }, '')
+        ]);
+    }
 
     function buildObjectOptionsColumn() {
         return div({
@@ -779,7 +817,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 2em'
+                    flex: '1'
                 }
             }, ''),
             div({
@@ -791,14 +829,19 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '5.5'
+                    flex: '4.5'
                 }
             }, buildMatchHighlightsTable()),
-           
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 4em'
+                    flex: '1'
+                }
+            }, ''),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
                 }
             })
         ]);
@@ -887,7 +930,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 2em'
+                    flex: '1'
                 }
             }, ''),
             div({
@@ -899,14 +942,19 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '5.5'
+                    flex: '4.5'
                 }
             }, buildMatchViewDetailTable()),
-           
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 4em'
+                    flex: '1'
+                }
+            }),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
                 }
             }),
         ]);
@@ -963,19 +1011,27 @@ define([
         }, [
            
 
+            // '<!-- ko if: $component.view().matches || $component.view().detail  -->',
+
+            '<!-- ko if: showObjects() || showMatches() || showDetails() -->',
+
+            buildMatchDetailHeader(),
+
             '<!-- ko foreach: objects -->',
 
             buildMatchViewObject(),
 
-            '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+            '<!-- ko if: $parent.showMatches -->',
             buildMatchViewMatches(),
             '<!-- /ko -->',
 
-            '<!-- ko if: $component.view() === "detail" -->',
+            '<!-- ko if: $parent.showDetails -->',
             buildMatchViewDetail(),
             '<!-- /ko -->',
 
             '<!-- /ko -->',
+
+            '<!-- /ko -->'
         ]);
     }
 
@@ -1170,128 +1226,55 @@ define([
         ]);
     }
 
+    function buildMainRow() {
+        return div({
+            style: {
+                flex: '1 1 auto',
+                display: 'flex',
+                flexDirection: 'row'
+            }
+        }, [
+            div({
+                style: {
+                    flex: '2 1 0px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }
+            }, buildNarrativeColumn()),
+            div({
+                style: {
+                    flex: '1 1 0px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }
+            }, buildSummaryColumn()),
+            div({
+                style: {
+                    flex: '0 0 100px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    textAlign: 'right'
+                }
+            }, buildNarrativeOptionsColumn())
+        ]);   
+    }
+
     function buildRow() {
         return div({
             class: styles.classes.resultsRow,
-            
+            dataBind: {
+                event: {
+                    mouseenter: '$component.doMouseOverRow',
+                    mouseleave: '$component.doMouseOutRow'
+                },
+                class: 'active() ? "' + styles.scopes.active + '" : null',
+            }
         }, [
-            buildNarrativeRow(),
+            buildMainRow(),
+            buildToolbarRow(),  
             buildViewRow()
         ]);
     }
-
-    function buildNarrativeRow() {
-        return  div({
-            class: styles.classes.row
-        }, [
-            // columns
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '4',
-                    fontWeight: 'bold'
-                }
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
-                    },
-                    text: 'title'
-                },
-                target: '_blank'
-            })),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"#people/" + owner.username'
-                    },
-                    text: 'owner.realName'
-                }
-            })),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1.5'
-                },
-                dataBind: {
-                    typedText: {
-                        type: '"date"',
-                        format: '"MM/DD/YYYY"',
-                        value: 'modified'
-                    }
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em',
-                    textAlign: 'right'
-                },
-               
-            }, buildNarrativeOptionsColumn())
-        ]);
-    }
-
-    // function buildMainRow() {
-    //     return div({
-    //         style: {
-    //             flex: '1 1 auto',
-    //             display: 'flex',
-    //             flexDirection: 'row'
-    //         }
-    //     }, [
-    //         div({
-    //             style: {
-    //                 flex: '2 1 0px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column'
-    //             }
-    //         }, buildNarrativeColumn()),
-    //         div({
-    //             style: {
-    //                 flex: '1 1 0px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column'
-    //             }
-    //         }, buildSummaryColumn()),
-    //         div({
-    //             style: {
-    //                 flex: '0 0 100px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column',
-    //                 textAlign: 'right'
-    //             }
-    //         }, buildNarrativeOptionsColumn())
-    //     ]);   
-    // }
-
-    // function buildRow() {
-    //     return div({
-    //         class: styles.classes.resultsRow,
-    //         dataBind: {
-    //             event: {
-    //                 mouseenter: '$component.doMouseOverRow',
-    //                 mouseleave: '$component.doMouseOutRow'
-    //             },
-    //             class: 'active() ? "' + styles.scopes.active + '" : null',
-    //         }
-    //     }, [
-    //         buildMainRow(),
-    //         buildToolbarRow(),  
-    //         buildViewRow()
-    //     ]);
-    // }
 
     function buildResults() {
         return div({

@@ -1,0 +1,22 @@
+/* table.results-table {
+    border: 1px solid silver;
+    width: 100%;
+    max-width: 100%;
+}
+
+table.results-table tr {
+    
+}
+
+table.results-table td {
+    padding: 4px;    
+}
+
+table.results-table td:nth-child(1) {
+    width: 30%;
+}
+
+table.results-table td:nth-child(2) {
+    width: 70%;
+    word-break: break-word;
+} */

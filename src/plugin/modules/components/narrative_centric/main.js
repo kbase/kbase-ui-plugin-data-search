@@ -60,7 +60,7 @@ define([
             flexDirection: 'column'
         },
         header: {
-            flex: '0 0 40px',
+            flex: '0 0 10px',
             display: 'flex',
             flexDirection: 'column'
         },

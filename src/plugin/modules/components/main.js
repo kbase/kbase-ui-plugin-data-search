@@ -31,7 +31,7 @@ define([
 
         var searchHistory = ko.observableArray();
 
-        var resultsView = ko.observable('list');
+        var resultsView = ko.observable('detail');
 
         var selectedObjects = ko.observableArray();
 

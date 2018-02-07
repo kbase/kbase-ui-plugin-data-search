@@ -1,0 +1,420 @@
+{
+    "version": "1.1",
+    "result": [
+        {
+            "pagination": {
+                "start": 1,
+                "count": 10
+            },
+            "sorting_rules": [
+                {
+                    "is_timestamp": 1,
+                    "descending": 1
+                }
+            ],
+            "total": 172842845,
+            "search_time": 793,
+            "objects": [
+                {
+                    "guid": "WS:28359/4/3",
+                    "object_name": "eco_from_assembly",
+                    "timestamp": 1517276552027,
+                    "data": {
+                        "assembly_ref": "28313/27/1",
+                        "domain": "Unknown",
+                        "features": 4524,
+                        "id": "eco_from_assembly",
+                        "scientific_name": "E. coli",
+                        "taxonomy": "Unconfirmed Organism: E. coli"
+                    },
+                    "key_props": {
+                        "features": "4524",
+                        "contigs": "1",
+                        "domain": "Unknown",
+                        "assembly_guid": "WS:28313/27/1",
+                        "scientific_name": "E. coli",
+                        "taxonomy": "Unconfirmed Organism: E. coli",
+                        "id": "eco_from_assembly"
+                    },
+                    "object_props": {
+                        "creator": "jjeffryes",
+                        "copied": "eapearson",
+                        "method": "annotate_genome",
+                        "module": "RAST_SDK",
+                        "module_ver": "0.0.10"
+                    }
+                },
+                {
+                    "guid": "WS:28858/50/8",
+                    "object_name": "Acoerulea.JGI1.1",
+                    "timestamp": 1517249792000,
+                    "data": {
+                        "domain": "Plant",
+                        "features": 41063,
+                        "id": "Acoerulea.JGI1.1",
+                        "scientific_name": "Aquilegia coerulea Goldsmith",
+                        "taxonomy": "Plant"
+                    },
+                    "key_props": {
+                        "features": "41063",
+                        "assembly_guid": "",
+                        "domain": "Plant",
+                        "scientific_name": "Aquilegia coerulea Goldsmith",
+                        "taxonomy": "Plant",
+                        "id": "Acoerulea.JGI1.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson"
+                    }
+                },
+                {
+                    "guid": "WS:28858/27/1",
+                    "object_name": "GCF_000005845.2_ASM584v2_genomic.gbff_genome_assembly",
+                    "timestamp": 1517249790000,
+                    "data": {
+                        "contigs": 1,
+                        "dna_size": 4641652,
+                        "gc_content": 0.50791
+                    },
+                    "key_props": {
+                        "dna_size": "4641652",
+                        "external_source_id": "",
+                        "contigs": "1",
+                        "name": "",
+                        "gc_content": "0.50791"
+                    },
+                    "object_props": {
+                        "creator": "jjeffryes",
+                        "copied": "eapearson",
+                        "method": "import_genbank_from_staging",
+                        "module": "kb_uploadmethods",
+                        "module_ver": "1.0.10"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "data": {
+                        "domain": "Bacteria",
+                        "features": 4347,
+                        "id": "Rhodobacter_sphaeroides_2.4.1",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "key_props": {
+                        "features": "4347",
+                        "assembly_guid": "",
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1",
+                        "id": "Rhodobacter_sphaeroides_2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_0635",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "REF_jgi:RSP_0635",
+                            "YP_353710.1"
+                        ],
+                        "function": "IMG reference gene:2512955654; PFAM: Tripartite ATP-independent periplasmic transporters, DctQ component",
+                        "id": "RSP_0635",
+                        "location": [
+                            [
+                                "NC_007493",
+                                2372968,
+                                "-",
+                                519
+                            ]
+                        ],
+                        "protein_translation": "MIERLLYRMSRLLMLVASVGLILMMVQTVVDVIADNFFGKPIAGNLEIISVYHMVLVVFLPIAMVEWKHENIQVDLFYLMMPPWAQRASLALGYLICAIFFAILARQTWIDAVASWRKNELMMAAVYVLVWPAKFILPVGFGAITLVCLRHFLRSFTAPLATFAPETTETHV",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "-",
+                        "aliases": "REF_jgi:RSP_0635, YP_353710.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "2372968",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512955654; PFAM: Tripartite ATP-independent periplasmic transporters, DctQ component",
+                        "start": "2372450",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007493",
+                        "id": "RSP_0635",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_3593",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "REF_jgi:RSP_3593",
+                            "YP_355097.1"
+                        ],
+                        "function": "IMG reference gene:2512957106; PFAM: Putative methyltransferase; TIGRFAM: tRNA (guanine-N(7)-)-methyltransferase",
+                        "id": "RSP_3593",
+                        "location": [
+                            [
+                                "NC_007494",
+                                686474,
+                                "-",
+                                726
+                            ]
+                        ],
+                        "protein_translation": "MSDDDAPESLRGAADGPAWRNFYGRRSGKTLRPSQKVYLSEDLGRLRPEGITREENPERRPLDLGALFGGRPVWLEIGFGGGEHMVHMAARNPGIGLIGCEPFVNGVAMLLGKIRAAGVENLLVHPGDVRDLFDVLPEASVSKAFLNYPDPWPKKRHHRRRFVTQGYLGPLARVLAPGATFRVATDIPDYVRQTLEEVPQAGFDLVSESGEAWEDWLSTRYEQKALREGRVPHYMTFRRQG",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "-",
+                        "aliases": "REF_jgi:RSP_3593, YP_355097.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "686474",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512957106; PFAM: Putative methyltransferase; TIGRFAM: tRNA (guanine-N(7)-)-methyltransferase",
+                        "start": "685749",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007494",
+                        "id": "RSP_3593",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_0888",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "amtB",
+                            "REF_jgi:RSP_0888",
+                            "YP_353970.1"
+                        ],
+                        "function": "IMG reference gene:2512955919; PFAM: Ammonium Transporter Family; TIGRFAM: ammonium transporter; TC 1.A.11",
+                        "id": "RSP_0888",
+                        "location": [
+                            [
+                                "NC_007493",
+                                2637763,
+                                "-",
+                                1353
+                            ]
+                        ],
+                        "protein_translation": "MKKISQLMGLTALAAAAALPAWAQEAAEVVTEAAEAVVTPVMDKGDVAWMLMSTVLVFFMILPGIALFYGGLVRAKNMLSVLMQTTLIGCTVMVIWVIYGYSFAFGGGTSPFWGGMGKLFLAGVTTDSMAATFSDGFVIPEYLFICFQMTFAALTPALIIGGFAERIKFSAVLIFTVIWVTFAYFPIAHMVWDASGLIFNWGAIDFAGGTVVHINAGVAALIGAVMVGKRIGLGKENMAPHSMVMTMIGASMLWFGWFGFNVGSNLEANGGATLAMINTFVATAAAVVAWSLIEGLARGKASMLGAASGMIAGLVAVTPACGTIGPMGAIVLGAIASAVCYFFVTTVKNAMGYDDSLDVFGIHGVGGIIGAIGTGIFSAASLGGVNGDDYSIVGQTIIQAQAVVVTLIWTAIVSVVAFKIADLVVGLRVDTESERIGLDQTAHGESAYHG",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "-",
+                        "aliases": "amtB, REF_jgi:RSP_0888, YP_353970.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "2637763",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512955919; PFAM: Ammonium Transporter Family; TIGRFAM: ammonium transporter; TC 1.A.11",
+                        "start": "2636411",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007493",
+                        "id": "RSP_0888",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_1183",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "REF_jgi:RSP_1183",
+                            "YP_354268.1"
+                        ],
+                        "function": "IMG reference gene:2512956228; PFAM: Family of unknown function (DUF490)",
+                        "id": "RSP_1183",
+                        "location": [
+                            [
+                                "NC_007493",
+                                2953010,
+                                "+",
+                                3831
+                            ]
+                        ],
+                        "protein_translation": "MRIILFLLWLLLPVAAFAQSAEEDRGFLQGLIEDNLSSAGREVRIEGFRGALSSRATVERLTIADDQGIWLTLNKVVLDWSRSALLSGRLSVSELSADEILLERLPVADESVDVPSPEARDFALPELPVAVEIGRIAADRLVLGETVLGTPVEATLEASGSLAGGSGQAQLLARRTDGPQGELRLTTSFSNADRQLALDLALIEADDGIAATLMDLPGRPPLELTVQGQGPLSNYAADIRLVTDGEERLAGRVTLQGDAAQGRQFAAELGGNVVPLFLPQYAYFFGPDVQLDVAGTRATDGRLDLSRLNLSTRALQLQGALVVAADGLPERIALTGRIASADGQPVLLPLSGPETRVGRVDLDVAYDAAQGETWTARLLVAGLDRPDFAAERFSLDGSGRIARTDGGTSTVSGRLAYAAEGLAPADPDLATALGPRIAGAADFSWTEGVDGLRLPTLTLDGSDYGLAADLTLEGLTSGLAVSGEADLRFEDLARFSGLAGRPLSGQGEGTVSGTYAALTGAIDAEASITGTDLALGQAELDNLLKGTSTIEASLIRDTTGTRLRTLRIAAQSLTATASGTLASAGSDIAAQLAFADLSVLGPAYDGRLEADARFTGTPEAGQISIQANGRDLRVGQPQVDGLLAGTSTIDIAGRLDQGALVLERARVNARTLTLTAAGRLATEGSDLTADLNFSDLSPLGAGYGGALSAEATFKGTPENATITADARATNLRVGQSQADALLRGESTLSAQVRLENGAIRVDRAALRNPQLTVTADGSVAGADRNLTLDARLSNLALVVPQFPGPLTVQGTARSQGTSYRLDLRARGPGGIDLRAQGTAAGDFSTVDVGVTGSAQAALANPFIEPRNVEGPIRFDLRVNGQPALSSVSGTVSLAGGRFADQDLGLVIERLQADARLAGGRATLDVQGRPAAGGRLALTGNIGLESPFAADLALEIRRAVLRDPELYETTASGRITVQGPLTGGAQIAGRIDLEETELRIPSTGFGGANGLPDLQHRNEPAAVRTTRARAGLLDDGSGGSGGRDSRPFGLNLLISSPDRIFIRGRGLDAELGGQLLVSGTTANVVPSGAFNLIRGRLDILGKRLTLSEAQLLLEGDFVPYIRVVASTENDGITTSVVIQGRADEPDVSFTSTPELPEEEVISRLLFGRGLDTISPLQAAQLASAVATLAGRGGEGVIGRLRQGFGLDDLDVATDADGGTSVRAGKYISENVYTQVEVDQQGQSQINLNLDVTPSVKLRGSVGTEGDTSIGIFIERDY",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "+",
+                        "aliases": "REF_jgi:RSP_1183, YP_354268.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "2956840",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512956228; PFAM: Family of unknown function (DUF490)",
+                        "start": "2953010",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007493",
+                        "id": "RSP_1183",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_2586",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "REF_jgi:RSP_2586",
+                            "YP_352644.1"
+                        ],
+                        "function": "IMG reference gene:2512954529; PFAM: ABC transporter; TIGRFAM: ABC transporter, ATP-binding subunit, PQQ-dependent alcohol dehydrogenase system",
+                        "id": "RSP_2586",
+                        "location": [
+                            [
+                                "NC_007493",
+                                1228982,
+                                "+",
+                                729
+                            ]
+                        ],
+                        "protein_translation": "MTAAAPPALEIAGLSHSFGAVRALREVSFTVPRGAFVALLGVNGAGKTTLFSLVTRLYDSTSGTIRVAGFDARRQPGEALARLGVVFQSRALDGDLTLTQNLRYHAALHGIGRREAAPRIAEVLTLVSLSDKAHARVATLSGGQQRRAEIARALLHRPELLLLDEATAGLDLRARDEVRRVVRDLIATEGVSALWATHMMEEIAPEDRVVVLHRGEVRLAGRAAELGGSLAQGFLALTEETA",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "+",
+                        "aliases": "REF_jgi:RSP_2586, YP_352644.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "1229710",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512954529; PFAM: ABC transporter; TIGRFAM: ABC transporter, ATP-binding subunit, PQQ-dependent alcohol dehydrogenase system",
+                        "start": "1228982",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007493",
+                        "id": "RSP_2586",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                },
+                {
+                    "guid": "WS:28858/34/1:feature/RSP_2333",
+                    "parent_guid": "WS:28858/34/1",
+                    "object_name": "Rhodobacter_sphaeroides_2.4.1",
+                    "timestamp": 1517249790000,
+                    "parent_data": {
+                        "domain": "Bacteria",
+                        "scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "data": {
+                        "aliases": [
+                            "nadE",
+                            "REF_jgi:RSP_2333",
+                            "YP_352389.1"
+                        ],
+                        "function": "IMG reference gene:2512954268; PFAM: NAD synthase; Carbon-nitrogen hydrolase; TIGRFAM: NAD+ synthetase",
+                        "id": "RSP_2333",
+                        "location": [
+                            [
+                                "NC_007493",
+                                959885,
+                                "+",
+                                1665
+                            ]
+                        ],
+                        "protein_translation": "MTERFRLTLAQLNPTVGDLAGNAALARRAWDEARAAGSDMLALTEMFVTGYQTQDLVLRRAFVEEAMATIERLAADCAEGPAIGIGGPCLEDGRLMNAYWVLEGGRVSARVFKHHLPNAEVFDEKRVFSSGEVHGPCRVGPLRIGIPICEDSWHPDVCETLAETGAEILLVPNGSPYHREKLDVRVNLMVTRVVETGLPLVYLNMVGGQDDQVFDGASFVLNPHGRLMAQLPAFEEALVHVDFEAADEGWRALPAPIVAQPDLWEADYHAMVLSLRDYLGKSGFSRVLLGLSGGIDSALVAAIAADALGPEAVRCVMLPSRFTSQASLEDAAAVARALGCRLDEVGIGGPQEAVGAALGPLFEGTEPGITEENIQSRLRGLLLMALSNKFGEMLLTTGNKSEVAVGYCTIYGDMNGGYNPIKDLYKTRVFQMCRWRNGHHRPWMKGPEGEVIPPRVIDKPPSAELREDQKDEDSLPPYATLDAILEGLVDREEGVAELVARGFERETVARIERLILGSEWKRFQSAPGTRLTRRAFWLDRRYPMVNRWRDAGGA",
+                        "type": "CDS"
+                    },
+                    "key_props": {
+                        "feature_type": "CDS",
+                        "strand": "+",
+                        "aliases": "nadE, REF_jgi:RSP_2333, YP_352389.1",
+                        "genome_domain": "Bacteria",
+                        "stop": "961549",
+                        "ontology_terms": "",
+                        "function": "IMG reference gene:2512954268; PFAM: NAD synthase; Carbon-nitrogen hydrolase; TIGRFAM: NAD+ synthetase",
+                        "start": "959885",
+                        "genome_scientific_name": "Rhodobacter sphaeroides 2.4.1",
+                        "contig_id": "NC_007493",
+                        "id": "RSP_2333",
+                        "genome_taxonomy": "Bacteria; Proteobacteria; Alphaproteobacteria; Rhodobacterales; Rhodobacteraceae; Rhodobacter; Rhodobacter sphaeroides 2.4.1"
+                    },
+                    "object_props": {
+                        "creator": "kbasetest",
+                        "copied": "eapearson",
+                        "module": "Workspace",
+                        "module_ver": "0.3.3"
+                    }
+                }
+            ]
+        }
+    ]
+}

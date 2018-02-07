@@ -99,28 +99,28 @@ define([
                         checked: 'withPrivateData'
                     }
                 }),
-                ' Private'
+                ' My Data'
             ])),
-            // span({
-            //     dataBind: {
-            //         css: 'withSharedData() ? "' + styles.classes.activeFilterInput + '" : null'
-            //     },
-            //     class: ['form-control', styles.classes.checkboxControl]    
-            // }, label({
-            //     style: {
-            //         fontWeight: 'normal',
-            //         marginRight: '4px',
-            //         marginLeft: '6px'
-            //     }
-            // }, [
-            //     input({
-            //         type: 'checkbox',
-            //         dataBind: {
-            //             checked: 'withSharedData'
-            //         }
-            //     }),
-            //     ' Shared with Me'
-            // ])),
+            span({
+                dataBind: {
+                    css: 'withSharedData() ? "' + styles.classes.activeFilterInput + '" : null'
+                },
+                class: ['form-control', styles.classes.checkboxControl]    
+            }, label({
+                style: {
+                    fontWeight: 'normal',
+                    marginRight: '4px',
+                    marginLeft: '6px'
+                }
+            }, [
+                input({
+                    type: 'checkbox',
+                    dataBind: {
+                        checked: 'withSharedData'
+                    }
+                }),
+                ' Shared with Me'
+            ])),
             span({
                 dataBind: {
                     css: 'withPublicData() ? "' + styles.classes.activeFilterInput + '" : null'

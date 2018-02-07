@@ -44,47 +44,38 @@ define([
         return {};
     }
 
-    
-
     function buildHeader() {
         return div({
             class: styles.classes.header
         }, [
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }),
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '1'
-                }
-            }, 'Type'),
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '4'
-                }
-            }, [
-                'Name'
-            ]),
-           
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '1.5'
-                }
-            }, [
-                'Created / Modified'
-            ]),
-            div({
-                class: styles.classes.headerCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            }),
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '5'
+            //     }
+            // }, 'Narrative'),            
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1'
+            //     }
+            // }, [
+            //     'Owner'
+            // ]),
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1.5'
+            //     }
+            // }, [
+            //     'Last saved'
+            // ]),
+            // div({
+            //     class: styles.classes.headerCell,
+            //     style: {
+            //         flex: '1'
+            //     }
+            // }, '')
         ]);
     }
 
