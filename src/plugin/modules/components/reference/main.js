@@ -148,6 +148,21 @@ define([
                 terms: query.terms
             })
                 .then(function (result) {
+
+                    var selected = params.selectedObjects().reduce(function (set, ref) {
+                        set[ref] = true;
+                        return set;
+                    }, {});
+
+                    // TODO: we need an ES5 
+                    result.items.forEach(function (object) {
+                        if (selected[object.matchClass.ref.ref]) {
+                            object.selected(true);
+                        }
+                    });
+
+
+
                     searchState.buffer(result.items);
                     // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);

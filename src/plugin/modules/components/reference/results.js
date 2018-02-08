@@ -164,7 +164,6 @@ define([
         }
 
         function doToggleSelected(data) {
-            console.log(data);
             data.selected(data.selected() ? false : true);
             // var selectedObjects = params.selectedObjects
             if (params.selectedObjects().indexOf(data.matchClass.ref.ref) >= 0) {

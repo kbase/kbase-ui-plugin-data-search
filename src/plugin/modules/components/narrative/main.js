@@ -169,6 +169,20 @@ define([
             searchState.status('searching');
             return data.search(query)
                 .then(function (result) {
+
+                    var selected = params.selectedObjects().reduce(function (set, ref) {
+                        set[ref] = true;
+                        return set;
+                    }, {});
+
+                    result.items.forEach(function (item) {
+                        item.objects.forEach(function (object) {
+                            if (selected[object.matchClass.ref.ref]) {
+                                object.selected(true);
+                            }
+                        });
+                    });
+
                     searchState.buffer(result.items);
                     // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);
