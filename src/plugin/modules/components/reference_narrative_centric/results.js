@@ -194,7 +194,6 @@ define([
 
         return {
             searchState: searchState,
-            view: params.view,
 
             // scroller: scroller,
 
@@ -453,7 +452,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 2em'
+                    flex: '1'
                 }
             }),
             div({
@@ -465,19 +464,172 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '6'
+                    flex: '4.5'
                 }
             }, buildMatchHighlightsTable()),
-            // div({
-            //     class: styles.classes.rowCell,
-            //     style: {
-            //         flex: '1'
-            //     }
-            // }, ''),
             div({
                 class: styles.classes.rowCell,
                 style: {
+                    flex: '1'
+                }
+            }, ''),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
+                }
+            })
+        ]);
+    }
+
+    function buildViewToggles() {
+        return div({
+            // class: styles.classes.rowCell,
+            style: {
+                fontStyle: 'italic',
+                display: 'inline-block'
+            }
+        }, [            
+            button({
+                class: 'btn btn-default btn-kb-toggle-dropdown',
+                dataBind: {
+                    click: '$component.doToggleShowMatches',
+                    enable: 'active',
+                    class: 'showMatches() ? "active" : null'
+                }
+            }, [
+                'matches',
+                span({
+                    class: 'fa',
+                    style: {
+                        marginLeft: '3px',
+                        width: '1em'
+                    },
+                    dataBind: {
+                        class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
+                    }
+                })
+            ]),
+            button({
+                class: 'btn btn-default btn-kb-toggle-dropdown',
+                dataBind: {
+                    click: '$component.doToggleShowDetails',
+                    enable: 'active',
+                    class: 'showDetails() ? "active" : null'
+                }
+            }, [
+                'detail',
+                span({
+                    class: 'fa',
+                    style: {
+                        marginLeft: '3px',
+                        width: '1em'
+                    },
+                    dataBind: {
+                        class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
+                    }
+                })
+            ])          
+        ]);
+    }
+
+    function buildToolbarRow() {
+        return  div({
+            style: {
+                flex: '1 1 auto',
+                display: 'flex',
+                flexDirection: 'row'
+            }
+        }, [
+            div({
+                style: {
+                    flex: '0 0 2em',
+                }
+            }),
+            div({
+                style: {
+                    flex: '1 1 0px',
+                }
+            }),
+            div({
+                style: {
+                    flex: '6 1 0px'
+                }
+            }, buildViewToggles()),
+            div({
+                style: {
                     flex: '0 0 4em'
+                }
+            })
+        ]);
+    }
+
+    function buildSummaryView() {
+        return div({
+            class: styles.classes.row
+        }, [           
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '7.5'
+                }
+            }, div({
+                class: styles.classes.rowCell,
+                style: {
+                    fontStyle: 'italic',
+                    display: 'inline-block'
+                }
+            }, [
+                'Show ',               
+                button({
+                    class: 'btn btn-default',
+                    dataBind: {
+                        click: '$component.doToggleShowMatches',
+                        enable: 'active',
+                        class: 'showMatches() ? "active" : null'
+                    }
+                }, 'matches'),
+                button({
+                    class: 'btn btn-default',
+                    dataBind: {
+                        click: '$component.doToggleShowDetails',
+                        enable: 'active',
+                        class: 'showDetails() ? "active" : null'
+                    }
+                }, 'detail'),
+                // span({
+                //     style: {
+                //         marginLeft: '6px'
+                //     }
+                // }, 'Matched on '),
+                // '<!-- ko foreach: summary -->',
+                // span({
+                //     style: {
+                //         fontWeight: 'bold'
+                //     },
+                //     dataBind: {
+                //         text: 'count'
+                //     }
+                // }), 
+                // ' ',
+                // span({
+                //     dataBind: {
+                //         labelText: {
+                //             label: 'id',
+                //             quantity: 'count',
+                //             labels: '$root.labels'
+                //         }
+                //     }
+                // }),
+                // '<!-- ko if: $index() !== $parent.summary.length - 1 -->',
+                // ', ',
+                // '<!-- /ko -->',
+                // '<!-- /ko -->',
+            ])),
+            div({                
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
                 }
             })
         ]);
@@ -568,20 +720,19 @@ define([
                 style: {
                     flex: '0 0 2em'
                 }
-            }, ''),     
+            }, ''),            
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '5'
+                }
+            }, buildMatchViewDetailTable()),
             div({
                 class: styles.classes.rowCell,
                 style: {
                     flex: '1'
                 }
-            }),       
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '6'
-                }
-            }, buildMatchViewDetailTable()),
-           
+            }),
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -592,24 +743,6 @@ define([
     }
 
     function buildViewRow() {
-        return div({
-            class: styles.classes.body,
-            style: {
-                // margin: '6px'
-            },
-        }, [
-           
-            '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-            buildMatchViewMatches(),
-            '<!-- /ko -->',
-
-            '<!-- ko if: $component.view() === "detail" -->',
-            buildMatchViewDetail(),
-            '<!-- /ko -->',
-        ]);
-    }
-
-    function buildViewRowx() {
         return div({
             class: styles.classes.row
         }, [
@@ -628,23 +761,23 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '6'
+                    flex: '5'
                 }
             }, [
-                '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-                buildMatchViewMatches(),
+                '<!-- ko if: showMatches -->',
+                buildMatchHighlightsTable(),
                 '<!-- /ko -->',
-    
-                '<!-- ko if: $component.view() === "detail" -->',
-                buildMatchViewDetail(),
+
+                '<!-- ko if: showDetails -->',
+                buildMatchViewDetailTable(),
                 '<!-- /ko -->',
             ]),
-            // div({
-            //     class: styles.classes.rowCell,
-            //     style: {
-            //         flex: '1'
-            //     }
-            // }, ''),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '1'
+                }
+            }, ''),
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -682,7 +815,8 @@ define([
             }
         }, [
             buildObjectView(),
-            '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+            buildToolbarRow(),
+            '<!-- ko if: showMatches() || showDetails() -->',
             buildViewRow(),
             '<!-- /ko -->'
         ]);

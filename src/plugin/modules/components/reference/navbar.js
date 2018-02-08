@@ -144,7 +144,7 @@ define([
                         marginLeft: '6px'
                     }
                 }, [
-                    ' On page ',
+                    ' Page ',
                     span({
                         dataBind: {
                             text: 'page'

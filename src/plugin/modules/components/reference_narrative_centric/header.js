@@ -44,8 +44,6 @@ define([
         return {};
     }
 
-    
-
     function buildHeader() {
         return div({
             class: styles.classes.header
@@ -65,26 +63,33 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '4'
+                    flex: '2'
                 }
             }, [
                 'Name'
             ]),
-           
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1.5'
+                    flex: '3'
                 }
             }, [
-                'Modified'
+                'Scientific name'
+            ]),
+            div({
+                class: styles.classes.headerCell,
+                style: {
+                    flex: '1'
+                }
+            }, [
+                'Date'
             ]),
             div({
                 class: styles.classes.headerCell,
                 style: {
                     flex: '0 0 4em'
                 }
-            }),
+            })
         ]);
     }
 

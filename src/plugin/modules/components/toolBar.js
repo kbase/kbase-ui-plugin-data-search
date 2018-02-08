@@ -42,34 +42,26 @@ define([
             display: 'flex',
             flexDirection: 'row'
         },
-        // component: {
-        //     flex: '1 1 0px',
-        //     display: 'flex',
-        //     flexDirection: 'column'
-        // },
         searchArea: {
             flex: '0 0 50px',
         },
         activeFilterInput: {
-            // fontFamily: 'monospace',
             backgroundColor: 'rgba(209, 226, 255, 1)',
             color: '#000'
         },
         modifiedFilterInput: {
-            // fontFamily: 'monospace',
             backgroundColor: 'rgba(255, 245, 158, 1)',
             color: '#000'
         },
         radioControl: {
             borderColor: 'transparent',
             boxShadow: 'none',
-            margin: '0',
-            padding: '3px 6px'
+            margin: '0'
         },
         radioLabel: {
             fontWeight: 'normal',
-            marginRight: '3px',
-            marginLeft: '3px'
+            marginRight: '4px',
+            marginLeft: '6px'
         }
     });
 
@@ -85,15 +77,10 @@ define([
 
     function buildViewSelector() {
         return div({
-            style: {
-                display: 'inline-block',
-                textAlign: 'center',
-                // margin: '6px auto'
-            },
             class: 'form-inline'
         }, [
             // 'Search in ',
-            label('View '),
+            'View ',
             span({
                 dataBind: {
                     css: 'resultsView() === "list" ? "' + styles.classes.activeFilterInput + '" : null'
@@ -153,18 +140,27 @@ define([
 
     function buildToolbar() {
         return div({
-            class: styles.classes.component
+            // class: styles.classes.component
+            style: {
+                flex: '1 1 0px',
+                display: 'flex',
+                flexDirection: 'row'
+            }
         }, [
             styles.sheet,
             div({
                 style: {
-                    flex: '1 1 0px'
+                    flex: '1',
+                    display: 'flex',
+                    alignItems: 'center'
                 }
             }, buildCopyButton()),
             div({
                 style: {
-                    flex: '1 1 0px',
-                    textAlign: 'right'
+                    flex: '1',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
                 }
             }, buildViewSelector())
         ]);

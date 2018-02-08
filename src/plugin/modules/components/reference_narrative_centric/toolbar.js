@@ -77,16 +77,18 @@ define([
                 }
             }, [
                 // TODO: better way to switch on having results...
-                '<!-- ko ifnot: typeCounts() -->',
+                '<!-- ko ifnot: typeCounts -->',
                 'No active search',
                 '<!-- /ko -->',
 
-                '<!-- ko if: typeCounts() && typeCounts().length === 0 -->',
-                'Nothing found',
-                '<!-- /ko -->',
-
-                '<!-- ko if: typeCounts() && typeCounts().length > 0 -->',
-
+                '<!-- ko if: typeCounts -->',
+                // 'In ',
+                // span({
+                //     dataBind: {
+                //         text: 'resultCount'
+                //     }
+                // }),
+                // ' Objects, ',
                 'Found ',
 
                 '<!-- ko foreach: typeCounts -->',
@@ -110,7 +112,9 @@ define([
                 '<!-- /ko -->',
                 '<!-- /ko -->',
 
-                '<!-- /ko -->'
+                '<!-- /ko -->',
+                
+                
             ]))
         ]);
     }

@@ -48,6 +48,11 @@ define([
             borderColor: 'transparent',
             boxShadow: 'none',
             margin: '0 2px'
+        },
+        checkboxLabel: {
+            fontWeight: 'normal',
+            marginRight: '4px',
+            marginLeft: '6px'
         }
     });
 
@@ -78,20 +83,15 @@ define([
                 // margin: '6px auto'
             }
         }, [
-            // 'Search in ',
+            'Access ',
             // label('Ownership '),
             span({
                 dataBind: {
                     css: 'withPrivateData() ? "' + styles.classes.activeFilterInput + '" : null'
                 },
                 class: ['form-control', styles.classes.checkboxControl]               
-            }, label({
-                
-                style: {
-                    fontWeight: 'normal',
-                    marginRight: '4px',
-                    marginLeft: '6px'
-                }
+            }, label({                
+                class: styles.classes.checkboxLabel
             }, [
                 input({
                     type: 'checkbox',
@@ -101,37 +101,13 @@ define([
                 }),
                 ' Private'
             ])),
-            // span({
-            //     dataBind: {
-            //         css: 'withSharedData() ? "' + styles.classes.activeFilterInput + '" : null'
-            //     },
-            //     class: ['form-control', styles.classes.checkboxControl]    
-            // }, label({
-            //     style: {
-            //         fontWeight: 'normal',
-            //         marginRight: '4px',
-            //         marginLeft: '6px'
-            //     }
-            // }, [
-            //     input({
-            //         type: 'checkbox',
-            //         dataBind: {
-            //             checked: 'withSharedData'
-            //         }
-            //     }),
-            //     ' Shared with Me'
-            // ])),
             span({
                 dataBind: {
                     css: 'withPublicData() ? "' + styles.classes.activeFilterInput + '" : null'
                 },
                 class: ['form-control', styles.classes.checkboxControl]    
             }, label({
-                style: {
-                    fontWeight: 'normal',
-                    marginRight: '4px',
-                    marginLeft: '6px'
-                }
+                class: styles.classes.checkboxLabel
             }, [
                 input({
                     type: 'checkbox',
@@ -141,6 +117,52 @@ define([
                 }),
                 ' Public'
             ]))
+        ]);
+    }
+
+    function buildSearchSummary() {
+        return div({
+            style: {
+                display: 'inline-block'
+            }
+        }, [
+            // TODO: better way to switch on having results...
+            '<!-- ko ifnot: typeCounts -->',
+            'No active search',
+            '<!-- /ko -->',
+
+            '<!-- ko if: typeCounts -->',
+            'In ',
+            span({
+                dataBind: {
+                    text: 'resultCount'
+                }
+            }),
+            ' Narratives, ',
+            'found ',
+
+            '<!-- ko foreach: typeCounts -->',
+            span({
+                dataBind: {
+                    text: 'count'
+                }
+            }), ' ', 
+            span({
+                dataBind: {
+                    labelText: {
+                        label: 'id',
+                        quantity: 'count',
+                        labels: '$root.labels'
+                    }
+                }
+            }), 
+
+            '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
+            ', ',
+            '<!-- /ko -->',
+            '<!-- /ko -->',
+
+            '<!-- /ko -->',
         ]);
     }
 
@@ -159,51 +181,7 @@ define([
                     display: 'flex',
                     alignItems: 'center'
                 }
-            }, div({
-                style: {
-                    display: 'inline-block'
-                }
-            }, [
-                // TODO: better way to switch on having results...
-                '<!-- ko ifnot: typeCounts -->',
-                'No active search',
-                '<!-- /ko -->',
-
-                '<!-- ko if: typeCounts -->',
-                'In ',
-                span({
-                    dataBind: {
-                        text: 'resultCount'
-                    }
-                }),
-                ' Narratives, ',
-                'found ',
-
-                '<!-- ko foreach: typeCounts -->',
-                span({
-                    dataBind: {
-                        text: 'count'
-                    }
-                }), ' ', 
-                span({
-                    dataBind: {
-                        labelText: {
-                            label: 'id',
-                            quantity: 'count',
-                            labels: '$root.labels'
-                        }
-                    }
-                }), 
-
-                '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
-                ', ',
-                '<!-- /ko -->',
-                '<!-- /ko -->',
-
-                '<!-- /ko -->',
-                
-                
-            ])),
+            }, buildSearchSummary()),
             div({
                 style: {
                     flex: '1',
@@ -211,9 +189,7 @@ define([
                     justifyContent: 'flex-end',
                     alignItems: 'center'
                 }
-            }, [
-                buildOwnershipFilter()
-            ])
+            }, buildOwnershipFilter())
         ]);
     }
 

@@ -23,7 +23,7 @@ define([
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
                 tab: {
-                    label: 'Narratives',
+                    label: 'User Data',
                     component: {
                         name: NarrativeResultsComponent.name(),
                         // NB these params are bound here, not in the tabset.
