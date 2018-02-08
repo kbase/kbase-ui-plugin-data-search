@@ -2,8 +2,7 @@ define([
     'knockout-plus',
     'kb_common/html',
     '../dialogs/duplicateNarrative',
-    '../dialogs/copyObject',
-    'css!./results.css'
+    '../dialogs/copyObject'
 ], function (
     ko,
     html,
@@ -19,12 +18,15 @@ define([
         a = t('a'),
         ul = t('ul'),
         li = t('li'),
-        table = t('table'),        
-        thead = t('thead'),
+        table = t('table'),   
+        caption = t('caption'),     
         tbody = t('tbody'),
         tr = t('tr'),
-        th = t('th'),
         td = t('td');
+
+    function rowBackgroundColor(opacity) {
+        return 'rgba(220,220,220,' + opacity + ')';
+    }
 
     var styles = html.makeStyles({
         component: {
@@ -55,15 +57,40 @@ define([
                 flex: '1 1 0px',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: 'rgba(200,200,200,0.5)',
+                backgroundColor: rowBackgroundColor(0.4),
                 marginBottom: '15px'
             },
             modifiers: {
                 active: {
-                    backgroundColor: 'rgba(200,200,200,0.8)'
+                    backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        },        
+        }, 
+        narrativeRow: {
+            css: {
+                backgroundColor: rowBackgroundColor(0.8),
+            },
+            modifiers: {
+                active: {
+                    backgroundColor: rowBackgroundColor(1)
+                }
+            }
+        }, 
+        objectRow: {
+            css: {
+                backgroundColor: rowBackgroundColor(0.6),
+            },
+            modifiers: {
+                active: {
+                    backgroundColor: rowBackgroundColor(0.8)
+                }
+            }
+        }, 
+        objectItemRow: {
+            css: {
+                marginBottom: '10px'
+            }
+        },
         rowCell: {
             css: {
                 padding: '4px'
@@ -87,7 +114,7 @@ define([
             css: {
                 border: '1px silver solid',
                 width: '100%',
-                maxWidth: '100%'
+                maxWidth: '60em'
             },
             scopes: {
                 active: {
@@ -95,82 +122,23 @@ define([
                 }
             },
             inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
                 td: {
                     padding: '4px'
                 },
                 'td:nth-child(1)': {
-                    width: '30%'
+                    width: '10em'
                 },
                 'td:nth-child(2)': {
-                    width: '70%',
                     wordBreak: 'break-word'
-                }
-            }
-        },
-        summaryTable: {
-            css: {
-                width: '100%',
-                maxWidth: '20em'
-            },
-            // scopes: {
-            //     active: {
-            //         border: '1px gray solid'
-            //     }
-            // },
-            inner: {
-                'thead tr': {
-                    css: {
-                        borderBottom: '1px silver solid'
-                    },
-                    scopes: {
-                        active: {
-                            borderBottom: '1px gray solid'
-                        }
-                    }
-                },
-                td: {
-                    padding: '2px'
-                },
-                th: {
-                    fontWeight: 'normal',
-                    fontStyle: 'italic',
-                    textAlign: 'center'
-                },
-                'tbody td:nth-child(1)': {
-                    width: '70%'
-                },
-                'tbody td:nth-child(2)': {
-                    width: '30%'
                 }
             }
         }
     });
 
     function viewModel(params) {
-        // var view = ko.pureComputed(function () {
-        //     switch (params.view()) {
-        //     case 'list':
-        //         return {
-        //             summary: true,
-        //             matches: false,
-        //             detail: false
-        //         };
-        //     case 'matches': 
-        //         return {
-        //             summary: false,
-        //             matches: true,
-        //             detail: false
-        //         };
-        //     case 'detail':
-        //         return {
-        //             summary: false,
-        //             matches: false,
-        //             detail: true
-        //         };
-        //     }
-        // });
-
-
         // If this is not an Element, it was installed with a comment and 
         // the first node in the template can be found as the next sibling.
         
@@ -411,121 +379,6 @@ define([
         ]);
     }
 
-    // function buildSummaryRow() {
-    //     return div({
-    //         class: styles.classes.row
-    //     }, [           
-    //         div({
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 flex: '7.5'
-    //             }
-    //         }, div({
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 fontStyle: 'italic',
-    //                 display: 'inline-block'
-    //             }
-    //         }, [
-    //             // 'Show ',
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowObjects',
-    //                     enable: 'active',
-    //                     class: 'showObjects() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'objects',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showObjects() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowMatches',
-    //                     enable: 'active',
-    //                     class: 'showMatches() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'matches',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             button({
-    //                 class: 'btn btn-default btn-kb-toggle-dropdown',
-    //                 dataBind: {
-    //                     click: '$component.doToggleShowDetails',
-    //                     enable: 'active',
-    //                     class: 'showDetails() ? "active" : null'
-    //                 }
-    //             }, [
-    //                 'detail',
-    //                 span({
-    //                     class: 'fa',
-    //                     style: {
-    //                         marginLeft: '3px',
-    //                         width: '1em'
-    //                     },
-    //                     dataBind: {
-    //                         class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
-    //                     }
-    //                 })
-    //             ]),
-    //             // span({
-    //             //     style: {
-    //             //         marginLeft: '6px'
-    //             //     }
-    //             // }, 'Matched on '),
-    //             // '<!-- ko foreach: summary -->',
-    //             // span({
-    //             //     style: {
-    //             //         fontWeight: 'bold'
-    //             //     },
-    //             //     dataBind: {
-    //             //         text: 'count'
-    //             //     }
-    //             // }), 
-    //             // ' ',
-    //             // span({
-    //             //     dataBind: {
-    //             //         labelText: {
-    //             //             label: 'id',
-    //             //             quantity: 'count',
-    //             //             labels: '$root.labels'
-    //             //         }
-    //             //     }
-    //             // }),
-    //             // '<!-- ko if: $index() !== $parent.summary.length - 1 -->',
-    //             // ', ',
-    //             // '<!-- /ko -->',
-    //             // '<!-- /ko -->',
-    //         ])),
-    //         div({                
-    //             class: styles.classes.rowCell,
-    //             style: {
-    //                 flex: '1'
-    //             }
-    //         }, '')
-    //     ]);
-    // }
-
     function buildObjectOptionsColumn() {
         return div({
         }, [
@@ -686,7 +539,7 @@ define([
 
     function buildMatchViewObject() {
         return div({
-            class: styles.classes.row
+            class: [styles.classes.row, styles.classes.objectRow]
         }, [
             div({
                 class: styles.classes.rowCell,
@@ -736,38 +589,41 @@ define([
     function buildMatchHighlightsTable() {
         return table({
             class: styles.classes.resultsTable,
-        }, tbody({
-            dataBind: {
-                foreach: 'matches'
-            }
-        }, tr([
-            td({
+        }, [
+            caption('Matches'),
+            tbody({
                 dataBind: {
-                    text: 'label'
+                    foreach: 'matches'
                 }
-            }),
-            td({
-            },[
-                '<!-- ko foreach: $data.highlights -->',
-                span({
+            }, tr([
+                td({
                     dataBind: {
-                        text: 'before'
+                        text: 'label'
                     }
                 }),
-                span({
-                    dataBind: {
-                        text: 'match'
-                    },
-                    class: styles.classes.highlight
-                }),
-                span({
-                    dataBind: {
-                        text: 'after'
-                    }
-                }),
-                '<!-- /ko -->',
-            ])
-        ])));
+                td({
+                },[
+                    '<!-- ko foreach: $data.highlights -->',
+                    span({
+                        dataBind: {
+                            text: 'before'
+                        }
+                    }),
+                    span({
+                        dataBind: {
+                            text: 'match'
+                        },
+                        class: styles.classes.highlight
+                    }),
+                    span({
+                        dataBind: {
+                            text: 'after'
+                        }
+                    }),
+                    '<!-- /ko -->',
+                ])
+            ]))
+        ]);
     }
 
     function buildMatchViewMatches() {
@@ -805,77 +661,80 @@ define([
     function buildMatchViewDetailTable() {
         return table({
             class: styles.classes.resultsTable,
-        }, tbody({
-            dataBind: {
-                foreach: 'detail'
-            }
-        }, tr([
-            td({
+        }, [
+            caption('Detail'),
+            tbody({
                 dataBind: {
-                    text: 'label'
+                    foreach: 'detail'
                 }
-            }),
-            '<!-- ko if: $data.highlights -->',
-           
-            td([
-                '<!-- ko foreach: $data.highlights -->',
-                span({
+            }, tr([
+                td({
                     dataBind: {
-                        text: 'before'
+                        text: 'label'
                     }
-                }), ' ',
-                span({
+                }),
+                '<!-- ko if: $data.highlights -->',
+            
+                td([
+                    '<!-- ko foreach: $data.highlights -->',
+                    span({
+                        dataBind: {
+                            text: 'before'
+                        }
+                    }), ' ',
+                    span({
+                        dataBind: {
+                            text: 'match'
+                        },
+                        class: 'highlight'
+                    }), ' ', 
+                    span({
+                        dataBind: {
+                            text: 'after'
+                        }
+                    }),
+                    '<!-- /ko -->',
+                ]),
+                
+                '<!-- /ko -->',
+                '<!-- ko ifnot: $data.highlights -->',
+
+                '<!-- ko if: $data.type -->',
+                td({
                     dataBind: {
-                        text: 'match'
-                    },
-                    class: 'highlight'
-                }), ' ', 
-                span({
-                    dataBind: {
-                        text: 'after'
+                        typedText: {
+                            value: 'value',
+                            type: 'type',
+                            format: 'format'
+                        }
                     }
                 }),
                 '<!-- /ko -->',
-            ]),
-            
-            '<!-- /ko -->',
-            '<!-- ko ifnot: $data.highlights -->',
 
-            '<!-- ko if: $data.type -->',
-            td({
-                dataBind: {
-                    typedText: {
-                        value: 'value',
-                        type: 'type',
-                        format: 'format'
-                    }
-                }
-            }),
-            '<!-- /ko -->',
-
-            '<!-- ko if: $data.component -->',
-            td({
-                dataBind: {
-                    component: {
-                        name: '$data.component',
-                        params: {
-                            value: '$data.value'
+                '<!-- ko if: $data.component -->',
+                td({
+                    dataBind: {
+                        component: {
+                            name: '$data.component',
+                            params: {
+                                value: '$data.value'
+                            }
                         }
                     }
-                }
-            }),
-            '<!-- /ko -->',
+                }),
+                '<!-- /ko -->',
 
-            '<!-- ko ifnot: $data.type || $data.component -->',
-            td({
-                dataBind: {
-                    text: 'value'
-                }
-            }),
-            '<!-- /ko -->',
+                '<!-- ko ifnot: $data.type || $data.component -->',
+                td({
+                    dataBind: {
+                        text: 'value'
+                    }
+                }),
+                '<!-- /ko -->',
 
-            '<!-- /ko -->'
-        ])));
+                '<!-- /ko -->'
+            ]))
+        ]);
     }
 
     function buildMatchViewDetail() {
@@ -910,268 +769,39 @@ define([
         ]);
     }
 
-    function buildMatchDetailHeader() {
-        return div({
-            class: [styles.classes.row, styles.classes.detailHeader]
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }, 'Type'),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '4'
-                }
-            }, [
-                'Name'
-            ]),
-           
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1.5'
-                }
-            }, [
-                'Created / Modified'
-            ]),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            }),
-        ]);
-    }
-
     function buildViewRow() {
         return div({
-            class: styles.classes.body,
-            style: {
-                // margin: '6px'
-            },
-        }, [
-           
-
-            '<!-- ko foreach: objects -->',
-
-            buildMatchViewObject(),
-
-            '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-            buildMatchViewMatches(),
-            '<!-- /ko -->',
-
-            '<!-- ko if: $component.view() === "detail" -->',
-            buildMatchViewDetail(),
-            '<!-- /ko -->',
-
-            '<!-- /ko -->',
-        ]);
-    }
-
-    function buildSummaryColumn() {
-        return div({
-            style: {
-                // flex: '1 1 0px',
-                display: 'flex',
-                flexDirection: 'row',
-                paddingTop: '20px'
+            class: [styles.classes.body],
+            dataBind: {
+                foreach: 'objects'
             }
         }, [
             div({
-                style: {
-                    flex: '1 1 0px',
-                    margin: '0 4px'
-                }
-            },  table({
-                class: [styles.classes.summaryTable]                
-            } ,[               
-                thead([
-                    tr([
-                        th({
-                            colspan: '2'
-                        }, 'matching objects'),                        
-                    ])
-                ]),
-                tbody({
-                    dataBind: {
-                        foreach: 'summary'
-                    }
-                }, [
-                    tr([
-                        td({
-                            dataBind: {
-                                labelText: {
-                                    label: 'id',
-                                    quantity: 'count',
-                                    labels: '$root.labels'
-                                }
-                            }
-                        }),
-                        td({
-                            dataBind: {
-                                text: 'count'
-                            }
-                        })
-                    ])
-                ])
-            ])),
-            // div({
-            //     style: {
-            //         flex: '1 1 0px',
-            //         margin: '0 4px'
-            //     }
-            // },  table({
-            //     class: [styles.classes.summaryTable]
-            // } ,[                
-            //     thead([
-            //         tr([
-            //             th({
-            //                 colspan: '2'
-            //             }, 'matching cells')
-            //         ])
-            //     ]),
-            //     tbody({
-            //         dataBind: {
-            //             foreach: 'summary'
-            //         }
-            //     }, [
-            //         tr([
-            //             td({
-            //                 dataBind: {
-            //                     labelText: {
-            //                         label: 'id',
-            //                         quantity: 'count',
-            //                         labels: '$root.labels'
-            //                     }
-            //                 }
-            //             }),
-            //             td({
-            //                 dataBind: {
-            //                     text: 'count'
-            //                 }
-            //             })
-            //         ])
-            //     ])
-            // ]))
-        ]);
-    }
+                class: styles.classes.objectItemRow
+            }, [
+                buildMatchViewObject(),
 
-    function buildViewToggles() {
-        return div({
-            // class: styles.classes.rowCell,
-            style: {
-                fontStyle: 'italic',
-                display: 'inline-block'
-            }
-        }, [
-            button({
-                class: 'btn btn-default btn-kb-toggle-dropdown',
-                dataBind: {
-                    click: '$component.doToggleShowObjects',
-                    enable: 'active',
-                    class: 'showObjects() ? "active" : null'
-                }
-            }, [
-                'objects',
-                span({
-                    class: 'fa',
-                    style: {
-                        marginLeft: '3px',
-                        width: '1em'
-                    },
-                    dataBind: {
-                        class: 'showObjects() ? "fa-caret-down" : "fa-caret-right"'
-                    }
-                })
-            ]),
-            button({
-                class: 'btn btn-default btn-kb-toggle-dropdown',
-                dataBind: {
-                    click: '$component.doToggleShowMatches',
-                    enable: 'active',
-                    class: 'showMatches() ? "active" : null'
-                }
-            }, [
-                'matches',
-                span({
-                    class: 'fa',
-                    style: {
-                        marginLeft: '3px',
-                        width: '1em'
-                    },
-                    dataBind: {
-                        class: 'showMatches() ? "fa-caret-down" : "fa-caret-right"'
-                    }
-                })
-            ]),
-            button({
-                class: 'btn btn-default btn-kb-toggle-dropdown',
-                dataBind: {
-                    click: '$component.doToggleShowDetails',
-                    enable: 'active',
-                    class: 'showDetails() ? "active" : null'
-                }
-            }, [
-                'detail',
-                span({
-                    class: 'fa',
-                    style: {
-                        marginLeft: '3px',
-                        width: '1em'
-                    },
-                    dataBind: {
-                        class: 'showDetails() ? "fa-caret-down" : "fa-caret-right"'
-                    }
-                })
-            ])          
-        ]);
-    }
+                '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+                buildMatchViewMatches(),
+                '<!-- /ko -->',
 
-    function buildToolbarRow() {
-        return  div({
-            style: {
-                flex: '1 1 auto',
-                display: 'flex',
-                flexDirection: 'row'
-            }
-        }, [
-            div({
-                style: {
-                    flex: '2 1 0px',
-                    display: 'flex',
-                    flexDirection: 'column'
-                }
-            }),
-            div({
-                style: {
-                    flex: '1 1 0px',
-                    display: 'flex',
-                    flexDirection: 'column'
-                }
-            }, buildViewToggles()),
-            div({
-                style: {
-                    flex: '0 0 100px',
-                    display: 'flex',
-                    flexDirection: 'column'
-                }
-            })
+                '<!-- ko if: $component.view() === "detail" -->',
+                buildMatchViewDetail(),
+                '<!-- /ko -->'
+            ])
         ]);
     }
 
     function buildRow() {
         return div({
             class: styles.classes.resultsRow,
-            
+            dataBind: {
+                event: {
+                    mouseenter: '$component.doMouseOverRow',
+                    mouseleave: '$component.doMouseOutRow'
+                },
+                class: 'active() ? "' + styles.scopes.active + '" : null',
+            }
         }, [
             buildNarrativeRow(),
             buildViewRow()
@@ -1180,7 +810,7 @@ define([
 
     function buildNarrativeRow() {
         return  div({
-            class: styles.classes.row
+            class: [styles.classes.row, styles.classes.narrativeRow],
         }, [
             // columns
             div({
@@ -1241,56 +871,6 @@ define([
         ]);
     }
 
-    // function buildMainRow() {
-    //     return div({
-    //         style: {
-    //             flex: '1 1 auto',
-    //             display: 'flex',
-    //             flexDirection: 'row'
-    //         }
-    //     }, [
-    //         div({
-    //             style: {
-    //                 flex: '2 1 0px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column'
-    //             }
-    //         }, buildNarrativeColumn()),
-    //         div({
-    //             style: {
-    //                 flex: '1 1 0px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column'
-    //             }
-    //         }, buildSummaryColumn()),
-    //         div({
-    //             style: {
-    //                 flex: '0 0 100px',
-    //                 display: 'flex',
-    //                 flexDirection: 'column',
-    //                 textAlign: 'right'
-    //             }
-    //         }, buildNarrativeOptionsColumn())
-    //     ]);   
-    // }
-
-    // function buildRow() {
-    //     return div({
-    //         class: styles.classes.resultsRow,
-    //         dataBind: {
-    //             event: {
-    //                 mouseenter: '$component.doMouseOverRow',
-    //                 mouseleave: '$component.doMouseOutRow'
-    //             },
-    //             class: 'active() ? "' + styles.scopes.active + '" : null',
-    //         }
-    //     }, [
-    //         buildMainRow(),
-    //         buildToolbarRow(),  
-    //         buildViewRow()
-    //     ]);
-    // }
-
     function buildResults() {
         return div({
             dataBind: {
@@ -1299,6 +879,32 @@ define([
             name: 'result-rows'
         }, [
             buildRow()
+        ]);
+    }
+
+    function buildNoSearch() {
+        return div({
+            class: 'well',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center'
+            }
+        }, [
+            'No active search'
+        ]);
+    }
+
+    function buildSearching() {
+        return div({
+            class: 'well',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center'
+            }
+        }, [
+            html.loading()
         ]);
     }
 
@@ -1312,7 +918,23 @@ define([
                     flex: '1 1 0px'
                 },
                 name: 'result-rows-container'
-            }, buildResults())
+            }, [
+                '<!-- ko switch: searchState.status -->',
+
+                '<!-- ko case: "none" -->',
+                buildNoSearch(),
+                '<!-- /ko -->',
+
+                '<!-- ko case: "searching" -->',
+                buildSearching(),
+                '<!-- /ko -->',
+
+                '<!-- ko case: "success" -->',
+                buildResults(),
+                '<!-- /ko -->',
+
+                '<!-- /ko -->'
+            ])
         ]);
     }
 

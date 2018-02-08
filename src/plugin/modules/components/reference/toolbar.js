@@ -76,10 +76,7 @@ define([
                     display: 'inline-block'
                 }
             }, [
-                // TODO: better way to switch on having results...
-                '<!-- ko ifnot: typeCounts() -->',
-                'No active search',
-                '<!-- /ko -->',
+                // Note: if no type counts summary, display nothing.
 
                 '<!-- ko if: typeCounts() && typeCounts().length === 0 -->',
                 'Nothing found',

@@ -175,6 +175,7 @@ define([
                         return set;
                     }, {});
 
+                    // TODO: use the es5-collections map for the selected objects.
                     result.items.forEach(function (item) {
                         item.objects.forEach(function (object) {
                             if (selected[object.matchClass.ref.ref]) {

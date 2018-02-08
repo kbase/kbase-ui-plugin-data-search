@@ -129,9 +129,7 @@ define([
                     flex: '0 0 auto'
                 }
             }, [
-                '<!-- ko if: totalPages() === null || totalPages() === undefined -->',
-                'no search',
-                '<!-- /ko -->',
+                // Note if no pages, display nothing
 
                 '<!-- ko if: totalPages() === 0 -->',
                 'no pages',

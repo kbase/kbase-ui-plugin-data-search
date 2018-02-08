@@ -18,9 +18,14 @@ define([
         ul = t('ul'),
         li = t('li'),
         table = t('table'),
+        caption = t('caption'),
         tbody = t('tbody'),
         tr = t('tr'),
         td = t('td');
+
+    function rowBackgroundColor(opacity) {
+        return 'rgba(220,220,220,' + opacity + ')';
+    }        
 
     var styles = html.makeStyles({
         component: {
@@ -51,15 +56,25 @@ define([
                 flex: '1 1 0px',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: 'rgba(200,200,200,0.5)',
+                backgroundColor: rowBackgroundColor(0.4),
                 marginBottom: '15px'
             },
             modifiers: {
                 active: {
-                    backgroundColor: 'rgba(200,200,200,1)'
+                    backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        },        
+        },      
+        objectRow: {
+            css: {
+                backgroundColor: rowBackgroundColor(0.6),
+            },
+            modifiers: {
+                active: {
+                    backgroundColor: rowBackgroundColor(0.8)
+                }
+            }
+        },   
         rowCell: {
             css: {
                 padding: '4px'
@@ -91,6 +106,9 @@ define([
                 }
             },
             inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
                 td: {
                     padding: '4px'
                 },
@@ -165,7 +183,6 @@ define([
 
         function doToggleSelected(data) {
             data.selected(data.selected() ? false : true);
-            // var selectedObjects = params.selectedObjects
             if (params.selectedObjects().indexOf(data.matchClass.ref.ref) >= 0) {
                 params.selectedObjects.remove(data.matchClass.ref.ref);
             } else {
@@ -352,7 +369,7 @@ define([
 
     function buildObjectView() {
         return div({
-            class: styles.classes.row
+            class: [styles.classes.row, styles.classes.objectRow]
         }, [
             div({
                 class: styles.classes.rowCell,
@@ -411,38 +428,41 @@ define([
     function buildMatchHighlightsTable() {
         return table({
             class: styles.classes.resultsTable,
-        }, tbody({
-            dataBind: {
-                foreach: 'matches'
-            }
-        }, tr([
-            td({
+        }, [
+            caption('Matches'),
+            tbody({
                 dataBind: {
-                    text: 'label'
+                    foreach: 'matches'
                 }
-            }),
-            td({
-            },[
-                '<!-- ko foreach: $data.highlights -->',
-                span({
+            }, tr([
+                td({
                     dataBind: {
-                        text: 'before'
+                        text: 'label'
                     }
                 }),
-                span({
-                    dataBind: {
-                        text: 'match'
-                    },
-                    class: styles.classes.highlight
-                }),
-                span({
-                    dataBind: {
-                        text: 'after'
-                    }
-                }),
-                '<!-- /ko -->',
-            ])
-        ])));
+                td({
+                },[
+                    '<!-- ko foreach: $data.highlights -->',
+                    span({
+                        dataBind: {
+                            text: 'before'
+                        }
+                    }),
+                    span({
+                        dataBind: {
+                            text: 'match'
+                        },
+                        class: styles.classes.highlight
+                    }),
+                    span({
+                        dataBind: {
+                            text: 'after'
+                        }
+                    }),
+                    '<!-- /ko -->',
+                ])
+            ]))
+        ]);
     }
 
     function buildMatchViewMatches() {
@@ -485,77 +505,80 @@ define([
     function buildMatchViewDetailTable() {
         return table({
             class: styles.classes.resultsTable,
-        }, tbody({
-            dataBind: {
-                foreach: 'detail'
-            }
-        }, tr([
-            td({
+        }, [
+            caption('Detail'),
+            tbody({
                 dataBind: {
-                    text: 'label'
+                    foreach: 'detail'
                 }
-            }),
-            '<!-- ko if: $data.highlights -->',
-           
-            td([
-                '<!-- ko foreach: $data.highlights -->',
-                span({
+            }, tr([
+                td({
                     dataBind: {
-                        text: 'before'
+                        text: 'label'
                     }
-                }), ' ',
-                span({
+                }),
+                '<!-- ko if: $data.highlights -->',
+            
+                td([
+                    '<!-- ko foreach: $data.highlights -->',
+                    span({
+                        dataBind: {
+                            text: 'before'
+                        }
+                    }), ' ',
+                    span({
+                        dataBind: {
+                            text: 'match'
+                        },
+                        class: 'highlight'
+                    }), ' ', 
+                    span({
+                        dataBind: {
+                            text: 'after'
+                        }
+                    }),
+                    '<!-- /ko -->',
+                ]),
+                
+                '<!-- /ko -->',
+                '<!-- ko ifnot: $data.highlights -->',
+
+                '<!-- ko if: $data.type -->',
+                td({
                     dataBind: {
-                        text: 'match'
-                    },
-                    class: 'highlight'
-                }), ' ', 
-                span({
-                    dataBind: {
-                        text: 'after'
+                        typedText: {
+                            value: 'value',
+                            type: 'type',
+                            format: 'format'
+                        }
                     }
                 }),
                 '<!-- /ko -->',
-            ]),
-            
-            '<!-- /ko -->',
-            '<!-- ko ifnot: $data.highlights -->',
 
-            '<!-- ko if: $data.type -->',
-            td({
-                dataBind: {
-                    typedText: {
-                        value: 'value',
-                        type: 'type',
-                        format: 'format'
-                    }
-                }
-            }),
-            '<!-- /ko -->',
-
-            '<!-- ko if: $data.component -->',
-            td({
-                dataBind: {
-                    component: {
-                        name: '$data.component',
-                        params: {
-                            value: '$data.value'
+                '<!-- ko if: $data.component -->',
+                td({
+                    dataBind: {
+                        component: {
+                            name: '$data.component',
+                            params: {
+                                value: '$data.value'
+                            }
                         }
                     }
-                }
-            }),
-            '<!-- /ko -->',
+                }),
+                '<!-- /ko -->',
 
-            '<!-- ko ifnot: $data.type || $data.component -->',
-            td({
-                dataBind: {
-                    text: 'value'
-                }
-            }),
-            '<!-- /ko -->',
+                '<!-- ko ifnot: $data.type || $data.component -->',
+                td({
+                    dataBind: {
+                        text: 'value'
+                    }
+                }),
+                '<!-- /ko -->',
 
-            '<!-- /ko -->'
-        ])));
+                '<!-- /ko -->'
+            ]))
+        ]);
     }
 
     function buildMatchViewDetail() {
@@ -607,68 +630,7 @@ define([
             '<!-- /ko -->',
         ]);
     }
-
-    function buildViewRowx() {
-        return div({
-            class: styles.classes.row
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '6'
-                }
-            }, [
-                '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-                buildMatchViewMatches(),
-                '<!-- /ko -->',
-    
-                '<!-- ko if: $component.view() === "detail" -->',
-                buildMatchViewDetail(),
-                '<!-- /ko -->',
-            ]),
-            // div({
-            //     class: styles.classes.rowCell,
-            //     style: {
-            //         flex: '1'
-            //     }
-            // }, ''),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: ' 0 0 4em'
-                }
-            })
-        ]);
-        
-        // return div({
-        //     class: styles.classes.body,
-        //     style: {
-        //         // marginTop: '5px',
-        //         // marginBottom: '15px'
-        //     }
-        // }, [
-        //     '<!-- ko if: showMatches -->',
-        //     buildMatchViewMatches(),
-        //     '<!-- /ko -->',
-
-        //     '<!-- ko if: showDetails -->',
-        //     buildMatchViewDetail(),
-        //     '<!-- /ko -->',
-        // ]);
-    }
-
+   
     function buildRow() {
         return div({
             class: styles.classes.resultsRow,
@@ -698,6 +660,32 @@ define([
         ]);
     }
 
+    function buildNoSearch() {
+        return div({
+            class: 'well',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center'
+            }
+        }, [
+            'No active search'
+        ]);
+    }
+
+    function buildSearching() {
+        return div({
+            class: 'well',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center'
+            }
+        }, [
+            html.loading()
+        ]);
+    }
+
     function template() {
         return div({
             class: styles.classes.component
@@ -708,7 +696,23 @@ define([
                     flex: '1 1 0px'
                 },
                 name: 'result-rows-container'
-            }, buildResults())
+            }, [
+                '<!-- ko switch: searchState.status -->',
+
+                '<!-- ko case: "none" -->',
+                buildNoSearch(),
+                '<!-- /ko -->',
+
+                '<!-- ko case: "searching" -->',
+                buildSearching(),
+                '<!-- /ko -->',
+
+                '<!-- ko case: "success" -->',
+                buildResults(),
+                '<!-- /ko -->',
+
+                '<!-- /ko -->'
+            ])
         ]);
     }
 
