@@ -2,7 +2,7 @@ define([
     'knockout-plus',
     'kb_common/html',
     '../dialogs/duplicateNarrative',
-    '../dialogs/copyObject'
+    '../dialogs/copyObjects'
 ], function (
     ko,
     html,
@@ -146,11 +146,13 @@ define([
 
         // ACTIONS
 
-        function doDuplicateNarrative() {
+        function doDuplicateNarrative(data) {
+            // console.log('duplicate...', data);
             params.overlayComponent({
                 name: DuplicateNarrativeComponent.name(),
-                params: {},
-                viewModel: {}
+                viewModel: {
+                    narrative: data.ref
+                }
             });
         }
 
@@ -179,7 +181,7 @@ define([
             params.overlayComponent({
                 name: CopyObjectComponent.name(),
                 viewModel: {
-                    ref: data.matchClass.ref
+                    objectsToCopy: [data.matchClass.ref.ref]
                 }
             });
         }
@@ -190,15 +192,15 @@ define([
 
         var view = params.view;
 
-        function doShowObjects(data) {
+        function doShowObjects() {
             view('list');
         }
 
-        function doShowMatches(data) {
+        function doShowMatches() {
             view('matches');
         }
 
-        function doShowDetails(data) {
+        function doShowDetails() {
             view('detail');
         }
        
@@ -266,70 +268,7 @@ define([
             koDescendantsComplete: descendantsComplete
         };
     }
-
-    function buildNarrativeColumn() {
-        return  div({
-            style: {
-                flex: '1 1 0px',
-                // display: 'flex',
-                // flexDirection: 'column'
-            }
-        }, div({
-            style: {
-                margin: '4px',
-                padding: '4px'
-            }
-        }, [
-            // columns
-            div({
-                style: {
-                    fontWeight: 'bold',
-                    fontSize: '120%'
-                }
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
-                    },
-                    text: 'title'
-                },
-                target: '_blank'
-            })),
-            div({
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"#people/" + owner.username'
-                    },
-                    text: 'owner.realName'
-                },
-                target: '_blank'
-            })),
-            div({
-                style: {
-                    fontStyle: 'italic'
-                }
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"#people/" + owner.username'
-                    },
-                    text: 'owner.username'
-                },
-                target: '_blank'
-            })),
-            div({
-                dataBind: {
-                    typedText: {
-                        type: '"date"',
-                        format: '"MM/DD/YYYY"',
-                        value: 'modified'
-                    }
-                }
-            })
-        ]));
-    }
-
+ 
     function buildNarrativeOptionsColumn() {
         return div({
         }, [
@@ -425,32 +364,6 @@ define([
                 ])
             ])
         ]);
-    }
-
-    function buildObjectButton() {
-        return [
-            '<!-- ko switch: matchClass.id -->',
-
-            // '<!-- ko case: "narrative" -->',
-            // button({
-            //     class: 'btn btn-default'                
-            // }, 'Duplicate...'),
-            // '<!-- /ko -->',
-
-            '<!-- ko case: "dataObject" -->',
-            '<!-- ko if: matchClass.copyable -->',
-            button({
-                class: 'btn btn-default',
-                dataBind: {
-                    click: '$component.doCopyObject',
-                    enable: '$parent.active'
-                }                
-            }, 'Copy...'),
-            '<!-- /ko -->',
-            '<!-- /ko -->',
-
-            '<!-- /ko -->'
-        ];
     }
 
     function buildObjectCheckbox() {

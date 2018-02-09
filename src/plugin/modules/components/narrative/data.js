@@ -135,7 +135,7 @@ define([
                 // console.log('typed!', typeId, obj);
                 // x is the new black ... er it is the extensions added by the 
                 // data generation scripts (Racket).
-                var type = Types.getType(obj.x.type);
+                // var type = Types.getType(obj.x.type);
                 obj.type = obj.x.type;
 
                 // TODO: the proper way...

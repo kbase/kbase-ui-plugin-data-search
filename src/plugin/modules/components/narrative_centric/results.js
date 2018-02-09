@@ -2,7 +2,7 @@ define([
     'knockout-plus',
     'kb_common/html',
     '../dialogs/duplicateNarrative',
-    '../dialogs/copyObject',
+    '../dialogs/copyObjects',
     'css!./results.css'
 ], function (
     ko,

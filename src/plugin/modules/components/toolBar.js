@@ -5,7 +5,7 @@ define([
 ], function(
     ko,
     html,
-    CopyObjectsComponent
+    CopyObjectComponent
 ) {
     'use strict';
 
@@ -18,13 +18,12 @@ define([
 
     function viewModel(params) {
         var resultsView = params.resultsView;
-        console.log('results view', params);
 
-        function doCopyObjects(data) {
+        function doCopyObjects() {
             params.overlayComponent({
-                name: CopyObjectsComponent.name(),
+                name: CopyObjectComponent.name(),
                 viewModel: {
-                    selectedObjects: params.selectedObjects
+                    objectsToCopy: params.selectedObjects
                 }
             });
         }
@@ -165,38 +164,6 @@ define([
             }, buildViewSelector())
         ]);
     }
-
-    // function buildFilterArea() {
-    //     return div({
-    //         class: 'form-inline',
-    //         style: {
-    //             display: 'inline-block'
-    //         }
-    //     }, [
-    //         styles.sheet,
-    //         span({
-    //             class: [styles.classes.filterLabel]
-    //         }, 'Filters: '),
-            
-            
-    //         div({
-    //             style: {
-    //                 display: 'inline-block',
-    //                 marginLeft: '12px'
-    //             }
-    //         }, [
-    //             label('Job Status '),
-               
-    //             ko.kb.komponent({
-    //                 name: JobStatusFilterComponent.name(),
-    //                 params: {
-    //                     jobStatusFilter: 'jobStatusFilter'
-    //                 }
-    //             })
-    //         ]),
-           
-    //     ]);
-    // }
 
     function template() {
         return buildToolbar();

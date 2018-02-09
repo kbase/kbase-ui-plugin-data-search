@@ -13,3 +13,59 @@
     margin: 2px;
     background-color: transparent;
 }
+
+.btn.btn-kb-flat {
+    border-radius: 0;
+    border: 1px solid transparent;
+    margin: 2px;
+    background-color: transparent;
+}
+
+
+.btn.btn-kb-flat.btn-danger {
+    color: rgba(94, 36, 36, 1);
+    background-color: transparent;
+}
+
+.btn.btn-kb-flat.btn-danger:hover {
+    border: 1px solid rgba(94, 36, 36, 1);
+}
+
+.btn.btn-kb-flat.btn-default {
+    color: rgb(37, 37, 37);
+    background-color: transparent;
+}
+
+.btn.btn-kb-flat.btn-default:hover {
+    border: 1px solid rgb(37, 37, 37);;
+}
+
+.btn.btn-kb-flat.btn-warning {
+    color: orange;
+   
+    background-color: transparent;
+}
+
+.btn.btn-kb-flat.btn-warning:hover {
+    border: 1px solid orange;
+}
+
+.btn.btn-kb-flat.btn-info {
+    color: blue;
+    background-color: transparent;
+}
+
+.btn.btn-kb-flat.btn-info:hover {
+    border: 1px solid blue;
+}
+
+.btn.btn-kb-flat.btn-success {
+    color: green;
+    background-color: transparent;
+}
+
+.btn.btn-kb-flat.btn-success:hover {
+    border: 1px solid green;
+}
+
+

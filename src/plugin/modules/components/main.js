@@ -16,7 +16,7 @@ define([
     var t = html.tag,
         div = t('div');
 
-    function viewModel(params) {
+    function viewModel() {
         // console.log('main', params);
         // OVERLAY
         var overlayComponent = ko.observable();

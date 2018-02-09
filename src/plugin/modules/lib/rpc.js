@@ -37,16 +37,16 @@ define([
                 .catch(function (err) {
                     if (err instanceof exceptions.AjaxError) {
                         console.error('AJAX Error', err);
-                        throw new utils.JGISearchError('ajax', err.code, err.message, null, {
+                        throw new utils.DataSearchError('ajax', err.code, err.message, null, {
                             originalError: err
                         });
                     } else if (err instanceof exceptions.RpcError) {
                         console.error('RPC Error', err);
-                        throw new utils.JGISearchError('ajax', err.name, err.message, null , {
+                        throw new utils.DataSearchError('ajax', err.name, err.message, null , {
                             originalError: err
                         });
                     } else {
-                        throw new utils.JGISearchError('rpc-call', err.name, err.message, null, {
+                        throw new utils.DataSearchError('rpc-call', err.name, err.message, null, {
                             originalError: err
                         });
                     }

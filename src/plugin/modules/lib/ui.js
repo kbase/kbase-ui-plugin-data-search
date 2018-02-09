@@ -62,12 +62,19 @@ define([
         }];
 
         var buttonsContent = buttons.map(function (btn) {
+            var buttonBindings = {
+                click: btn.onClick
+            };
+            if (btn.enable) {
+                buttonBindings.enable = btn.enable;
+            }
+            if (btn.disable) {
+                buttonBindings.disable = btn.disable;
+            }
             return button({
                 type: 'button',
                 class: 'btn btn-' + (btn.type || 'default'),
-                dataBind: {
-                    click: btn.onClick
-                }
+                dataBind: buttonBindings
             }, btn.label);
         }).join(' ');
 

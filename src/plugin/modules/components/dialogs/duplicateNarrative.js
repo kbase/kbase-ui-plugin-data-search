@@ -2,59 +2,185 @@
 define([
     'knockout-plus',
     'kb_common/html',
-    '../../lib/ui'
+    'kb_common/bootstrapUtils',
+    '../../lib/ui',
+    '../../lib/data'
 ], function (
     ko,
     html,
-    ui
+    BS,
+    ui,
+    Data
 ) {
     'use strict';
 
     var t = html.tag,
         div = t('div'),
-        span = t('span');
+        p = t('p'),
+        span = t('span'),
+        button = t('button'),
+        label = t('label'),
+        input = t('input');
 
-    function viewModel(params) {
+    function viewModel(params, componentInfo) {
+        var context = ko.contextFor(componentInfo.element);
+        var runtime = context['$root'].runtime;
+
+        var narrativeToDuplicate = params.narrative;
+
+        var newNarrativeName = ko.observable();
+
+        var newNarrative = ko.observable();
+
+        var error = ko.observable();
+
+        var data = Data.make({
+            runtime: runtime
+        });
+
         function doClose() {
             params.onClose();
         }
 
         function doDuplicate() {
-            alert('duplicating now...');
+            data.copyNarrative({
+                workspaceId: narrativeToDuplicate.workspaceId,
+                objectId: narrativeToDuplicate.objectId,
+                name: newNarrativeName()
+            })
+                .then(function (newNarrativeInfo) {
+                    newNarrative(newNarrativeInfo);
+                })
+                .catch(function (err) {
+                    error(err.message);
+                });
         }
 
-        function doDuplicateAndOpen() {
-            alert('duplicate, then open the narrative.');
+        var canDuplicate = ko.pureComputed(function () {
+            if (newNarrativeName()) {
+                if (newNarrativeName().length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        function doOpenNarrative(data) {
+            var narrativeId = 'ws.' + data.workspaceInfo.id + '.obj.' + data.objectInfo.id;
+            window.open(window.location.origin + '/narrative/' + narrativeId);
         }
 
         return {
             title: 'Duplicate Narrative',
+            newNarrativeName: newNarrativeName,
+            canDuplicate: canDuplicate,
+            newNarrative: newNarrative,
+            error: error,
+
+            // Actions
             doClose: doClose,
             doDuplicate: doDuplicate,
-            doDuplicateAndOpen: doDuplicateAndOpen
-            // onClose: params.onClose
+            doOpenNarrative: doOpenNarrative
         };
     }
 
-    function buildHelpViewer() {
-        return div({
-        }, 'Duplicate this narrative ...');
+    function buildError() {
+        return [
+            '<!-- ko if: error -->',
+            BS.buildPanel({
+                type: 'danger',
+                title: 'Error',
+                body: div({
+                    dataBind: {
+                        text: 'error'
+                    }
+                })         
+            }),
+            '<!-- /ko -->'
+        ];
+    }
+
+    function buildBody() {
+        return div({}, [
+            div({
+                class: 'form-inline'
+            }, [
+                div({
+                    class: 'form-group'
+                }, [
+                    label('New Narrative Name'),
+                    input({
+                        dataBind: {
+                            textInput: 'newNarrativeName'
+                        }
+                    })
+                ]),
+                '<!-- ko if: newNarrativeName -->',
+                p([
+                    'You may now copy this narrative to a new narrative named ',
+                    span({
+                        style: {
+                            fontWeight: 'bold'
+                        },
+                        dataBind: {
+                            text: 'newNarrativeName'
+                        }
+                    })
+                ]),
+                '<!-- /ko -->',
+                div({}, [
+                    button({
+                        type: 'button',
+                        class: 'btn btn-primary',
+                        dataBind: {
+                            enable: 'canDuplicate() && !newNarrative()',
+                            click: 'doDuplicate'
+                        }
+                    }, 'Duplicate')
+                ]),
+                '<!-- ko if: newNarrative -->',
+                '<!-- ko with: newNarrative -->',
+                div({}, [
+                    p([
+                        'Your new Narrative ',
+                        span({
+                            style: {
+                                fontWeight: 'bold'
+                            },
+                            dataBind: {
+                                text: 'workspaceInfo.metadata.narrative_nice_name'
+                            }
+                        }),
+                        'has been successfully created.'
+                    ]),
+                    button({
+                        type: 'button',
+                        class: 'btn btn-default',
+                        dataBind: {
+                            click: '$component.doOpenNarrative'
+                        }
+                    }, 'Open It')
+                ]),
+                '<!-- /ko -->',
+                '<!-- /ko -->',
+
+                buildError()
+                
+            ])
+        ]);
     }
 
     function template() {
         return ui.buildDialog({
             title: span({dataBind: {text: 'title'}}), 
-            body: buildHelpViewer(),
+            body: buildBody(),
             buttons: [
+                // {
+                //     label: 'Duplicate',
+                //     onClick: 'doDuplicate'
+                // },
                 {
-                    label: 'Duplicate',
-                    onClick: 'doDuplicate'
-                },
-                {
-                    label: 'Duplicate and Open',
-                    onClick: 'doDuplicateAndOpen'
-                },
-                {
+                    type: 'danger',
                     label: 'Cancel',
                     onClick: 'doClose'
                 }
@@ -64,7 +190,9 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: {
+                createViewModel: viewModel
+            },
             template: template()
         };
     }

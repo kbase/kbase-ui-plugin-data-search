@@ -1,7 +1,7 @@
 define([
     'knockout-plus',
     'kb_common/html',
-    '../dialogs/copyObject',
+    '../dialogs/copyObjects',
     'css!./results.css'
 ], function (
     ko,
@@ -235,31 +235,6 @@ define([
         };
     }
 
-    function buildObjectButton() {
-        return [
-            '<!-- ko switch: matchClass.id -->',
-
-            // '<!-- ko case: "narrative" -->',
-            // button({
-            //     class: 'btn btn-default'                
-            // }, 'Duplicate...'),
-            // '<!-- /ko -->',
-
-            '<!-- ko case: "dataObject" -->',
-            '<!-- ko if: matchClass.copyable -->',
-            button({
-                class: 'btn btn-default',
-                dataBind: {
-                    click: '$component.doCopyObject'
-                }              
-            }, 'Copy...'),
-            '<!-- /ko -->',
-            '<!-- /ko -->',
-
-            '<!-- /ko -->'
-        ];
-    }
-
     function buildOptionsColumn() {
         return div({
         }, [
@@ -298,12 +273,6 @@ define([
     function buildObjectCheckbox() {
         return [
             '<!-- ko switch: matchClass.id -->',
-
-            // '<!-- ko case: "narrative" -->',
-            // button({
-            //     class: 'btn btn-default'                
-            // }, 'Duplicate...'),
-            // '<!-- /ko -->',
 
             '<!-- ko case: "dataObject" -->',
             '<!-- ko if: matchClass.copyable -->',
