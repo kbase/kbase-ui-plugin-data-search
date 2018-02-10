@@ -1,19 +1,18 @@
 define([
     'knockout-plus',
     'kb_common/html',
-    './dialogs/copyObjects'
+    './dialogs/copyObjects',
+    './viewSelector'
 ], function(
     ko,
     html,
-    CopyObjectComponent
+    CopyObjectComponent,
+    ViewSelectorComponent
 ) {
     'use strict';
 
     var t = html.tag,
-        span = t('span'),
-        label = t('label'),
         button = t('button'),
-        input = t('input'),
         div = t('div');
 
     function viewModel(params) {
@@ -74,68 +73,7 @@ define([
         }, 'Copy Selected...');
     }
 
-    function buildViewSelector() {
-        return div({
-            class: 'form-inline'
-        }, [
-            // 'Search in ',
-            'View ',
-            span({
-                dataBind: {
-                    css: 'resultsView() === "list" ? "' + styles.classes.activeFilterInput + '" : null'
-                },
-                class: ['form-control', styles.classes.radioControl]               
-            }, label({
-                class: styles.classes.radioLabel
-            }, [
-                input({
-                    type: 'radio',
-                    name: 'results-view',
-                    value: 'list',
-                    dataBind: {
-                        checked: 'resultsView'
-                    }
-                }),
-                ' List'
-            ])),
-            span({
-                dataBind: {
-                    css: 'resultsView() === "matches" ? "' + styles.classes.activeFilterInput + '" : null'
-                },
-                class: ['form-control', styles.classes.radioControl]    
-            }, label({
-                class: styles.classes.radioLabel
-            }, [
-                input({
-                    type: 'radio',
-                    name: 'results-view',
-                    value: 'matches',
-                    dataBind: {
-                        checked: 'resultsView'
-                    }
-                }),
-                ' Matches'
-            ])),
-            span({
-                dataBind: {
-                    css: 'resultsView() === "detail" ? "' + styles.classes.activeFilterInput + '" : null'
-                },
-                class: ['form-control', styles.classes.radioControl]    
-            }, label({
-                class: styles.classes.radioLabel
-            }, [
-                input({
-                    type: 'radio',
-                    name: 'results-view',
-                    value: 'detail',
-                    dataBind: {
-                        checked: 'resultsView'
-                    }
-                }),
-                ' Detail'
-            ]))
-        ]);
-    }
+   
 
     function buildToolbar() {
         return div({
@@ -161,7 +99,12 @@ define([
                     justifyContent: 'flex-end',
                     alignItems: 'center'
                 }
-            }, buildViewSelector())
+            }, ko.kb.komponent({
+                name: ViewSelectorComponent.name(),
+                params: {
+                    resultsView: 'resultsView'
+                }
+            }))
         ]);
     }
 

@@ -1,7 +1,7 @@
 define([
     'knockout-plus',
     'kb_common/html',
-    './searchHelp'
+    './searchHelp',
 ], function (
     ko,
     html,
@@ -359,9 +359,15 @@ define([
     }
 
     function template() {
-        return div({}, [
+        return div({
+            class: styles.sheet.component
+        }, [
             styles.sheet,
-            buildSearchBar()
+            div({
+                styles: {
+                    flex: '1 1 0px'
+                }
+            }, buildSearchBar())
         ]);
     }
 

@@ -3,13 +3,17 @@ define([
     'kb_common/html',
     './searchBar',
     './toolBar',
-    './results'
+    './results',
+    './viewSelector',
+    './copyObjectsControl'
 ], function (
     ko,
     html,
     SearchBarComponent,
     ToolBarComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    ViewSelectorComponent,
+    CopyObjectsControlComponent
 ) {
     'use strict';
 
@@ -84,37 +88,66 @@ define([
     });
 
     function buildInputArea() {
-        return ko.kb.komponent({
-            name: SearchBarComponent.name(),
-            params: {
-                // search: 'search'
-                searchInput: 'searchInput',
-                searchHistory: 'searchHistory',
-                overlayComponent: 'overlayComponent'
+        return div({
+            style: {
+                flex: '1 1 0px',
+                display: 'flex',
+                flexDirection: 'row'
             }
-        });
+        }, [
+            div({
+                style: {
+                    flex: '2'
+                }
+            },  ko.kb.komponent({
+                name: SearchBarComponent.name(),
+                params: {
+                    searchInput: 'searchInput',
+                    searchHistory: 'searchHistory',
+                    overlayComponent: 'overlayComponent',
+                    resultsView: 'resultsView'
+                }
+            })),
+            div({
+                style: {
+                    flex: '1'
+                }
+            }, ko.kb.komponent({
+                name: CopyObjectsControlComponent.name(),
+                params: {
+                    selectedObjects: 'selectedObjects',
+                    overlayComponent: 'overlayComponent'
+                }
+            })),
+            div({
+                style: {
+                    flex: '0 0 auto'
+                }
+            }, ko.kb.komponent({
+                name: ViewSelectorComponent.name(),
+                params: {
+                    resultsView: 'resultsView'
+                }
+            }))
+        ]);
     }
 
-    function buildToolbarArea() {
-        return ko.kb.komponent({
-            name: ToolBarComponent.name(),
-            params: {
-                // search: 'search'
-                resultsView: 'resultsView',
-                overlayComponent: 'overlayComponent',
-                selectedObjects: 'selectedObjects'
-            }
-        });
-    }
+    // function buildToolbarArea() {
+    //     return ko.kb.komponent({
+    //         name: ToolBarComponent.name(),
+    //         params: {
+    //             resultsView: 'resultsView',
+    //             overlayComponent: 'overlayComponent',
+    //             selectedObjects: 'selectedObjects'
+    //         }
+    //     });
+    // }
 
     function buildResultsArea() {
         return ko.kb.komponent({
             name: SearchResultsComponent.name(),
             params: {
-                // search: 'search'
-                // search inputs
                 searchInput: 'searchInput',
-
                 view: 'resultsView',
                 overlayComponent: 'overlayComponent',
                 selectedObjects: 'selectedObjects'
@@ -139,9 +172,9 @@ define([
                     class: styles.classes.searchArea
                 }, buildInputArea()),
                 // The search filter area
-                div({
-                    class: styles.classes.filterArea
-                }, buildToolbarArea()),
+                // div({
+                //     class: styles.classes.filterArea
+                // }, buildToolbarArea()),
                 // The search results / error / message area
                 div({
                     class: styles.classes.resultArea
