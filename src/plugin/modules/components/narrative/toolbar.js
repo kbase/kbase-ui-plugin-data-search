@@ -70,7 +70,8 @@ define([
             withSharedData: withSharedData,
             withPublicData: withPublicData,
             typeCounts: params.typeCounts,
-            resultCount: params.resultCount
+            resultCount: params.resultCount,
+            searchStatus: params.searchStatus
         };
     }
 
@@ -126,9 +127,17 @@ define([
                 display: 'inline-block'
             }
         }, [
-            // Note: if no type counts summary, display nothing.
+            '<!-- ko switch: searchStatus() -->',
 
-            '<!-- ko if: typeCounts -->',
+            '<!-- ko case: "none" -->',
+            '',
+            '<!-- /ko -->',
+
+            '<!-- ko case: "notfound" -->',
+            'Nothing found',
+            '<!-- /ko -->',
+
+            '<!-- ko case: "success" -->',
             'In ',
             span({
                 dataBind: {
@@ -160,6 +169,7 @@ define([
             '<!-- /ko -->',
 
             '<!-- /ko -->',
+            '<!-- /ko -->'
         ]);
     }
 

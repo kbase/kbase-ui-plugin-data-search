@@ -52,7 +52,8 @@ define([
     function viewModel(params) {
         return {
             typeCounts: params.typeCounts,
-            resultCount: params.resultCount
+            resultCount: params.resultCount,
+            searchStatus: params.searchStatus
         };
     }
 
@@ -76,13 +77,17 @@ define([
                     display: 'inline-block'
                 }
             }, [
-                // Note: if no type counts summary, display nothing.
+                '<!-- ko switch: searchStatus() -->',
 
-                '<!-- ko if: typeCounts() && typeCounts().length === 0 -->',
+                '<!-- ko case: "none" -->',
+                '',
+                '<!-- /ko -->',
+    
+                '<!-- ko case: "notfound" -->',
                 'Nothing found',
                 '<!-- /ko -->',
-
-                '<!-- ko if: typeCounts() && typeCounts().length > 0 -->',
+    
+                '<!-- ko case: "success" -->',
 
                 'Found ',
 
@@ -105,6 +110,8 @@ define([
                 '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
                 ', ',
                 '<!-- /ko -->',
+                '<!-- /ko -->',
+
                 '<!-- /ko -->',
 
                 '<!-- /ko -->'

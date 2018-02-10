@@ -92,10 +92,6 @@ define([
             return Math.ceil(totalItems / pageSize());
         });
 
-        // page.subscribe(function (newValue) {
-        //     searchState.start( (newValue - 1) * searchState.pageSize());
-        // });
-
         return {
             includePrivateData: includePrivateData,
             includePublicData: includePublicData,
@@ -105,12 +101,10 @@ define([
             status: status,
             searching: searching,
             buffer: buffer,
-            // firstItemPosition: firstItemPosition,
             isTruncated: isTruncated,
             totalSearchHits: totalSearchHits,
             totalSearchSpace: totalSearchSpace,
             summary: summary
-            // start: start
         };
     }
 
@@ -132,7 +126,6 @@ define([
             if (!query.input) {
                 searchState.status('none');
                 searchState.buffer(null);
-                // searchState.firstItemPosition(null);
                 searchState.isTruncated(null);
                 searchState.totalSearchHits(null);
                 searchState.summary(null);
@@ -148,6 +141,15 @@ define([
                 terms: query.terms
             })
                 .then(function (result) {
+                    if (result.items.length === 0) {
+                        searchState.status('notfound');
+                        searchState.isTruncated(false);
+                        searchState.totalSearchHits(null);
+                        searchState.summary(null);
+                        searchState.totalSearchSpace(null);
+                        searchState.page(null);
+                        return;
+                    }
 
                     var selected = params.selectedObjects().reduce(function (set, ref) {
                         set[ref] = true;
@@ -161,10 +163,7 @@ define([
                         }
                     });
 
-
-
                     searchState.buffer(result.items);
-                    // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);
                     searchState.totalSearchHits(result.summary.totalSearchHits);
                     searchState.summary(result.summary.totalByType);
@@ -182,7 +181,6 @@ define([
                     searchState.searching(false);
                 });
         }
-        
 
         var searchQuery = ko.pureComputed(function () {
             var page = searchState.page();
@@ -192,7 +190,6 @@ define([
             } else {
                 start = 0;
             }
-
 
             var input = params.searchInput();
             var terms;
@@ -263,96 +260,8 @@ define([
             selectedObjects: params.selectedObjects,
 
             // ACTIONS
-            // doNextPage: doNextPage,
-            // doPreviousPage: doPreviousPage
             doToggleShowMatches: doToggleShowMatches,
             doToggleShowDetails: doToggleShowDetails
-        };
-    }
-
-    function xviewModel(params) {
-        var context = ko.contextFor(componentInfo.element);
-        var runtime = context['$root'].runtime;
-
-        var searchState = SearchState();
-
-        var data = Data.make({
-            runtime: runtime,
-            pageSize: searchState.pageSize(),
-            maxBufferSize: 100
-        });
-
-        var items = [];
-        for (var i = 0; i < 100; i += 1) {
-            items.push({
-                rowNmber: i,
-                type: {
-                    id: 'genome',
-                    label: 'Genome'
-                },
-                name: 'GCF_000357445.2',
-                ref: {
-                    workspaceId: 1,
-                    objectId: 1,
-                    version: 1
-                },
-                scientificName: 'Escherichia coli',
-                date: new Date('1/1/1970'),
-               
-                matchClass: {
-                    id: 'object',
-                    viewable: true,
-                    copyable: true,
-                    ref: {
-                        workspaceId: 1,
-                        objectId: 1,
-                        version: 1
-                    }
-                },
-                matches: [
-                    {
-                        type: 'taxonomy',
-                        highlight: 'Escherichia <em>coli</em> KTE198'
-                    }
-                ],
-                detail: [
-                    {
-                        id: 'domain',
-                        label: 'Domain',
-                        value: 'Bacteria'
-                    },
-                    {
-                        id: 'taxonomy',
-                        label: 'Taxonomy',
-                        value: 'Escherichia coli KTE198'
-                    },
-                    {
-                        id: 'dna_length',
-                        label: 'DNA Length',
-                        value: '5,212,450'
-                    },
-                    {
-                        id: 'contig_count',
-                        label: '# Contigs',
-                        value: '108'
-                    },
-                    {
-                        id: 'name',
-                        label: 'Name',
-                        value: 'Escherichia coli KTE198'
-                    },
-                    {
-                        id: 'id',
-                        label: 'ID',
-                        value: 'KBase Central Store: 1181744.3'
-                    }
-                ]
-            });
-        }
-        return {
-            items: items,
-            view: params.view,
-            overlayComponent: params.overlayComponent
         };
     }
 
@@ -367,7 +276,8 @@ define([
                 name: ToolbarComponent.name(),
                 params: {
                     typeCounts: 'searchState.summary',
-                    resultCount: 'searchState.totalSearchHits'
+                    resultCount: 'searchState.totalSearchHits',
+                    searchStatus: 'searchState.status'
                 }
             })),
             div({
@@ -396,36 +306,6 @@ define([
                     selectedObjects: 'selectedObjects',
                     doToggleShowMatches: 'doToggleShowMatches',
                     doToggleShowDetails: 'doToggleShowDetails'
-                }
-            }))
-        ]);
-    }
-
-    function xtemplate() {
-        return div({
-            class: styles.classes.main
-        }, [
-            styles.sheet,
-            div({
-                class: styles.classes.toolbar
-            }, ko.kb.komponent({
-                name: ToolbarComponent.name(),
-                params: {}
-            })),
-            div({
-                class: styles.classes.header
-            },  ko.kb.komponent({
-                name: HeaderComponent.name(),
-                params: {}
-            })),
-            div({
-                class: styles.classes.results
-            },  ko.kb.komponent({
-                name: ResultsComponent.name(),
-                params: {
-                    items: 'items',
-                    view: 'view',
-                    overlayComponent: 'overlayComponent'
                 }
             }))
         ]);

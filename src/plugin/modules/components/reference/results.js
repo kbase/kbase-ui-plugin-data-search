@@ -121,6 +121,11 @@ define([
                 }
             }
         },
+        objectItemRow: {
+            css: {
+                marginBottom: '10px'
+            }
+        }
     });        
 
     function viewModel(params) {
@@ -582,7 +587,7 @@ define([
         ]);
     }
 
-    function buildViewRow() {
+    function buildViewRowx() {
         return div({
             class: styles.classes.body,
             style: {
@@ -597,6 +602,57 @@ define([
             '<!-- ko if: $component.view() === "detail" -->',
             buildMatchViewDetail(),
             '<!-- /ko -->',
+        ]);
+    }
+
+    function buildViewRow() {
+        return div({
+            class: [styles.classes.body],
+        }, [
+            div({
+                class: styles.classes.objectItemRow
+            }, [
+                div({
+                    style: {
+                        flex: '1 1 0px',
+                        display: 'flex',
+                        flexDirection: 'row'
+                    }
+                }, [
+                    div({
+                        class: styles.classes.rowCell,
+                        style: {
+                            flex: '0 0 2em'
+                        }
+                    }),
+                    div({
+                        style: {
+                            flex: '2',
+                            marginRight: '4px'
+                        }
+                    }, [
+                        '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+                        buildMatchHighlightsTable(),
+                        '<!-- /ko -->'                                
+                    ]),
+                    div({
+                        style: {
+                            flex: '3',
+                            marginLeft: '4px'
+                        }
+                    }, [
+                        '<!-- ko if: $component.view() === "detail" -->',
+                        buildMatchViewDetailTable(),
+                        '<!-- /ko -->'
+                    ]),
+                    div({
+                        class: styles.classes.rowCell,
+                        style: {
+                            flex: '0 0 4em'
+                        }
+                    })
+                ])
+            ])
         ]);
     }
    
@@ -642,6 +698,19 @@ define([
         ]);
     }
 
+    function buildNotFound() {
+        return div({
+            class: 'well',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center'
+            }
+        }, [
+            'Nothing found'
+        ]);
+    }
+
     function buildSearching() {
         return div({
             class: 'well',
@@ -671,6 +740,10 @@ define([
                 '<!-- ko case: "none" -->',
                 buildNoSearch(),
                 '<!-- /ko -->',
+
+                '<!-- ko case: "notfound" -->',
+                buildNotFound(),
+                '<!-- /ko -->',                
 
                 '<!-- ko case: "searching" -->',
                 buildSearching(),

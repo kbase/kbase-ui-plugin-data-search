@@ -80,61 +80,6 @@ define([
                     optionsValue: '"value"'
                 }
             })
-
-            // span({
-            //     dataBind: {
-            //         css: 'resultsView() === "list" ? "' + styles.classes.activeFilterInput + '" : null'
-            //     },
-            //     class: ['form-control', styles.classes.radioControl]               
-            // }, label({
-            //     class: styles.classes.radioLabel
-            // }, [
-            //     input({
-            //         type: 'radio',
-            //         name: 'results-view',
-            //         value: 'list',
-            //         dataBind: {
-            //             checked: 'resultsView'
-            //         }
-            //     }),
-            //     ' List'
-            // ])),
-            // span({
-            //     dataBind: {
-            //         css: 'resultsView() === "matches" ? "' + styles.classes.activeFilterInput + '" : null'
-            //     },
-            //     class: ['form-control', styles.classes.radioControl]    
-            // }, label({
-            //     class: styles.classes.radioLabel
-            // }, [
-            //     input({
-            //         type: 'radio',
-            //         name: 'results-view',
-            //         value: 'matches',
-            //         dataBind: {
-            //             checked: 'resultsView'
-            //         }
-            //     }),
-            //     ' Matches'
-            // ])),
-            // span({
-            //     dataBind: {
-            //         css: 'resultsView() === "detail" ? "' + styles.classes.activeFilterInput + '" : null'
-            //     },
-            //     class: ['form-control', styles.classes.radioControl]    
-            // }, label({
-            //     class: styles.classes.radioLabel
-            // }, [
-            //     input({
-            //         type: 'radio',
-            //         name: 'results-view',
-            //         value: 'detail',
-            //         dataBind: {
-            //             checked: 'resultsView'
-            //         }
-            //     }),
-            //     ' Detail'
-            // ]))
         ]);
     }
 

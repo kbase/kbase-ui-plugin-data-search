@@ -169,6 +169,15 @@ define([
             searchState.status('searching');
             return data.search(query)
                 .then(function (result) {
+                    if (result.items.length === 0) {
+                        searchState.status('notfound');
+                        searchState.isTruncated(false);
+                        searchState.totalSearchHits(null);
+                        searchState.summary(null);
+                        searchState.totalSearchSpace(null);
+                        searchState.page(null);
+                        return;
+                    }
 
                     var selected = params.selectedObjects().reduce(function (set, ref) {
                         set[ref] = true;
@@ -325,7 +334,8 @@ define([
                     typeCounts: 'searchState.summary',
                     resultCount: 'searchState.totalSearchHits',
                     includePrivateData: 'searchState.includePrivateData',
-                    includePublicData: 'searchState.includePublicData'
+                    includePublicData: 'searchState.includePublicData',
+                    searchStatus: 'searchState.status'
                 }
             })),
             div({
