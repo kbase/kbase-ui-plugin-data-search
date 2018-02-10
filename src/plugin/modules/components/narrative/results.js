@@ -156,23 +156,6 @@ define([
             });
         }
 
-        // function doOpenNarrative(cell) {
-        //     if (cell.url) {
-        //         window.open(cell.url, '_blank');
-        //     }
-        // }
-
-        // function doViewObject(cell) {
-        //     if (cell.url) {
-        //         window.open(cell.url, '_blank');
-        //     }
-        // }
-
-        // function doOpenProfile(cell) {
-        //     if (cell.url) {
-        //         window.open(cell.url, '_blank');
-        //     }
-        // }
         function doOpenNarrative(data) {
             window.open(data.url, '_blank');
         }
@@ -370,12 +353,6 @@ define([
         return [
             '<!-- ko switch: matchClass.id -->',
 
-            // '<!-- ko case: "narrative" -->',
-            // button({
-            //     class: 'btn btn-default'                
-            // }, 'Duplicate...'),
-            // '<!-- /ko -->',
-
             '<!-- ko case: "dataObject" -->',
             '<!-- ko if: matchClass.copyable -->',
 
@@ -539,38 +516,6 @@ define([
         ]);
     }
 
-    function buildMatchViewMatches() {
-        return div({
-            class: styles.classes.row
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }, ''),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '5.5'
-                }
-            }, buildMatchHighlightsTable()),
-           
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            })
-        ]);
-    }
-
     function buildMatchViewDetailTable() {
         return table({
             class: styles.classes.resultsTable,
@@ -650,38 +595,6 @@ define([
         ]);
     }
 
-    function buildMatchViewDetail() {
-        return div({
-            class: styles.classes.row
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }, ''),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '5.5'
-                }
-            }, buildMatchViewDetailTable()),
-           
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            }),
-        ]);
-    }
-
     function buildViewRow() {
         return div({
             class: [styles.classes.body],
@@ -693,14 +606,47 @@ define([
                 class: styles.classes.objectItemRow
             }, [
                 buildMatchViewObject(),
-
-                '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-                buildMatchViewMatches(),
-                '<!-- /ko -->',
-
-                '<!-- ko if: $component.view() === "detail" -->',
-                buildMatchViewDetail(),
-                '<!-- /ko -->'
+                
+                div({
+                    style: {
+                        flex: '1 1 0px',
+                        display: 'flex',
+                        flexDirection: 'row'
+                    }
+                }, [
+                    div({
+                        class: styles.classes.rowCell,
+                        style: {
+                            flex: '0 0 2em'
+                        }
+                    }),
+                    div({
+                        style: {
+                            flex: '2',
+                            marginRight: '4px'
+                        }
+                    }, [
+                        '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+                        buildMatchHighlightsTable(),
+                        '<!-- /ko -->'                                
+                    ]),
+                    div({
+                        style: {
+                            flex: '3',
+                            marginLeft: '4px'
+                        }
+                    }, [
+                        '<!-- ko if: $component.view() === "detail" -->',
+                        buildMatchViewDetailTable(),
+                        '<!-- /ko -->'
+                    ]),
+                    div({
+                        class: styles.classes.rowCell,
+                        style: {
+                            flex: '0 0 4em'
+                        }
+                    })
+                ])
             ])
         ]);
     }

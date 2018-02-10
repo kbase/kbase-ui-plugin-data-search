@@ -29,14 +29,6 @@ define([
         };
     }
 
-    var styles = html.makeStyles({
-        component: {
-            flex: '1 1 0px',
-            display: 'flex',
-            flexDirection: 'row'
-        }
-    });
-
     function buildCopyButton() {
         return button({
             class: 'btn btn-default',
@@ -49,20 +41,10 @@ define([
 
     function template() {
         return div({
-            // class: styles.classes.component
             style: {
                 textAlign: 'center'
             }
-        }, [
-            // styles.sheet,
-            div({
-                // style: {
-                //     flex: '1',
-                //     display: 'flex',
-                //     alignItems: 'center'
-                // }
-            }, buildCopyButton())
-        ]);
+        }, buildCopyButton());
     }
 
     function component() {

@@ -7,11 +7,7 @@ define([
 ) {
     'use strict';
 
-    
     var t = html.tag,
-        span = t('span'),
-        label = t('label'),
-        input = t('input'),
         select = t('select'),
         div = t('div');
 
