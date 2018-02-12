@@ -52,6 +52,15 @@ define([
                     fontSize: '120%'
                 }
             });
+        } else if (arg.icon) {
+            icon = span({
+                class: 'fa fa-' + arg.icon,
+                style: {
+                    marginRight: '4px',
+                    fontWeight: 'bold',
+                    fontSize: '120%'
+                }
+            });
         } else {
             icon = '';
         }

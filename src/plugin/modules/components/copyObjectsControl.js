@@ -11,6 +11,7 @@ define([
 
     var t = html.tag,
         button = t('button'),
+        span = t('span'),
         div = t('div');
 
     function viewModel(params) {
@@ -31,12 +32,21 @@ define([
 
     function buildCopyButton() {
         return button({
-            class: 'btn btn-default',
+            class: 'btn',
             dataBind: {
                 click: '$component.doCopyObjects',
-                enable: 'selectedObjects().length > 0'
+                enable: 'selectedObjects().length > 0',
+                class: 'selectedObjects().length === 0 ? "btn-default" : "btn-primary"'
             }
-        }, 'Copy Selected...');
+        }, [
+            span({
+                class: 'fa fa-clone',
+                style: {
+                    marginRight: '6px'
+                }
+            }),
+            'Copy Selected...'
+        ]);
     }
 
     function template() {

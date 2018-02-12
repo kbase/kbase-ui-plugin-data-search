@@ -15,9 +15,6 @@ define([
 ) {
     'use strict';
     
-    var t = html.tag,
-        div = t('div');
-
     function factory(config) {
         var hostNode, container,
             runtime = config.runtime;
@@ -73,7 +70,7 @@ define([
 
             return null;
         }
-        function start(params) {
+        function start() {
             container.innerHTML = [styles.sheet, template()].join('');
             ko.applyBindings(viewModel, container, function (context) {
                 context.runtime = runtime;

@@ -1,6 +1,7 @@
 define([
     'knockout-plus',
     'kb_common/html',
+    'kb_common/bootstrapUtils',
     'kb_service/utils',
     '../../lib/ui',
     '../../lib/rpc',
@@ -9,6 +10,7 @@ define([
 ], function (
     ko,
     html,
+    BS,
     apiUtils,
     ui,
     Rpc,
@@ -23,10 +25,74 @@ define([
         input = t('input'),
         button = t('button'),
         table = t('table'), 
+        thead = t('thead'),
         tbody = t('tbody'),
         tr = t('tr'), td = t('td'), th = t('th'),
-        form = t('form'), select = t('select'), a = t('a'),
+        select = t('select'), a = t('a'),
         p = t('p'), b = t('b');
+
+    var styles = html.makeStyles({
+        viewTable: {
+            css: {
+                width: '100%'
+            },
+            inner: {
+                td: {
+                    border: 'none',
+                    padding: '3px',
+                    verticalAlign: 'top'
+                },
+                th: {
+                    border: 'none',
+                    padding: '3px',
+                    verticalAlign: 'top',
+                    fontWeight: 'normal'
+                },
+                'td:nth-child(1)': {
+                    width: '30%'
+                },
+                'th:nth-child(1)': {
+                    width: '30%'
+                }
+            }
+        },
+        selectedObjectsTable: {
+            css: {
+                width: '100%'
+            },
+            inner: {
+                'tbody tr:hover': {
+                    backgroundColor: 'rgba(200,200,200,0.8)'
+                },
+                td: {
+                    border: '1px solid rgba(200,200,200,0.8)',
+                    padding: '3px',
+                    verticalAlign: 'middle'
+                },
+                th: {
+                    border: 'none',
+                    padding: '3px',
+                    verticalAlign: 'top',
+                    fontWeight: 'normal',
+                    fontStyle: 'italic'
+                },
+                'td:nth-child(1)': {
+                    width: '30%'
+                },
+                'th:nth-child(1)': {
+                    width: '30%'
+                }
+            }
+        },
+        selectableRow: {
+            css: {},
+            modifiers: {
+                selected: {
+                    backgroundColor: 'rgba(200,200,200,1)'
+                }
+            }
+        }
+    });
 
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
@@ -41,19 +107,26 @@ define([
                 });
         }
 
-        function doViewObject(data) {
-            viewObject({
-                workspaceId: data.workspaceInfo.id,
-                objectId: data.objectInfo.id,
-                version: data.objectInfo.version
-            });
+        function doSelectObject(data) {
+            if (data.selected()) {
+                data.selected(false);
+                objectToView(null);
+            } else {
+                selectedObjects().forEach(function (obj) {
+                    obj.selected(false);
+                });
+                data.selected(true);
+                viewObject({
+                    workspaceId: data.workspaceInfo.id,
+                    objectId: data.objectInfo.id,
+                    version: data.objectInfo.version
+                });
+            }           
         }
 
         var data = Data.make({
             runtime: runtime
         });
-
-        var error = ko.observable();
 
         function makeNarrativeUrl(path) {
             var base = runtime.getConfig('services.narrative.url');
@@ -90,6 +163,8 @@ define([
             
             case 'copying':
                 return false;
+            case 'success':
+                return true;
             case 'error':
                 return false;
             default:
@@ -124,10 +199,12 @@ define([
                     })
                     .catch(Error, function (err) {
                         console.error(err);
+                        copyStatus('error');
                         errorMessage(err.message);
                     })
                     .catch(function (err) {
                         console.error(err);
+                        copyStatus('error');
                         errorMessage('unknown error');
                     });
             }
@@ -169,34 +246,28 @@ define([
 
         function doCopy () {
             errorMessage('');
+            copyStatus('copying');
             switch (copyMethod()) {
             case 'new':
                 copyIntoNewNarrative(newNarrativeName())
                     .then(function(newNarrative) {
+                        var narrativeId = [
+                            'ws',
+                            newNarrative.workspaceInfo.id,
+                            'obj', 
+                            newNarrative.objectInfo.id
+                        ].join('.');
+                        var narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId);
                         selectedNarrativeObject({
                             workspaceInfo: newNarrative.workspaceInfo,
-                            objectInfo: newNarrative.narrativeInfo
+                            objectInfo: newNarrative.objectInfo,
+                            url: narrativeUrl
                         });
-                        var narrativeId = apiUtils.makeWorkspaceObjectId(newNarrative.workspaceInfo.id, newNarrative.narrativeInfo.id),
-                            narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId),
-                            // TODO: move the markup into the ... markup!
-                            message = div([
-                                'Successfully copied this data object to the new Narrative ',
-                                newNarrative.workspaceInfo.metadata.narrative_nice_name,
-                                span({
-                                    style: {
-                                        fontStyle: 'italic'
-                                    }
-                                }, a({
-                                    href: narrativeUrl, 
-                                    class: 'btn btn-default', 
-                                    target: '_blank'
-                                }, 'Open this Narrative'))
-                            ]);
-                        completionMessage(message);
+                        copyStatus('success');
                     })                    
                     .catch(function (err) {
-                        error(err.message);
+                        copyStatus('error');
+                        errorMessage(err.message);
                     });
                 break;
             case 'existing':
@@ -206,26 +277,23 @@ define([
                         workspaceId: narrative.workspaceInfo.id
                     })
                         .then(function () {
-                            var narrativeId = apiUtils.makeWorkspaceObjectId(narrative.workspaceInfo.id, narrative.objectInfo.id),
-                                narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId),
-                                // TODO: move the markup into the ... markup!
-                                message = div([
-                                    'Successfully copied this data object to the Narrative ',
-                                    narrative.workspaceInfo.metadata.narrative_nice_name,
-                                    span({
-                                        style: {
-                                            fontStyle: 'italic'
-                                        }
-                                    }, a({
-                                        href: narrativeUrl, 
-                                        class: 'btn btn-default', 
-                                        target: '_blank'
-                                    }, 'Open this Narrative'))
-                                ]);
-                            completionMessage(message);
+                            var narrativeId = [
+                                'ws',
+                                narrative.workspaceInfo.id,
+                                'obj', 
+                                narrative.objectInfo.id
+                            ].join('.');
+                            var narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId);
+                            selectedNarrativeObject({
+                                workspaceInfo: narrative.workspaceInfo,
+                                objectInfo: narrative.objectInfo,
+                                url: narrativeUrl
+                            });
+                            copyStatus('success');
                         })                        
                         .catch(function (err) {
-                            error(err.message);
+                            copyStatus('error');
+                            errorMessage(err.message);
                         });
                 } else {
                     errorMessage('You must select a narrative before copying the data object into it.');
@@ -236,12 +304,16 @@ define([
        
         var selectedObjects = ko.observableArray();
 
-        // getObjectsInfo(objectsToCopy)
-
-
         data.getObjectsInfo(objectsToCopy)
             .then(function (objectsInfo) {
-                selectedObjects(objectsInfo);
+                objectsInfo.forEach(function (objectInfo) {
+                    selectedObjects.push({
+                        workspaceInfo: objectInfo.workspaceInfo,
+                        objectInfo: objectInfo.objectInfo,
+                        selected: ko.observable()
+                    });
+                });
+                // selectedObjects(objectsInfo);
                 return  data.getWritableNarratives();
             })
             .then(function (writableNarratives) {
@@ -255,6 +327,9 @@ define([
             });
 
         function doRemoveObject(data) {
+            if (data.selected()) {
+                objectToView(null);
+            }
             selectedObjects.remove(data);
         }
 
@@ -271,15 +346,15 @@ define([
             newNarrativeName: newNarrativeName,
             canCopy: canCopy,
             objectToView: objectToView,
+            copyStatus: copyStatus,
 
             // Actions
             doClose: doClose,
             doCopy: doCopy,
             doRemoveObject: doRemoveObject,
-            doViewObject: doViewObject
+            doSelectObject: doSelectObject
         };
     }
-
 
     function buildObjectList() {
         return div({class: 'container-fluid'}, [
@@ -295,19 +370,27 @@ define([
                     '<!-- /ko -->',
                     '<!-- ko if: selectedObjects().length -->',
                     table({ 
-                        class: 'table table-hover'
+                        class: styles.classes.selectedObjectsTable
                     }, [
+                        thead([
+                            tr([
+                                td('type'),
+                                td('object name')
+                            ])
+                        ]),
                         tbody({
                             dataBind: {
                                 foreach: 'selectedObjects'
                             }
                         }, [
                             tr({
+                                class: [styles.classes.selectableRow],
                                 style: {
                                     cursor: 'pointer'
                                 },
                                 dataBind: {
-                                    click: '$component.doViewObject'
+                                    click: '$component.doSelectObject',
+                                    class: 'selected() ? "' + styles.scopes.selected + '" : false'
                                 }
                             }, [
                                 td({
@@ -315,7 +398,7 @@ define([
                                         width: '2em'
                                     },
                                     dataBind: {
-                                        text: 'objectInfo.id'
+                                        text: 'objectInfo.typeName'
                                     }
                                 }),
                                 td({
@@ -329,7 +412,7 @@ define([
                                     }
                                 }, button({
                                     type: 'button',
-                                    class: 'btn btn-sm btn-danger btn-kb-flat',
+                                    class: 'btn btn-xs btn-danger btn-kb-flat',
                                     dataBind: {
                                         click: '$component.doRemoveObject'
                                     }
@@ -353,39 +436,54 @@ define([
                         class: 'panel-heading'
                     }, [
                         div({
-                            class: 'panel-title'
-                        }, 'View Selected Object')
+                            class: 'panel-title',
+                            dataBind: {
+                                style: {
+                                    color: 'objectToView() ?  "black" : "gray"'
+                                }
+                            }
+                        }, 'Inspect Selected Object')
                     ]),
                     div({
                         class: 'panel-body'
                     }, [
                         '<!-- ko ifnot: objectToView -->',
-                        'When you select an object to view, it will show here',
+                        'If you click on an object listed on the left, details will show here',
                         '<!-- /ko -->',
 
                         '<!-- ko if: objectToView -->',
                         '<!-- ko with: objectToView -->',
                         table({
-                            class: 'table'
+                            class: styles.classes.viewTable
                         }, [
                             tr([
-                                td('id'),
+                                th('type'),
                                 td({
                                     dataBind: {
-                                        text: 'objectInfo.id'
+                                        text: 'objectInfo.type'
                                     }
                                 })]),
                             tr([
-                                td('name'),
+                                th('name'),
                                 td({
                                     dataBind: {
                                         text: 'objectInfo.name'
                                     }
+                                })]),
+                            tr([
+                                th('name'),
+                                td({
+                                    dataBind: {
+                                        typedText: {
+                                            value: 'objectInfo.modifiedDate',
+                                            type: '"date"',
+                                            format: '"MM/DD/YYYY"'
+                                        }
+                                    }
                                 })])
                         ]),
                         '<!-- /ko -->',
-                        '<!-- /ko -->'
-                        
+                        '<!-- /ko -->'                        
                     ])
                 ]))
             ])
@@ -396,90 +494,114 @@ define([
         return  p([
             'You may use this  panel to copy the ', b('data object'),
             ' you are viewing into either a ', b('new Narrative'),
-            ', which will be created automatically, or an ', b('existing Narrartive'),
+            ', which will be created on the fly, or an ', b('existing Narrartive'),
             ' which you may select from the list below.'
         ]);
     }
 
     function buildCopyForm() {
         return div({class: 'container-fluid'}, [
-            h3('Selected Narrative'),
+            h3('Select Narrative'),
             div({class: 'row'}, [           
-                div({class: 'col-md-8'}, [               
-                    form([
-                        table({class: 'table'}, [
-                            tr([
-                                td(input({
-                                    type: 'radio', 
-                                    name: 'copyMethod', 
-                                    value: 'new', 
-                                    dataBind: {
-                                        checked: 'copyMethod'
-                                    }
-                                })),
-                                td('Copy into New Narrative')
-                            ]),
-                            '<!-- ko if: copyMethod() === "new" -->',
-                            tr([
-                                td('New Narrative name'),
-                                td(input({
-                                    class: 'form-control',
-                                    dataBind: {
-                                        textInput: 'newNarrativeName'
-                                    }
-                                }))
-                            ]),
-                            '<!-- /ko -->',
-                            tr([
-                                td(), td('or')
-                            ]),
-                            tr([
-                                td(input({
-                                    type: 'radio', 
-                                    name: 'copyMethod', 
-                                    value: 'existing', 
-                                    dataBind: {
-                                        checked: 'copyMethod'
-                                    }
-                                })),
-                                td([
-                                    'Copy into: ',
-                                    select({
-                                        class: 'form-control',
-                                        dataBind: {
-                                            optionsCaption: '"Select a Narrative to Copy To"',
-                                            options: 'narratives',
-                                            optionsValue: '"value"',
-                                            optionsText: '"name"',
-                                            value: 'selectedNarrative'
-                                        }
-                                    })])
-                            ]),
-                            '<!-- ko if: errorMessage() -->',
-                            tr([
-                                td([
-                                    'ER'
-                                ]),
-                                td(div({
-                                    dataBind: {
-                                        text: 'errorMessage'
-                                    }
-                                }))
-                            ]),
-                            '<!-- /ko -->',                       
-                            '<!-- ko if: completionMessage() -->',
-                            tr([
-                                td([
-                                    ''
-                                ]),
-                                td(div({
-                                    dataBind: {
-                                        html: 'completionMessage'
-                                    }
-                                }))
-                            ]),
-                            '<!-- /ko -->',
-                        ])
+                div({class: 'col-md-8'}, [
+                    div({
+                        class: 'row'
+                    }, [
+                        div({
+                            class: 'col-sm-2'
+                        }, input({
+                            type: 'radio', 
+                            name: 'copyMethod', 
+                            value: 'new', 
+                            dataBind: {
+                                checked: 'copyMethod'
+                            }
+                        })),
+                        div({
+                            class: 'col-sm-10'
+                        }, 'Copy into New Narrative')
+                    ]),
+                    '<!-- ko if: copyMethod() === "new" -->',
+                    div({
+                        class: 'row'
+                    }, [
+                        div({
+                            class: 'col-sm-2'
+                        }),
+                        div({
+                            class: 'col-sm-10'
+                        }, div({
+                            style: {
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            div({
+                                style: {
+                                    flex: '0 0 auto',
+                                    weight: 'bold',
+                                    color: 'rgb(100,100,100)',
+                                    marginRight: '4px'
+                                }
+                            }, 'Name '),
+                            div({
+                                style: {
+                                    flex: '1'
+                                }
+                            }, input({
+                                class: 'form-control',
+                                style: {
+                                    width: '100%'
+                                },
+                                dataBind: {
+                                    textInput: 'newNarrativeName'
+                                }
+                            }))
+                        ]))
+                    ]),
+                    '<!-- /ko -->',
+                    div({
+                        class: 'row'
+                    }, [
+                        div({
+                            class: 'col-sm-2'
+                        }),
+                        div({
+                            class: 'col-sm-10',
+                            style: {
+                                fontStyle: 'italic',
+                                padding: '6px'
+                            }
+                        }, ' - or - ')
+                    ]),
+                    div({
+                        class: 'row'
+                    }, [
+                        div({
+                            class: 'col-sm-2'
+                        }, input({
+                            type: 'radio', 
+                            name: 'copyMethod', 
+                            value: 'existing', 
+                            dataBind: {
+                                checked: 'copyMethod'
+                            }
+                        })),
+                        div({
+                            class: 'col-sm-10'
+                        }, [
+                            'Copy into: ',
+                            select({
+                                class: 'form-control',
+                                dataBind: {
+                                    optionsCaption: '"An existing Narrative"',
+                                    options: 'narratives',
+                                    optionsValue: '"value"',
+                                    optionsText: '"name"',
+                                    value: 'selectedNarrative'
+                                }
+                            })])
                     ])
                 ]),
                 div({class: 'col-md-4'}, [
@@ -487,36 +609,51 @@ define([
                     div({class: 'panel panel-default'}, [
                         div({class: 'panel-heading'}, [
                             div({
-                                class: 'panel-title'
+                                class: 'panel-title',
+                                dataBind: {
+                                    style: {
+                                        color: 'selectedNarrativeObject() ? "black" : "gray"'
+                                    }
+                                }
                             }, [
-                                '<!-- ko if: selectedNarrativeObject -->',
-                                'Selected Narrative',
-                                '<!-- /ko -->',
-                                '<!-- ko ifnot: selectedNarrativeObject -->',
-                                'Narrative will appear below when selected',
-                                '<!-- /ko -->'
+                                'Selected Narrative'
                             ])
                         ]),
                         div({class: 'panel-body'}, [
+                            '<!-- ko ifnot: copyMethod -->',
+                            'When you have selected a narrative to copy into, details about it will be shown here',
+                            '<!-- /ko -->',
+
                             '<!-- ko if: copyMethod() === "existing" -->',
                             p([
                                 'The data object will be copied into the following Narrative:'
                             ]),
+                            '<!-- ko ifnot: selectedNarrativeObject() -->',
+                            p({
+                                style: {
+                                    fontStyle: 'italic',
+                                    textAlign: 'center'
+                                }
+                            }, 'Select a narrative from those available to you on the left.'),
+                            '<!-- /ko -->',
                             '<!-- ko with: selectedNarrativeObject -->',
-                            table({class: 'table'}, [
-                                tr([
-                                    th('Ref'), 
-                                    td({
-                                        dataBind: {
-                                            text: 'objectInfo.ref'
-                                        }
-                                    })
-                                ]),
+                            table({
+                                class: styles.classes.viewTable
+                            }, [
+                                
                                 tr([
                                     th('Name'), 
                                     td({
                                         dataBind: {
                                             text: 'workspaceInfo.metadata.narrative_nice_name'
+                                        }
+                                    })
+                                ]),
+                                tr([
+                                    th('Ref'), 
+                                    td({
+                                        dataBind: {
+                                            text: 'objectInfo.ref'
                                         }
                                     })
                                 ]),
@@ -543,6 +680,7 @@ define([
                             ]),
                             '<!-- /ko -->',
                             '<!-- /ko -->',
+
                             '<!-- ko if: copyMethod() === "new" -->',
                             p([
                                 'A new narrative will be created containing this data object.'
@@ -555,30 +693,136 @@ define([
         ]);
     }
 
+    function buildCopyButton() {
+        return div({
+            class: 'container-fluid'
+        }, [
+            div({
+                class: 'row'
+            }, [           
+                div({
+                    class: 'col-md-8'
+                }, [
+                    '<!-- ko if: $component.selectedObjects().length === 0 -->',
+                    'No objects to copy!',
+                    '<!-- /ko -->',
+                    '<!-- ko if: $component.selectedObjects().length > 0 -->',
+                    button({
+                        type: 'button',
+                        class: 'btn btn-primary',
+                        dataBind: {
+                            enable: 'canCopy',
+                            click: 'doCopy'
+                        }                     
+                    }, [
+                        'Copy Object',
+                        '<!-- ko if: $component.selectedObjects().length > 1 -->',
+                        's',
+                        '<!-- /ko -->',
+                        ' into Narrative'
+                    ]),
+                    '<!-- /ko -->'
+                ]),
+                div({
+                    class: 'col-md-4'
+                })
+            ])
+        ]);
+    }
+
+    function buildSuccessPanel() {
+        return div({
+            style: {
+                marginTop: '12px'
+            },
+            dataBind: {
+                if: 'copyStatus() === "success"'
+            }
+        }, [
+            BS.buildPanel({
+                type: 'success',
+                title: 'Successfully Copied',
+                body:  div([
+                    p([
+                        'Successfully copied this data object to the Narrative ',
+                        span({
+                            style: {
+                                fontWeight: 'bold'
+                            },
+                            dataBind: {
+                                text: 'selectedNarrativeObject().workspaceInfo.metadata.narrative_nice_name'
+                            }
+                        })
+                    ]),
+                    p([
+                        span({
+                            style: {
+                                fontStyle: 'italic'
+                            }
+                        }, a({
+                            dataBind: {
+                                attr: {
+                                    href: 'selectedNarrativeObject().url'
+                                }
+                            },
+                            class: 'btn btn-default', 
+                            target: '_blank'
+                        }, 'Open this Narrative'))
+                    ])
+                ])
+            })
+        ]);
+    }
+
+    function buildErrorPanel() {
+        return div({
+            style: {
+                marginTop: '12px'
+            },
+            dataBind: {
+                if: 'copyStatus() === "error"'
+            }
+        }, [
+            BS.buildPanel({
+                type: 'error',
+                title: 'Error',
+                body:  div([
+                    p('An error occurred attempting to copy the data:'),
+                    p({
+                        dataBind: {
+                            text: 'error'
+                        }
+                    })
+                ])
+            })
+        ]);
+    }
+
     function template() {
-        return ui.buildDialog({
-            title: span({dataBind: {text: 'title'}}), 
-            body: div({
-                class: 'container-fluid'
-            }, [
-                buildIntro(),
-                buildObjectList(),
-                buildCopyForm()
-            ]),
-            buttons: [                
-                {
-                    type: 'primary',
-                    label: 'Copy',
-                    onClick: 'doCopy',
-                    enable: 'canCopy'
-                },
-                {
-                    type: 'danger',
-                    label: 'Cancel',
-                    onClick: 'doClose'
-                }
-            ],
-        });
+        return div([
+            styles.sheet,
+            ui.buildDialog({
+                title: span({dataBind: {text: 'title'}}), 
+                icon: 'clone',
+                body: div({
+                    class: 'container-fluid'
+                }, [
+                    buildIntro(),
+                    buildObjectList(),
+                    buildCopyForm(),
+                    buildCopyButton(),
+                    buildSuccessPanel(),
+                    buildErrorPanel()
+                ]),
+                buttons: [                
+                    {
+                        type: 'danger',
+                        label: 'Cancel',
+                        onClick: 'doClose'
+                    }
+                ],
+            })
+        ]);
     }
 
     function component() {

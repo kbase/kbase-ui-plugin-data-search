@@ -32,6 +32,8 @@ define([
 
         var newNarrative = ko.observable();
 
+        var status = ko.observable('none');
+
         var error = ko.observable();
 
         var data = Data.make({
@@ -43,15 +45,18 @@ define([
         }
 
         function doDuplicate() {
+            status('inprogress');
             data.copyNarrative({
                 workspaceId: narrativeToDuplicate.workspaceId,
                 objectId: narrativeToDuplicate.objectId,
                 name: newNarrativeName()
             })
                 .then(function (newNarrativeInfo) {
+                    status('success');
                     newNarrative(newNarrativeInfo);
                 })
                 .catch(function (err) {
+                    status('error');
                     error(err.message);
                 });
         }
@@ -75,6 +80,7 @@ define([
             newNarrativeName: newNarrativeName,
             canDuplicate: canDuplicate,
             newNarrative: newNarrative,
+            status: status,
             error: error,
 
             // Actions
@@ -100,23 +106,69 @@ define([
         ];
     }
 
+    function buildStatusDisplay() {
+        return div({
+            class: 'well'
+        }, 
+        
+        [
+            '<!-- ko switch: status -->',
+
+            '<!-- ko case: "none" -->',
+            'hmmm..',
+            '<!-- /ko -->',
+
+            '<!-- ko case: "inprogress" -->',
+            html.loading('Duplicating...'),
+            '<!-- /ko -->',
+
+            '<!-- ko case: "success" -->',
+            '<!-- /ko -->',
+
+            '<!-- ko case: "error" -->',
+            buildError(),
+            '<!-- /ko -->',
+
+
+            '<!-- /ko -->'
+        ]);
+    }
+
     function buildBody() {
         return div({}, [
+            p([
+                'Duplicating a Narrative will make a completed copy of the Narrative; you will be the owner of the copy.'
+            ]),
+            p([
+                'This new Narrative will contain all of the data objects, apps, markdown, ',
+                ' and code cells from the original. The state of any apps, including run logs and errors ',
+                'will be lost, but all generated data and reports will be retained.'
+            ]),
             div({
                 class: 'form-inline'
             }, [
                 div({
                     class: 'form-group'
                 }, [
-                    label('New Narrative Name'),
+                    label('New Narrative Name '),
                     input({
+                        class: 'form-control',
+                        style: {
+                            marginLeft: '4px',
+                            width: '30em',
+                            maxWidth: '30em',
+                        },
                         dataBind: {
                             textInput: 'newNarrativeName'
                         }
                     })
                 ]),
                 '<!-- ko if: newNarrativeName -->',
-                p([
+                p({
+                    style: {
+                        marginTop: '6px'
+                    }
+                }, [
                     'You may now copy this narrative to a new narrative named ',
                     span({
                         style: {
@@ -138,6 +190,7 @@ define([
                         }
                     }, 'Duplicate')
                 ]),
+                buildStatusDisplay(),
                 '<!-- ko if: newNarrative -->',
                 '<!-- ko with: newNarrative -->',
                 div({}, [
@@ -164,7 +217,7 @@ define([
                 '<!-- /ko -->',
                 '<!-- /ko -->',
 
-                buildError()
+               
                 
             ])
         ]);
@@ -173,6 +226,7 @@ define([
     function template() {
         return ui.buildDialog({
             title: span({dataBind: {text: 'title'}}), 
+            icon: 'copy',
             body: buildBody(),
             buttons: [
                 // {

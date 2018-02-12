@@ -153,7 +153,10 @@ define([
                 markdown: commentCell
             })
                 .spread(function (newNarrative) {
-                    return newNarrative;
+                    return {
+                        workspaceInfo: newNarrative.workspaceInfo,
+                        objectInfo: newNarrative.narrativeInfo
+                    };
                 });
         }
 

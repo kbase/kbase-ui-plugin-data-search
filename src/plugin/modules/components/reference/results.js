@@ -439,43 +439,6 @@ define([
         ]);
     }
 
-    function buildMatchViewMatches() {
-        return div({
-            class: styles.classes.row
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '6'
-                }
-            }, buildMatchHighlightsTable()),
-            // div({
-            //     class: styles.classes.rowCell,
-            //     style: {
-            //         flex: '1'
-            //     }
-            // }, ''),
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            })
-        ]);
-    }
-
     function buildMatchViewDetailTable() {
         return table({
             class: styles.classes.resultsTable,
@@ -552,56 +515,6 @@ define([
 
                 '<!-- /ko -->'
             ]))
-        ]);
-    }
-
-    function buildMatchViewDetail() {
-        return div({
-            class: styles.classes.row
-        }, [
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 2em'
-                }
-            }, ''),     
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '1'
-                }
-            }),       
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '6'
-                }
-            }, buildMatchViewDetailTable()),
-           
-            div({
-                class: styles.classes.rowCell,
-                style: {
-                    flex: '0 0 4em'
-                }
-            }),
-        ]);
-    }
-
-    function buildViewRowx() {
-        return div({
-            class: styles.classes.body,
-            style: {
-                // margin: '6px'
-            },
-        }, [
-           
-            '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
-            buildMatchViewMatches(),
-            '<!-- /ko -->',
-
-            '<!-- ko if: $component.view() === "detail" -->',
-            buildMatchViewDetail(),
-            '<!-- /ko -->',
         ]);
     }
 

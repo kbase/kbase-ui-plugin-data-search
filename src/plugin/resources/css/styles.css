@@ -68,4 +68,19 @@
     border: 1px solid green;
 }
 
+.table.table-kb-plain {
 
+}
+
+.table.table-kb-plain tr {
+    border: none;
+}
+
+.table.table-kb-plain td {
+    vertical-align: middle;
+    border: none;
+}
+
+.table.table-kb-compact td {
+    padding: 3px;
+}
