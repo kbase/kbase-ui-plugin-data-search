@@ -16,16 +16,15 @@ install:
             type: factory
     routes:
         -
-            path: [data-search]
+            path: [search]
             queryParams: 
                 param1: {}
             widget: data-search_panel
             authorization: true
     menu:
         -
-            name: data-search
-            definition:
-                path: [data-search]
-                label: Search
-                icon: search
+            name: search
+            path: [search]
+            label: Search
+            icon: search
         
