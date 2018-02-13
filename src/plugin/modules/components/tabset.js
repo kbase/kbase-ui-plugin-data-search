@@ -132,11 +132,94 @@ define([
             tabsetId: tabsetId,
             doCloseTab: doCloseTab,
             doSelectTab: doSelectTab,
-            addTab: addTab,
-
-            // PASS THROUGH
-            // hostVM: hostVM
+            addTab: addTab
         };
+    }
+
+    function buildTab() {
+        return li({
+            role: 'presentation',
+            class: 'tabs',
+            dataBind: {
+                css: {
+                    active: 'active'
+                }
+            }
+        }, [
+            a({
+                dataBind: {
+                    click: '$component.doSelectTab'
+                },
+                role: 'tab',
+                style: {
+                    display: 'inline-block'
+                }
+            }, [                
+                span({
+                    dataBind: {
+                        text: 'label'
+                    }
+                }),
+                '<!-- ko if: closable -->',
+                span({
+                    class: '-button',
+                    dataBind: {
+                        click: '$component.doCloseTab'
+                    }
+                }, span({
+                    class: 'fa fa-times',
+                })),
+                '<!-- /ko -->'
+            ]),
+        ]);
+    }
+
+    function buildTabPanel() {
+        return [
+            '<!-- ko if: active -->',
+            div({
+                dataBind: {
+                    attr: {
+                        active: 'active'
+                    },
+                    css: { 
+                        in: 'active',
+                        active: 'active'
+                    }
+                },
+                class: 'tab-pane fade',
+                role: 'tabpanel'
+            }, [
+                '<!-- ko if: $data.component -->',
+                div({
+                    style: {
+                        flex: '1 1 0px',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    },
+                    dataBind: {
+                        component: {
+                            name: 'component.name',
+                            params: 'component.params'
+                        }
+                    }
+                }),
+                '<!-- /ko -->',
+                '<!-- ko if: $data.content -->',
+                div({
+                    style: {
+                        flex: '1 1 0px',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    },
+                    dataBind: {
+                        html: '$data.content'
+                    }
+                }),
+                '<!-- /ko -->'
+            ]),
+            '<!-- /ko -->'
+        ];
     }
 
     function template() {
@@ -152,41 +235,7 @@ define([
                 },
                 class: 'kb-tabs',
                 role: 'tablist'
-            }, li({
-                role: 'presentation',
-                class: 'tabs',
-                dataBind: {
-                    css: {
-                        active: 'active'
-                    }
-                }
-            }, [
-                a({
-                    dataBind: {
-                        click: '$component.doSelectTab'
-                    },
-                    role: 'tab',
-                    style: {
-                        display: 'inline-block'
-                    }
-                }, [
-                    span({
-                        dataBind: {
-                            text: 'label'
-                        }
-                    }),
-                    '<!-- ko if: closable -->',
-                    span({
-                        class: '-button',
-                        dataBind: {
-                            click: '$component.doCloseTab'
-                        }
-                    }, span({
-                        class: 'fa fa-times',
-                    })),
-                    '<!-- /ko -->'
-                ]),
-            ])),
+            }, buildTab()),
             div({
                 class: 'tab-content',
                 style: {
@@ -195,52 +244,7 @@ define([
                 dataBind: {
                     foreach: 'tabs'
                 }
-            },  [
-                '<!-- ko if: active -->',
-                div({
-                    dataBind: {
-                        attr: {
-                            active: 'active'
-                        },
-                        css: { 
-                            in: 'active',
-                            active: 'active'
-                        }
-                    },
-                    class: 'tab-pane fade',
-                    role: 'tabpanel'
-                }, [
-                    
-                    '<!-- ko if: $data.component -->',
-                    div({
-                        style: {
-                            flex: '1 1 0px',
-                            display: 'flex',
-                            flexDirection: 'column'
-                        },
-                        dataBind: {
-                            component: {
-                                name: 'component.name',
-                                params: 'component.params'
-                            }
-                        }
-                    }),
-                    '<!-- /ko -->',
-                    '<!-- ko if: $data.content -->',
-                    div({
-                        style: {
-                            flex: '1 1 0px',
-                            display: 'flex',
-                            flexDirection: 'column'
-                        },
-                        dataBind: {
-                            html: '$data.content'
-                        }
-                    }),
-                    '<!-- /ko -->'
-                ]),
-                '<!-- /ko -->'
-            ])
+            },  buildTabPanel())
         ]);
     }
 

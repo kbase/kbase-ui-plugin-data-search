@@ -1,9 +1,11 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    './summary'
 ], function (
     ko,
-    html
+    html,
+    SummaryComponent
 ) {
     'use strict';
 
@@ -17,7 +19,7 @@ define([
             css: {
                 flex: '1 1 0px',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'row'
             }
         },
         toolbar: {
@@ -61,7 +63,13 @@ define([
             doFirstPage: doFirstPage,
             doPrevPage: doPrevPage,
             doNextPage: doNextPage,
-            doLastPage: doLastPage
+            doLastPage: doLastPage,
+
+            // for summary
+
+            typeCounts: params.typeCounts,
+            resultCount: params.resultCount,
+            searchStatus: params.searchStatus
         };
     }
 
@@ -165,7 +173,34 @@ define([
             class: styles.classes.component
         }, [
             styles.sheet,
-            buildNavbar()
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }
+            }, buildNavbar()),
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }
+            }, div({
+                dataBind: {
+                    component: {
+                        name: SummaryComponent.quotedName(),
+                        params: {
+                            typeCounts: 'typeCounts',
+                            resultCount: 'resultCount',
+                            searchStatus: 'searchStatus'
+                        }
+                    }
+                }
+            }))
+            
         ]);
     }
 

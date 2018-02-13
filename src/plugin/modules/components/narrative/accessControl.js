@@ -57,21 +57,9 @@ define([
     });
 
     function viewModel(params) {
-        var withPrivateData = ko.observable();
-        var withSharedData = ko.observable();
-        var withPublicData = ko.observable();
-
-        withPrivateData.syncWith(params.includePrivateData);
-        withSharedData.syncWith(params.includePrivateData);
-        withPublicData.syncWith(params.includePublicData);
-
-        return {
-            withPrivateData: withPrivateData,
-            withSharedData: withSharedData,
-            withPublicData: withPublicData,
-            typeCounts: params.typeCounts,
-            resultCount: params.resultCount,
-            searchStatus: params.searchStatus
+       return {
+            withPrivateData: params.withPrivateData,
+            withPublicData: params.withPublicData
         };
     }
 
@@ -121,58 +109,7 @@ define([
         ]);
     }
 
-    function buildSearchSummary() {
-        return div({
-            style: {
-                display: 'inline-block'
-            }
-        }, [
-            '<!-- ko switch: searchStatus() -->',
-
-            '<!-- ko case: "none" -->',
-            '',
-            '<!-- /ko -->',
-
-            '<!-- ko case: "notfound" -->',
-            'Nothing found',
-            '<!-- /ko -->',
-
-            '<!-- ko case: "success" -->',
-            'In ',
-            span({
-                dataBind: {
-                    text: 'resultCount'
-                }
-            }),
-            ' Narratives, ',
-            'found ',
-
-            '<!-- ko foreach: typeCounts -->',
-            span({
-                dataBind: {
-                    text: 'count'
-                }
-            }), ' ', 
-            span({
-                dataBind: {
-                    labelText: {
-                        label: 'id',
-                        quantity: 'count',
-                        labels: '$root.labels'
-                    }
-                }
-            }), 
-
-            '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
-            ', ',
-            '<!-- /ko -->',
-            '<!-- /ko -->',
-
-            '<!-- /ko -->',
-            '<!-- /ko -->'
-        ]);
-    }
-
+  
     function template() {
         return div({
             style: {
@@ -182,13 +119,6 @@ define([
             }
         }, [
             styles.sheet,
-            div({
-                style: {
-                    flex: '1',
-                    display: 'flex',
-                    alignItems: 'center'
-                }
-            }, buildSearchSummary()),
             div({
                 style: {
                     flex: '1',

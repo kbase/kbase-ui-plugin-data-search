@@ -2,7 +2,6 @@ define([
     'knockout-plus',
     'kb_common/html',
     './header',
-    './toolbar',
     './navbar',
     './results',
     './data'
@@ -10,7 +9,6 @@ define([
     ko,
     html,
     HeaderComponent,
-    ToolbarComponent,
     NavbarComponent,
     ResultsComponent,
     Data
@@ -271,22 +269,16 @@ define([
         }, [
             styles.sheet,
             div({
-                class: styles.classes.toolbar
-            }, ko.kb.komponent({
-                name: ToolbarComponent.name(),
-                params: {
-                    typeCounts: 'searchState.summary',
-                    resultCount: 'searchState.totalSearchHits',
-                    searchStatus: 'searchState.status'
-                }
-            })),
-            div({
                 class: styles.classes.navbar
             }, ko.kb.komponent({
                 name: NavbarComponent.name(),
                 params: {
                     page: 'searchState.page',
-                    totalPages: 'searchState.totalPages'
+                    totalPages: 'searchState.totalPages',
+
+                    typeCounts: 'searchState.summary',
+                    resultCount: 'searchState.totalSearchHits',
+                    searchStatus: 'searchState.status'
                 }
             })),
             div({

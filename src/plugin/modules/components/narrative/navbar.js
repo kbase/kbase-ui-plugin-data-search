@@ -1,9 +1,13 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    './summary',
+    './accessControl'
 ], function (
     ko,
-    html
+    html,
+    SummaryComponent,
+    AccessControlComponent
 ) {
     'use strict';
 
@@ -17,7 +21,7 @@ define([
             css: {
                 flex: '1 1 0px',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'row'
             }
         },
         toolbar: {
@@ -61,7 +65,16 @@ define([
             doFirstPage: doFirstPage,
             doPrevPage: doPrevPage,
             doNextPage: doNextPage,
-            doLastPage: doLastPage
+            doLastPage: doLastPage,
+
+            // for summary area
+            typeCounts: params.typeCounts,
+            resultCount: params.resultCount,
+            searchStatus: params.searchStatus,
+
+            // for access control
+            withPrivateData: params.withPrivateData,
+            withPublicData: params.withPublicData
         };
     }
 
@@ -165,7 +178,53 @@ define([
             class: styles.classes.component
         }, [
             styles.sheet,
-            buildNavbar()
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }
+            }, buildNavbar()),
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }
+            }, div({
+                dataBind: {
+                    component: {
+                        name: SummaryComponent.quotedName(),
+                        params: {
+                            typeCounts: 'typeCounts',
+                            resultCount: 'resultCount',
+                            searchStatus: 'searchStatus'
+                        }
+                    }
+                }
+            })),
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }
+            }, div({
+                dataBind: {
+                    component: {
+                        name: AccessControlComponent.quotedName(),
+                        params: {
+                            withPrivateData: 'withPrivateData',
+                            withPublicData: 'withPublicData',
+                        }
+                    }
+                }
+            }))
+            
         ]);
     }
 

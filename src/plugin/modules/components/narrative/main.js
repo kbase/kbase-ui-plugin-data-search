@@ -3,7 +3,6 @@ define([
     'kb_common/html',
     './data',
     './header',
-    './toolbar',
     './navbar',
     './results'
 ], function (
@@ -11,7 +10,6 @@ define([
     html,
     Data,
     HeaderComponent,
-    ToolbarComponent,
     NavbarComponent,
     ResultsComponent
 ) {
@@ -327,24 +325,17 @@ define([
         }, [
             styles.sheet,
             div({
-                class: styles.classes.toolbar
-            }, ko.kb.komponent({
-                name: ToolbarComponent.name(),
-                params: {
-                    typeCounts: 'searchState.summary',
-                    resultCount: 'searchState.totalSearchHits',
-                    includePrivateData: 'searchState.includePrivateData',
-                    includePublicData: 'searchState.includePublicData',
-                    searchStatus: 'searchState.status'
-                }
-            })),
-            div({
                 class: styles.classes.navbar
             }, ko.kb.komponent({
                 name: NavbarComponent.name(),
                 params: {
                     page: 'searchState.page',
-                    totalPages: 'searchState.totalPages'
+                    totalPages: 'searchState.totalPages',
+                    typeCounts: 'searchState.summary',
+                    resultCount: 'searchState.totalSearchHits',
+                    withPrivateData: 'searchState.includePrivateData',
+                    withPublicData: 'searchState.includePublicData',
+                    searchStatus: 'searchState.status'
                 }
             })),
             div({

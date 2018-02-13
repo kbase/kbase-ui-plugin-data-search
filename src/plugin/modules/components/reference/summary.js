@@ -11,44 +11,6 @@ define([
         div = t('div'),
         span = t('span');
 
-    var styles = html.makeStyles({
-        component: {
-            flex: '1 1 0px',
-            display: 'flex',
-            flexDirection: 'column'
-        },
-        searchArea: {
-            flex: '0 0 50px',
-            // border: '1px red solid'
-        },
-        filterArea: {
-            flex: '0 0 50px',
-            textAlign: 'left'
-            // border: '1px blue dashed'
-        },
-        resultArea: {
-            flex: '1 1 0px',
-            // border: '1px green dotted',
-            display: 'flex',
-            flexDirection: 'column'
-        },
-        activeFilterInput: {
-            // fontFamily: 'monospace',
-            backgroundColor: 'rgba(209, 226, 255, 1)',
-            color: '#000'
-        },
-        modifiedFilterInput: {
-            // fontFamily: 'monospace',
-            backgroundColor: 'rgba(255, 245, 158, 1)',
-            color: '#000'
-        },
-        checkboxControl: {
-            borderColor: 'transparent',
-            boxShadow: 'none',
-            margin: '0 2px'
-        }
-    });
-
     function viewModel(params) {
         return {
             typeCounts: params.typeCounts,
@@ -65,14 +27,7 @@ define([
                 flexDirection: 'row'
             }
         }, [
-            styles.sheet,
             div({
-                style: {
-                    flex: '1',
-                    display: 'flex',
-                    alignItems: 'center'
-                }
-            }, div({
                 style: {
                     display: 'inline-block'
                 }
@@ -115,7 +70,7 @@ define([
                 '<!-- /ko -->',
 
                 '<!-- /ko -->'
-            ]))
+            ])
         ]);
     }
 
