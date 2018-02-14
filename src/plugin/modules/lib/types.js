@@ -25,6 +25,11 @@ define([
         label: 'Narrative',
         methods: narrative,
         typeKeys: ['cells', 'metadata'],
+        ui: {
+            copyable: false,
+            viewable: false,
+            class: 'narrative'
+        },
         searchKeys: [{
             key: 'title',
             label: 'Title',
@@ -57,6 +62,10 @@ define([
         }, {
             key: 'creator',
             label: 'Creator',
+            type: 'string'
+        }, {
+            key: 'object_name',
+            label: 'Object Name',
             type: 'string'
         }],
         sortFields: [{
@@ -103,6 +112,11 @@ define([
         label: 'Genome',
         methods: genome,
         typeKeys: ['domain', 'features', 'id', 'scientific_name', 'taxonomy?'],
+        ui: {
+            copyable: true,
+            viewable: true,
+            class: 'dataObject'
+        },
         searchKeys: [{
             key: 'id',
             label: 'ID',
@@ -135,6 +149,11 @@ define([
             label: 'Assembly GUID',
             type: 'string'
         },
+        {
+            key: 'object_name',
+            label: 'Object Name',
+            type: 'string'
+        }
         ],
         sortFields: [{
             key: 'id',
@@ -160,6 +179,11 @@ define([
         label: 'Genome Feature',
         methods: genomeFeature,
         typeKeys: ['aliases?', 'function?', 'id', 'location', 'protein_translation?', 'type'],
+        ui: {
+            copyable: false,
+            viewable: false,
+            class: 'subObject'
+        },
         searchKeys: [{
             key: 'id',
             label: 'ID',
@@ -222,6 +246,10 @@ define([
             key: 'genome_scientific_name',
             label: 'Genome Scientific Name',
             type: 'string'
+        }, {
+            key: 'object_name',
+            label: 'Object Name',
+            type: 'string'
         }
             // assembly_guid hidden
         ],
@@ -248,7 +276,13 @@ define([
         resultId: 'Assembly',
         label: 'Assembly',
         methods: assembly,
+        typeKeys: ['contigs', 'dna_size', 'external_source_id', 'gc_content', 'name'],
         typeKeyProps: ['contigs', 'dna_size', 'external_source_id', 'gc_content', 'name'],
+        ui: {
+            copyable: true,
+            viewable: true,
+            class: 'dataObject'
+        },
         searchKeys: [{
             key: 'contigs',
             label: 'Contigs',
@@ -268,6 +302,10 @@ define([
         }, {
             key: 'name',
             label: 'Name',
+            type: 'string'
+        }, {
+            key: 'object_name',
+            label: 'Object Name',
             type: 'string'
         }],
         sortFields: [{
@@ -294,6 +332,11 @@ define([
         label: 'Assembly Contig',
         methods: assemblyContig,
         typeKeys: ['contig_id', 'description', 'gc_content', 'length'],
+        ui: {
+            copyable: false,
+            viewable: true,
+            class: 'subObject'
+        },
         searchKeys: [{
             key: 'contig_id',
             label: 'Contig Id',
@@ -340,6 +383,11 @@ define([
         methods: pairedEndLibrary,
         // typeKeys: [], // ['insert_size_mean', 'lib1', 'sequencing_tech'],
         typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
+        ui: {
+            copyable: true,
+            viewable: true,
+            class: 'dataObject'
+        },
         searchKeys: [{
             key: 'technology',
             label: 'Sequencing Technology',
@@ -379,6 +427,10 @@ define([
             key: 'gc_content',
             label: 'GC Content',
             type: 'float'
+        }, {
+            key: 'object_name',
+            label: 'Object Name',
+            type: 'string'
         }
         ],
         sortFields: [{
@@ -406,6 +458,11 @@ define([
         methods: singleEndLibrary,
         // typeKeys: [], // ['lib1', 'lib2', 'sequencing_tech'],
         typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
+        ui: {
+            copyable: true,
+            viewable: true,
+            class: 'dataObject'
+        },
         searchKeys: [{
             key: 'technology',
             label: 'Sequencing Technology',
@@ -440,6 +497,10 @@ define([
             key: 'gc_content',
             label: 'GC Content',
             type: 'float'
+        }, {
+            key: 'object_name',
+            label: 'Object Name',
+            type: 'string'
         }
         ],
         sortFields: [{
@@ -525,7 +586,6 @@ define([
                 if (!found && optional) {
                     return true;
                 }
-                console.log('key prop', key, value.key_props[key]);
                 return found;
             })) {
                 return type.id;

@@ -5,11 +5,12 @@ define([
     'kb_service/utils',
     '../../lib/types',
     '../../lib/rpc',
+    './searchApi',
     // 'json!./data/search_objects.json',
     // 'json!./data/search_objects-fixed.json',
     'json!../../data/search/workspaces.json',
     'json!../../data/search/objects.json',
-    'json!../../data/stopWords.json'
+    'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
     moment,
@@ -17,6 +18,7 @@ define([
     apiUtils,
     Types,
     Rpc,
+    SearchAPI,
     // searchObjectsData,
     // searchObjectsDataFixed,
     workspacesDb,
@@ -183,193 +185,6 @@ define([
             return newObjects;
         }
 
-        function filterDatax(data, query) {
-            var objects = data;
-            var terms = query.terms;
-            var workspaceType = query.workspaceType;
-            var operator = query.operator;
-            var username = query.username;
-
-            var newObjects = objects.map(function (obj) {
-                if (obj.x.workspace.tag !== workspaceType) {
-                    return;
-                }
-
-                // umm... we are supposed to parse the guid.
-                var workspace = workspaceDb.db[obj.x.locator['workspace-id']];
-
-                // get the matches for each term.
-                var termMatches = terms.map(function (term) {
-
-                    // permissions filter.
-                    if (query.withPrivateData) {
-                        if (query.withPublicData) {
-                            // all data ... just ignore!
-                        } else {
-                            // just private data, no public.
-                            // er, what does this mean?
-                            // i'm going to intperpret as not the user's data,
-                            // and public.
-                            if (obj.x.workspace.owner === username &&
-                                workspace.public === 'n') {
-                                return;
-                            }
-                        }
-                    } else {
-                        if (query.withPublicData) {
-                            // no private data, just public.
-                            // this can just mean all public data...
-                            if (workspace.public === 'n') {
-                                return;
-                            }
-                        } else {
-                            // not private or public ... nothing!
-                            return;
-                        }
-                    }
-
-
-                    term = term.toLowerCase();
-                    // Get all matches for this term across all index key_props.
-                    // If matches is empty, this term is a miss (and since we are and-ing, this 
-                    // object is a miss.)
-                    var matches = Object.keys(obj.key_props).reduce(function (matchAccum, key) {
-                        var keyProps = obj.key_props[key];
-                        var keyPropsForMatching = obj.key_props_lc[key];
-
-                        // Null key props will not be saved as lower-cased versions.
-                        if (!keyPropsForMatching) {
-                            return matchAccum;
-                        }
-
-                        if (!(keyProps instanceof Array)) {
-                            keyProps = [keyProps];
-                            keyPropsForMatching = [keyPropsForMatching];
-                        } 
-
-                        // Will contain matches for any key prop values which match on the
-                        // current term.
-                        // Note the usage of plural -- a key prop is an array with possibly multiple values.
-                        var keyPropsMatches = keyPropsForMatching.reduce(function (accum, keyPropForMatching, index) {
-                            var match = keyPropForMatching.indexOf(term);
-                            if (match === -1) {
-                                return accum;
-                            }
-                            var begin;
-                            var beforePrefix;
-                            if (match > 20) {
-                                begin = match - 20;
-                                beforePrefix = '...';
-                            } else {
-                                begin = 0;
-                                beforePrefix = '';
-                            }
-
-                            var end = match + term.length + 20;
-                            var afterSuffix;
-                            // Use the key prop value from the index, not the 
-                            // lower cased one we use for matching.
-                            var value = keyProps[index];
-                            if (end < value.length) {
-                                afterSuffix = '...';
-                            } else {
-                                afterSuffix = '';
-                            }
-
-                            accum.push({
-                                before: beforePrefix + value.slice(begin, match),
-                                match: value.slice(match, match + term.length),
-                                after: value.slice(match + term.length, end) + afterSuffix
-                            });
-                            return accum;
-                        }, []);
-
-                        // If no matches, return undefined so we can filter this
-                        // later.
-                        if (keyPropsMatches.length === 0) {
-                            return matchAccum;
-                        }
-
-                        // This is the match, if any, for this term on this 
-                        matchAccum.push({
-                            id: key,
-                            label: key,
-                            highlights: keyPropsMatches,
-                            term: term
-                        });
-                        return matchAccum;
-                    }, []);
-
-                    // we should now have the matches for this term.
-
-                    // Apply the operator logic at the object level
-                    if (matches.length === 0) {
-                        return;
-                    }
-
-                    return matches;
-                }).filter(function (x) {
-                    // TODO: don't use map + filter, use reduce!
-                    return x ? true : false;
-                });
-
-                if (termMatches.length === 0) {
-                    obj.matches = [];
-                    return obj;
-                }
-
-
-                // Here we flatten out the lists of lists of matches into a single list of matches.
-                var matches = termMatches.reduce(function (accum, matches) {
-                    matches.forEach(function (match) {
-                        accum.push(match);
-                    });
-                    return accum;
-                }, []);
-
-                switch (operator) {
-                case 'and':
-                    // Apply object level "and"ing across all matches.
-                    // Actually, this is simply the condition that all terms have at least one match.
-                    var termsMatched = matches.reduce(function (terms, match) {
-                        if (!terms[match.term]) {
-                            terms[match.term] = 0;
-                        }
-                        terms[match.term] += 1;
-                        return terms;
-                    }, {});
-
-                    if (Object.keys(termsMatched).length !== terms.length) {
-                        obj.matches = [];
-                    } else {
-                        obj.matches = matches;
-                    }
-                    break;
-                case 'or':
-                    obj.matches = matches;
-                    break;
-                default:
-                    throw new Error('Invalid operator: ' + operator);
-                }
-                return obj;
- 
-            }).filter(function (obj) {
-                if (!obj) {
-                    return false;
-                }
-                if (obj.matches.length === 0) {
-                    return false;
-                }
-                // Ah, make sure the object has each of the terms matching at least once across all matches.                
-                var matchingTerms = Object.keys(obj.matches.reduce(function (acc, match) {
-                    acc[match.term] = true;
-                    return acc;
-                }, {}));
-                return matchingTerms.length > 0;
-            });
-            return newObjects;
-        }
-
         function filterData(data, query) {
             var objects = data;
             var terms = query.terms;
@@ -429,10 +244,16 @@ define([
                                 afterSuffix = '';
                             }
 
+                            var before = beforePrefix + value.slice(begin, match);
+                            var matched = value.slice(match, match + term.length);
+                            var after = value.slice(match + term.length, end) + afterSuffix;
+                            var highlight = before + '<em>' + matched + '</em>' + after;
+
                             accum.push({
-                                before: beforePrefix + value.slice(begin, match),
-                                match: value.slice(match, match + term.length),
-                                after: value.slice(match + term.length, end) + afterSuffix
+                                before: before,
+                                match: matched,
+                                after: after,
+                                highlight: highlight
                             });
                             return accum;
                         }, []);
@@ -514,6 +335,7 @@ define([
             });
             return newObjects;
         }
+
 
         function simulateSearchAPIData(query) {
             var fixed = fixupObjects(JSON.parse(JSON.stringify(objectsDb)));
@@ -807,159 +629,6 @@ define([
             });
         }
 
-        function narrativeSearch(query) {
-            var fixed = fixupObjects(JSON.parse(JSON.stringify(objectsDb)));
-
-            var searchQuery = {
-                terms: query.terms,
-                workspaceType: 'narrative',
-                operator: 'or'
-            };
-
-            var items = filterData(fixed, searchQuery);
-            
-
-            // group into workspaces
-            var grouped = items.reduce(function (groups, item) {
-                var id = String(item.ref.workspaceId);
-                if (!groups[id]) {
-                    groups[id] = {
-                        items: [],
-                        matchedTerms: {}
-                    };
-                }
-                groups[id].items.push(item);
-                item.matches.forEach(function (match) {
-                    groups[id].matchedTerms[match.term] = true;
-                });
-                return groups;
-            }, {});
-
-
-            // Only keep groups (narratives) for which the # of matched terms is the
-            // same as the # of query terms.
-            var fullyMatched = Object.keys(grouped).reduce(function (accum, groupId) {
-                if (Object.keys(grouped[groupId].matchedTerms).length === query.terms.length) {
-                    accum[groupId] = grouped[groupId];
-                }
-                return accum;
-            }, {});
-
-
-            // Now we have are full simulation of the entire search space!
-
-            // Get summary.
-            var objectsByType = Object.keys(fullyMatched).reduce(function (objectCountByType, groupId) {
-                var group = fullyMatched[groupId];
-                group.items.forEach(function (object) {
-                    var type = object.type;
-
-                    if (!objectCountByType[type]) {
-                        objectCountByType[type] = 0;
-                    }
-                    objectCountByType[type] += 1;
-                });
-                return objectCountByType;
-            }, {});
-            var objectsTypeSummary = Object.keys(objectsByType).map(function (typeId) {
-                var type = types[typeId];
-                return {
-                    id: typeId,
-                    label: type.label,
-                    count: objectsByType[typeId]
-                };
-            });
-
-            var summary = {
-                totalByType: objectsTypeSummary,
-                totalSearchHits: Object.keys(fullyMatched).length,
-                totalSearchSpace: workspaceDb.countByType.narrative
-            };
-
-            // phase 2: fetch the narratives for the workspaces.
-            // fake it...
-            var narratives = simulateNarratives(Object.keys(fullyMatched).map(function (idString) {
-                return parseInt(idString);
-            })).map(function (narrative) {
-                return {
-                    title: narrative.title,
-                    modified: moment(narrative.modified).toDate(),
-                    ref: {
-                        workspaceId: narrative.workspace_id,
-                        objectId: narrative.object_id
-                    },
-                    owner: {
-                        username: narrative.owner,
-                        realName: narrative.owner_real_name
-                    },
-                    showObjects: ko.observable(false),
-                    showMatches: ko.observable(false),
-                    showDetails: ko.observable(false),
-                    active: ko.observable(false)
-                };
-            });
-
-            // phase 3: enhance the narratives from the user profile (for now)
-
-            var usernames = Object.keys(narratives.reduce(function (acc, narrative) {
-                acc[narrative.owner.username] = true;
-                return acc;
-            }, {}));
-
-            return getRealNames(usernames)
-                .then(function (realNames) {
-                    narratives.forEach(function (narrative) {
-                        narrative.owner.realName = realNames[narrative.owner.username];
-                    });
-                    /// phase 4: assemble the results to be view model friendly.
-                    // console.log('WORKSPACES', workspaces, newItems.length);
-
-                    // phase 3: assemble the viewmodel.
-                    var result = narratives.map(function (narrative) {
-                        // var objects = newItems.filter(function (item) {
-                        //     // console.log('filter??', item.matchClass.ref.workspaceId, narrative.ref.workspaceId);
-                        //     return (item.matchClass.ref.workspaceId === narrative.ref.workspaceId);
-                        // }).sort(function (a, b) {
-                        //     return a.matchClass.id < b.matchClass.id;
-                        // });
-
-                        narrative.objects = fullyMatched[String(narrative.ref.workspaceId)].items.map(function (item) {
-                            return objectToViewModel(item);
-                        }).sort(function (a, b) {
-                            return a.matchClass.id < b.matchClass.id;
-                        });
-
-                        var summary = {};
-                        narrative.objects.forEach(function (object) {
-                            if (!summary[object.type.id]) {
-                                summary[object.type.id] = {
-                                    id: object.type.id,
-                                    label: object.type.label,
-                                    count: 0
-                                };
-                            }
-                            summary[object.type.id].count += 1;
-                        });
-                        narrative.summary = Object.keys(summary).map(function (key) {
-                            return summary[key];
-                        });
-                        // console.log('narrative summary', narrative, narrative.summary);
-                        return narrative;
-                    });
-
-                    // console.log('result', result);
-
-                    return {
-                        narratives: result,
-                        summary: summary
-                    };
-                });
-        }
-
-        
-
-        // var fakeSearchData = generateFakeSearchData();
-
         function search(query) {
             return Promise.try(function () {
 
@@ -983,7 +652,8 @@ define([
 
 
                         // todo: sort this out!
-                        return {
+
+                        var result = {
                             items: results,
                             first: start,                            
                             isTruncated: true,
@@ -994,6 +664,8 @@ define([
                             //     narratives: fakeSearchData.narratives.length
                             // }
                         };
+                        console.log('result', result);
+                        return result;
                     });
             });
 

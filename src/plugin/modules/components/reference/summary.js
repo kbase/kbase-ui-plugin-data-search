@@ -15,6 +15,7 @@ define([
         return {
             typeCounts: params.typeCounts,
             resultCount: params.resultCount,
+            searchSpaceCount: params.searchSpaceCount,
             searchStatus: params.searchStatus
         };
     }
@@ -45,6 +46,31 @@ define([
                 '<!-- ko case: "success" -->',
 
                 'Found ',
+                span({
+                    dataBind: {
+                        typedText: {
+                            value: 'searchSpaceCount',
+                            type: '"number"',
+                            format: '"0,0"'
+                        }
+                    }
+                }),
+                ' items ',
+                '<!-- ko if: resultCount() < searchSpaceCount() -->',
+                '(truncated to ',
+                span({
+                    dataBind: {
+                        typedText: {
+                            value: 'resultCount',
+                            type: '"number"',
+                            format: '"0,0"'
+                        }
+                    }
+                }),
+                ') ',
+                '<!-- /ko -->',
+
+                ': ',
 
                 '<!-- ko foreach: typeCounts -->',
                 span({

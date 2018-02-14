@@ -4,14 +4,16 @@ define([
     './header',
     './navbar',
     './results',
-    './data'
+    './data',
+    './data2'
 ], function (
     ko,
     html,
     HeaderComponent,
     NavbarComponent,
     ResultsComponent,
-    Data
+    Data,
+    Data2
 ) {
     'use strict';
 
@@ -119,6 +121,13 @@ define([
             maxBufferSize: 100
         });
 
+        var data2 = Data2.make({
+            runtime: runtime,
+            pageSize: searchState.pageSize(),
+            maxBufferSize: 100,
+            maxSearchItems: 10000
+        });
+
         function runSearch(query) {
             // ensure search is runnable
             if (!query.input) {
@@ -133,11 +142,19 @@ define([
 
             searchState.searching(true);
             searchState.status('searching');
-            return data.search({
+            data2.search({
                 start: query.start,
-                input: query.input,
                 terms: query.terms
             })
+                .then(function (result) {
+                    console.log('processed search results', result);
+                    return result;
+                })
+            // return data.search({
+            //     start: query.start,
+            //     input: query.input,
+            //     terms: query.terms
+            // })
                 .then(function (result) {
                     if (result.items.length === 0) {
                         searchState.status('notfound');
@@ -184,7 +201,7 @@ define([
             var page = searchState.page();
             var start;
             if (page) {
-                start = (page - 1) * searchState.pageSize();
+                start = page - 1;
             } else {
                 start = 0;
             }
@@ -278,7 +295,8 @@ define([
 
                     typeCounts: 'searchState.summary',
                     resultCount: 'searchState.totalSearchHits',
-                    searchStatus: 'searchState.status'
+                    searchStatus: 'searchState.status',
+                    searchSpaceCount: 'searchState.totalSearchSpace'
                 }
             })),
             div({

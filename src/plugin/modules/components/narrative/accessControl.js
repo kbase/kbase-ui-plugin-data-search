@@ -57,7 +57,7 @@ define([
     });
 
     function viewModel(params) {
-       return {
+        return {
             withPrivateData: params.withPrivateData,
             withPublicData: params.withPublicData
         };
@@ -66,14 +66,8 @@ define([
     function buildOwnershipFilter() {
         return div({
             class: 'form-inline',
-            style: {
-                // display: 'inline-block',
-                // textAlign: 'center',
-                // margin: '6px auto'
-            }
         }, [
-            'Access ',
-            // label('Ownership '),
+            'Include ',
             span({
                 dataBind: {
                     css: 'withPrivateData() ? "' + styles.classes.activeFilterInput + '" : null'
@@ -105,7 +99,8 @@ define([
                     }
                 }),
                 ' Public'
-            ]))
+            ])),
+            ' data'
         ]);
     }
 

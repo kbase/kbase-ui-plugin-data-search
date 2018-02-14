@@ -32,22 +32,24 @@ define([
         {
             id: 'title',
             label: 'Title'
-        },
-        {
-            id: 'description',
-            label: 'Description1'
-        },
+        },       
         {
             id: 'contigCount',
-            label:' # Contigs'
+            label:' # Contigs',
+            type: 'number',
+            format: '0,0'
         },
         {
             id: 'dnaSize',
-            label: 'DNA Size'
+            label: 'DNA Size',
+            type: 'number',
+            format: '0,0'
         },
         {
             id: 'gcContent',
-            label: 'GC Content'
+            label: 'GC Content',
+            type: 'number',
+            format: '0.000000%'
         },
         {
             id: 'externalSourceId',
@@ -61,7 +63,9 @@ define([
             return {
                 id: field.id,
                 label: field.label,
-                value: data.getItem(field.id)
+                value: data.getItem(field.id),
+                type: field.type,
+                format: field.format
             };
         });
     }

@@ -69,7 +69,8 @@ define([
 
             typeCounts: params.typeCounts,
             resultCount: params.resultCount,
-            searchStatus: params.searchStatus
+            searchStatus: params.searchStatus,
+            searchSpaceCount: params.searchSpaceCount
         };
     }
 
@@ -195,7 +196,8 @@ define([
                         params: {
                             typeCounts: 'typeCounts',
                             resultCount: 'resultCount',
-                            searchStatus: 'searchStatus'
+                            searchStatus: 'searchStatus',
+                            searchSpaceCount: 'searchSpaceCount'
                         }
                     }
                 }

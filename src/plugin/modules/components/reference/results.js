@@ -91,8 +91,13 @@ define([
             }
         },
         highlight: {
-            backgroundColor: 'yellow',
-            fontWeight: 'bold'
+            css: {},
+            inner: {
+                em: {
+                    backgroundColor: 'yellow',
+                    fontWeight: 'bold'
+                }
+            }            
         },
         resultsTable: {
             css: {
@@ -418,21 +423,27 @@ define([
                 },[
                     '<!-- ko foreach: $data.highlights -->',
                     span({
+                        class: styles.classes.highlight,
                         dataBind: {
-                            text: 'before'
+                            html: 'highlight'
                         }
                     }),
-                    span({
-                        dataBind: {
-                            text: 'match'
-                        },
-                        class: styles.classes.highlight
-                    }),
-                    span({
-                        dataBind: {
-                            text: 'after'
-                        }
-                    }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'before'
+                    //     }
+                    // }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'match'
+                    //     },
+                    //     class: styles.classes.highlight
+                    // }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'after'
+                    //     }
+                    // }),
                     '<!-- /ko -->',
                 ])
             ]))
@@ -459,21 +470,27 @@ define([
                 td([
                     '<!-- ko foreach: $data.highlights -->',
                     span({
+                        class: styles.classes.highlight,
                         dataBind: {
-                            text: 'before'
-                        }
-                    }), ' ',
-                    span({
-                        dataBind: {
-                            text: 'match'
-                        },
-                        class: 'highlight'
-                    }), ' ', 
-                    span({
-                        dataBind: {
-                            text: 'after'
+                            html: 'highlight'
                         }
                     }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'before'
+                    //     }
+                    // }), ' ',
+                    // span({
+                    //     dataBind: {
+                    //         text: 'match'
+                    //     },
+                    //     class: 'highlight'
+                    // }), ' ', 
+                    // span({
+                    //     dataBind: {
+                    //         text: 'after'
+                    //     }
+                    // }),
                     '<!-- /ko -->',
                 ]),
                 
