@@ -223,7 +223,7 @@ define([
 
         function copyIntoNewNarrative(newNarrativeTitle) {
             return data.createNarrative({
-                name: newNarrativeTitle                
+                title: newNarrativeTitle
             })
                 .then(function (newNarrative) {
                     return data.copyObjects({

@@ -36,14 +36,14 @@ define([
             '<!-- /ko -->',
 
             '<!-- ko case: "success" -->',
-            'In ',
-            span({
-                dataBind: {
-                    text: 'resultCount'
-                }
-            }),
-            ' Narratives, ',
-            'found ',
+            // 'In ',
+            // span({
+            //     dataBind: {
+            //         text: 'resultCount'
+            //     }
+            // }),
+            // ' Narratives, ',
+            'Found ',
 
             '<!-- ko foreach: typeCounts -->',
             span({

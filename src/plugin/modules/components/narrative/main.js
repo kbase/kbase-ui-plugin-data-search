@@ -147,7 +147,8 @@ define([
         var data = Data.make({
             runtime: runtime,
             pageSize: searchState.pageSize(),
-            maxBufferSize: 100
+            maxBufferSize: 100,
+            maxSearchItems: 10000
         });
 
         function runSearch(query) {
@@ -165,7 +166,17 @@ define([
 
             searchState.searching(true);
             searchState.status('searching');
-            return data.search(query)
+
+            data.search({
+                start: query.start,
+                terms: query.terms,
+                withPrivateData: query.withPrivateData,
+                withPublicData: query.withPublicData
+            })
+                .then(function(result) {
+                    console.log('DATA OK', result, query);
+                    return result;
+                })
                 .then(function (result) {
                     if (result.items.length === 0) {
                         searchState.status('notfound');
@@ -183,7 +194,7 @@ define([
                     }, {});
 
                     // TODO: use the es5-collections map for the selected objects.
-                    result.items.forEach(function (item) {
+                    result.narratives.forEach(function (item) {
                         item.objects.forEach(function (object) {
                             if (selected[object.matchClass.ref.ref]) {
                                 object.selected(true);
@@ -191,13 +202,14 @@ define([
                         });
                     });
 
-                    searchState.buffer(result.items);
+                    searchState.buffer(result.narratives);
                     // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);
                     searchState.totalSearchHits(result.summary.totalSearchHits);
                     searchState.summary(result.summary.totalByType);
                     searchState.totalSearchSpace(result.summary.totalSearchSpace);
                     searchState.status('success');
+
 
                     // if page not set yet (because initial search), set it.
                     // TODO: page should be invalidated when we launch a search due to new
@@ -213,16 +225,14 @@ define([
                 });
         }
         
-
         var searchQuery = ko.pureComputed(function () {
             var page = searchState.page();
             var start;
             if (page) {
-                start = (page - 1) * searchState.pageSize();
+                start = page - 1;
             } else {
                 start = 0;
             }
-
 
             var input = params.searchInput();
             var terms;

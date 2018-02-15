@@ -19,8 +19,10 @@ define([
         p = t('p'),
         span = t('span'),
         button = t('button'),
-        label = t('label'),
-        input = t('input');
+        input = t('input'),
+        table = t('table'),
+        tr = t('tr'),
+        td = t('td');
 
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
@@ -28,7 +30,9 @@ define([
 
         var narrativeToDuplicate = params.narrative;
 
-        var newNarrativeName = ko.observable();
+        var oldNarrativeName = 'old narrative';
+
+        var newNarrativeName = ko.observable(oldNarrativeName + ' - Copy');
 
         var newNarrative = ko.observable();
 
@@ -77,6 +81,7 @@ define([
 
         return {
             title: 'Duplicate Narrative',
+            oldNarrativeName: oldNarrativeName,
             newNarrativeName: newNarrativeName,
             canDuplicate: canDuplicate,
             newNarrative: newNarrative,
@@ -108,27 +113,27 @@ define([
 
     function buildStatusDisplay() {
         return div({
-            class: 'well'
-        }, 
-        
-        [
+            class: 'well',
+            style: {
+                marginTop: '12px'
+            },
+            dataBind: {
+                visible: 'status() && status() !== "none"'
+            }
+        }, [
             '<!-- ko switch: status -->',
-
-            '<!-- ko case: "none" -->',
-            'hmmm..',
-            '<!-- /ko -->',
 
             '<!-- ko case: "inprogress" -->',
             html.loading('Duplicating...'),
             '<!-- /ko -->',
 
             '<!-- ko case: "success" -->',
+            'Successfully duplicated Narrative',
             '<!-- /ko -->',
 
             '<!-- ko case: "error" -->',
             buildError(),
             '<!-- /ko -->',
-
 
             '<!-- /ko -->'
         ]);
@@ -147,22 +152,41 @@ define([
             div({
                 class: 'form-inline'
             }, [
-                div({
-                    class: 'form-group'
-                }, [
-                    label('New Narrative Name '),
-                    input({
-                        class: 'form-control',
+                table([
+                    tr({
                         style: {
-                            marginLeft: '4px',
-                            width: '30em',
-                            maxWidth: '30em',
-                        },
-                        dataBind: {
-                            textInput: 'newNarrativeName'
+                            borderBottom: '6px solid transparent'
                         }
-                    })
-                ]),
+                    }, [
+                        td('Original Narrative Name'),
+                        td(input({
+                            class: 'form-control',
+                            style: {
+                                marginLeft: '4px',
+                                width: '30em',
+                                maxWidth: '30em',
+                            },
+                            readonly: true,
+                            dataBind: {
+                                value: 'oldNarrativeName'
+                            }
+                        }))
+                    ]),
+                    tr([
+                        td('New Narrative Name'),
+                        td(input({
+                            class: 'form-control',
+                            style: {
+                                marginLeft: '4px',
+                                width: '30em',
+                                maxWidth: '30em',
+                            },
+                            dataBind: {
+                                textInput: 'newNarrativeName'
+                            }
+                        }))
+                    ])
+                ]),                
                 '<!-- ko if: newNarrativeName -->',
                 p({
                     style: {

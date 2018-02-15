@@ -224,7 +224,6 @@ define([
     }
 
     function normalize(object) {
-        // console.log('normalize narrative', object);
         return {
             title: object.data.title
         };

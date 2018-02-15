@@ -24,7 +24,7 @@ define([
         resultId: 'Narrative',
         label: 'Narrative',
         methods: narrative,
-        typeKeys: ['cells', 'metadata'],
+        typeKeys: ['cells?', 'metadata'],
         ui: {
             copyable: false,
             viewable: false,
@@ -381,8 +381,9 @@ define([
         resultId: 'PairedEndLibrary',
         label: 'Paired End Library',
         methods: pairedEndLibrary,
+        typeKeys: ['lib1', 'gc_content?', 'phred_type?', 'qual_mean?', 'read_count?', 'insert_size_mean?', 'read_length_mean?', 'sequencing_tech'],
         // typeKeys: [], // ['insert_size_mean', 'lib1', 'sequencing_tech'],
-        typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
+        // typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
         ui: {
             copyable: true,
             viewable: true,
@@ -456,8 +457,9 @@ define([
         resultId: 'SingleEndLibrary',
         label: 'Single End Library',
         methods: singleEndLibrary,
+        typeKeys: ['lib', 'gc_content', 'lib', 'phred_type', 'qual_mean', 'read_count', 'read_length_mean', 'sequencing_tech'],
         // typeKeys: [], // ['lib1', 'lib2', 'sequencing_tech'],
-        typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
+        // typeKeyProps: ['files', 'gc_content', 'insert_size', 'phred_type', 'quality', 'read_count', 'read_length', 'technology'],
         ui: {
             copyable: true,
             viewable: true,

@@ -145,7 +145,7 @@ define([
             params.overlayComponent({
                 name: CopyObjectComponent.name(),
                 viewModel: {
-                    ref: data.matchClass.ref
+                    objectsToCopy: [data.matchClass.ref.ref]
                 }
             });
         }
@@ -213,11 +213,6 @@ define([
         function dispose() {
         }
 
-        function descendantsComplete() {
-            // console.log('completed?');
-            // updateScroller();
-        }
-
         return {
             searchState: searchState,
             view: params.view,
@@ -240,8 +235,7 @@ define([
             doMouseOutRow: doMouseOutRow,
 
             // LIFECYCLE
-            dispose: dispose,
-            koDescendantsComplete: descendantsComplete
+            dispose: dispose
         };
     }
 

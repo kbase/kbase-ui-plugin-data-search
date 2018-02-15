@@ -107,8 +107,13 @@ define([
             }
         },
         highlight: {
-            backgroundColor: 'yellow',
-            fontWeight: 'bold'
+            css: {},
+            inner: {
+                em: {
+                    backgroundColor: 'yellow',
+                    fontWeight: 'bold'
+                }
+            }            
         },
         resultsTable: {
             css: {
@@ -147,7 +152,6 @@ define([
         // ACTIONS
 
         function doDuplicateNarrative(data) {
-            // console.log('duplicate...', data);
             params.overlayComponent({
                 name: DuplicateNarrativeComponent.name(),
                 viewModel: {
@@ -217,11 +221,6 @@ define([
         function dispose() {
         }
 
-        function descendantsComplete() {
-            // console.log('completed?');
-            // updateScroller();
-        }
-
         return {
             searchState: searchState,
             view: view,
@@ -247,8 +246,7 @@ define([
             doMouseOutRow: doMouseOutRow,
 
             // LIFECYCLE
-            dispose: dispose,
-            koDescendantsComplete: descendantsComplete
+            dispose: dispose
         };
     }
  
@@ -495,21 +493,27 @@ define([
                 },[
                     '<!-- ko foreach: $data.highlights -->',
                     span({
+                        class: styles.classes.highlight,
                         dataBind: {
-                            text: 'before'
+                            html: 'highlight'
                         }
                     }),
-                    span({
-                        dataBind: {
-                            text: 'match'
-                        },
-                        class: styles.classes.highlight
-                    }),
-                    span({
-                        dataBind: {
-                            text: 'after'
-                        }
-                    }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'before'
+                    //     }
+                    // }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'match'
+                    //     },
+                    //     class: styles.classes.highlight
+                    // }),
+                    // span({
+                    //     dataBind: {
+                    //         text: 'after'
+                    //     }
+                    // }),
                     '<!-- /ko -->',
                 ])
             ]))
@@ -536,21 +540,27 @@ define([
                 td([
                     '<!-- ko foreach: $data.highlights -->',
                     span({
+                        class: styles.classes.highlight,
                         dataBind: {
-                            text: 'before'
+                            html: 'highlight'
                         }
-                    }), ' ',
-                    span({
-                        dataBind: {
-                            text: 'match'
-                        },
-                        class: 'highlight'
-                    }), ' ', 
-                    span({
-                        dataBind: {
-                            text: 'after'
-                        }
-                    }),
+                    }), 
+                    // span({
+                    //     dataBind: {
+                    //         text: 'before'
+                    //     }
+                    // }), ' ',
+                    // span({
+                    //     dataBind: {
+                    //         text: 'match'
+                    //     },
+                    //     class: 'highlight'
+                    // }), ' ', 
+                    // span({
+                    //     dataBind: {
+                    //         text: 'after'
+                    //     }
+                    // }),
                     '<!-- /ko -->',
                 ]),
                 
@@ -678,21 +688,37 @@ define([
                     flex: '4',
                     fontWeight: 'bold'
                 }
-            }, a({
-                dataBind: {
-                    attr: {
-                        href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
+            }, [
+                '<!-- ko if: title -->',
+                a({
+                    dataBind: {
+                        attr: {
+                            href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
+                        },
+                        text: 'title'
                     },
-                    text: 'title'
-                },
-                target: '_blank'
-            })),
+                    target: '_blank'
+                }),
+                '<!-- /ko -->',
+                '<!-- ko ifnot: title -->',
+                a({
+                    dataBind: {
+                        attr: {
+                            href: '"#dataview/" + ref.workspaceId + "/" + ref.objectId'                        
+                        },
+                        text: 'ref.workspaceId'
+                    },
+                    target: '_blank'
+                }),
+                '<!-- /ko -->'
+            ]),
             div({
                 class: styles.classes.rowCell,
                 style: {
                     flex: '1'
                 }
             }, a({
+                target: '_blank',
                 dataBind: {
                     attr: {
                         href: '"#people/" + owner.username'

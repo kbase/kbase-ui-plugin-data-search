@@ -5,15 +5,13 @@ define([
     './navbar',
     './results',
     './data',
-    './data2'
 ], function (
     ko,
     html,
     HeaderComponent,
     NavbarComponent,
     ResultsComponent,
-    Data,
-    Data2
+    Data
 ) {
     'use strict';
 
@@ -49,11 +47,6 @@ define([
     });     
 
     function SearchState() {
-
-        var includePrivateData = ko.observable(true);
-
-        var includePublicData = ko.observable(true);
-
         var pageSize = ko.observable(20);
 
         // Paging
@@ -93,8 +86,6 @@ define([
         });
 
         return {
-            includePrivateData: includePrivateData,
-            includePublicData: includePublicData,
             pageSize: pageSize,
             page: page,
             totalPages: totalPages,
@@ -118,12 +109,6 @@ define([
         var data = Data.make({
             runtime: runtime,
             pageSize: searchState.pageSize(),
-            maxBufferSize: 100
-        });
-
-        var data2 = Data2.make({
-            runtime: runtime,
-            pageSize: searchState.pageSize(),
             maxBufferSize: 100,
             maxSearchItems: 10000
         });
@@ -142,7 +127,7 @@ define([
 
             searchState.searching(true);
             searchState.status('searching');
-            data2.search({
+            data.search({
                 start: query.start,
                 terms: query.terms
             })
@@ -150,11 +135,6 @@ define([
                     console.log('processed search results', result);
                     return result;
                 })
-            // return data.search({
-            //     start: query.start,
-            //     input: query.input,
-            //     terms: query.terms
-            // })
                 .then(function (result) {
                     if (result.items.length === 0) {
                         searchState.status('notfound');
@@ -228,8 +208,6 @@ define([
             return {
                 input: params.searchInput(),
                 terms: terms,
-                withPrivateData: searchState.includePrivateData(),
-                withPublicData: searchState.includePublicData(),
                 start: start,
                 pageSize: searchState.pageSize()
             };
