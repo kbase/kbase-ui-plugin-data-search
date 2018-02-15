@@ -5,12 +5,7 @@ define([
     'kb_service/utils',
     '../../lib/types',
     '../../lib/rpc',
-    '../../lib/searchApi',
-    // 'json!./data/search_objects.json',
-    // 'json!./data/search_objects-fixed.json',
-    'json!../../data/search/workspaces.json',
-    'json!../../data/search/objects.json',
-    'yaml!../../data/stopWords.yml'
+    '../../lib/searchApi'
 ], function (
     Promise,
     moment,
@@ -18,24 +13,11 @@ define([
     apiUtils,
     Types,
     Rpc,
-    SearchAPI,
-    // searchObjectsData,
-    // searchObjectsDataFixed,
-    workspacesDb,
-    objectsDb,
-    stopWordsDb
+    SearchAPI
 ) {
     'use strict';
 
-    function isStopWord(word) {
-        if (stopWordsDb.warn.indexOf(word) >= 0) {
-            return true;
-        }
-        if (stopWordsDb.ignore.indexOf(word) >= 0) {
-            return true;
-        }
-        return false;
-    }
+   
 
     // For now, this fakes the search...
     function factory(params) {
@@ -52,60 +34,6 @@ define([
             fetchSize: params.pageSize || 20,
         };
 
-        // Adjustments to the objects to make them easier to work with...
-        // perhaps should just be in the base objects.json
-        function fixupObjects(objects) {
-            var newObjects = objects.map(function (obj) {
-                // var typeId = Types.typeIt(obj);
-                // x is the new black ... er it is the extensions added by the 
-                // data generation scripts (Racket).
-                var type = Types.getType(obj.x.type);
-                obj.type = obj.x.type;
-
-                // TODO: the proper way...
-                // obj.ref = type.methods.guidToReference(obj.guid);
-                // TODO: the new way from fake data...
-                obj.ref = {
-                    workspaceId: obj.x.locator['workspace-id'],
-                    objectId: obj.x.locator['object-id'],
-                    version: obj.x.locator.version
-                };
-                obj.ref.ref = [obj.ref.workspaceId, obj.ref.objectId, obj.ref.version].join('/');
-                obj.ref.dataviewId = obj.ref.ref;
-
-                obj.key_props['username'] = obj.x.workspace.owner;
-                var sharedWith = obj.x.workspace['shared-with'] || [];
-                obj.key_props['shared-with'] = sharedWith.map(function (share) {
-                    return share[0];
-                });
-
-                // A lower case version of the props, for case insensitive searching.
-                obj.key_props_lc = Object.keys(obj.key_props).reduce(function (acc, key) {
-                    var keyPropValue = obj.key_props[key];
-                    if (keyPropValue instanceof Array) {
-                        acc[key] = keyPropValue.map(function (value) {
-                            if (value) {
-                                return value.toLowerCase();
-                            }
-                        }).filter(function (value) {
-                            return value ? true : false;
-                        });
-                    } else {
-                        if (keyPropValue) {
-                            if (!keyPropValue.toLowerCase) {
-                                console.warn('key not in props: ', key, keyPropValue);
-                            } else {
-                                acc[key] = keyPropValue.toLowerCase();
-                            }
-                        }
-                    }
-                    return acc;
-                }, {});
-
-                return obj;
-            });
-            return newObjects;
-        }
 
         function getRealNames(usernames) {
             return rpc.call('UserProfile', 'get_user_profile', usernames)
@@ -156,11 +84,6 @@ define([
                 });
                 return matches;
             }, []);
-
-            var matchMap = matches.reduce(function (matchMap, match) {            
-                matchMap[match.id] = match;
-                return matchMap;
-            }, {});
 
             // Uncomment to re-enable highlights merging into details
             // detail.forEach(function (field) {
@@ -351,8 +274,7 @@ define([
         }
 
         return {
-            search: search,
-            isStopWord: isStopWord
+            search: search
         };
     }
 

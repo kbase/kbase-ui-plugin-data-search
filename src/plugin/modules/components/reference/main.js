@@ -186,24 +186,7 @@ define([
                 start = 0;
             }
 
-            var input = params.searchInput();
-            var terms;
-            if (input) {
-                terms = input.split(/\s+/)
-                    .map(function (term) {
-                        return term.trim(' ').toLowerCase();
-                    })
-                    .filter(function (term) {
-                        if (term.length === 0) {
-                            return false;
-                        } else if (data.isStopWord(term)) {
-                            return false;
-                        }
-                        return true;
-                    });
-            } else {
-                terms = [];
-            }
+            var terms = params.searchTerms();
 
             return {
                 input: params.searchInput(),

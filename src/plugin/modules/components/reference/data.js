@@ -5,8 +5,6 @@ define([
     'kb_service/utils',
     '../../lib/types',
     '../../lib/searchApi',
-    'json!../../data/search/workspaces.json',
-    'json!../../data/search/objects.json',
     'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
@@ -15,8 +13,6 @@ define([
     apiUtils,
     Types,
     SearchAPI,
-    workspacesDb,
-    objectsDb,
     stopWordsDb
 ) {
     'use strict';
@@ -82,12 +78,7 @@ define([
                 });
                 return matches;
             }, []);
-
-            var matchMap = matches.reduce(function (matchMap, match) {            
-                matchMap[match.id] = match;
-                return matchMap;
-            }, {});
-
+           
             // Uncomment to re-enable highlights merging into details
             // detail.forEach(function (field) {
             //     if (matchMap[field.id]) {

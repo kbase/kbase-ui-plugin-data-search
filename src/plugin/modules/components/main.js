@@ -5,7 +5,9 @@ define([
     './toolBar',
     './results',
     './viewSelector',
-    './copyObjectsControl'
+    './copyObjectsControl',
+    '../lib/searchApi',
+    '../lib/data'
 ], function (
     ko,
     html,
@@ -13,14 +15,26 @@ define([
     ToolBarComponent,
     SearchResultsComponent,
     ViewSelectorComponent,
-    CopyObjectsControlComponent
+    CopyObjectsControlComponent,
+    SearchApi,
+    Data
 ) {
     'use strict';
 
     var t = html.tag,
         div = t('div');
 
-    function viewModel() {
+    function viewModel(params, componentInfo) {
+        var context = ko.contextFor(componentInfo.element);
+        var runtime = context['$root'].runtime;
+        var searchApi = SearchApi.make({
+            runtime: runtime
+        });
+
+        var data = Data.make({
+            runtime: params.runtime
+        });
+
         // OVERLAY
         var overlayComponent = ko.observable();
         // var showOverlay = ko.observable();
@@ -32,11 +46,73 @@ define([
         // SEARCH INPUTS
         var searchInput = ko.observable();
 
+        var searchTerms = ko.pureComputed(function () {
+            if (!searchInput()) {
+                return [];
+            }
+
+            return searchInput().split(/\s+/)
+                .map(function (term) {
+                    return term.trim(' ').toLowerCase();
+                })
+                .filter(function (term) {
+                    if (term.length === 0) {
+                        return false;
+                    } else if (data.isStopWord(term)) {
+                        return false;
+                    }
+                    return true;
+                });
+        });
+
         var searchHistory = ko.observableArray();
 
         var resultsView = ko.observable('detail');
 
         var selectedObjects = ko.observableArray();
+
+        // These are just to support showing preview totals on the tabs.
+        var narrativesTotal = ko.observable();
+        var referenceDataTotal = ko.observable();
+
+        var withPrivateData = ko.observable(true);
+        var withPublicData = ko.observable(true);
+
+        var referenceDataTotalQuery = ko.pureComputed(function () {
+            return {
+                query: searchTerms().join(' ')
+            };
+        });
+        referenceDataTotalQuery.subscribe(function (newQuery) {
+            if (!newQuery.query) {
+                referenceDataTotal(null);
+                return;
+            }
+            return searchApi.referenceObjectSearchTotal(newQuery)
+                .then(function (total) {
+                    referenceDataTotal(total);
+                });
+        });
+
+        var narrativesTotalQuery = ko.pureComputed(function () {
+            return {
+                query: searchTerms().join(' '),
+                withPrivateData: withPrivateData(),
+                withPublicData: withPublicData()
+            };
+        });
+        narrativesTotalQuery.subscribe(function (newQuery) {
+            if (!newQuery.query) {
+                narrativesTotal(null);
+                return;
+            }
+            return searchApi.narrativeObjectSearchTotal(newQuery)
+                .then(function (total) {
+                    narrativesTotal(total);
+                });
+        });
+
+        
 
         return {
             // search: {
@@ -46,10 +122,16 @@ define([
             // },
             // showOverlay: showOverlay,
             searchInput: searchInput,
+            searchTerms: searchTerms,
             searchHistory: searchHistory,
             overlayComponent: overlayComponent,
             resultsView: resultsView,
-            selectedObjects: selectedObjects
+            selectedObjects: selectedObjects,
+
+            narrativesTotal: narrativesTotal,
+            referenceDataTotal: referenceDataTotal,
+            withPrivateData: withPrivateData,
+            withPublicData: withPublicData
         };
     }
 
@@ -131,25 +213,20 @@ define([
         ]);
     }
 
-    // function buildToolbarArea() {
-    //     return ko.kb.komponent({
-    //         name: ToolBarComponent.name(),
-    //         params: {
-    //             resultsView: 'resultsView',
-    //             overlayComponent: 'overlayComponent',
-    //             selectedObjects: 'selectedObjects'
-    //         }
-    //     });
-    // }
-
     function buildResultsArea() {
         return ko.kb.komponent({
             name: SearchResultsComponent.name(),
             params: {
                 searchInput: 'searchInput',
+                searchTerms: 'searchTerms',
                 view: 'resultsView',
                 overlayComponent: 'overlayComponent',
-                selectedObjects: 'selectedObjects'
+                selectedObjects: 'selectedObjects',
+
+                narrativesTotal: 'narrativesTotal',
+                referenceDataTotal: 'referenceDataTotal',
+                withPrivateData: 'withPrivateData',
+                withPublicData: 'withPublicData'
             }
         });
     }
@@ -193,7 +270,9 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: {
+                createViewModel: viewModel
+            },
             template: template()
         };
     }

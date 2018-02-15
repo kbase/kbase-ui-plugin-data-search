@@ -85,13 +85,21 @@ define([
 
         // bootstrap tabs implemeneted in knockout. tricky...
         function makeTab(params) {
-            if (!params.component.params) {
-                params.component.params = {};
-            }
+            // if (!params.panel.component.params) {
+            //     params.panel.component.params = {};
+            // }
             // params.component.params = params;
             return {
-                label: params.label,
-                component: params.component,
+                tab: {
+                    label: params.tab.label,
+                    component: params.tab.component
+                },
+                // label: params.tab.label,
+                panel: {
+                    component: params.panel.component, 
+                    content: params.panel.content
+                },
+                // component: params.component,
                 content: params.content,
                 active: ko.observable(false),
                 closable: ko.observable(params.closable || false)
@@ -148,7 +156,8 @@ define([
         }, [
             a({
                 dataBind: {
-                    click: '$component.doSelectTab'
+                    click: '$component.doSelectTab',
+                    with: 'tab'
                 },
                 role: 'tab',
                 style: {
@@ -160,7 +169,17 @@ define([
                         text: 'label'
                     }
                 }),
-                '<!-- ko if: closable -->',
+                '<!-- ko if: $data.component -->',
+                span({
+                    dataBind: {
+                        component: {
+                            name: 'component.name',
+                            params: 'component.params'
+                        }
+                    }
+                }),
+                '<!-- /ko -->',
+                '<!-- ko if: $parent.closable -->',
                 span({
                     class: '-button',
                     dataBind: {
@@ -185,7 +204,8 @@ define([
                     css: { 
                         in: 'active',
                         active: 'active'
-                    }
+                    },
+                    with: 'panel'
                 },
                 class: 'tab-pane fade',
                 role: 'tabpanel'

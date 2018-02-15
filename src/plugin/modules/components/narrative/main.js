@@ -71,11 +71,11 @@ define([
 
     });
 
-    function SearchState() {
+    function SearchState(params) {
 
-        var includePrivateData = ko.observable(true);
+        var includePrivateData = params.withPrivateData;
 
-        var includePublicData = ko.observable(true);
+        var includePublicData = params.withPublicData;
 
         var pageSize = ko.observable(20);
 
@@ -142,7 +142,10 @@ define([
         var runtime = context['$root'].runtime;
 
         // the search view model...
-        var searchState = SearchState();
+        var searchState = SearchState({
+            withPrivateData: params.withPrivateData,
+            withPublicData: params.withPublicData
+        });
 
         var data = Data.make({
             runtime: runtime,
@@ -234,24 +237,7 @@ define([
                 start = 0;
             }
 
-            var input = params.searchInput();
-            var terms;
-            if (input) {
-                terms = input.split(/\s+/)
-                    .map(function (term) {
-                        return term.trim(' ').toLowerCase();
-                    })
-                    .filter(function (term) {
-                        if (term.length === 0) {
-                            return false;
-                        } else if (data.isStopWord(term)) {
-                            return false;
-                        }
-                        return true;
-                    });
-            } else {
-                terms = [];
-            }
+            var terms = params.searchTerms();
 
             return {
                 input: params.searchInput(),

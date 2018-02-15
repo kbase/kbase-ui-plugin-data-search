@@ -52,6 +52,39 @@ define([
                 });
         }
 
+        function referenceObjectSearchTotal(arg) {
+            var query = arg.query;
+
+            var param = {
+                match_filter: {
+                    full_text_in_all: query,
+                    exclude_subobjects: 1,
+                    source_tags: ['refdata'],
+                    source_tags_blacklist: 0
+                },
+                pagination: {
+                    start: 0,
+                    count: 0
+                },
+                post_processing: {
+                    ids_only: 1,
+                    skip_info: 1,
+                    skip_keys: 1,
+                    skip_data: 1,
+                    include_highlight: 1
+                },
+                access_filter: {
+                    with_private: 0,
+                    with_public: 1
+                }
+            };
+
+            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+                .spread(function (result) {
+                    return result.total;
+                });
+        }
+
         function narrativeObjectSearch(arg) {
             var query = arg.query;
             var start = arg.page * arg.pageSize;
@@ -95,6 +128,41 @@ define([
                 });
         }
 
+        function narrativeObjectSearchTotal(arg) {
+            var query = arg.query;
+            var withPrivate = arg.withPrivateData ?  1 : 0;
+            var withPublic = arg.withPublicData ? 1 : 0;
+
+            var param = {
+                match_filter: {
+                    full_text_in_all: query,
+                    exclude_subobjects: 1,
+                    source_tags: ['refdata'],
+                    source_tags_blacklist: 1
+                },
+                pagination: {
+                    start: 0,
+                    count: 0
+                },
+                post_processing: {
+                    ids_only: 1,
+                    skip_info: 1,
+                    skip_keys: 1,
+                    skip_data: 1,
+                    include_highlight: 0
+                },
+                access_filter: {
+                    with_private: withPrivate,
+                    with_public: withPublic
+                }
+            };
+
+            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+                .spread(function (result) {
+                    return result.total;
+                });
+        }
+
         function typeSearch(arg) {
             var query = arg.query;
             var withPrivate = arg.withPrivateData ?  1 : 0;
@@ -132,6 +200,8 @@ define([
         return {
             referenceObjectSearch: referenceObjectSearch,
             narrativeObjectSearch: narrativeObjectSearch,
+            referenceObjectSearchTotal: referenceObjectSearchTotal,
+            narrativeObjectSearchTotal: narrativeObjectSearchTotal,
             typeSearch: typeSearch
         };
     }

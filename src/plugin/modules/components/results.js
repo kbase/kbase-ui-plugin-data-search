@@ -4,14 +4,18 @@ define([
     '../lib/nanoBus',
     './tabset',
     './narrative/main',
-    './reference/main'
+    './narrative/tab',
+    './reference/main',
+    './reference/tab'
 ], function (
     ko,
     html,
     NanoBus,
     TabsetComponent,
     NarrativeResultsComponent,
-    ReferenceDataResultsComponent
+    NarrativeTabComponent,
+    ReferenceDataResultsComponent,
+    ReferenceDataTabComponent
 ) {
     'use strict';
 
@@ -23,31 +27,57 @@ define([
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
                 tab: {
-                    label: 'User Data',
-                    component: {
-                        name: NarrativeResultsComponent.name(),
-                        // NB these params are bound here, not in the tabset.
-                        // TODO: this should be named viewModel since that is what it is...
-                        params: {
-                            view: params.view,
-                            searchInput: params.searchInput,
-                            overlayComponent: params.overlayComponent,
-                            selectedObjects: params.selectedObjects
+                    tab: {
+                        label: 'User Data',
+                        component: {
+                            name: NarrativeTabComponent.name(),
+                            params: {
+                                count: params.narrativesTotal
+                            }
+                        }
+                    },
+                    panel: {
+                        component: {
+                            name: NarrativeResultsComponent.name(),
+                            // NB these params are bound here, not in the tabset.
+                            // TODO: this should be named viewModel since that is what it is...
+                            params: {
+                                view: params.view,
+                                searchInput: params.searchInput,
+                                searchTerms: params.searchTerms,
+                                overlayComponent: params.overlayComponent,
+                                selectedObjects: params.selectedObjects,
+                                total: params.narrativesTotal,
+                                withPrivateData: params.withPrivateData,
+                                withPublicData: params.withPublicData
+                            }
                         }
                     }
                 }
             }, false);
             tabsetBus.send('add-tab', {
                 tab: {
-                    label: 'Reference Data',
-                    component: {
-                        name: ReferenceDataResultsComponent.name(),
-                        // NB these params are bound here, not in the tabset.
-                        params: {
-                            view: params.view,
-                            searchInput: params.searchInput,
-                            overlayComponent: params.overlayComponent,
-                            selectedObjects: params.selectedObjects
+                    tab: {
+                        label: 'Reference Data',
+                        component: {
+                            name: ReferenceDataTabComponent.name(),
+                            params: {
+                                count: params.referenceDataTotal
+                            }
+                        }
+                    },
+                    panel: {
+                        component: {
+                            name: ReferenceDataResultsComponent.name(),
+                            // NB these params are bound here, not in the tabset.
+                            params: {
+                                view: params.view,
+                                searchInput: params.searchInput,
+                                searchTerms: params.searchTerms,
+                                overlayComponent: params.overlayComponent,
+                                selectedObjects: params.selectedObjects,
+                                total: params.referenceDataTotal
+                            }
                         }
                     }
                 }

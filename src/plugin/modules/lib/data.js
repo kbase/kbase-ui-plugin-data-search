@@ -1,11 +1,13 @@
 define([
     'bluebird',
     'kb_service/utils',
-    './rpc'
+    './rpc',
+    'yaml!../data/stopWords.yml'
 ], function (
     Promise,
     apiUtils,
-    Rpc
+    Rpc,
+    stopWordsDb
 ) {
     function factory(config) {
         var runtime = config.runtime;
@@ -173,6 +175,16 @@ define([
                 });
         }
 
+        function isStopWord(word) {
+            if (stopWordsDb.warn.indexOf(word) >= 0) {
+                return true;
+            }
+            if (stopWordsDb.ignore.indexOf(word) >= 0) {
+                return true;
+            }
+            return false;
+        }
+
         return {
             getNarrative: getNarrative,
             getObjectInfo: getObjectInfo,
@@ -181,7 +193,8 @@ define([
             copyObject: copyObject,
             copyObjects: copyObjects,
             createNarrative: createNarrative,
-            copyNarrative: copyNarrative
+            copyNarrative: copyNarrative,
+            isStopWord: isStopWord
         };
     }
 
