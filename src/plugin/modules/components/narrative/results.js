@@ -12,6 +12,7 @@ define([
     'use strict';
 
     var t = html.tag,
+        p = t('p'),
         button = t('button'),
         div = t('div'),
         span = t('span'),
@@ -732,7 +733,24 @@ define([
                         }
                     }, [
                         '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+
+                        '<!-- ko if: matches.length > 0 -->',
                         buildMatchHighlightsTable(),
+                        '<!-- /ko -->',
+                        '<!-- ko if: matches.length === 0 -->',
+                        p({
+                            style: {
+                                marginTop: '10px',
+                                fontStyle: 'italic'
+                            }
+                        }, [
+                            'No matches reported ... ', 
+                            span({class: 'fa fa-bug fa-rotate-90'}),
+                            ' ... it is a mystery!'
+                        ]),
+                        '<!-- /ko -->',
+
+
                         '<!-- /ko -->'                                
                     ]),
                     div({
