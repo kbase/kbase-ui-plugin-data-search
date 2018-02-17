@@ -11,6 +11,7 @@ define([
     'use strict';
 
     var t = html.tag,
+        p = t('p'),
         button = t('button'),
         div = t('div'),
         span = t('span'),
@@ -18,7 +19,6 @@ define([
         ul = t('ul'),
         li = t('li'),
         table = t('table'),
-        caption = t('caption'),
         tbody = t('tbody'),
         tr = t('tr'),
         td = t('td');
@@ -181,6 +181,13 @@ define([
         objectItemRow: {
             css: {
                 marginBottom: '10px'
+            }
+        },
+        sectionTitle: {
+            css: {
+                fontWeight: 'bold',
+                color: 'gray',
+                marginTop: '10px'
             }
         }
     });        
@@ -492,7 +499,6 @@ define([
         return table({
             class: styles.classes.highlightsTable,
         }, [
-            caption('Matches'),
             tbody({
                 dataBind: {
                     foreach: 'matches'
@@ -512,22 +518,6 @@ define([
                             html: 'highlight'
                         }
                     }),
-                    // span({
-                    //     dataBind: {
-                    //         text: 'before'
-                    //     }
-                    // }),
-                    // span({
-                    //     dataBind: {
-                    //         text: 'match'
-                    //     },
-                    //     class: styles.classes.highlight
-                    // }),
-                    // span({
-                    //     dataBind: {
-                    //         text: 'after'
-                    //     }
-                    // }),
                     '<!-- /ko -->',
                 ])
             ]))
@@ -538,7 +528,6 @@ define([
         return table({
             class: styles.classes.detailTable,
         }, [
-            caption('Detail'),
             tbody({
                 dataBind: {
                     foreach: 'detail'
@@ -646,7 +635,26 @@ define([
                         }
                     }, [
                         '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
+                        div({
+                            class: styles.classes.sectionTitle
+                        }, 'Matches'),
+
+                        '<!-- ko if: matches.length > 0 -->',
                         buildMatchHighlightsTable(),
+                        '<!-- /ko -->',
+                        '<!-- ko if: matches.length === 0 -->',
+                        p({
+                            style: {
+                                marginTop: '10px',
+                                fontStyle: 'italic'
+                            }
+                        }, [
+                            'No matches reported ... ', 
+                            span({class: 'fa fa-bug fa-rotate-90'}),
+                            ' ... it is a mystery!'
+                        ]),
+                        '<!-- /ko -->',
+
                         '<!-- /ko -->'                                
                     ]),
                     div({
@@ -656,6 +664,9 @@ define([
                         }
                     }, [
                         '<!-- ko if: $component.view() === "detail" -->',
+                        div({
+                            class: styles.classes.sectionTitle
+                        }, 'Detail'),
                         buildMatchViewDetailTable(),
                         '<!-- /ko -->'
                     ]),
