@@ -54,10 +54,6 @@ searchKeys:
     key: genome_scientific_name
     label: "Genome Scientific Name"
     type: string
-  - 
-    key: object_name
-    label: "Object Name"
-    type: string
 sortFields: 
   - 
     isObjectName: false

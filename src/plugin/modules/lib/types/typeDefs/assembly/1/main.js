@@ -25,7 +25,6 @@ define([
                 gcContent: object.data.gc_content,
                 externalSourceId: object.data.external_source_id,
                 contigCount: object.data.contigs,
-                // title: object.data.scientific_name || object.object_name,
             };
         }
 

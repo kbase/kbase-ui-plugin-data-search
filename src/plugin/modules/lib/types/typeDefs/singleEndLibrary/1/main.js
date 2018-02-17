@@ -24,8 +24,7 @@ define([
                 meanReadLength: object.data.read_length_mean,
                 meanInsertSize: object.data.insert_size_mean,
                 meanQuality: object.data.qual_mean,
-                gcContent: object.data.gc_content,
-                objectName: object.object_name
+                gcContent: object.data.gc_content
             };
         }
 

@@ -16,7 +16,6 @@ define([
 
         function normalize() {
             object['assemblyContig'] = {
-                title: null || object.object_name,
                 description: object.data.description,
                 contigId: object.data.contig_id,
                 length: {

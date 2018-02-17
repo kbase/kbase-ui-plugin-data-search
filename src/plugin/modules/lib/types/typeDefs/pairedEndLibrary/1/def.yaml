@@ -37,10 +37,6 @@ searchKeys:
     key: gc_content
     label: GC Content
     type: float
-  - 
-    key: object_name
-    label: Object Name
-    type: string
 dataSchema: 
   # not yet  
 sortFields: 

@@ -64,6 +64,14 @@ define([
                     singleendlibrary: {
                         singular: 'Single End Library',
                         plural: 'Single End Libraries'
+                    },
+                    fbamodel: {
+                        singular: 'FBA Model',
+                        plural: 'FBA Models'
+                    },
+                    media: {
+                        singular: 'Media',
+                        plural: 'Media'
                     }
                 }
             };

@@ -19,7 +19,6 @@ define([
         function normalize() {
             return {
                 scientificName: object.data.scientific_name,
-                objectName: object.object_name,
                 gcContent: object.data.gc_content,
                 meanInsertSize: object.data.insert_size_mean,
                 phredType: object.data.phred_type,

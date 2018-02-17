@@ -45,10 +45,6 @@ searchKeys:
     key: creator
     label: Creator
     type: string
-  - 
-    key: object_name
-    label: "Object Name"
-    type: string
 # keys and rules for sorting
 sortFields: 
   - 

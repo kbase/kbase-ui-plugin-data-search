@@ -16,7 +16,6 @@ define([
 
         function normalize() {
             return {
-                title: object.object_name,
                 function: object.data.function,
                 featureType: object.data.type,
                 location: object.data.location.map(function (location) {

@@ -26,10 +26,6 @@ searchKeys:
     key: contigs
     label: Contigs
     type: integer
-  - 
-    key: object_name
-    label: Object Name
-    type: string
 sortFields: 
   - 
     isObjectName: false

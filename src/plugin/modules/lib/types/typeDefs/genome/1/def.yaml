@@ -38,10 +38,6 @@
       key: contigs
       label: Contig Count
       type: integer
-    - 
-      key: object_name
-      label: Object Name
-      type: string
   sortFields: 
     - 
       key: id
