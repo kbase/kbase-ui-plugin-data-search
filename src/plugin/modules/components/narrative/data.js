@@ -32,16 +32,6 @@ define([
         };
 
 
-        function getRealNames(usernames) {
-            return rpc.call('UserProfile', 'get_user_profile', usernames)
-                .spread(function (profiles) {
-                    return profiles.reduce(function (acc, profile) {
-                        acc[profile.user.username] = profile.user.realname;
-                        return acc;
-                    }, {});
-                });
-        }
-
         function objectToViewModel(obj) {
             var type = types.getTypeForObject(obj);
             if (!type) {
@@ -154,48 +144,36 @@ define([
 
             searchResult.summary.totalNarrativeCount = Object.keys(grouped).length;
 
-            // phase 3: enhance the narratives from the user profile (for now)
-
-            var usernames = searchResult.narratives.reduce(function (acc, narrative) {
-                acc[narrative.owner.username] = true;
-                return acc;
-            }, {});
-
-            return getRealNames(Object.keys(usernames))
-                .then(function (realNames) {                    
-                    searchResult.narratives.forEach(function (narrative) {
-                        narrative.owner.realName = realNames[narrative.owner.username];
-
-                        narrative.objects = grouped[String(narrative.ref.workspaceId)].items
-                            // get a separate array of items
-                            .map(function (item) {
-                                return item;
-                            })
-                            // then sort them by the type.
-                            .sort(function (a, b) {
-                                return a.type.id < b.type.id;
-                            });
-
-                        // Get the summary of object types per narrative.
-                        var summary = {};
-                        narrative.objects.forEach(function (object) {
-                            if (!summary[object.type.id]) {
-                                summary[object.type.id] = {
-                                    id: object.type.id,
-                                    label: object.type.label,
-                                    count: 0
-                                };
-                            }
-                            summary[object.type.id].count += 1;
-                        });
-                        narrative.summary = Object.keys(summary).map(function (key) {
-                            return summary[key];
-                        });
-                        return narrative;
+            searchResult.narratives.forEach(function (narrative) {
+                narrative.objects = grouped[String(narrative.ref.workspaceId)].items
+                    // get a separate array of items
+                    .map(function (item) {
+                        return item;
+                    })
+                    // then sort them by the type.
+                    .sort(function (a, b) {
+                        return a.type.id < b.type.id;
                     });
 
-                    return searchResult;
+                // Get the summary of object types per narrative.
+                var summary = {};
+                narrative.objects.forEach(function (object) {
+                    if (!summary[object.type.id]) {
+                        summary[object.type.id] = {
+                            id: object.type.id,
+                            label: object.type.label,
+                            count: 0
+                        };
+                    }
+                    summary[object.type.id].count += 1;
                 });
+                narrative.summary = Object.keys(summary).map(function (key) {
+                    return summary[key];
+                });
+                return narrative;
+            });
+
+            return searchResult;
         }
 
         function search(query) {
