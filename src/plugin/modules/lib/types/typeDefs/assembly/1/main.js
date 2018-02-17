@@ -29,7 +29,7 @@ define([
         }
 
         function detail() {
-            return utils.objectToDetails(object, def.detailFields);           
+            return utils.dataToDetail(normalize(object), def.detailFields);           
         }
 
         var ref = utils.objectGuidToRef(object.guid);
