@@ -20,7 +20,6 @@ define([
         ul = t('ul'),
         li = t('li'),
         table = t('table'),   
-        caption = t('caption'),     
         tbody = t('tbody'),
         tr = t('tr'),
         td = t('td');
@@ -192,6 +191,13 @@ define([
                 'td:nth-child(2)': {
                     wordBreak: 'break-word'
                 }
+            }
+        },
+        sectionTitle: {
+            css: {
+                fontWeight: 'bold',
+                color: 'gray',
+                marginTop: '10px'
             }
         }
     });
@@ -574,7 +580,7 @@ define([
         return table({
             class: styles.classes.highlightsTable,
         }, [
-            caption('Matches'),
+            
             tbody({
                 dataBind: {
                     foreach: 'matches'
@@ -620,7 +626,6 @@ define([
         return table({
             class: styles.classes.detailTable,
         }, [
-            caption('Detail'),
             tbody({
                 dataBind: {
                     foreach: 'detail'
@@ -734,6 +739,10 @@ define([
                     }, [
                         '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
 
+                        div({
+                            class: styles.classes.sectionTitle
+                        }, 'Matches'),
+
                         '<!-- ko if: matches.length > 0 -->',
                         buildMatchHighlightsTable(),
                         '<!-- /ko -->',
@@ -760,6 +769,9 @@ define([
                         }
                     }, [
                         '<!-- ko if: $component.view() === "detail" -->',
+                        div({
+                            class: styles.classes.sectionTitle
+                        }, 'Detail'),
                         buildMatchViewDetailTable(),
                         '<!-- /ko -->'
                     ]),
