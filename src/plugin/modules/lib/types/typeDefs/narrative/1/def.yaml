@@ -1,0 +1,75 @@
+# type id known to both searchapi and the search ui
+id: narrative
+version: 1
+# kbase type
+kbaseTypeId: Narrative
+kbaseTypeModule: KBaseNarrative
+# ui label
+label: Narrative
+# to be populated by ui
+methods: null
+# ??
+resultId: Narrative
+# keys that may be used for searching
+searchKeys: 
+  - 
+    disableSort: true
+    key: title
+    label: Title
+    type: string
+  - 
+    key: source
+    label: Source
+    type: string
+  - 
+    key: code_output
+    label: "Code Output"
+    type: string
+  - 
+    key: app_output
+    label: "App Output"
+    type: string
+  - 
+    key: app_info
+    label: "App Info"
+    type: string
+  - 
+    key: app_input
+    label: "App Input"
+    type: string
+  - 
+    key: job_ids
+    label: "Job Ids"
+    type: string
+  - 
+    key: creator
+    label: Creator
+    type: string
+  - 
+    key: object_name
+    label: "Object Name"
+    type: string
+# keys and rules for sorting
+sortFields: 
+  - 
+    key: title
+    label: Title
+  - 
+    key: created
+    label: "Created (fake)"
+  - 
+    key: updated
+    label: "Updated (fake)"
+  - 
+    label: "Owner (fake)"
+    value: owner
+  - 
+    label: Creator
+    value: creator
+# ui hints
+ui: 
+  class: narrative
+  copyable: false
+  viewable: false
+# ui id??
+uiId: narrative

@@ -4,20 +4,25 @@ define([
     'kb_common/html',
     'kb_common/bootstrapUtils',
     './lib/utils',
-    './components/main'
+    './components/main',
+    './lib/types'
 ], function (
     Promise, 
     ko,
     html, 
     BS,
     Utils,
-    MainComponent
+    MainComponent,
+    Types
 ) {
     'use strict';
     
     function factory(config) {
         var hostNode, container,
-            runtime = config.runtime;
+            runtime = config.runtime,
+            types = Types.make({
+                runtime: runtime
+            });
 
         var styles = html.makeStyles({
             panel: {
@@ -38,6 +43,7 @@ define([
         function viewModel() {
             return {
                 runtime: runtime,
+                types: types,
                 labels: {
                     narrative: {
                         singular: 'Narrative',
@@ -71,12 +77,15 @@ define([
             return null;
         }
         function start() {
-            container.innerHTML = [styles.sheet, template()].join('');
-            ko.applyBindings(viewModel, container, function (context) {
-                context.runtime = runtime;
-            });
-
-            runtime.send('ui', 'setTitle', 'Data Search');
+            return types.start()
+                .then(function () {
+                    container.innerHTML = [styles.sheet, template()].join('');
+                    ko.applyBindings(viewModel, container, function (context) {
+                        context.runtime = runtime;
+                    });
+        
+                    runtime.send('ui', 'setTitle', 'Data Search');
+                });            
         }
 
         function stop() {

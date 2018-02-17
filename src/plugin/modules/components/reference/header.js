@@ -63,6 +63,12 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
+                    flex: '0 0 2em'
+                }
+            }),
+            div({
+                class: styles.classes.headerCell,
+                style: {
                     flex: '2'
                 }
             }, [

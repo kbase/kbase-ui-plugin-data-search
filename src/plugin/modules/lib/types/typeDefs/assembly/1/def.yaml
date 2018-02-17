@@ -1,0 +1,75 @@
+id: assembly
+version: 1
+kbaseTypeId: Assembly
+kbaseTypeModule: KBaseGenomeAnnotations
+label: Assembly
+methods: {}
+resultId: Assembly
+searchKeys: 
+  - 
+    key: name
+    label: Name
+    type: string
+  - 
+    key: dna_size
+    label: DNA Size
+    type: integer
+  - 
+    key: gc_content
+    label: GC Content
+    type: float
+  - 
+    key: external_source_id
+    label: External Source ID
+    type: string
+  - 
+    key: contigs
+    label: Contigs
+    type: integer
+  - 
+    key: object_name
+    label: Object Name
+    type: string
+sortFields: 
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: name
+    label: Name
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: dna_size
+    label: "DNA Size"
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: gc_content
+    label: "GC Content"
+ui: 
+  class: dataObject
+  copyable: true
+  viewable: true
+uiId: assembly
+detailFields:
+  -
+    id: name
+    label: Name
+  -
+    id: contigCount
+    label: '# Contigs'
+    type: number 
+    format: 0,0
+  -
+    id: dnaSize
+    label: DNA Size
+    type: number
+    format: 0,0
+  -
+    id: gcContent
+    label: GC Content
+    type: number
+    format: '0.000%'
+  -
+    id: externalSourceId
+    label: External Source ID

@@ -1,0 +1,63 @@
+id: fbamodel
+version: 1
+kbaseTypeModule: KBaseFBA
+kbaseTypeId: FBAModel
+label: FBA Model
+methods: {}
+resultId: FBAModel
+searchKeys: 
+  - 
+    key: id
+    label: ID
+    type: string
+  -
+    key: name 
+    label: Name 
+    type: string
+  -
+    key: source
+    label: Source
+    type: string
+  -
+    key: type
+    label: Type
+    type: string
+  -
+    key: modelcompartments
+    label: Model Compartments
+    type: integer
+  -
+    key: modelcompounds
+    label: Model Compounds
+    type: integer
+  -
+    key: modelreactions
+    label: Model Reactions
+    type: integer
+  -
+    key: genome_ref
+    label: Genome Ref
+    type: string
+  # -
+  #   key: genome_guid
+  #   label: Genome GUID
+  #   type: Genome GUID
+  - 
+    key: scientific_name
+    label: Scientific Name
+    type: string
+  - 
+    key: taxonomy
+    label: Taxonomy
+    type: string
+  -
+    key: genome_name
+    label: Genome 
+    type: string
+sortFields:
+  # to be defined
+ui: 
+  class: dataObject
+  copyable: true
+  viewable: true
+uiId: fbamodel

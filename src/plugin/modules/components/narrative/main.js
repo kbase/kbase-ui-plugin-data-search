@@ -140,6 +140,7 @@ define([
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
+        var types = context['$root'].types;
 
         // the search view model...
         var searchState = SearchState({
@@ -149,6 +150,7 @@ define([
 
         var data = Data.make({
             runtime: runtime,
+            types: types,
             pageSize: searchState.pageSize(),
             maxBufferSize: 100,
             maxSearchItems: 10000

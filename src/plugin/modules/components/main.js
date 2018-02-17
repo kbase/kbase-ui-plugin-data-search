@@ -112,8 +112,6 @@ define([
                 });
         });
 
-        
-
         return {
             // search: {
 

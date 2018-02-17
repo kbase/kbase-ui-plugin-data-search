@@ -3,7 +3,6 @@ define([
     'moment',
     'knockout-plus',
     'kb_service/utils',
-    '../../lib/types',
     '../../lib/rpc',
     '../../lib/searchApi'
 ], function (
@@ -11,13 +10,10 @@ define([
     moment,
     ko,
     apiUtils,
-    Types,
     Rpc,
     SearchAPI
 ) {
     'use strict';
-
-   
 
     // For now, this fakes the search...
     function factory(params) {
@@ -25,6 +21,7 @@ define([
         var rpc = Rpc.make({
             runtime: params.runtime
         });
+        var types = params.types;
 
         var searchConfig = {
             // max number of search result items to hold in the buffer
@@ -46,36 +43,37 @@ define([
         }
 
         function objectToViewModel(obj) {
-            var typeId = Types.typeIt(obj);
-            if (!typeId) {
+            var type = types.getTypeForObject(obj);
+            if (!type) {
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
             }
-            obj.type = typeId;
-            var type = Types.getType(typeId);
-            if (!type || !type.methods || !type.methods.detail) {
-                console.error('!! type not found', type, obj.type, obj);
-                throw new Error('Type not found');
-            }
-            var ref = type.methods.guidToReference(obj.guid);
-            var detail = type.methods.detail(obj);
+            obj.type = type.getDef();
+            
+            var ref = type.getRef();
+            var detail = type.detail();
             var detailMap = detail.reduce(function (m, field) {
                 m[field.id] = field;
                 return m;
             }, {});
+
+            var icon = types.getIcon(type);
+            // if (icon && icon.type !== 'fontAwesome') {
+            //     console.log('icon?', icon);
+            // }
 
             var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
                 if (field === 'source_tags') {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 } 
-                if (!type.searchKeysMap[field]) {
+                if (!type.getDef().searchKeysMap[field]) {
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
                     return matches;
                 }
                 matches.push({
                     id: field,
-                    label: type.searchKeysMap[field].label,
+                    label: type.getDef().searchKeysMap[field].label,
                     highlights: obj.highlight[field].map(function (highlight) {
                         return {
                             highlight: highlight
@@ -95,12 +93,13 @@ define([
             var vm = {
                 type: {
                     id: obj.type,
-                    label: type.label
+                    label: type.getDef().label,
+                    icon: icon
                 },
                 matchClass: {
-                    id: type.ui.class,
-                    copyable: type.ui.copyable,
-                    viewable: type.ui.viewable,
+                    id: type.getDef().ui.class,
+                    copyable: type.getDef().ui.copyable,
+                    viewable: type.getDef().ui.viewable,
                     ref: ref
                 },
 
@@ -210,7 +209,7 @@ define([
                 })
             ])
                 .spread(function (objectResults, typeResults) {
-                    console.log('search api results (object, type):', objectResults, typeResults);
+                    console.log('search api results (object, type):', JSON.parse(JSON.stringify(objectResults)), typeResults);
                     var objects = objectResults.objects.map(function (object) {
                         return objectToViewModel(object);
                     });

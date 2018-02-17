@@ -140,6 +140,58 @@ define([
                     wordBreak: 'break-word'
                 }
             }
+        },
+        highlightsTable: {
+            css: {
+                border: '1px silver solid',
+                width: '100%',
+                maxWidth: '60em'
+            },
+            scopes: {
+                active: {
+                    border: '1px gray solid'
+                }
+            },
+            inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
+                td: {
+                    padding: '4px'
+                },
+                'td:nth-child(1)': {
+                    width: '10em'
+                },
+                'td:nth-child(2)': {
+                    wordBreak: 'break-word'
+                }
+            }
+        },
+        detailTable: {
+            css: {
+                border: '1px silver solid',
+                width: '100%',
+                maxWidth: '60em'
+            },
+            scopes: {
+                active: {
+                    border: '1px gray solid'
+                }
+            },
+            inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
+                td: {
+                    padding: '4px'
+                },
+                'td:nth-child(1)': {
+                    width: '14em'
+                },
+                'td:nth-child(2)': {
+                    wordBreak: 'break-word'
+                }
+            }
         }
     });
 
@@ -393,7 +445,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: '"/narrative/ws." + matchClass.ref.workspaceId + "." + matchClass.ref.objectId'
+                        href: '"/narrative/ws." + matchClass.ref.workspaceId + ".obj." + matchClass.ref.objectId'
                     },
                     text: 'title'
                 }
@@ -425,6 +477,43 @@ define([
         ];
     }
 
+    function buildObjectIcon() {
+        return [
+            '<!-- ko if: type.icon -->',
+
+            '<!-- ko if: type.icon.type === "fontAwesome" -->',
+            span({
+                // class: 'fa-2x',
+                dataBind: {
+                    class: 'type.icon.classes.join(" ")',
+                    style: {
+                        color: 'type.icon.color'
+                    }
+                }
+            }),
+            '<!-- /ko -->',
+
+            '<!-- ko if: type.icon.type === "kbase" -->',
+            span({
+                dataBind: {
+                    class: 'type.icon.classes.join(" ")',
+                    style: {
+                        color: 'type.icon.color'
+                    }
+                }
+            }),
+            '<!-- /ko -->',
+
+            '<!-- /ko -->',
+
+            '<!-- ko ifnot: type.icon -->',
+            span({
+                class: 'fa fa-file-o'
+            }),
+            '<!-- /ko -->'
+        ];
+    }
+
     function buildMatchViewObject() {
         return div({
             class: [styles.classes.row, styles.classes.objectRow]
@@ -435,6 +524,12 @@ define([
                     flex: '0 0 2em'
                 }
             }, buildObjectCheckbox()),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '0 0 2em'
+                }
+            }, buildObjectIcon()),
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -476,7 +571,7 @@ define([
 
     function buildMatchHighlightsTable() {
         return table({
-            class: styles.classes.resultsTable,
+            class: styles.classes.highlightsTable,
         }, [
             caption('Matches'),
             tbody({
@@ -522,7 +617,7 @@ define([
 
     function buildMatchViewDetailTable() {
         return table({
-            class: styles.classes.resultsTable,
+            class: styles.classes.detailTable,
         }, [
             caption('Detail'),
             tbody({
@@ -729,7 +824,7 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '0 0 2em'
+                    flex: '0 0 4em'
                 }
             }),
             div({

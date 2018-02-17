@@ -1,0 +1,39 @@
+# Type index
+# search types to kbase types and ui resources
+---
+- 
+  id: narrative
+  version: 1
+  module: narrative
+- 
+  id: genome
+  version: 1
+  module: genome
+- 
+  id: assembly
+  version: 1
+  module: assembly
+- 
+  id: genomefeature
+  version: 1
+  module: genomeFeature
+- 
+  id: assemblycontig
+  version: 1
+  module: assemblyContig
+- 
+  id: pairedendlibrary
+  version: 1
+  module: pairedEndLibrary
+- 
+  id: singleendlibrary
+  version: 1
+  module: singleEndLibrary
+-
+  id: fbamodel
+  version: 1
+  module: fbaModel
+-
+  id: media
+  version: 1
+  module: media

@@ -1,0 +1,54 @@
+id: singleendlibrary
+version: 1
+kbaseTypeId: SingleEndLibrary
+kbaseTypeModule: KBaseAssembly
+label: Single End Library
+resultId: SingleEndLibrary
+searchKeys: 
+  - 
+    key: technology
+    label: Sequencing Technology
+    type: string
+  - 
+    key: file
+    label: File
+    type: string
+  - 
+    key: phred_type
+    label: Phred Type
+    type: string
+  - 
+    key: read_count
+    label: Read Count
+    type: integer
+  - 
+    key: read_length
+    label: Mean Read Length
+    type: integer
+  - 
+    key: quality
+    label: float
+    type: Quality
+  - 
+    key: gc_content
+    label: GC Content
+    type: float
+  - 
+    key: object_name
+    label: Object Name
+    type: string
+sortFields: 
+  - 
+    key: technology
+    label: Sequencing Technology
+  - 
+    key: read_count
+    label: Read Count
+  - 
+    key: read_length
+    label: Mean Read Length
+ui: 
+  class: dataObject
+  copyable: true
+  viewable: true
+uiId: singleEndLibrary

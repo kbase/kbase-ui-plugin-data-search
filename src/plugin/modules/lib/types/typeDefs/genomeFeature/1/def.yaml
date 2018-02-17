@@ -1,0 +1,81 @@
+id: genomefeature
+version: 1
+kbaseTypeId: GenomeFeature
+label: "Genome Feature"
+methods: {}
+resultId: GenomeFeature
+searchKeys: 
+  - 
+    key: id
+    label: ID
+    type: string
+  - 
+    key: function
+    label: Function
+    type: string
+  - 
+    comment: "list of string"
+    key: aliases
+    label: Aliases
+    type: string
+  - 
+    key: contig_id
+    label: "Contig ID"
+    type: string
+  - 
+    key: start
+    label: Start
+    type: integer
+  - 
+    key: stop
+    label: Stop
+    type: integer
+  - 
+    key: strand
+    label: Strand
+    type: string
+  - 
+    key: feature_type
+    label: "Feature Type"
+    type: string
+  - 
+    key: ontology_terms
+    label: "Ontology Terms"
+    type: string
+  - 
+    key: genome_domain
+    label: "Genome Domain"
+    type: string
+  - 
+    key: genome_taxonomy
+    label: "Genome Taxonomy"
+    type: string
+  - 
+    key: genome_scientific_name
+    label: "Genome Scientific Name"
+    type: string
+  - 
+    key: object_name
+    label: "Object Name"
+    type: string
+sortFields: 
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: id
+    label: ID
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: function
+    label: Function
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: start
+    label: Start
+ui: 
+  class: subObject
+  copyable: false
+  viewable: false
+uiId: genomeFeature

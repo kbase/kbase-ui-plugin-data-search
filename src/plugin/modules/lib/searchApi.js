@@ -30,7 +30,7 @@ define([
                 post_processing: {
                     ids_only: 0,
                     skip_info: 0,
-                    skip_keys: 1,
+                    skip_keys: 0,
                     skip_data: 0,
                     include_highlight: 1
                 },
@@ -106,7 +106,7 @@ define([
                 post_processing: {
                     ids_only: 0,
                     skip_info: 0,
-                    skip_keys: 1,
+                    skip_keys: 0,
                     skip_data: 0,
                     include_highlight: 1
                 },

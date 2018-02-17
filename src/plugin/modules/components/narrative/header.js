@@ -44,8 +44,6 @@ define([
         return {};
     }
 
-    
-
     function buildHeader() {
         return div({
             class: styles.classes.header
@@ -62,6 +60,12 @@ define([
                     flex: '1'
                 }
             }, 'Type'),
+            div({
+                class: styles.classes.headerCell,
+                style: {
+                    flex: '0 0 2em'
+                }
+            }),
             div({
                 class: styles.classes.headerCell,
                 style: {

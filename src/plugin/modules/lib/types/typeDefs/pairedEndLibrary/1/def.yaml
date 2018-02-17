@@ -1,0 +1,66 @@
+id: pairedendlibrary
+version: 1
+kbaseTypeId: PairedEndLibrary
+kbaseTypeModule: KBaseAssembly
+label: Paired End Library
+resultId: PairedEndLibrary
+searchKeys: 
+  - 
+    key: technology
+    label: Sequencing Technology
+    type: string
+  - 
+    key: files
+    label: Files
+    type: string
+  - 
+    key: phred_type
+    label: Phred Type
+    type: string
+  - 
+    key: read_count
+    label: Read Count
+    type: integer
+  - 
+    key: read_length
+    label: Mean Read Length
+    type: integer
+  - 
+    key: insert_size
+    label: Mean Insert Size
+    type: integer
+  - 
+    key: quality
+    label: Quality
+    type: float
+  - 
+    key: gc_content
+    label: GC Content
+    type: float
+  - 
+    key: object_name
+    label: Object Name
+    type: string
+dataSchema: 
+  # not yet  
+sortFields: 
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: technology
+    label: "Sequencing Technology"
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: read_count
+    label: "Read Count"
+  - 
+    isObjectName: false
+    isTimestamp: false
+    key: read_length
+    label: "Mean Read Length"
+ui: 
+  class: dataObject
+  copyable: true
+  viewable: true
+uiId: pairedEndLibrary
