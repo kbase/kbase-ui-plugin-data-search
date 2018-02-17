@@ -62,7 +62,7 @@ define([
                 .then(function (types) {
                     var objectTypeMap = {};
                     types.forEach(function (type) { 
-                        objectTypeMap[type.type.id] = type;
+                        objectTypeMap[type.type.id + '.' + type.type.version] = type;
                     });
                     return {
                         types: types,
@@ -76,7 +76,9 @@ define([
         }
 
         function getTypeForObject(searchObject) {
-            var type = objectTypeMap[searchObject.object_props.type.toLowerCase()];
+            var objectType = searchObject.object_props.type.toLowerCase();
+            var objectTypeVersion = parseInt(searchObject.object_props.type_ver, 10);
+            var type = objectTypeMap[objectType + '.' + objectTypeVersion];
 
             if (!type) {
                 console.error('Object type not found!!!', searchObject, objectTypeMap);
