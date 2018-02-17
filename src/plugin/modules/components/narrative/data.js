@@ -3,14 +3,12 @@ define([
     'moment',
     'knockout-plus',
     'kb_service/utils',
-    '../../lib/rpc',
     '../../lib/searchApi'
 ], function (
     Promise,
     moment,
     ko,
     apiUtils,
-    Rpc,
     SearchAPI
 ) {
     'use strict';
@@ -18,9 +16,6 @@ define([
     // For now, this fakes the search...
     function factory(params) {
         var maxSearchResults = params.maxSearchItems;
-        var rpc = Rpc.make({
-            runtime: params.runtime
-        });
         var types = params.types;
 
         var searchConfig = {
