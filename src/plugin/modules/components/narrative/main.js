@@ -1,6 +1,7 @@
 define([
     'knockout-plus',
     'kb_common/html',
+    'kb_common/utils',
     './data',
     './header',
     './navbar',
@@ -8,6 +9,7 @@ define([
 ], function (
     ko,
     html,
+    utils,
     Data,
     HeaderComponent,
     NavbarComponent,
@@ -156,9 +158,14 @@ define([
             maxSearchItems: 10000
         });
 
+       
+        var queryFinished;
+        var processingFinished;
+
         function runSearch(query) {
             // ensure search is runnable
-            if (!query.input) {
+            var start = new Date().getTime();
+            if (!query.terms || query.terms.length === 0) {
                 searchState.status('none');
                 searchState.buffer(null);
                 // searchState.firstItemPosition(null);
@@ -179,7 +186,8 @@ define([
                 withPublicData: query.withPublicData
             })
                 .then(function(result) {
-                    console.log('DATA OK', result, query);
+                    // console.log('DATA OK', result, query);
+                    queryFinished = new Date().getTime();
                     return result;
                 })
                 .then(function (result) {
@@ -226,6 +234,8 @@ define([
                     }
                 })
                 .finally(function () {
+                    console.log('time - search: ', queryFinished - start);
+                    console.log('time - process:', new Date().getTime() - queryFinished);
                     searchState.searching(false);
                 });
         }
@@ -242,7 +252,7 @@ define([
             var terms = params.searchTerms();
 
             return {
-                input: params.searchInput(),
+                // input: params.searchInput(),
                 terms: terms,
                 withPrivateData: searchState.includePrivateData(),
                 withPublicData: searchState.includePublicData(),
@@ -252,7 +262,14 @@ define([
             };
         });
 
+        var lastQuery = null;
         searchQuery.subscribe(function (newValue) {
+            if (utils.isEqual(newValue, lastQuery)) {
+                console.warn('duplicate query - why?', newValue, lastQuery);
+                return;
+            }
+            console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
+            lastQuery = newValue;
             runSearch(newValue);
         });
 
