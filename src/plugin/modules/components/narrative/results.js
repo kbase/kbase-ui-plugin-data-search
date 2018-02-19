@@ -88,7 +88,7 @@ define([
         }, 
         objectItemRow: {
             css: {
-                marginBottom: '10px'
+                // marginBottom: '10px'
             }
         },
         rowCell: {
@@ -744,11 +744,13 @@ define([
             }, [
                 buildMatchViewObject(),
                 
+                '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
                 div({
                     style: {
                         flex: '1 1 0px',
                         display: 'flex',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        marginBottom: '10px'
                     }
                 }, [
                     div({
@@ -807,7 +809,8 @@ define([
                             flex: '0 0 4em'
                         }
                     })
-                ])
+                ]),
+                '<!-- /ko -->'
             ])
         ]);
     }
