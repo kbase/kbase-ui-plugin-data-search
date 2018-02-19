@@ -30,29 +30,71 @@ define([
         };
     }
 
-    function template() {
-        return table({
-            class: 'table table-bordered',
-        }, [
-            tbody({
-                dataBind: {
-                    foreach: 'featureCounts'
+    var styles = html.makeStyles({
+        table: {
+            css: {
+                // border: '0.5px solid rgba(220,220,220,0.5)',
+                width: '100%',
+                maxWidth: '60em'
+            },
+            // scopes: {
+            //     active: {
+            //         border: '0.5px solid rgba(220,220,220,1)'
+            //     }
+            // },
+            inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
+                td: {
+                    width: '50%',
+                    padding: '2px',
+                    verticalAlign: 'top',
+                    borderBottom: '0.5px solid rgba(220,220,220,0.5)'
+                },
+                'td:nth-child(1)': {
+                    // width: '15em'
+                },
+                'td:nth-child(2)': {
+                    wordBreak: 'break-word'
+                },
+                'td:nth-last-child': {
+                    borderBottom: 'none'
                 }
+            }
+        }
+    });
+
+    function template() {
+        return div([
+            styles.sheet,
+            table({
+                class: styles.classes.table,
             }, [
-                tr([
-                    td({
-                        style: {
-                            width: '8em'
-                        },
-                        dataBind: {
-                            text: 'key'
-                        }
-                    }),
-                    td({
-                        dataBind: {
-                            text: 'value'
-                        }
-                    })
+                tbody({
+                    dataBind: {
+                        foreach: 'featureCounts'
+                    }
+                }, [
+                    tr([
+                        td({
+                            style: {
+                                width: '8em'
+                            },
+                            dataBind: {
+                                text: 'key'
+                            }
+                        }),
+                        td({
+                            dataBind: {
+                                typedText: {
+                                    value: 'value',
+                                    type: '"number"',
+                                    format: '"0,0"'
+                                }
+                            }
+                        })
+                    ])
                 ])
             ])
         ]);

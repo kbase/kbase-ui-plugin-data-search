@@ -21,8 +21,8 @@ define([
             style: {
                 margin: '2px',
                 padding: '2px',
-                backgroundColor: 'silver',
-                border: '1px gray solid',
+                backgroundColor: 'rgba(220,220,220,0.5)',
+                border: '0.5px solid rgba(200,200,200,0.5)',
                 borderRadius: '3px'
             },
             dataBind: {

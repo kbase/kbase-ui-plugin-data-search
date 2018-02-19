@@ -143,13 +143,13 @@ define([
         },
         highlightsTable: {
             css: {
-                border: '1px silver solid',
+                border: '0.5px solid rgba(220,220,220,0.5)',
                 width: '100%',
                 maxWidth: '60em'
             },
             scopes: {
                 active: {
-                    border: '1px gray solid'
+                    border: '0.5px solid rgba(220,220,220,1)'
                 }
             },
             inner: {
@@ -157,25 +157,30 @@ define([
                     paddingBottom: '0'
                 },
                 td: {
-                    padding: '4px'
+                    padding: '4px',
+                    verticalAlign: 'top',
+                    borderBottom: '0.5px solid rgba(220,220,220,0.5)'
                 },
                 'td:nth-child(1)': {
                     width: '10em'
                 },
                 'td:nth-child(2)': {
                     wordBreak: 'break-word'
-                }
+                },
+                'td:nth-last-child': {
+                    borderBottom: 'none'
+                },
             }
         },
         detailTable: {
             css: {
-                border: '1px silver solid',
+                border: '0.5px solid rgba(220,220,220,0.5)',
                 width: '100%',
                 maxWidth: '60em'
             },
             scopes: {
                 active: {
-                    border: '1px gray solid'
+                    border: '0.5px solid rgba(220,220,220,1)'
                 }
             },
             inner: {
@@ -183,13 +188,18 @@ define([
                     paddingBottom: '0'
                 },
                 td: {
-                    padding: '4px'
+                    padding: '4px',
+                    verticalAlign: 'top',
+                    borderBottom: '0.5px solid rgba(220,220,220,0.5)'
                 },
                 'td:nth-child(1)': {
                     width: '14em'
                 },
                 'td:nth-child(2)': {
                     wordBreak: 'break-word'
+                },
+                'td:nth-last-child': {
+                    borderBottom: 'none'
                 }
             }
         },

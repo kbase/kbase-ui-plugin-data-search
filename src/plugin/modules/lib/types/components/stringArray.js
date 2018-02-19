@@ -15,6 +15,35 @@ define([
         tr = t('tr'),
         td = t('td');
 
+    var styles = html.makeStyles({
+        table: {
+            css: {
+                // border: '0.5px solid rgba(220,220,220,0.5)',
+                width: '100%',
+                maxWidth: '60em'
+            },
+            // scopes: {
+            //     active: {
+            //         border: '0.5px solid rgba(220,220,220,1)'
+            //     }
+            // },
+            inner: {
+                caption: {
+                    paddingBottom: '0'
+                },
+                td: {
+                    padding: '2px',
+                    verticalAlign: 'top',
+                    borderBottom: '0.5px solid rgba(220,220,220,0.5)',
+                    wordBreak: 'break-word'
+                },
+                'td:nth-last-child': {
+                    borderBottom: 'none'
+                }
+            }
+        }
+    });
+
     function viewModel(params) {
         return {
             items: params.value
@@ -22,20 +51,23 @@ define([
     }
 
     function template() {
-        return table({
-            class: 'table table-bordered',
-        }, [
-            tbody({
-                dataBind: {
-                    foreach: 'items'
-                }
+        return div({}, [
+            styles.sheet,
+            table({
+                class: styles.classes.table,
             }, [
-                tr([                    
-                    td({
-                        dataBind: {
-                            text: '$data'
-                        }
-                    })
+                tbody({
+                    dataBind: {
+                        foreach: 'items'
+                    }
+                }, [
+                    tr([                    
+                        td({
+                            dataBind: {
+                                text: '$data'
+                            }
+                        })
+                    ])
                 ])
             ])
         ]);
