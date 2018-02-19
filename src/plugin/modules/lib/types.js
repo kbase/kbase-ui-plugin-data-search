@@ -78,11 +78,12 @@ define([
         function getTypeForObject(searchObject) {
             var objectType = searchObject.object_props.type.toLowerCase();
             var objectTypeVersion = parseInt(searchObject.object_props.type_ver, 10);
-            var type = objectTypeMap[objectType + '.' + objectTypeVersion];
+            var objectTypeId = [objectType, objectTypeVersion].join('.');
+            var type = objectTypeMap[objectTypeId];
 
             if (!type) {
-                console.error('Object type not found!!!', searchObject, objectTypeMap);
-                throw new Error('Object type not found!!: ' + searchObject.object_props.type);
+                console.error('Object type not found!!!', objectTypeVersion, objectType, searchObject, objectTypeMap);
+                throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);
             }
 
             return type.module.make({object: searchObject});

@@ -1,0 +1,88 @@
+  id: genome
+  version: 2
+  kbaseTypeId: Genome
+  kbaseTypeModule: KBaseGenomes
+  label: Genome
+  methods: {}
+  resultId: Genome
+  searchKeys: 
+    - 
+      key: id
+      label: ID
+      type: string
+    - 
+      key: domain
+      label: Domain
+      type: string
+    - 
+      key: taxonomy
+      label: Taxonomy
+      type: string
+    - 
+      key: scientific_name
+      label: Scientific Name
+      type: string
+    -
+      key: notes
+      label: Notes
+      type: string
+    -
+      key: source
+      label: Source
+      type: string
+    - 
+      key: features
+      label: Feature Count
+      type: integer
+    -
+      key: cdss
+      label: CDS Count
+      type: integer
+    -
+      key: mrnas
+      label: MRNA Count
+      type: integer
+    -
+      key: non_coding_features
+      label: Non Coding Features
+      type: integer
+    -
+      key: warnings
+      label: Warnings
+      type: string
+    -
+      key: feature_counts
+      label: Feature Counts
+      type: string
+    -
+      key: genome_tiers
+      label: Genome Tiers
+      type: string
+    -
+      key: suspect
+      label: Suspect
+      type: boolean
+    -
+      key: assembly_ref
+      label: Asssembly Ref
+      type: string
+    # - 
+    #   key: assembly_guid
+    #   label: Assembly GUID
+    #   type: string
+  sortFields: 
+    # TODO: not used in main search tool
+    - 
+      key: id
+      label: ID
+    - 
+      key: domain
+      label: Domain
+    - 
+      key: scientific_name
+      label: Scientific name
+  ui: 
+    class: dataObject
+    copyable: true
+    viewable: true
+  uiId: genome

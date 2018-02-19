@@ -107,7 +107,9 @@ define([
                 value: props.getItem(field.id),
                 type: field.type,
                 format: field.format,
-                component: field.component
+                component: field.component,
+                missing: field.missing,
+                default: field.default
             };
         });
     }
