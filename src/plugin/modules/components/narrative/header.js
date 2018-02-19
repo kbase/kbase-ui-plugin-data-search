@@ -96,7 +96,6 @@ define([
         return div({
             class: styles.classes.component
         }, [
-            styles.sheet,
             buildHeader()
         ]);
     }
@@ -104,7 +103,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

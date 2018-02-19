@@ -69,7 +69,6 @@ define([
         return div({
             class: 'form-inline pull-right'
         }, [
-            styles.sheet,
             'View ',
             select({
                 class: 'form-control',
@@ -86,7 +85,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

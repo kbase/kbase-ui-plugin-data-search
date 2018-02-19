@@ -800,7 +800,6 @@ define([
 
     function template() {
         return div([
-            styles.sheet,
             ui.buildDialog({
                 title: span({dataBind: {text: 'title'}}), 
                 icon: 'clone',
@@ -830,7 +829,8 @@ define([
             viewModel: {
                 createViewModel: viewModel
             },
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

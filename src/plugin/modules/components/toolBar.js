@@ -77,14 +77,12 @@ define([
 
     function buildToolbar() {
         return div({
-            // class: styles.classes.component
             style: {
                 flex: '1 1 0px',
                 display: 'flex',
                 flexDirection: 'row'
             }
         }, [
-            styles.sheet,
             div({
                 style: {
                     flex: '1',
@@ -115,7 +113,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

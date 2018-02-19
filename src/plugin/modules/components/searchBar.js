@@ -360,9 +360,8 @@ define([
 
     function template() {
         return div({
-            class: styles.sheet.component
+            class: styles.classes.component
         }, [
-            styles.sheet,
             div({
                 styles: {
                     flex: '1 1 0px'
@@ -374,7 +373,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

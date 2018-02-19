@@ -56,7 +56,6 @@ define([
         return div({
             class: 'form-inline pull-right'
         }, [
-            styles.sheet,
             'View ',
             span({
                 dataBind: {
@@ -118,7 +117,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

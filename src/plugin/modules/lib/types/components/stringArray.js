@@ -52,7 +52,6 @@ define([
 
     function template() {
         return div({}, [
-            styles.sheet,
             table({
                 class: styles.classes.table,
             }, [
@@ -76,7 +75,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

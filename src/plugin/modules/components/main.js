@@ -240,7 +240,6 @@ define([
             div({
                 class: styles.classes.component
             }, [
-                styles.sheet,
                 // The search input area
                 div({
                     class: styles.classes.searchArea
@@ -271,7 +270,8 @@ define([
             viewModel: {
                 createViewModel: viewModel
             },
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

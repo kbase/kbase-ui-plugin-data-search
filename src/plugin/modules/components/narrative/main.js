@@ -338,7 +338,6 @@ define([
         return div({
             class: styles.classes.main
         }, [
-            styles.sheet,
             div({
                 class: styles.classes.navbar
             }, ko.kb.komponent({
@@ -383,7 +382,8 @@ define([
             viewModel: {
                 createViewModel: viewModel
             },
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 

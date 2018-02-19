@@ -777,7 +777,6 @@ define([
         return div({
             class: styles.classes.component
         }, [
-            styles.sheet,            
             div({
                 style: {
                     flex: '1 1 0px'
@@ -810,7 +809,8 @@ define([
     function component() {
         return {
             viewModel: viewModel,
-            template: template()
+            template: template(),
+            stylesheet: styles.sheet
         };
     }
 
