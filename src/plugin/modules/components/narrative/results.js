@@ -157,9 +157,16 @@ define([
                     paddingBottom: '0'
                 },
                 td: {
-                    padding: '4px',
-                    verticalAlign: 'top',
-                    borderBottom: '0.5px solid rgba(220,220,220,0.5)'
+                    css: {
+                        padding: '4px',
+                        verticalAlign: 'top',
+                        borderBottom: '0.5px solid rgba(220,220,220,0.5)'
+                    },
+                    scopes: {
+                        active: {
+                            borderBottom: '0.5px solid rgba(220,220,220,1)'
+                        }
+                    }
                 },
                 'td:nth-child(1)': {
                     width: '10em'
@@ -188,9 +195,16 @@ define([
                     paddingBottom: '0'
                 },
                 td: {
-                    padding: '4px',
-                    verticalAlign: 'top',
-                    borderBottom: '0.5px solid rgba(220,220,220,0.5)'
+                    css: {
+                        padding: '4px',
+                        verticalAlign: 'top',
+                        borderBottom: '0.5px solid rgba(220,220,220,0.5)'
+                    },
+                    scopes: {
+                        active: {
+                            borderBottom: '0.5px solid rgba(220,220,220,1)'
+                        }
+                    }
                 },
                 'td:nth-child(1)': {
                     width: '14em'
