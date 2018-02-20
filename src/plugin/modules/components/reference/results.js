@@ -439,9 +439,14 @@ define([
             }),
             '<!-- /ko -->',
 
-            '<!-- ko ifnot: type.icon.type === "fontAwesome" -->',
+            '<!-- ko if: type.icon.type === "kbase" -->',
             span({
-                class: 'fa fa-file-o'
+                dataBind: {
+                    class: 'type.icon.classes.join(" ")',
+                    style: {
+                        color: 'type.icon.color'
+                    }
+                }
             }),
             '<!-- /ko -->',
 
