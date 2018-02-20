@@ -831,6 +831,54 @@ define([
         ]);
     }
 
+    function buildNarrativeIcon() {
+        return span({
+            class: 'fa-stack',
+            style: {
+                textAlign: 'center',
+                width: '1.5em'
+            }
+        }, [
+            span({
+                class: 'fa fa-file fa-stack-1x',
+                style: {
+                    fontSize: '120%',
+                    // color: 'rgba(150,150,150,1)'
+                }
+            }, span({
+                style: {
+                    color: 'white',
+                    fontFamily: 'sans-serif',
+                    fontWeight: 'bold',
+                    fontSize:'70%',
+                    position: 'absolute',
+                    left: '0',
+                    top: '0',
+                    width: '100%',
+                    textAlign: 'center'
+                }
+            }, 'N') )
+        ]);
+    }
+
+    function buildOtherObjectIcon() {
+        return span({
+            class: 'fa-stack',
+            style: {
+                textAlign: 'center',
+                width: '1.5em'
+            }
+        }, [
+            span({
+                class: 'fa fa-ban fa-stack-1x',
+                style: {
+                    fontSize: '120%',
+                    // color: 'rgba(150,150,150,1)'
+                }
+            })
+        ]);
+    }
+
     function buildNarrativeRow() {
         return  div({
             class: [styles.classes.row, styles.classes.narrativeRow],
@@ -843,54 +891,40 @@ define([
                     fontWeight: 'bold'
                 }
             }, [
-                span({
-                    class: 'fa-stack',
-                    style: {
-                        textAlign: 'center',
-                        width: '1.5em'
-                    }
-                }, [
-                    span({
-                        class: 'fa fa-file fa-stack-1x',
-                        style: {
-                            fontSize: '120%'
-                        }
-                    }, span({
-                        style: {
-                            color: 'white',
-                            fontFamily: 'sans-serif',
-                            fontWeight: 'bold',
-                            fontSize:'70%',
-                            position: 'absolute',
-                            left: '0',
-                            top: '0',
-                            width: '100%',
-                            textAlign: 'center'
-                        }
-                    }, 'N') ),
-                    
-                ]),
+                ,
                 '<!-- ko if: title -->',
                 a({
                     dataBind: {
                         attr: {
                             href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
-                        },
-                        text: 'title'
+                        }
                     },
                     target: '_blank'
-                }),
+                }, [
+                    buildNarrativeIcon(),
+                    span({
+                        dataBind: {
+                            text: 'title'
+                        }
+                    })
+                ]),
                 '<!-- /ko -->',
                 '<!-- ko ifnot: title -->',
                 a({
                     dataBind: {
                         attr: {
                             href: '"#dataview/" + ref.workspaceId + "/" + ref.objectId'                        
-                        },
-                        text: 'ref.workspaceId'
+                        }
                     },
                     target: '_blank'
-                }),
+                }, [
+                    buildOtherObjectIcon(),
+                    span({
+                        dataBind: {
+                            text: 'ref.workspaceId'
+                        }
+                    })
+                ]),
                 '<!-- /ko -->'
             ]),
             div({
