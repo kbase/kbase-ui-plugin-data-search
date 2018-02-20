@@ -1,19 +1,25 @@
 define([
+    'bluebird',
     'knockout-plus',
     'kb_common/html',
     'kb_common/utils',
     './data',
     './header',
     './navbar',
-    './results'
+    './results',
+    '../../lib/searchJob',
+    '../../lib/timer'
 ], function (
+    Promise,
     ko,
     html,
     utils,
     Data,
     HeaderComponent,
     NavbarComponent,
-    ResultsComponent
+    ResultsComponent,
+    SearchJob,
+    Timer
 ) {
     'use strict';
 
@@ -161,34 +167,60 @@ define([
 
         var queryFinished;
 
+        // We track the current search with a search job object.
+        // Create an initial inactive search job to support the
+        // "cancel before searching" logic. Avoids the necessity of
+        // checking for the existence of an search job.
+        var currentSearch = SearchJob.make();
+
+        var lastSearchId = 0;
+
         function runSearch(query) {
+            lastSearchId += 1;
+            var searchId = lastSearchId;
+            currentSearch.cancel();
+
             // ensure search is runnable
-            var start = new Date().getTime();
             if (!query.terms || query.terms.length === 0) {
                 searchState.status('none');
                 searchState.buffer(null);
-                // searchState.firstItemPosition(null);
                 searchState.isTruncated(null);
                 searchState.totalSearchHits(null);
                 searchState.summary(null);
-                searchState.totalSearchSpace(null);
+                searchState.totalSearchSpace(null);               
                 return;
             }
 
             searchState.searching(true);
             searchState.status('searching');
 
-            data.search({
-                start: query.start,
-                terms: query.terms,
-                withPrivateData: query.withPrivateData,
-                withPublicData: query.withPublicData
+            var thisSearch = SearchJob.make();
+            currentSearch = thisSearch;
+
+            var timer = Timer.make();
+
+            timer.start('search');
+
+            var searchJob = Promise.try(function () {
+                thisSearch.started();
             })
+                .then(function () {
+                    return data.search({
+                        start: query.start,
+                        terms: query.terms,
+                        withPrivateData: query.withPrivateData,
+                        withPublicData: query.withPublicData
+                    });
+                })
                 .then(function(result) {
-                    queryFinished = new Date().getTime();
+                    timer.stop('search');
+                    timer.start('processing');
                     return result;
                 })
                 .then(function (result) {
+                    if (thisSearch.isCanceled()) {
+                        return;
+                    }
                     if (result.items.length === 0) {
                         searchState.status('notfound');
                         searchState.isTruncated(false);
@@ -225,6 +257,9 @@ define([
                     // if page not set yet (because initial search), set it.
                     // TODO: page should be invalidated when we launch a search due to new
                     // query terms.
+                    // TODO: this will span the searchQuery, but since the page is transformed
+                    // into the start field, and the start field value will be the same for an
+                    // initial search, the check for identical searchQuery in the subscription 
                     if (!searchState.page()) {
                         if (result.items.length > 0) {
                             searchState.page(1);
@@ -237,10 +272,13 @@ define([
                     });
                 })
                 .finally(function () {
-                    console.log('time - search: ', queryFinished - start);
-                    console.log('time - process:', new Date().getTime() - queryFinished);
+                    timer.stop('processing');
+                    timer.log();
                     searchState.searching(false);
+                    thisSearch.finished();
                 });
+            thisSearch.running(searchJob);
+            return searchJob;
         }
         
         var searchQuery = ko.pureComputed(function () {
@@ -251,6 +289,7 @@ define([
             } else {
                 start = 0;
             }
+           
 
             var terms = params.searchTerms();
 
@@ -268,10 +307,10 @@ define([
         var lastQuery = null;
         searchQuery.subscribe(function (newValue) {
             if (utils.isEqual(newValue, lastQuery)) {
-                console.warn('duplicate query - why?', newValue, lastQuery);
+                console.warn('duplicate query suppressed?', newValue, lastQuery);
                 return;
             }
-            console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
+            // console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
             lastQuery = newValue;
             runSearch(newValue);
         });
@@ -322,6 +361,14 @@ define([
 
         runSearch(searchQuery());
 
+        // LIFECYCLE
+
+        function dispose() {
+            if (currentSearch) {
+                currentSearch.cancel();
+            }
+        }
+
         return {
             searchState: searchState,
             view: params.view,
@@ -329,11 +376,11 @@ define([
             selectedObjects: params.selectedObjects,
 
             // ACTIONS
-            // doNextPage: doNextPage,
-            // doPreviousPage: doPreviousPage
             doToggleShowObjects: doToggleShowObjects,
             doToggleShowMatches: doToggleShowMatches,
-            doToggleShowDetails: doToggleShowDetails
+            doToggleShowDetails: doToggleShowDetails,
+
+            dispose: dispose
         };
     }
 
@@ -366,9 +413,8 @@ define([
             },  ko.kb.komponent({
                 name: ResultsComponent.name(),
                 params: {
-                    searchState: 'searchState',
-                    // doNextPage: 'doNextPage',
-                    // doPreviousPage: 'doPreviousPage',
+                    buffer: 'searchState.buffer',
+                    status: 'searchState.status',
                     view: 'view',
                     overlayComponent: 'overlayComponent',
                     selectedObjects: 'selectedObjects',

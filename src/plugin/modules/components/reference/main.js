@@ -1,17 +1,25 @@
 define([
+    'bluebird',
     'knockout-plus',
     'kb_common/html',
+    'kb_common/utils',
     './header',
     './navbar',
     './results',
     './data',
+    '../../lib/searchJob',
+    '../../lib/timer'
 ], function (
+    Promise,
     ko,
     html,
+    utils,
     HeaderComponent,
     NavbarComponent,
     ResultsComponent,
-    Data
+    Data,
+    SearchJob,
+    Timer
 ) {
     'use strict';
 
@@ -116,7 +124,12 @@ define([
             maxSearchItems: 10000
         });
 
+
+        var currentSearch = SearchJob.make();
+
         function runSearch(query) {
+            currentSearch.cancel();
+
             // ensure search is runnable
             if (!query.input) {
                 searchState.status('none');
@@ -128,17 +141,35 @@ define([
                 return;
             }
 
+            var thisSearch = SearchJob.make();
+            currentSearch = thisSearch;
+
             searchState.searching(true);
             searchState.status('searching');
-            data.search({
-                start: query.start,
-                terms: query.terms
+
+            var timer = Timer.make();
+
+            timer.start('search');
+
+            var job = Promise.try(function () {
+                thisSearch.started();
             })
+                .then(function () {
+                    return data.search({
+                        start: query.start,
+                        terms: query.terms
+                    })
+                })
                 .then(function (result) {
-                    console.log('processed search results', result);
+                    timer.stop('search');
+                    timer.start('processing');
+                    // console.log('processed search results', result);
                     return result;
                 })
                 .then(function (result) {
+                    if (thisSearch.isCanceled()) {
+                        return;
+                    }
                     if (result.items.length === 0) {
                         searchState.status('notfound');
                         searchState.isTruncated(false);
@@ -181,6 +212,9 @@ define([
                     });
                 })
                 .finally(function () {
+                    timer.stop('processing');
+                    timer.log();
+                    thisSearch.finished();
                     searchState.searching(false);
                 });
         }
@@ -203,8 +237,15 @@ define([
                 pageSize: searchState.pageSize()
             };
         });
-
+        
+        var lastQuery = null;
         searchQuery.subscribe(function (newValue) {
+            if (utils.isEqual(newValue, lastQuery)) {
+                console.warn('duplicate query suppressed?', newValue, lastQuery);
+                return;
+            }
+            // console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
+            lastQuery = newValue;
             runSearch(newValue);
         });
 

@@ -230,7 +230,7 @@ define([
         // If this is not an Element, it was installed with a comment and 
         // the first node in the template can be found as the next sibling.
         
-        var searchState = params.searchState;
+        // var searchState = params.searchState;
 
         // ACTIONS
 
@@ -305,7 +305,9 @@ define([
         }
 
         return {
-            searchState: searchState,
+            buffer: params.buffer,
+            status: params.status,
+            // searchState: searchState,
             view: view,
 
             // scroller: scroller,
@@ -974,7 +976,7 @@ define([
     function buildResults() {
         return div({
             dataBind: {
-                foreach: 'searchState.buffer',
+                foreach: 'buffer',
             },
             name: 'result-rows'
         }, [
@@ -1031,7 +1033,7 @@ define([
                 },
                 name: 'result-rows-container'
             }, [
-                '<!-- ko switch: searchState.status -->',
+                '<!-- ko switch: status -->',
 
                 '<!-- ko case: "none" -->',
                 buildNoSearch(),
