@@ -117,6 +117,10 @@ define([
                     is_object_property: 0,
                     property: 'access_group_id',
                     ascending: 0
+                }, {
+                    is_object_property: 0,
+                    property: 'type',
+                    ascending: 1
                 }]
             };
 

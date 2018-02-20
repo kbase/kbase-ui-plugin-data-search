@@ -144,11 +144,7 @@ define([
                     // get a separate array of items
                     .map(function (item) {
                         return item;
-                    })
-                    // then sort them by the type.
-                    .sort(function (a, b) {
-                        return a.type.id < b.type.id;
-                    });
+                    });                    
 
                 // Get the summary of object types per narrative.
                 var summary = {};
