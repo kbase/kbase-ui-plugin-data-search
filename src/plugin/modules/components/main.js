@@ -6,8 +6,10 @@ define([
     './results',
     './viewSelector',
     './copyObjectsControl',
+    './dialogs/searchError',
     '../lib/searchApi',
-    '../lib/data'
+    '../lib/data',
+    '../lib/errors'
 ], function (
     ko,
     html,
@@ -16,8 +18,10 @@ define([
     SearchResultsComponent,
     ViewSelectorComponent,
     CopyObjectsControlComponent,
+    SearchErrorComponent,
     SearchApi,
-    Data
+    Data,
+    errors
 ) {
     'use strict';
 
@@ -27,6 +31,7 @@ define([
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
+        var appBus = context['$root'].appBus;
         var searchApi = SearchApi.make({
             runtime: runtime
         });
@@ -112,7 +117,78 @@ define([
                 });
         });
 
+        function grokErrorMessage(message) {
+            if (message.error) {
+                // The caller just passed us some error thing and asked us
+                // to grok it!
+                var stackTrace;
+                if (message.error instanceof errors.DataSearchError) {
+                    stackTrace = message.error.stack.split('\n');
+                    console.log('data search error', message.error);
+                    return {
+                        source: message.error.source,
+                        id: message.error.code,
+                        message: message.error.message,
+                        detail: message.error.detail,
+                        info: message.error.info,
+                        stackTrace: message.error.info.originalError.stack.split('\n')
+                    };
+                } else if (message.error instanceof Error) {
+                    stackTrace = message.error.stack.split('\n');
+                    return {
+                        source: 'Error',
+                        id: message.error.name,
+                        message: message.error.message,
+                        stackTrace: stackTrace
+                    };
+                } else if (typeof message.error === 'string') {
+                    return {
+                        message: message.error
+                    };
+
+                } else if (typeof message.error === 'object') {
+                    console.warn('Unknown error object: ', message.error);
+                    return {
+                        source: 'Unknown',
+                        // id: message.id,
+                        // message: message.message,
+                        // stackTrace: message.
+                    };
+                }
+            } else {
+                return {
+                    source: message.source,
+                    id: message.id,
+                    message: message.message,
+                    stackTrace: message.stackTrace,
+                    info: message.info
+                };
+            }
+        }
+
+        appBus.on('error', function (message) {
+            var error = grokErrorMessage(message);
+            overlayComponent({
+                name: SearchErrorComponent.name(),
+                type: 'error',
+                viewModel: {
+                    error: error
+                }
+            });
+        });
+
+        appBus.on('alert', function (msg) {
+            alert(msg);
+        });
+
+        appBus.start();
+
+        function dispose() {
+            appBus.stop();
+        }
+
         return {
+            appBus: appBus,
             // search: {
 
             //     // Control the overlay.
@@ -129,7 +205,9 @@ define([
             narrativesTotal: narrativesTotal,
             referenceDataTotal: referenceDataTotal,
             withPrivateData: withPrivateData,
-            withPublicData: withPublicData
+            withPublicData: withPublicData,
+
+            dispose: dispose
         };
     }
 

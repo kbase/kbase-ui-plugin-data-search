@@ -843,6 +843,33 @@ define([
                     fontWeight: 'bold'
                 }
             }, [
+                span({
+                    class: 'fa-stack',
+                    style: {
+                        textAlign: 'center',
+                        width: '1.5em'
+                    }
+                }, [
+                    span({
+                        class: 'fa fa-file fa-stack-1x',
+                        style: {
+                            fontSize: '120%'
+                        }
+                    }, span({
+                        style: {
+                            color: 'white',
+                            fontFamily: 'sans-serif',
+                            fontWeight: 'bold',
+                            fontSize:'70%',
+                            position: 'absolute',
+                            left: '0',
+                            top: '0',
+                            width: '100%',
+                            textAlign: 'center'
+                        }
+                    }, 'N') ),
+                    
+                ]),
                 '<!-- ko if: title -->',
                 a({
                     dataBind: {

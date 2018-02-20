@@ -103,6 +103,7 @@ define([
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
         var types = context['$root'].types;
+        var appBus = context['$root'].appBus;
 
         // the search view model...
         var searchState = SearchState();
@@ -173,6 +174,11 @@ define([
                             searchState.page(1);
                         }
                     }
+                }) 
+                .catch(function (err) {
+                    appBus.send('error', {
+                        error: err
+                    });
                 })
                 .finally(function () {
                     searchState.searching(false);

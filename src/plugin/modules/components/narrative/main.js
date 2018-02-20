@@ -143,6 +143,7 @@ define([
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
         var types = context['$root'].types;
+        var appBus = context['$root'].appBus;
 
         // the search view model...
         var searchState = SearchState({
@@ -158,9 +159,7 @@ define([
             maxSearchItems: 10000
         });
 
-       
         var queryFinished;
-        var processingFinished;
 
         function runSearch(query) {
             // ensure search is runnable
@@ -232,6 +231,11 @@ define([
                             searchState.page(1);
                         }
                     }
+                })
+                .catch(function (err) {
+                    appBus.send('error', {
+                        error: err
+                    });
                 })
                 .finally(function () {
                     console.log('time - search: ', queryFinished - start);

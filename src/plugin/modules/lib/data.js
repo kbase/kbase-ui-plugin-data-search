@@ -32,7 +32,7 @@ define([
                         throw new Error('Too many Narratives found with reference ' + ref.workspaceId + '/' + ref.objectId);
                     }
                     var objectInfo = apiUtils.objectInfoToObject(result.infos[0]);
-                    return [
+                    return Promise.all([
                         objectInfo, 
                         rpc.call('Workspace', 'get_workspace_info', {
                             id: objectInfo.wsid
@@ -40,7 +40,7 @@ define([
                             .spread(function (info) {
                                 return info;
                             })
-                    ];
+                    ]);
                 })
                 .spread(function (objectInfo, wsInfo) {
                     var workspaceInfo = apiUtils.workspaceInfoToObject(wsInfo);
@@ -68,7 +68,7 @@ define([
                         throw new Error('Too many objects found with reference ' + ref);
                     }
                     var objectInfo = apiUtils.objectInfoToObject(result.infos[0]);
-                    return [objectInfo, rpc.call('Workspace', 'get_workspace_info', {id: objectInfo.wsid})];
+                    return Promise.all([objectInfo, rpc.call('Workspace', 'get_workspace_info', {id: objectInfo.wsid})]);
                 })
                 .spread(function (objectInfo, wsInfo) {
                     var workspaceInfo = apiUtils.workspaceInfoToObject(wsInfo[0]);

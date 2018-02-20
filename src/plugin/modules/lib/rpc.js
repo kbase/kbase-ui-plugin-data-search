@@ -2,12 +2,12 @@ define([
     'kb_common/jsonRpc/dynamicServiceClient',
     'kb_common/jsonRpc/genericClient',
     'kb_common/jsonRpc/exceptions',
-    './utils'
+    './errors'
 ], function (
     DynamicService,
     GenericClient,
     exceptions,
-    utils
+    errors
 ) {
     function factory(config) {
         var runtime = config.runtime;
@@ -36,16 +36,20 @@ define([
                 .catch(function (err) {
                     if (err instanceof exceptions.AjaxError) {
                         console.error('AJAX Error', err);
-                        throw new utils.DataSearchError('ajax', err.code, err.message, null, {
+                        var message = 'An error was encountered connecting to a service';
+                        throw new errors.DataSearchError('AJAX Error: ' + err.name, err.code, err.message, null, {
                             originalError: err
                         });
                     } else if (err instanceof exceptions.RpcError) {
                         console.error('RPC Error', err);
-                        throw new utils.DataSearchError('ajax', err.name, err.message, null , {
+                        var message = 'An error was encountered running an rpc method';
+                        var detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
+                                      'the error returned from the service is "' + err.data.error.message;
+                        throw new errors.DataSearchError('service-call-error', err.name, message, detail , {
                             originalError: err
                         });
                     } else {
-                        throw new utils.DataSearchError('rpc-call', err.name, err.message, null, {
+                        throw new errors.DataSearchError('rpc-call', err.name, err.message, null, {
                             originalError: err
                         });
                     }

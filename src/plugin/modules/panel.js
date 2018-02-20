@@ -3,17 +3,17 @@ define([
     'knockout-plus',
     'kb_common/html',
     'kb_common/bootstrapUtils',
-    './lib/utils',
     './components/main',
-    './lib/types'
+    './lib/types',
+    './lib/nanoBus'
 ], function (
     Promise, 
     ko,
     html, 
     BS,
-    Utils,
     MainComponent,
-    Types
+    Types,
+    NanoBus
 ) {
     'use strict';
     
@@ -39,9 +39,12 @@ define([
             });
         }
 
+        var appBus = NanoBus.make();
+
         // Root viewmodel
         function viewModel() {
             return {
+                appBus: appBus,
                 runtime: runtime,
                 types: types,
                 labels: {
@@ -87,17 +90,20 @@ define([
         function start() {
             return types.start()
                 .then(function () {
+                    return appBus.start();
+                })
+                .then(function () {
                     container.innerHTML = [styles.sheet, template()].join('');
                     ko.applyBindings(viewModel, container, function (context) {
                         context.runtime = runtime;
                     });
         
-                    runtime.send('ui', 'setTitle', 'Data Search');
+                    runtime.send('ui', 'setTitle', 'Data Search (BETA)');
                 });            
         }
 
         function stop() {
-            
+            return appBus.stop();
         }
         function detach() {
             if (hostNode && container) {

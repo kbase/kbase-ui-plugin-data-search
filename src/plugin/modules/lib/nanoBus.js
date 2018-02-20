@@ -1,7 +1,11 @@
 define([], function () {
+    var lastBusId = 0;
+
     function NanoBus() {
         var queue = [];
-        var runInterval = 0;
+        var lastListenerId = 0;
+        var busId = lastBusId += 1;
+        // var runInterval = 0;
         var messageReceivers = {};
 
         function processQueue() {
@@ -22,17 +26,31 @@ define([], function () {
             });
         }
 
+        function dumpListeners() {
+            Object.keys(messageReceivers).forEach(function (messageId) {
+                console.log('bus id: ' + busId + ', msg id: ' + messageId + ', ' + messageReceivers[messageId].length + ' listeners');
+            });
+        }
+
         function run() {
             if (queue.length === 0) {
                 return;
             }
-            window.setTimeout(function () {
+            // window.setTimeout(function () {
+            //     processQueue();
+            //     // just in case any new messages crept in.
+            //     if (queue.length > 0) {
+            //         run();
+            //     }
+            // }, runInterval);
+
+            window.requestAnimationFrame(function () {
                 processQueue();
-                // just in case any new messages crept in.
+                // dumpListeners();
                 if (queue.length > 0) {
                     run();
                 }
-            }, runInterval);
+            });
         }
 
         function send(id, payload) {
@@ -50,11 +68,23 @@ define([], function () {
             messageReceivers[id].push(handler);
         }
 
+        function start() {
+
+        }
+
+        function stop() {
+
+        }
+
         return {
+            start: start,
+            stop: stop,
             send: send,
             on: on
         };
     }
 
-    return NanoBus;
+    return {
+        make: NanoBus
+    };
 });

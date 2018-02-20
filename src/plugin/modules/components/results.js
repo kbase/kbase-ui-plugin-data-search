@@ -23,7 +23,7 @@ define([
         div = t('div');
 
     function viewModel(params) {
-        var tabsetBus = NanoBus();
+        var tabsetBus = NanoBus.make();
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
                 tab: {
