@@ -106,7 +106,7 @@ define([
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
                 name: obj.object_name,                
-                date: new Date(obj.timestamp * 1000),
+                date: new Date(obj.timestamp),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
 
                 matches: matches,

@@ -39,10 +39,9 @@ define([
                     with_public: 1
                 },
                 sorting_rules: [{
-                    is_timestamp: 1,
-                    is_object_name: 0,
-                    key_name: 'date',
-                    descending: 1
+                    is_object_property: 0,
+                    property: 'timestamp',
+                    ascending: 0
                 }]
             };
 
@@ -115,10 +114,9 @@ define([
                     with_public: withPublic
                 },
                 sorting_rules: [{
-                    is_timestamp: 1,
-                    is_object_name: 0,
-                    key_name: 'accgrp',
-                    descending: 1
+                    is_object_property: 0,
+                    property: 'access_group_id',
+                    ascending: 0
                 }]
             };
 
