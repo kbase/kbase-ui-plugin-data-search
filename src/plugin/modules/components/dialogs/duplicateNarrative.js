@@ -30,9 +30,9 @@ define([
 
         var narrativeToDuplicate = params.narrative;
 
-        var oldNarrativeName = 'old narrative';
+        var oldNarrativeName = ko.observable();
 
-        var newNarrativeName = ko.observable(oldNarrativeName + ' - Copy');
+        var newNarrativeName = ko.observable();
 
         var newNarrative = ko.observable();
 
@@ -78,6 +78,13 @@ define([
             var narrativeId = 'ws.' + data.workspaceInfo.id + '.obj.' + data.objectInfo.id;
             window.open(window.location.origin + '/narrative/' + narrativeId);
         }
+
+        data.getNarrative(params.narrative)
+            .then(function (info) {
+                console.log('narrative info', info);
+                oldNarrativeName(info.workspaceInfo.metadata.narrative_nice_name);
+                newNarrativeName(info.workspaceInfo.metadata.narrative_nice_name + ' - Copy');
+            });
 
         return {
             title: 'Duplicate Narrative',
@@ -228,7 +235,7 @@ define([
                                 text: 'workspaceInfo.metadata.narrative_nice_name'
                             }
                         }),
-                        'has been successfully created.'
+                        ' has been successfully created.'
                     ]),
                     button({
                         type: 'button',

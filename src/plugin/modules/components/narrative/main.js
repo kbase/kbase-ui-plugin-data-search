@@ -185,7 +185,6 @@ define([
                 withPublicData: query.withPublicData
             })
                 .then(function(result) {
-                    // console.log('DATA OK', result, query);
                     queryFinished = new Date().getTime();
                     return result;
                 })
