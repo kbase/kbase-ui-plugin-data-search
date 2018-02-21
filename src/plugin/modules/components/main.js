@@ -51,24 +51,88 @@ define([
         // SEARCH INPUTS
         var searchInput = ko.observable();
 
+
         var searchTerms = ko.pureComputed(function () {
             if (!searchInput()) {
-                return [];
+                return {
+                    terms: [],
+                    diagnosis: 'empty-input'
+                };
             }
 
-            return searchInput().split(/\s+/)
-                .map(function (term) {
-                    return term.trim(' ').toLowerCase();
-                })
+            // Trim out whitespace.
+            var whiteSpaceStripped = searchInput().trim().split(/\s+/)
                 .filter(function (term) {
-                    if (term.length === 0) {
-                        return false;
-                    } else if (data.isStopWord(term)) {
-                        return false;
-                    }
-                    return true;
+                    return term.length;
                 });
+
+            // If that is all there is we have an empty query.
+            if (whiteSpaceStripped.length === 0) {
+                return {
+                    terms: [],
+                    diagnosis: 'just-whitespace'
+                };
+            }
+
+            // Remove stop words. If that is all we have, we
+            // have an empty query wity another reason.
+            var stopWordsStripped = whiteSpaceStripped.filter(function (term) {
+                return !data.isStopWord(term);
+            });
+            if (whiteSpaceStripped.length > stopWordsStripped.length) {
+                var stopWords = whiteSpaceStripped.filter(function (term) {
+                    return data.isStopWord(term);
+                });
+                if (stopWordsStripped.length === 0) {                    
+                    return {
+                        terms: [],
+                        diagnosis: 'just-stopwords',                    
+                        theStopWords: stopWords
+                    };
+                }
+                return {
+                    terms: stopWordsStripped,
+                    diagnosis: 'some-stopwords',                    
+                    theStopWords: stopWords
+                };
+            }
+
+            return {
+                terms: stopWordsStripped,
+                diagnosis: 'ok'
+            };
         });
+
+        var inputWarnings = ko.pureComputed(function () {
+            var terms = searchTerms();
+            switch (terms.diagnosis) {
+            case 'just-whitespace':
+                return [
+                    'Empty search input.',
+                    'You must supply one or more terms to initiate a query.'
+                ];
+            case 'just-stopwords':
+                // TODO: i'd like to have emphasis on these words, but we need to
+                // sanitize them first...
+                return [
+                    'The search consisted of just "stop words".',
+                    'Stop words are considered too common to be usefully applied to a search.',
+                    'The following stop words were detected: ' + terms.theStopWords.join(', ') + '.'
+                ];
+            case 'some-stopwords':
+                // TODO: i'd like to have emphasis on these words, but we need to
+                // sanitize them first...
+                return [
+                    'The search included some "stop words".',
+                    'Stop words are considered too common to be usefully applied to a search ' +
+                    'and are removed from the terms before submitting the query.',                
+                    'The following stop words were detected and removed: ' + terms.theStopWords.join(', ') + '.',
+                    'The terms sent were: ' + terms.terms.join(' ')
+                ];
+            }
+            return [];
+        });
+
 
         var searchHistory = ko.observableArray();
 
@@ -84,8 +148,9 @@ define([
         var withPublicData = ko.observable(true);
 
         var referenceDataTotalQuery = ko.pureComputed(function () {
+            var terms = searchTerms().terms;
             return {
-                query: searchTerms().join(' ')
+                query: terms.join(' ')
             };
         });
         referenceDataTotalQuery.subscribe(function (newQuery) {
@@ -100,8 +165,10 @@ define([
         });
 
         var narrativesTotalQuery = ko.pureComputed(function () {
+            var terms = searchTerms().terms;            
+            
             return {
-                query: searchTerms().join(' '),
+                query: terms.join(' '),
                 withPrivateData: withPrivateData(),
                 withPublicData: withPublicData()
             };
@@ -124,7 +191,7 @@ define([
                 var stackTrace;
                 if (message.error instanceof errors.DataSearchError) {
                     stackTrace = message.error.stack.split('\n');
-                    console.log('data search error', message.error);
+                    console.error('data search error', message.error);
                     return {
                         source: message.error.source,
                         id: message.error.code,
@@ -196,6 +263,7 @@ define([
             // },
             // showOverlay: showOverlay,
             searchInput: searchInput,
+            inputWarnings: inputWarnings,
             searchTerms: searchTerms,
             searchHistory: searchHistory,
             overlayComponent: overlayComponent,
@@ -260,6 +328,7 @@ define([
                 name: SearchBarComponent.name(),
                 params: {
                     searchInput: 'searchInput',
+                    inputWarnings: 'inputWarnings',
                     searchHistory: 'searchHistory',
                     overlayComponent: 'overlayComponent',
                     resultsView: 'resultsView'

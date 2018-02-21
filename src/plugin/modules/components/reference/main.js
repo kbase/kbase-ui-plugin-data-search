@@ -232,7 +232,7 @@ define([
 
             return {
                 input: params.searchInput(),
-                terms: terms,
+                terms: terms.terms,
                 start: start,
                 pageSize: searchState.pageSize()
             };

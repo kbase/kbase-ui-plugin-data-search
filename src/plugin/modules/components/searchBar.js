@@ -13,6 +13,7 @@ define([
         p = t('p'),
         div = t('div'),
         span = t('span'),
+        button = t('button'),
         input = t('input');
 
     /*
@@ -24,6 +25,7 @@ define([
         // TODO: link to params
         var searchInput = params.searchInput;
         var searchHistory = params.searchHistory;
+        var inputWarnings = params.inputWarnings;
 
         // HISTORY
 
@@ -43,6 +45,24 @@ define([
 
         function doToggleHistory() {
             showHistory(!showHistory());
+        }
+
+        // WARNINGS
+        // E.g. stop words entered, etc.
+
+        // var showWarnings = ko.observable(false);
+        var warnings = ko.observableArray([
+        ]);
+        inputWarnings.subscribe(function (newValue) {
+            if (newValue.length === 0) {
+                warnings.removeAll();
+            }
+            newValue.forEach(function (warning) {
+                warnings.push(warning);
+            });
+        });
+        function doClearWarnings() {
+            warnings.removeAll();
         }
 
         // SEARCH INPUT
@@ -102,6 +122,9 @@ define([
         }
 
         function doKeyUp(data, ev) {
+            if (warnings().length > 0) {
+                doClearWarnings();
+            }
             if (ev.key) {
                 if (ev.key === 'Enter') {
                     doRunSearch();
@@ -156,6 +179,10 @@ define([
             searchInputClass: searchInputClass,
 
             historyContainerId: historyContainerId,
+
+            // showWarnings: showWarnings,
+            warnings: warnings,
+            doClearWarnings: doClearWarnings,
 
             // ACTIONS
             doHelp: doHelp,
@@ -226,7 +253,18 @@ define([
                 color: 'gray',
                 cursor: 'normal'
             }
-        }
+        },
+        warningContainer: {
+            display: 'block',
+            position: 'absolute',
+            border: '1px silver solid',
+            // from bootstrap's bg-warning default color
+            backgroundColor: '#fcf8e3',
+            zIndex: '3',
+            top: '100%',
+            left: '0',
+            right: '0'
+        },
     });
 
     function buildSearchBar() {
@@ -322,6 +360,42 @@ define([
                         }
                     }, 'no items in history yet - Search!'),
                     '<!-- /ko -->',
+                ]),
+                '<!-- /ko -->',
+                '<!-- ko if: warnings().length && !showHistory() -->',
+                div({
+                    class: styles.classes.warningContainer,
+                }, [
+                   
+                    div({
+                        dataBind: {
+                            foreach: 'warnings'
+                        }
+                    }, div({
+                        style: {
+                            marginTop: '2px',
+                            marginBottom: '2px',
+                            padding: '3px'
+                        },
+                        dataBind: {
+                            text: '$data'
+                        }
+                    })),
+                    div({
+                        style: {
+                            borderTop: '1px solid rgba(200,200,200,0.5)',
+                            padding: '3px',
+                            textAlign: 'center'
+                        }
+                    }, [
+                        button({
+                            class: 'btn btn-default btn-sm',
+                            type:  'button',
+                            dataBind: {
+                                click: 'doClearWarnings'
+                            }
+                        }, 'Clear')
+                    ])
                 ]),
                 '<!-- /ko -->'
             ]),

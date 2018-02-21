@@ -295,7 +295,7 @@ define([
 
             return {
                 // input: params.searchInput(),
-                terms: terms,
+                terms: terms.terms,
                 withPrivateData: searchState.includePrivateData(),
                 withPublicData: searchState.includePublicData(),
                 start: start,
