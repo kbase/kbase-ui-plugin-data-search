@@ -32,7 +32,7 @@ define([
             '<!-- /ko -->',
 
             '<!-- ko case: "notfound" -->',
-            'Nothing found',
+            '',
             '<!-- /ko -->',
 
             '<!-- ko case: "success" -->',

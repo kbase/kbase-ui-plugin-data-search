@@ -2,11 +2,12 @@ define([
     'knockout-plus',
     'kb_common/html',
     '../dialogs/copyObjects',
-    'css!./results.css'
+    '../funnyRandomPrompt'
 ], function (
     ko,
     html,
-    CopyObjectComponent
+    CopyObjectComponent,
+    FunnyRandomPromptComponent
 ) {
     'use strict';
 
@@ -741,27 +742,28 @@ define([
 
     function buildNoSearch() {
         return div({
-            class: 'well',
+            class: 'alert alert-info',
             style: {
                 margin: '40px auto 0 auto',
                 maxWidth: '40em',
-                textAlign: 'center'
+                padding: '20px'
             }
         }, [
-            'No active search'
+            p('Enter one or more terms above to find Genomes, Aseemblies, FBA Models, Narratives, and more!')
         ]);
     }
 
     function buildNotFound() {
         return div({
-            class: 'well',
+            class: 'alert alert-warning',
             style: {
                 margin: '40px auto 0 auto',
                 maxWidth: '40em',
-                textAlign: 'center'
+                textAlign: 'center',
+                padding: '20px',
             }
         }, [
-            'Nothing found'
+            'Sorry, nothing found'
         ]);
     }
 
@@ -774,7 +776,12 @@ define([
                 textAlign: 'center'
             }
         }, [
-            html.loading()
+            div({
+                dataBind: {
+                    component: FunnyRandomPromptComponent.quotedName(),
+                    params: {}
+                }
+            })
         ]);
     }
 
