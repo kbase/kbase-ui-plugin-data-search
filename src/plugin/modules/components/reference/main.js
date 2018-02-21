@@ -127,8 +127,15 @@ define([
 
         var currentSearch = SearchJob.make();
 
+        var lastQuery = null;
         function runSearch(query) {
+            if (utils.isEqual(query, lastQuery)) {
+                console.warn('duplicate query suppressed?', query, lastQuery);
+                return;
+            }
+            lastQuery = query;
             currentSearch.cancel();
+            
 
             // ensure search is runnable
             if (!query.input) {
@@ -238,14 +245,7 @@ define([
             };
         });
         
-        var lastQuery = null;
         searchQuery.subscribe(function (newValue) {
-            if (utils.isEqual(newValue, lastQuery)) {
-                console.warn('duplicate query suppressed?', newValue, lastQuery);
-                return;
-            }
-            // console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
-            lastQuery = newValue;
             runSearch(newValue);
         });
 

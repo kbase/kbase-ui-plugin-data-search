@@ -113,8 +113,6 @@ define([
         // TODO: an array, or a map of observables...
         var summary = ko.observable();
 
-        // var start = ko.observable();
-
         var totalPages = ko.pureComputed(function () {
             var totalItems = totalSearchHits();
             if (typeof totalItems !== 'number') {
@@ -122,10 +120,6 @@ define([
             }
             return Math.ceil(totalItems / pageSize());
         });
-
-        // page.subscribe(function (newValue) {
-        //     searchState.start( (newValue - 1) * searchState.pageSize());
-        // });
 
         return {
             includePrivateData: includePrivateData,
@@ -136,12 +130,10 @@ define([
             status: status,
             searching: searching,
             buffer: buffer,
-            // firstItemPosition: firstItemPosition,
             isTruncated: isTruncated,
             totalSearchHits: totalSearchHits,
             totalSearchSpace: totalSearchSpace,
             summary: summary
-            // start: start
         };
     }
 
@@ -165,19 +157,20 @@ define([
             maxSearchItems: 10000
         });
 
-        var queryFinished;
-
         // We track the current search with a search job object.
         // Create an initial inactive search job to support the
         // "cancel before searching" logic. Avoids the necessity of
         // checking for the existence of an search job.
         var currentSearch = SearchJob.make();
 
-        var lastSearchId = 0;
-
+        var lastQuery = null;
         function runSearch(query) {
-            lastSearchId += 1;
-            var searchId = lastSearchId;
+            if (utils.isEqual(query, lastQuery)) {
+                console.warn('duplicate query suppressed?', query, lastQuery);
+                return;
+            }
+            lastQuery = query;
+
             currentSearch.cancel();
 
             // ensure search is runnable
@@ -246,13 +239,11 @@ define([
                     });
 
                     searchState.buffer(result.narratives);
-                    // searchState.firstItemPosition(result.first);
                     searchState.isTruncated(result.isTruncated);
                     searchState.totalSearchHits(result.summary.totalSearchHits);
                     searchState.summary(result.summary.totalByType);
                     searchState.totalSearchSpace(result.summary.totalSearchSpace);
                     searchState.status('success');
-
 
                     // if page not set yet (because initial search), set it.
                     // TODO: page should be invalidated when we launch a search due to new
@@ -280,7 +271,7 @@ define([
             thisSearch.running(searchJob);
             return searchJob;
         }
-        
+         
         var searchQuery = ko.pureComputed(function () {
             var page = searchState.page();
             var start;
@@ -290,7 +281,6 @@ define([
                 start = 0;
             }
            
-
             var terms = params.searchTerms();
 
             return {
@@ -304,14 +294,9 @@ define([
             };
         });
 
-        var lastQuery = null;
+        
         searchQuery.subscribe(function (newValue) {
-            if (utils.isEqual(newValue, lastQuery)) {
-                console.warn('duplicate query suppressed?', newValue, lastQuery);
-                return;
-            }
-            // console.log('search query changed?', utils.isEqual(newValue, lastQuery), JSON.parse(JSON.stringify(newValue)), JSON.parse(JSON.stringify(lastQuery)));
-            lastQuery = newValue;
+           
             runSearch(newValue);
         });
 

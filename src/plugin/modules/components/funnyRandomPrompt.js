@@ -11,7 +11,7 @@ define([
         span = t('span'),
         div = t('div');
 
-    function viewModel(params) {
+    function viewModel() {
 
         function getRandomPrompt() {
             var prompts = [
