@@ -408,7 +408,8 @@ define([
                         href: '"#dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version'
                     },
                     text: 'name'
-                }
+                },
+                target: '_blank'
             }),
             '<!-- /ko -->',
             '<!-- ko ifnot: matchClass.viewable -->',
