@@ -910,12 +910,19 @@ define([
                             href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
                         }
                     },
+                    style: {
+                        display: 'flex',
+                        alignItems: 'center'
+                    },
                     target: '_blank'
                 }, [
                     buildNarrativeIcon(),
                     span({
                         style: {
-                            marginLeft: '3px'
+                            marginLeft: '3px',
+                            // just nudge it down to align more harmoniously with 
+                            // the icon.
+                            marginTop: '3px'
                         },
                         dataBind: {
                             text: 'title'
