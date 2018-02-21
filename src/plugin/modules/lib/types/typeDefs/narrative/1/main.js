@@ -223,7 +223,7 @@ define([
 
         function normalize() {
             return {
-                title: object.data.metadata.name
+                title: object.key_props.title
             };
         }
 
