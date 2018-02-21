@@ -767,7 +767,9 @@ define([
                 padding: '20px'
             }
         }, [
-            p('Enter one or more terms above to find Genomes, Aseemblies, FBA Models, Narratives, and more!')
+            p('Enter one or more terms above to find Reference Data in KBase.'),
+            p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
+              ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
         ]);
     }
 
