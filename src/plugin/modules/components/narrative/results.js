@@ -483,7 +483,8 @@ define([
                         href: '"/narrative/ws." + matchClass.ref.workspaceId + ".obj." + matchClass.ref.objectId'
                     },
                     text: 'title'
-                }
+                },
+                target: '_blank'
             }),
             '<!-- /ko -->',
 
