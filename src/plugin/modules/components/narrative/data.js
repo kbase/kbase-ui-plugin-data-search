@@ -116,6 +116,7 @@ define([
                 showDetails: ko.observable(false),
                 active: ko.observable(false)
             };
+
             return vm;
         }
 

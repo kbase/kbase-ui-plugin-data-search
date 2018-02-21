@@ -326,8 +326,12 @@ define([
     function buildOptionsColumn() {
         return div({
         }, [
+            '<!-- ko if: matchClass.copyable || matchClass.viewable -->',
             div({
-                class: 'btn-group'
+                class: 'btn-group',
+                dataBind: {
+                    enable: '$parent.active'
+                }
             }, [
                 button({
                     type: 'button',
@@ -337,26 +341,39 @@ define([
                     areaExpanded: 'false'
                 }, [
                     span({
-                        class: 'fa fa-bars'
+                        class: 'fa fa-ellipsis-h'
                     })
                 ]),
                 ul({
                     class: 'dropdown-menu dropdown-menu-right'
                 }, [
+                    li(div({
+                        style: {
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            color: 'gray'
+                        }
+                    }, 'Object')),
+                    '<!-- ko if: matchClass.copyable -->',
                     li(a({
                         dataBind: {
                             click: '$component.doCopyObject'
                         }
-                    }, 'copy...')),
+                    }, 'Copy...')),
+                    '<!-- /ko -->',
+                    '<!-- ko if: matchClass.viewable -->',
                     li(a({
                         dataBind: {
                             click: '$component.doViewObject'
                         }
-                    }, 'view object'))
+                    }, 'View')),
+                    '<!-- /ko -->'
                 ])
-            ])
+            ]),
+            '<!-- /ko -->'
         ]);
     }
+
 
     function buildObjectCheckbox() {
         return [

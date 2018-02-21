@@ -389,6 +389,7 @@ define([
     function buildObjectOptionsColumn() {
         return div({
         }, [
+            '<!-- ko if: matchClass.copyable || matchClass.viewable -->',
             div({
                 class: 'btn-group',
                 dataBind: {
@@ -419,18 +420,23 @@ define([
                             color: 'gray'
                         }
                     }, 'Object')),
+                    '<!-- ko if: matchClass.copyable -->',
                     li(a({
                         dataBind: {
                             click: '$component.doCopyObject'
                         }
                     }, 'Copy...')),
+                    '<!-- /ko -->',
+                    '<!-- ko if: matchClass.viewable -->',
                     li(a({
                         dataBind: {
                             click: '$component.doViewObject'
                         }
-                    }, 'View'))
+                    }, 'View')),
+                    '<!-- /ko -->'
                 ])
-            ])
+            ]),
+            '<!-- /ko -->'
         ]);
     }
 
