@@ -44,7 +44,7 @@ define([
                         console.error('RPC Error', err);
                         var message = 'An error was encountered running an rpc method';
                         var detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
-                                      'the error returned from the service is "' + err.data.error.message;
+                                      'the error returned from the service is "' + (err.message || 'unknown') + '"';
                         throw new errors.DataSearchError('service-call-error', err.name, message, detail , {
                             originalError: err
                         });
