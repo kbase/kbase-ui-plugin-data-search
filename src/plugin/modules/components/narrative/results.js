@@ -899,7 +899,8 @@ define([
                 class: styles.classes.rowCell,
                 style: {
                     flex: '4',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '120%'
                 }
             }, [
                 '<!-- ko if: title -->',
@@ -913,6 +914,9 @@ define([
                 }, [
                     buildNarrativeIcon(),
                     span({
+                        style: {
+                            marginLeft: '3px'
+                        },
                         dataBind: {
                             text: 'title'
                         }
