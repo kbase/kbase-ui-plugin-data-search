@@ -5,42 +5,46 @@ topics:
     id: overview
     title: Overview
     content: |
-      The *Search* tool allows you to search across Narratives, Reference, and Example data. Your search will reach into all Workspaces to which you have access, including **you own**, those **shared with you**, and those which are **shared with all users (public)**.
+      With this *search* tool, you can search for Narratives, data within Narravies and Reference data.
+      
+      The *User Data* tab searches within Narratives to which you have access. The search applies to properties of data objects, as well as the Narratives themselves.
+
+      The *Referece Data* tab searches within KBase's public reference data.
+
+      > BETA: This is a beta product, under active development. We encourage you to use the tool and provide feedback to us through our <a href="http://kbase.us/help-board/" target="_blank">public help board</a>.
 
   -
     id: search-syntax
     title: How to Search
     content: |
-      _Enter search terms_
+      ### Enter search terms
 
       Enter as many search terms as you wish, separated by one or more spaces. All of the terms you enter will be "and"ed together to restrict the search.
 
       The search terms apply to indexed properties of objects. All objects which match the search terms will be returned, on multiple pages, grouped by the Narrative they are contained in.
 
-      > Limitations: At present results are ordered 
+      > Limitations: At present results are ordered by workspace id, an internal identifier assigned to Narratives as they are created. This id is a monotonically increasing integer, and will present the results in chronological order of Narrative creation, with the most recent first.
 
-      _Private vs Public Data_
+      ### Private vs Public Data
 
-      For _User Objects_, you may select whether to search across private data only, public data only, or both. Private data is that contained in Narratives you own, or have been shared with you. Public data is contained in Narratives which are made readable to all KBase users.
+      For _User Data_, you may select whether to search across private data only, public data only, or both. Private data is that contained in Narratives you own, or have been shared with you. Public data is contained in Narratives which are made readable to all KBase users.
 
-  -
-    id: how-indexed
-    title: How data is indexed
-    content: |
-        Describe the types indexed, perhaps provide or link to docs which describe the indexed fields. 
-  -
-    id: examples
-    title: Examples
-    content: |
-      > provide examples here
-  -
-    id: feedback
-    title: Feedback
-    content: |
-      > provide feedback link here
+      _Reference Data_, by it's nature, is always public, so there is no privacy filtering available for it.
+
+  # -
+  #   id: how-indexed
+  #   title: How data is indexed
+  #   content: |
+  #       Describe the types indexed, perhaps provide or link to docs which describe the indexed fields. 
+  # -
+  #   id: examples
+  #   title: Examples
+  #   content: |
+  #     > provide examples here
   -
     id: test
     title: Test
+    disabled: true
     content: |
       # Markdown Test
 
@@ -68,10 +72,6 @@ topics:
       
       They can all be combined? *__italic bold__*, **_bold italic**, **~~bold strikethrough~~**, ad nauseum.
 
-      ## Header Styles
-
-      
-
       ## Links
 
       Links are not encouraged in help text, rather please use the "references" section in the help config file.
@@ -84,6 +84,29 @@ topics:
       in the resources/images directory. You should use the special prefix $IMAGES/ with your images. The help viewer will translate 
       these into the correct format for loading images in the ui.
 
+      ## Headers
+
+      # Header 1
+
+      The top level "header 1" is signfied by one "#", so e.g. ```# Header 1``` above. THe Header 1 may be too big to use in embedded markdown, like this help tool. Logically, though, it is the primary organizing topic of the current page.
+
+      ## Header 2
+
+      Main sections should be header 2.
+
+      ### Header 3
+
+      The third level header is for section topics.
+
+      #### Header 4
+
+      We should use the low level headers sparingly.
+
+      ##### Header 5
+
+      Finally, the fifth level header is a rare beast, and is as low (or high) as we support. 
+
+
       > implement this!
 
 references:
@@ -95,3 +118,7 @@ references:
     url: http://kbase.us/help/search
     title: 'Blog Post: Introducing the new Search'
     external: true    
+  -
+    url: http://kbase.us/help-board
+    title: Feedback - Public Help Board
+    external: true
