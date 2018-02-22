@@ -447,29 +447,19 @@ define([
             '<!-- ko case: "dataObject" -->',
             '<!-- ko if: matchClass.copyable -->',
 
-            '<!-- ko if: selected() -->',
             span({
-                class: 'fa fa-check-square-o',
                 style: {
                     fontSize: '120%',
                 },
+                class: 'fa',
                 dataBind: {
+                    attr: {
+                        title: 'selected() ? "Click to udeselect this object" : "Click to select this object for copying"'
+                    },
+                    class: 'selected() ? "fa-check-square-o" : "fa-square-o"',
                     click: '$component.doToggleSelected'
                 }
             }),
-            '<!-- /ko -->',
-
-            '<!-- ko ifnot: selected() -->',
-            span({
-                class: 'fa fa-square-o',
-                style: {
-                    fontSize: '120%',
-                },
-                dataBind: {
-                    click: '$component.doToggleSelected'
-                }
-            }),
-            '<!-- /ko -->',
 
             '<!-- /ko -->',
             '<!-- /ko -->',

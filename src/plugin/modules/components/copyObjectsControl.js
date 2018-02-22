@@ -24,9 +24,18 @@ define([
             });
         }
 
+        var buttonTitle = ko.pureComputed(function () {
+            if (params.selectedObjects().length > 0) {
+                return 'Click me to open a window allowing you to copy the objects you have selected';
+            } else {
+                return 'When you have selected objects (via the checkbox to the left of them), clicking me will allow you to copy them';
+            }
+        });
+
         return { 
             doCopyObjects: doCopyObjects,
-            selectedObjects: params.selectedObjects
+            selectedObjects: params.selectedObjects,
+            buttonTitle: buttonTitle
         };
     }
 
@@ -34,9 +43,12 @@ define([
         return button({
             class: 'btn',
             dataBind: {
-                click: '$component.doCopyObjects',
+                click: 'doCopyObjects',
                 enable: 'selectedObjects().length > 0',
-                class: 'selectedObjects().length === 0 ? "btn-default" : "btn-primary"'
+                class: 'selectedObjects().length === 0 ? "btn-default" : "btn-primary"',
+                attr: {
+                    title: 'buttonTitle'
+                }
             }
         }, [
             span({

@@ -86,6 +86,7 @@ define([
             button({
                 type: 'button',
                 class: 'btn btn-default',
+                title: 'Show the first page of results',
                 dataBind: {
                     click: 'doFirstPage',
                     enable: 'page() > 1'
@@ -96,6 +97,7 @@ define([
             button({
                 type: 'button',
                 class: 'btn btn-default',
+                title: 'Show the previous page of results',
                 dataBind: {
                     click: 'doPrevPage',
                     enable: 'page() > 1'
@@ -106,6 +108,7 @@ define([
             button({
                 type: 'button',
                 class: 'btn btn-default',
+                title: 'Show the next page of results',
                 dataBind: {
                     click: 'doNextPage',
                     enable: 'page() < totalPages()'
@@ -116,6 +119,7 @@ define([
             button({
                 type: 'button',
                 class: 'btn btn-default',
+                title: 'Show the last page of results',
                 dataBind: {
                     click: 'doLastPage',
                     enable: 'page() < totalPages()'

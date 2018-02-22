@@ -25,6 +25,7 @@ topics:
 
       > Limitations: At present results are ordered by workspace id, an internal identifier assigned to Narratives as they are created. This id is a monotonically increasing integer, and will present the results in chronological order of Narrative creation, with the most recent first.
 
+
       ### Private vs Public Data
 
       For _User Data_, you may select whether to search across private data only, public data only, or both. Private data is that contained in Narratives you own, or have been shared with you. Public data is contained in Narratives which are made readable to all KBase users.

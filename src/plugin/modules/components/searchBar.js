@@ -1,8 +1,10 @@
 define([
+    'jquery',
     'knockout-plus',
     'kb_common/html',
     './searchHelp',
 ], function (
+    $,
     ko,
     html,
     SearchHelpComponent
@@ -269,7 +271,6 @@ define([
             right: '0'
         },
     });
-
     function buildSearchBar() {
         /*
             Builds the search input area using bootstrap styling and layout.
@@ -281,6 +282,7 @@ define([
         }, [
             div({
                 class: 'input-group-addon',
+                title: 'Click me to run the search',
                 style: {
                     cursor: 'pointer',
                     borderRadius: '4px',
@@ -322,7 +324,8 @@ define([
                 }
             }, [
                 input({
-                    class: 'form-control',                   
+                    class: 'form-control',
+                    title: 'Enter one or more search terms here, the press Enter/Return or click the search icon',               
                     dataBind: {
                         textInput: 'searchControlValue',
                         // value: 'searchInput',
@@ -404,6 +407,7 @@ define([
             ]),
             div({
                 class: 'input-group-addon ' + styles.classes.addonButton,
+                title: 'Click me to clear the search input area to the left',
                 dataBind: {
                     click: 'searchControlValue() ? doClearInput : null',
                     css: 'searchControlValue() ? "' + styles.classes.addonButton + '" : "' + styles.classes.addonButtonDisabled + '"'
@@ -413,6 +417,7 @@ define([
             })),
             div({
                 class: 'input-group-addon ' + styles.classes.addonButton,
+                title: 'Click me to see the last 10 unique search inputs',
                 dataType: 'history-toggle-button',
                 dataBind: {
                     click: 'doToggleHistory',
@@ -426,6 +431,7 @@ define([
             })),
             div({
                 class: 'input-group-addon '  + styles.classes.addonButton,
+                title: 'Click me to see help for Data Search',
                 dataBind: {
                     click: 'doHelp'
                 }

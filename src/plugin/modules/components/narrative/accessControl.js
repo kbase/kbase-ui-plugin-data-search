@@ -69,10 +69,11 @@ define([
         }, [
             'Include ',
             span({
+                class: ['form-control', styles.classes.checkboxControl],
+                title: 'Indicate whether to show private data - your data or shared directly with you',
                 dataBind: {
                     css: 'withPrivateData() ? "' + styles.classes.activeFilterInput + '" : null'
-                },
-                class: ['form-control', styles.classes.checkboxControl]               
+                }          
             }, label({                
                 class: styles.classes.checkboxLabel
             }, [
@@ -85,10 +86,11 @@ define([
                 ' Private'
             ])),
             span({
+                class: ['form-control', styles.classes.checkboxControl],
+                title: 'Indicate whether to show public data - data which has been made viewable to all KBase users',
                 dataBind: {
                     css: 'withPublicData() ? "' + styles.classes.activeFilterInput + '" : null'
-                },
-                class: ['form-control', styles.classes.checkboxControl]    
+                }
             }, label({
                 class: styles.classes.checkboxLabel
             }, [

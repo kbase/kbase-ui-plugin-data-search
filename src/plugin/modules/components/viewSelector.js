@@ -72,6 +72,7 @@ define([
             'View ',
             select({
                 class: 'form-control',
+                title: 'Select the level of detail for viewing search results',
                 dataBind: {
                     value: 'resultsView',
                     options: 'viewOptions',
