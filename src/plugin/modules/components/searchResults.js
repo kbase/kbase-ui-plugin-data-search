@@ -44,6 +44,7 @@ define([
                             params: {
                                 view: params.view,
                                 searchInput: params.searchInput,
+                                forceSearch: params.forceSearch,
                                 searchTerms: params.searchTerms,
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,
@@ -73,6 +74,7 @@ define([
                             params: {
                                 view: params.view,
                                 searchInput: params.searchInput,
+                                forceSearch: params.forceSearch,
                                 searchTerms: params.searchTerms,
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,

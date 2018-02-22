@@ -3,7 +3,7 @@ define([
     'kb_common/html',
     './searchBar',
     './toolBar',
-    './results',
+    './searchResults',
     './viewSelector',
     './copyObjectsControl',
     './dialogs/searchError',
@@ -29,6 +29,7 @@ define([
         div = t('div');
 
     function viewModel(params, componentInfo) {
+        var subscriptions = ko.kb.SubscriptionManager.make();
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
         var appBus = context['$root'].appBus;
@@ -42,14 +43,11 @@ define([
 
         // OVERLAY
         var overlayComponent = ko.observable();
-        // var showOverlay = ko.observable();
-
-        // showOverlay.subscribe(function (newValue) {
-        //     overlayComponent(newValue);
-        // });
 
         // SEARCH INPUTS
         var searchInput = ko.observable();
+
+        var forceSearch = ko.observable();
 
 
         var searchTerms = ko.pureComputed(function () {
@@ -153,7 +151,7 @@ define([
                 query: terms.join(' ')
             };
         });
-        referenceDataTotalQuery.subscribe(function (newQuery) {
+        subscriptions.add(referenceDataTotalQuery.subscribe(function (newQuery) {
             if (!newQuery.query) {
                 referenceDataTotal(null);
                 return;
@@ -162,7 +160,7 @@ define([
                 .then(function (total) {
                     referenceDataTotal(total);
                 });
-        });
+        }));
 
         var narrativesTotalQuery = ko.pureComputed(function () {
             var terms = searchTerms().terms;            
@@ -173,7 +171,7 @@ define([
                 withPublicData: withPublicData()
             };
         });
-        narrativesTotalQuery.subscribe(function (newQuery) {
+        subscriptions.add(narrativesTotalQuery.subscribe(function (newQuery) {
             if (!newQuery.query) {
                 narrativesTotal(null);
                 return;
@@ -182,7 +180,7 @@ define([
                 .then(function (total) {
                     narrativesTotal(total);
                 });
-        });
+        }));
 
         function grokErrorMessage(message) {
             if (message.error) {
@@ -252,17 +250,14 @@ define([
 
         function dispose() {
             appBus.stop();
+            subscriptions.dispose();
         }
 
         return {
             appBus: appBus,
-            // search: {
 
-            //     // Control the overlay.
-            //     showOverlay: showOverlay
-            // },
-            // showOverlay: showOverlay,
             searchInput: searchInput,
+            forceSearch: forceSearch,
             inputWarnings: inputWarnings,
             searchTerms: searchTerms,
             searchHistory: searchHistory,
@@ -328,6 +323,7 @@ define([
                 name: SearchBarComponent.name(),
                 params: {
                     searchInput: 'searchInput',
+                    forceSearch: 'forceSearch',
                     inputWarnings: 'inputWarnings',
                     searchHistory: 'searchHistory',
                     overlayComponent: 'overlayComponent',
@@ -363,6 +359,7 @@ define([
             name: SearchResultsComponent.name(),
             params: {
                 searchInput: 'searchInput',
+                forceSearch: 'forceSearch',
                 searchTerms: 'searchTerms',
                 view: 'resultsView',
                 overlayComponent: 'overlayComponent',

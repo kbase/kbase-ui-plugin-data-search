@@ -99,6 +99,7 @@ define([
         var runtime = context['$root'].runtime;
         var objectsToCopy = ko.unwrap(params.objectsToCopy);
         var objectToView = ko.observable();
+        var subscriptions = ko.kb.SubscriptionManager.make();
        
         function viewObject(ref) {
             data.getObjectInfo(ref)
@@ -174,15 +175,15 @@ define([
         });
 
         // Methods
-        copyMethod.subscribe(function (newValue) {
+        subscriptions.add(copyMethod.subscribe(function (newValue) {
             switch (newValue) {
             case 'new':
                 selectedNarrative(null);
                 break;
             }
-        }.bind(this));
+        }.bind(this)));
 
-        selectedNarrative.subscribe(function (newValue) {
+        subscriptions.add(selectedNarrative.subscribe(function (newValue) {
             if (!newValue) {
                 copyMethod('new');
             } else {
@@ -208,7 +209,7 @@ define([
                         errorMessage('unknown error');
                     });
             }
-        }.bind(this));
+        }.bind(this)));
 
         // DATA CALLS
 
@@ -333,6 +334,10 @@ define([
             selectedObjects.remove(data);
         }
 
+        function dispose() {
+            subscriptions.dispose();
+        }
+
         return {
             title: 'Copy Object',
             narratives: narratives,
@@ -352,7 +357,9 @@ define([
             doClose: doClose,
             doCopy: doCopy,
             doRemoveObject: doRemoveObject,
-            doSelectObject: doSelectObject
+            doSelectObject: doSelectObject,
+
+            dispose: dispose
         };
     }
 

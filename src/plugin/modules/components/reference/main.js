@@ -113,6 +113,8 @@ define([
         var types = context['$root'].types;
         var appBus = context['$root'].appBus;
 
+        var subscriptions = ko.kb.SubscriptionManager.make();
+
         // the search view model...
         var searchState = SearchState();
 
@@ -124,7 +126,6 @@ define([
             maxSearchItems: 10000
         });
 
-
         var currentSearch = SearchJob.make();
 
         var lastQuery = null;
@@ -134,8 +135,7 @@ define([
                 return;
             }
             lastQuery = query;
-            currentSearch.cancel();
-            
+            currentSearch.cancel();            
 
             // ensure search is runnable
             if (!query.input) {
@@ -158,19 +158,18 @@ define([
 
             timer.start('search');
 
-            var job = Promise.try(function () {
+            var searchJob = Promise.try(function () {
                 thisSearch.started();
             })
                 .then(function () {
                     return data.search({
                         start: query.start,
                         terms: query.terms
-                    })
+                    });
                 })
                 .then(function (result) {
                     timer.stop('search');
                     timer.start('processing');
-                    // console.log('processed search results', result);
                     return result;
                 })
                 .then(function (result) {
@@ -224,6 +223,8 @@ define([
                     thisSearch.finished();
                     searchState.searching(false);
                 });
+            thisSearch.running(searchJob);
+            return searchJob;
         }
 
         var searchQuery = ko.pureComputed(function () {
@@ -241,13 +242,14 @@ define([
                 input: params.searchInput(),
                 terms: terms.terms,
                 start: start,
-                pageSize: searchState.pageSize()
+                pageSize: searchState.pageSize(),
+                forced: params.forceSearch()
             };
         });
         
-        searchQuery.subscribe(function (newValue) {
+        subscriptions.add(searchQuery.subscribe(function (newValue) {
             runSearch(newValue);
-        });
+        }));
 
         // // ACTIONS
         
@@ -278,6 +280,15 @@ define([
 
         runSearch(searchQuery());
 
+        // LIFECYCLE
+
+        function dispose() {
+            if (currentSearch) {
+                currentSearch.cancel();
+            }
+            subscriptions.dispose();
+        }
+
         return {
             searchState: searchState,
             view: params.view,
@@ -286,7 +297,10 @@ define([
 
             // ACTIONS
             doToggleShowMatches: doToggleShowMatches,
-            doToggleShowDetails: doToggleShowDetails
+            doToggleShowDetails: doToggleShowDetails,
+
+            // LIFECYCLE
+            dispose: dispose
         };
     }
 

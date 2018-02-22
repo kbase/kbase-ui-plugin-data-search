@@ -1014,9 +1014,12 @@ define([
         }, [
             // p('No active search'),
             p('Enter one or more terms above to find data in user Narratives, including Genomes, Assemblies, FBA Models, Narratives, and more!'),
-            p('You can search within your Narratives or Narratives shared with you (Private) or Narratives shared all KBase users (Public).'),
-            p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
-            ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
+            p('The search will encompass all your Narratives and Narratives shared with you (Private) and/or Narratives shared all KBase users (Public).'),
+            p('The search applies to data objects within Narratives and to the Narratives themselves (text and app cells).'),
+            p([
+                'All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ', 
+                'In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.'
+            ])
         ]);
     }
 

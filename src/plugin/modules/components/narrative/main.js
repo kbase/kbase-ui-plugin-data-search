@@ -142,6 +142,7 @@ define([
         var runtime = context['$root'].runtime;
         var types = context['$root'].types;
         var appBus = context['$root'].appBus;
+        var subscriptions = ko.kb.SubscriptionManager.make();
 
         // the search view model...
         var searchState = SearchState({
@@ -283,22 +284,22 @@ define([
            
             var terms = params.searchTerms();
 
+            var forced = params.forceSearch();
+
             return {
-                // input: params.searchInput(),
                 terms: terms.terms,
                 withPrivateData: searchState.includePrivateData(),
                 withPublicData: searchState.includePublicData(),
                 start: start,
                 pageSize: searchState.pageSize(),
-                username: runtime.service('session').getUsername()
+                username: runtime.service('session').getUsername(),
+                forced: forced
             };
         });
 
-        
-        searchQuery.subscribe(function (newValue) {
-           
+        subscriptions.add(searchQuery.subscribe(function (newValue) {           
             runSearch(newValue);
-        });
+        }));
 
         // // ACTIONS
         
@@ -352,6 +353,7 @@ define([
             if (currentSearch) {
                 currentSearch.cancel();
             }
+            subscriptions.dispose();
         }
 
         return {

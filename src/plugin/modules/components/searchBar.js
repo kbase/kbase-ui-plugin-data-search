@@ -22,10 +22,12 @@ define([
         searchHistory
     */
     function viewModel(params) {
+        var subscriptions = ko.kb.SubscriptionManager.make();
         // TODO: link to params
         var searchInput = params.searchInput;
         var searchHistory = params.searchHistory;
         var inputWarnings = params.inputWarnings;
+        var forceSearch = params.forceSearch;
 
         // HISTORY
 
@@ -53,14 +55,14 @@ define([
         // var showWarnings = ko.observable(false);
         var warnings = ko.observableArray([
         ]);
-        inputWarnings.subscribe(function (newValue) {
+        subscriptions.add(inputWarnings.subscribe(function (newValue) {
             if (newValue.length === 0) {
                 warnings.removeAll();
             }
             newValue.forEach(function (warning) {
                 warnings.push(warning);
             });
-        });
+        }));
         function doClearWarnings() {
             warnings.removeAll();
         }
@@ -76,11 +78,11 @@ define([
         // When it is updated by either of those methods, we save
         // it in the search history, and also forward the value to
         // the search query.
-        searchInput.subscribe(function (newValue) {
+        subscriptions.add(searchInput.subscribe(function (newValue) {
             // add to history if not already there...
             addToSearchHistory(newValue);
             params.searchInput(newValue);
-        });
+        }));
 
         function useFromHistory(data) {
             showHistory(false);
@@ -111,7 +113,6 @@ define([
             });
         }
 
-
         function doClearInput() {
             searchControlValue('');
             doRunSearch();
@@ -119,6 +120,7 @@ define([
 
         function doRunSearch() {
             searchInput(searchControlValue());
+            forceSearch(new Date().getTime());
         }
 
         function doKeyUp(data, ev) {
@@ -155,6 +157,7 @@ define([
             if (clickListener) {
                 document.removeEventListener('click', clickListener, true);
             }
+            subscriptions.dispose();
         }
 
         return {
