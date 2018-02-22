@@ -246,10 +246,7 @@ define([
                     }, 'Open It')
                 ]),
                 '<!-- /ko -->',
-                '<!-- /ko -->',
-
-               
-                
+                '<!-- /ko -->'                
             ])
         ]);
     }
@@ -260,13 +257,9 @@ define([
             icon: 'copy',
             body: buildBody(),
             buttons: [
-                // {
-                //     label: 'Duplicate',
-                //     onClick: 'doDuplicate'
-                // },
                 {
-                    type: 'danger',
-                    label: 'Cancel',
+                    type: 'default',
+                    label: 'Close',
                     onClick: 'doClose'
                 }
             ],

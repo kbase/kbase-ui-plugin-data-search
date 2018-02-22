@@ -65,12 +65,12 @@ define([
                     backgroundColor: 'rgba(200,200,200,0.8)'
                 },
                 td: {
-                    border: '1px solid rgba(200,200,200,0.8)',
+                    borderBottom: '1px solid rgba(200,200,200,0.8)',
                     padding: '3px',
                     verticalAlign: 'middle'
                 },
                 th: {
-                    border: 'none',
+                    borderBottom: '1px solid rgba(200,200,200,0.8)',
                     padding: '3px',
                     verticalAlign: 'top',
                     fontWeight: 'normal',
@@ -81,6 +81,12 @@ define([
                 },
                 'th:nth-child(1)': {
                     width: '30%'
+                },
+                'td:nth-child(3)': {
+                    textAlign: 'center'
+                },
+                'th:nth-child(3)': {
+                    textAlign: 'center'
                 }
             }
         },
@@ -381,8 +387,9 @@ define([
                     }, [
                         thead([
                             tr([
-                                td('type'),
-                                td('object name')
+                                th('type'),
+                                th('object name'),
+                                th('remove')
                             ])
                         ]),
                         tbody({
@@ -419,6 +426,7 @@ define([
                                     }
                                 }, button({
                                     type: 'button',
+                                    title: 'Remove this object from the list of selected objects to copy.',
                                     class: 'btn btn-xs btn-danger btn-kb-flat',
                                     dataBind: {
                                         click: '$component.doRemoveObject'
@@ -598,11 +606,11 @@ define([
                         div({
                             class: 'col-sm-10'
                         }, [
-                            'Copy into: ',
+                            'Copy into an existing Narrative: ',
                             select({
                                 class: 'form-control',
                                 dataBind: {
-                                    optionsCaption: '"An existing Narrative"',
+                                    optionsCaption: '"-- choose a Narrative -- "',
                                     options: 'narratives',
                                     optionsValue: '"value"',
                                     optionsText: '"name"',
@@ -738,14 +746,8 @@ define([
     }
 
     function buildSuccessPanel() {
-        return div({
-            style: {
-                marginTop: '12px'
-            },
-            dataBind: {
-                if: 'copyStatus() === "success"'
-            }
-        }, [
+        return [
+            '<!-- ko if: copyStatus() === "success" -->',
             BS.buildPanel({
                 type: 'success',
                 title: 'Successfully Copied',
@@ -777,19 +779,14 @@ define([
                         }, 'Open this Narrative'))
                     ])
                 ])
-            })
-        ]);
+            }),
+            '<!-- /ko -->'
+        ];
     }
 
     function buildErrorPanel() {
-        return div({
-            style: {
-                marginTop: '12px'
-            },
-            dataBind: {
-                if: 'copyStatus() === "error"'
-            }
-        }, [
+        return [
+            '<!-- ko if: copyStatus() === "error" -->',           
             BS.buildPanel({
                 type: 'error',
                 title: 'Error',
@@ -801,8 +798,23 @@ define([
                         }
                     })
                 ])
-            })
-        ]);
+            }),
+            '<!-- /ko -->'
+        ];
+    }
+
+    function buildInProgressPanel() {
+        return [
+            '<!-- ko if: copyStatus() === "copying" -->',
+            BS.buildPanel({
+                type: 'info',
+                title: 'In Progress',
+                body:  div([
+                    html.loading('Copying')
+                ])
+            }),            
+            '<!-- /ko -->'
+        ];
     }
 
     function template() {
@@ -817,13 +829,20 @@ define([
                     buildObjectList(),
                     buildCopyForm(),
                     buildCopyButton(),
-                    buildSuccessPanel(),
-                    buildErrorPanel()
+                    div({
+                        style: {
+                            marginTop: '12px'
+                        }
+                    }, [
+                        buildSuccessPanel(),
+                        buildInProgressPanel(),
+                        buildErrorPanel()
+                    ])                    
                 ]),
                 buttons: [                
                     {
-                        type: 'danger',
-                        label: 'Cancel',
+                        type: 'default',
+                        label: 'Close',
                         onClick: 'doClose'
                     }
                 ],

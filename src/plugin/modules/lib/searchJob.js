@@ -13,19 +13,15 @@ define([], function () {
         }
 
         function cancel() {
-            console.log('canceling...');
             if (state === 'running') {
                 if (job) {
                     try {
                         job.cancel();
-                        console.log('canceled!');
                     } catch (ex) {
                         console.error('Error canceling search', ex);
                     }                        
                     state = 'canceled';
                 }
-            } else {
-                console.log('cancelation not necessary');
             }
         }
 
