@@ -12,8 +12,19 @@ define([
         span = t('span');
 
     function viewModel(params) {
+
+        var typeCounts = ko.pureComputed(function () {
+            if (params.typeCounts()) {
+                return params.typeCounts().sort(function (a, b) {
+                    return b.count - a.count;
+                });
+            } else {
+                return [];
+            }
+        });
+
         return {
-            typeCounts: params.typeCounts,
+            typeCounts: typeCounts,
             resultCount: params.resultCount,
             searchSpaceCount: params.searchSpaceCount,
             searchStatus: params.searchStatus
@@ -55,9 +66,9 @@ define([
                         }
                     }
                 }),
-                ' items ',
+                ' total',
                 '<!-- ko if: resultCount() < searchSpaceCount() -->',
-                '(truncated to ',
+                ' (truncated to ',
                 span({
                     dataBind: {
                         typedText: {
@@ -67,7 +78,7 @@ define([
                         }
                     }
                 }),
-                ') ',
+                ')',
                 '<!-- /ko -->',
 
                 ': ',
@@ -75,7 +86,11 @@ define([
                 '<!-- ko foreach: typeCounts -->',
                 span({
                     dataBind: {
-                        text: 'count'
+                        typedText: {
+                            value: 'count',
+                            type: '"number"',
+                            format: '"0,0"'
+                        }
                     }
                 }), ' ', 
                 span({

@@ -48,7 +48,11 @@ define([
             '<!-- ko foreach: typeCounts -->',
             span({
                 dataBind: {
-                    text: 'count'
+                    typedText: {
+                        value: 'count',
+                        type: '"number"',
+                        format: '"0,0"'
+                    }
                 }
             }), ' ', 
             span({

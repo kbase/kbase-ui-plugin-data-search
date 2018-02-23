@@ -26,7 +26,11 @@ define([
                 borderRadius: '3px'
             },
             dataBind: {
-                text: 'count',
+                typedText: {
+                    value: 'count',
+                    type: '"number"',
+                    format: '"0,0"'
+                },
                 visible: 'typeof count() === "number"'
             }
         });

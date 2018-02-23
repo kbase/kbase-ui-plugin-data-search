@@ -81,7 +81,7 @@ define([
 
         // Summary by type
         // TODO: an array, or a map of observables...
-        var summary = ko.observable();
+        var summary = ko.observableArray();
 
         // var start = ko.observable();
 
@@ -143,7 +143,7 @@ define([
                 searchState.buffer(null);
                 searchState.isTruncated(null);
                 searchState.totalSearchHits(null);
-                searchState.summary(null);
+                searchState.summary.removeAll();
                 searchState.totalSearchSpace(null);
                 return;
             }
@@ -180,7 +180,7 @@ define([
                         searchState.status('notfound');
                         searchState.isTruncated(false);
                         searchState.totalSearchHits(null);
-                        searchState.summary(null);
+                        searchState.summary.removeAll();
                         searchState.totalSearchSpace(null);
                         searchState.page(null);
                         return;
@@ -201,7 +201,13 @@ define([
                     searchState.buffer(result.items);
                     searchState.isTruncated(result.isTruncated);
                     searchState.totalSearchHits(result.summary.totalSearchHits);
-                    searchState.summary(result.summary.totalByType);
+                    searchState.summary.removeAll();
+                    result.summary.totalByType.forEach(function (total) {
+                        searchState.summary.push(total);
+                    });
+                    searchState.summary.sort(function (a, b) {
+                        return b.count - a.count;
+                    });
                     searchState.totalSearchSpace(result.summary.totalSearchSpace);
                     searchState.status('success');
 
