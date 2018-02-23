@@ -902,7 +902,7 @@ define([
                     },
                     style: {
                         display: 'flex',
-                        alignItems: 'center'
+                        alignItems: 'top'
                     },
                     target: '_blank'
                 }, [
