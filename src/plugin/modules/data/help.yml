@@ -111,10 +111,10 @@ topics:
       > implement this!
 
 references:
-  # -
-  #   url: http://kbase.us/help/search
-  #   title: Search Documentation
-  #   external: true
+  -
+    url: http://kbase.us/help/search
+    title: Search Documentation
+    external: true
   -
     url: http://kbase.us/help-board
     title: Feedback - Public Help Board
