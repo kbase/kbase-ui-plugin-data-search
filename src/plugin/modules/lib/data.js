@@ -115,6 +115,23 @@ define([
                         }
                         return false;
                     });
+                })
+                .then(function (narratives) {
+                    var owners = Object.keys(narratives.reduce(function (owners, narrative) {
+                        owners[narrative.owner] = true;
+                        return owners;
+                    }, {}));
+                    return rpc.call('UserProfile', 'get_user_profile', owners)
+                        .spread(function (profiles) {
+                            var ownerProfiles = profiles.reduce(function (ownerProfiles, profile) {
+                                ownerProfiles[profile.user.username] = profile;
+                                return ownerProfiles;
+                            }, {});
+                            narratives.forEach(function (narrative) {
+                                narrative.ownerRealName = ownerProfiles[narrative.owner].user.realname;
+                            });
+                            return narratives;
+                        });
                 });
         }
 
