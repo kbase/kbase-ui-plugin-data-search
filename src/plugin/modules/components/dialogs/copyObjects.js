@@ -31,6 +31,15 @@ define([
         select = t('select'), a = t('a'),
         p = t('p'), b = t('b');
 
+    function cmp(a, b) {
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
+        }
+        return 0;
+    }
+    
     var styles = html.makeStyles({
         viewTable: {
             css: {
@@ -324,13 +333,17 @@ define([
                 return  data.getWritableNarratives();
             })
             .then(function (writableNarratives) {
-                writableNarratives.forEach(function (narrative) {
-                    narrativesById[narrative.id] = narrative;
-                    narratives.push({
-                        name: narrative.metadata.narrative_nice_name,
-                        value: [String(narrative.id), narrative.metadata.narrative].join('/')
+                writableNarratives
+                    .sort(function (a, b) {
+                        return cmp(a.metadata.narrative_nice_name, b.metadata.narrative_nice_name);
+                    })
+                    .forEach(function (narrative) {
+                        narrativesById[narrative.id] = narrative;
+                        narratives.push({
+                            name: narrative.metadata.narrative_nice_name,
+                            value: [String(narrative.id), narrative.metadata.narrative].join('/')
+                        });
                     });
-                });
             });
 
         function doRemoveObject(data) {
