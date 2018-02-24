@@ -113,12 +113,8 @@ topics:
 references:
   -
     url: http://kbase.us/help/search
-    title: Help Page for Search
+    title: Search Documentation
     external: true
-  -
-    url: http://kbase.us/help/search
-    title: 'Blog Post: Introducing the new Search'
-    external: true    
   -
     url: http://kbase.us/help-board
     title: Feedback - Public Help Board

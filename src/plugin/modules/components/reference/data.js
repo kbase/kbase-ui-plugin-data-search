@@ -122,7 +122,7 @@ define([
             var searchApi = SearchAPI.make({
                 runtime: params.runtime
             });
-            console.log('search api query:', query);
+            // console.log('search api query:', query);
             return Promise.all([
                 searchApi.referenceObjectSearch({
                     query: query.terms.join(' '),
@@ -137,7 +137,7 @@ define([
                 })
             ])
                 .spread(function (objectResults, typeResults) {
-                    console.log('search api results (object, type):', objectResults, typeResults);
+                    // console.log('search api results (object, type):', objectResults, typeResults);
                     var objects = objectResults.objects.map(function (object) {
                         return objectToViewModel(object);
                     });

@@ -1,5 +1,4 @@
 define([
-    'bluebird',
     'knockout-plus',
     'kb_common/html',
     'kb_common/bootstrapUtils',
@@ -7,23 +6,19 @@ define([
     '../../lib/ui',
     '../../lib/rpc',
     '../../lib/data',
-    '../controls/narrativeSelector',
     'select2',
 ], function (
-    Promise,
     ko,
     html,
     BS,
     apiUtils,
     ui,
     Rpc,
-    Data,
-    NarrativeSelectorComponent
+    Data
 ) {
     'use strict';
 
     var t = html.tag,
-        a = t('a'),
         h3 = t('h3'),
         div = t('div'),
         span = t('span'),
@@ -33,8 +28,18 @@ define([
         thead = t('thead'),
         tbody = t('tbody'),
         tr = t('tr'), td = t('td'), th = t('th'),
+        select = t('select'), a = t('a'),
         p = t('p'), b = t('b');
 
+    function cmp(a, b) {
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
+        }
+        return 0;
+    }
+    
     var styles = html.makeStyles({
         viewTable: {
             css: {
@@ -145,15 +150,15 @@ define([
         }
 
         // Values
+        var narratives = ko.observableArray([]);
         var copyMethod = ko.observable();
         var selectedNarrative = ko.observable();
         var selectedNarrativeObject = ko.observable();
+        var narrativesById = {};
         var errorMessage = ko.observable();
         var completionMessage = ko.observable();
         var newNarrativeName = ko.observable();
         var copyStatus = ko.observable('none');
-
-        // new narrative stuff...
 
         // Computeds
         var canCopy = ko.pureComputed(function () {
@@ -324,6 +329,21 @@ define([
                         selected: ko.observable()
                     });
                 });
+                // selectedObjects(objectsInfo);
+                return  data.getWritableNarratives();
+            })
+            .then(function (writableNarratives) {
+                writableNarratives
+                    .sort(function (a, b) {
+                        return cmp(a.metadata.narrative_nice_name, b.metadata.narrative_nice_name);
+                    })
+                    .forEach(function (narrative) {
+                        narrativesById[narrative.id] = narrative;
+                        narratives.push({
+                            name: narrative.metadata.narrative_nice_name,
+                            value: [String(narrative.id), narrative.metadata.narrative].join('/')
+                        });
+                    });
             });
 
         function doRemoveObject(data) {
@@ -339,10 +359,12 @@ define([
 
         return {
             title: 'Copy Object',
+            narratives: narratives,
             copyMethod: copyMethod,
             selectedNarrative: selectedNarrative,
             selectedNarrativeObject: selectedNarrativeObject,
             selectedObjects: selectedObjects,
+            narrativesById: narrativesById,
             errorMessage: errorMessage,
             completionMessage: completionMessage,
             newNarrativeName: newNarrativeName,
@@ -581,7 +603,6 @@ define([
                             }
                         }, ' - or - ')
                     ]),
-                   
                     div({
                         class: 'row'
                     }, [
@@ -599,29 +620,16 @@ define([
                             class: 'col-sm-10'
                         }, [
                             'Copy into an existing Narrative: ',
-                            '<!-- ko ifnot: copyMethod() === "existing" -->',
-                            div({
-                                style: {
-                                    fontStyle: 'italic'
-                                }
-                            }, 'select a writable narrative.'),
-                            '<!-- /ko -->',
-                            '<!-- ko if: copyMethod() === "existing" -->',
-                            div({
-                                style: {
-                                    marginBottom: '10px'
-                                },
+                            select({
+                                class: 'form-control',
                                 dataBind: {
-                                    component: {
-                                        name: NarrativeSelectorComponent.quotedName(),
-                                        params: {
-                                            selectedNarrative: 'selectedNarrative'
-                                        }
-                                    }
+                                    optionsCaption: '"-- choose a Narrative -- "',
+                                    options: 'narratives',
+                                    optionsValue: '"value"',
+                                    optionsText: '"name"',
+                                    value: 'selectedNarrative'
                                 }
-                            }),
-                            '<!-- /ko -->'
-                        ])
+                            })])
                     ])
                 ]),
                 div({class: 'col-md-4'}, [
