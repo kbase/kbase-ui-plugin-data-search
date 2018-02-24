@@ -114,27 +114,26 @@ define([
             }
         }); 
 
-        var narrativesFiltered = narratives()
-            .sort(function (a, b) {
-                var dir = sortDir();
-                switch (sortOption()) {
-                case 'title':                        
-                    return dir * cmp(a.sortable.title, b.sortable.title);
-                case 'username':
-                    return dir * cmp(a.sortable.username, b.sortable.username);
-                case 'date':
-                default:
-                    return dir * cmp(a.sortable.date, b.sortable.date);                    
-                }
-            })
-            .filter(function (narrative) {
-                var searchString = searchExpression().toLowerCase();
-                return Object.keys(narrative.searchable).some(function (key) {
-                    return (narrative.searchable[key].indexOf(searchString) >= 0); 
-                });
-            });
+        // var narrativesFiltered = narratives            
+        //     .filter(function (narrative) {
+        //         if (!searchExpression()) {
+        //             return true;
+        //         }
+                
+        //         var searchString = searchExpression().toLowerCase();
+        //         return Object.keys(narrative.searchable).some(function (key) {
+        //             return (narrative.searchable[key].indexOf(searchString) >= 0); 
+        //         });
+        //     });
 
-        var narrativesFilteredx = ko.pureComputed(function () {
+        // var narrativesSorted= ko.pureComputed(function () {
+        //     narrativesFiltered()
+        //         .sort(function (a, b) {
+
+        //         })
+        // });
+
+        var narrativesFiltered = ko.pureComputed(function () {
             var search = searchExpression();
 
             var nar;
@@ -152,8 +151,6 @@ define([
 
             var sortField = sortOption();
 
-            console.log('nar', nar);
-
             return nar
                 .sort(function (a, b) {
                     var dir = sortDir();
@@ -169,6 +166,7 @@ define([
                 });
         });
 
+
         var totalCount = ko.pureComputed(function () {
             return narratives().length;
         });
@@ -176,16 +174,18 @@ define([
         var tooManyResults = ko.observable(false);
         var searchCount = ko.observable();
 
-        var itemSelected = ko.observable(false);
-       
         var isSearching = ko.observable(false);
 
         function doSelectValue(selected) {
+            if (selected.selected()) {
+                selected.selected(false);
+                selectedNarrative(null);
+                return;
+            } 
             narrativesFiltered().forEach(function (narrative) {
                 narrative.selected(false);
             });
             selectedNarrative(selected.ref);
-            itemSelected(true);
             selected.selected(true);
         }
 
@@ -214,7 +214,6 @@ define([
             searchCount: searchCount,
             isSearching: isSearching,
             doSelectValue: doSelectValue,
-            itemSelected: itemSelected,
             doCancelSearch: doCancelSearch,
             tooManyResults: tooManyResults,
             sortOptions: sortOptions,
@@ -390,7 +389,10 @@ define([
                     ]),
                     div({
                         dataBind: {
-                            foreach: 'narrativesFiltered'
+                            foreach: {
+                                data: 'narrativesFiltered',
+                                includeDestroyed: 'false'
+                            }
                         },
                         style: {
                             border: '1px silver solid',
@@ -409,7 +411,7 @@ define([
                         },
                         dataBind: {
                             click: '$parent.doSelectValue',
-                            class: '[(active() ? "' + styles.classes.hoverRow + '" : ""), (selected() ? "' + styles.classes.selectedRow + '" : "")].join(" ")',
+                            class: '[($data && $data.active && active() ? "' + styles.classes.hoverRow + '" : ""), ($data && $data.selected && selected() ? "' + styles.classes.selectedRow + '" : "")].join(" ")',
                             event: {
                                 mouseover: '$parent.doActivate',
                                 mouseout: '$parent.doDeactivate'
@@ -417,6 +419,9 @@ define([
                         }
                     }, [
                         div({
+                            style: {
+                                fontWeight: 'bold'
+                            },
                             dataBind: {
                                 text:  'title'
                             }
