@@ -210,6 +210,7 @@ define([
                         .map(function (workspaceId) {
                             var info = objectResults.access_group_narrative_info[workspaceId];
                             var narrative =  {
+                                isNarrative: info[0] ? true : false,
                                 name: info[0],
                                 title: info[0],
                                 ref: {

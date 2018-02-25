@@ -95,7 +95,7 @@ define([
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
-                    source_tags: ['refdata'],
+                    source_tags: ['refdata', 'noindex'],
                     source_tags_blacklist: 1
                 },
                 pagination: {
@@ -139,7 +139,7 @@ define([
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
-                    source_tags: ['refdata'],
+                    source_tags: ['refdata', 'noindex'],
                     source_tags_blacklist: 1
                 },
                 pagination: {
@@ -174,7 +174,7 @@ define([
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
-                    source_tags: ['refdata'],
+                    source_tags: null,
                     source_tags_blacklist: null
                 },
                 access_filter: {
@@ -184,9 +184,11 @@ define([
             };
             switch (arg.dataSource) {
             case 'narratives':
+                param.match_filter.source_tags = ['refdata', 'noindex'];
                 param.match_filter.source_tags_blacklist = 1;
                 break;
             case 'referenceData':
+                param.match_filter.source_tags = ['refdata'];
                 param.match_filter.source_tags_blacklist = 0;
                 break;
             default:

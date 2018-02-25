@@ -369,7 +369,17 @@ define([
                         }, [
                             'Showing ',
                             '<!-- ko if: narrativesFiltered().length = totalCount() -->',
-                            'all writable narratives',
+                            'all ', 
+                            span({
+                                dataBind: {
+                                    typedText: {
+                                        value: 'totalCount',
+                                        type: '"number"',
+                                        format: '"0,0"'
+                                    }
+                                }
+                            }),
+                            ' writable narratives',
                             '<!-- /ko -->',
                             '<!-- ko if: narrativesFiltered().length < totalCount() -->',
                             span({
