@@ -871,7 +871,7 @@ define([
             }
         }, [
             span({
-                class: 'fa fa-ban fa-stack-1x',
+                class: 'fa fa-folder-o fa-stack-1x',
                 style: {
                     fontSize: '120%',
                     // color: 'rgba(150,150,150,1)'
@@ -893,7 +893,7 @@ define([
                     fontSize: '120%'
                 }
             }, [
-                '<!-- ko if: title -->',
+                '<!-- ko if: isNarrative -->',
                 a({
                     dataBind: {
                         attr: {
@@ -906,7 +906,7 @@ define([
                     },
                     target: '_blank'
                 }, [
-                    buildNarrativeIcon(),
+                    buildNarrativeIcon(),                    
                     span({
                         style: {
                             marginLeft: '3px',
@@ -920,21 +920,17 @@ define([
                     })
                 ]),
                 '<!-- /ko -->',
-                '<!-- ko ifnot: title -->',
-                a({
-                    dataBind: {
-                        attr: {
-                            href: '"#dataview/" + ref.workspaceId + "/" + ref.objectId'                        
-                        }
-                    },
-                    target: '_blank'
+                '<!-- ko ifnot: isNarrative -->',
+                span({
                 }, [
                     buildOtherObjectIcon(),
+                    'Workspace #',
                     span({
                         dataBind: {
                             text: 'ref.workspaceId'
                         }
-                    })
+                    }), 
+                    ' (not a Narrative)'
                 ]),
                 '<!-- /ko -->'
             ]),
