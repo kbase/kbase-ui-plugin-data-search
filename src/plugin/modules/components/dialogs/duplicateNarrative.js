@@ -81,7 +81,6 @@ define([
 
         data.getNarrative(params.narrative)
             .then(function (info) {
-                console.log('narrative info', info);
                 oldNarrativeName(info.workspaceInfo.metadata.narrative_nice_name);
                 newNarrativeName(info.workspaceInfo.metadata.narrative_nice_name + ' - Copy');
             });

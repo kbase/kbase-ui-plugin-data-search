@@ -79,7 +79,6 @@ define([
         ];
 
         function detail() {
-            // console.log('detail?', object, normalize(object));
             return utils.dataToDetail(normalize(object), detailFields);
         }
 

@@ -4,7 +4,6 @@ define([
     '../../../components/taxonomy',
     '../../../components/location',
     '../../../components/aliases',
-
     'yaml!./def.yaml'
 ], function (
     Props,
@@ -25,20 +24,21 @@ define([
 
         return aliases.map(function (alias) {
             return {
-                type: 'n/a',
-                alias: alias
+                type: alias[0],
+                alias: alias[1]
             };
         });
     }
-
+    
     function factory(params) {
         var object = params.object;
+
         function normalize() {
             var normalized = {
-                featureType: object.data.type,
                 id: object.data.id,
+                featureType: object.data.type,
                 aliases: parseAliases(object.data.aliases),
-                function: object.data.function,
+                functions: object.data.functions,
                 location: object.data.location.map(function (location) {
                     var start = location[1];
                     var length = location[3];
@@ -64,10 +64,10 @@ define([
                         end: end
                     };
                 }),
-                proteinTranslation: object.data.protein_translation,
                 domain: object.parent_data.domain,
                 scientificName: object.parent_data.scientific_name,
-                taxonomy: utils.parseTaxonomy(object.parent_data.taxonomy)
+                taxonomy: utils.parseTaxonomy(object.parent_data.taxonomy),
+                proteinTranslation: object.data.protien_translation
             };
             return normalized;
         }
@@ -80,7 +80,7 @@ define([
             {
                 id: 'featureType',
                 label: 'Type'
-            },
+            }, 
             {
                 id: 'aliases',
                 label: 'Aliases',
@@ -107,7 +107,7 @@ define([
         ];
 
         function detail() {
-            return utils.dataToDetail(normalize(), detailFields);
+            return utils.dataToDetail(normalize(object), detailFields);
         }
 
         var ref = utils.subObjectGuidToRef(object.guid);

@@ -22,6 +22,10 @@
   version: 1
   module: genomeFeature
 - 
+  id: genomefeature
+  version: 2
+  module: genomeFeature
+- 
   id: assemblycontig
   version: 1
   module: assemblyContig

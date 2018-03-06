@@ -23,8 +23,6 @@ define([
         var info = error.info;
         var stackTrace = error.stackTrace;
 
-        console.log('error', error);
-
         function doClose() {
             params.onClose();
         }

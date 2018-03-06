@@ -10,7 +10,7 @@ searchKeys:
     label: ID
     type: string
   - 
-    key: function
+    key: functions
     label: Function
     type: string
   - 

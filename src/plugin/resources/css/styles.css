@@ -81,6 +81,17 @@
     border: none;
 }
 
+.table.table-kb-plain > thead > tr > th {
+    vertical-align: middle;
+    border: none;
+    color: gray;
+}
+
 .table.table-kb-compact td {
     padding: 3px;
+}
+
+.table.table-kb-compact > thead > tr > th {
+    padding: 3px;
+
 }

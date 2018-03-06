@@ -165,6 +165,81 @@ define([
                 });
         }
 
+        function featuresSearch(arg) {
+            var query = arg.query;
+            var start = arg.page * arg.pageSize;
+            var count = arg.pageSize;
+
+            var param = {
+                object_types: ['GenomeFeature'],
+                match_filter: {
+                    full_text_in_all: query,
+                    exclude_subobjects: 0,
+                    source_tags: null,
+                    source_tags_blacklist: 1,
+                },
+                pagination: {
+                    start: start,
+                    count: count
+                },
+                post_processing: {
+                    ids_only: 0,
+                    skip_info: 0,
+                    skip_keys: 0,
+                    skip_data: 0,
+                    include_highlight: 1
+                },
+                access_filter: {
+                    with_private: 0,
+                    with_public: 1
+                },
+                sorting_rules: [{
+                    is_object_property: 0,
+                    property: 'timestamp',
+                    ascending: 0
+                }]
+            };
+
+            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+                .spread(function (result) {
+                    return result;
+                });
+        }
+
+        function featuresSearchTotal(arg) {
+            var query = arg.query;
+
+            var param = {
+                object_types: ['GenomeFeature'],
+                match_filter: {
+                    full_text_in_all: query,
+                    exclude_subobjects: 0,
+                    source_tags: null,
+                    source_tags_blacklist: 0
+                },
+                pagination: {
+                    start: 0,
+                    count: 0
+                },
+                post_processing: {
+                    ids_only: 1,
+                    skip_info: 1,
+                    skip_keys: 1,
+                    skip_data: 1,
+                    include_highlight: 1
+                },
+                access_filter: {
+                    with_private: 0,
+                    with_public: 1
+                }
+            };
+
+            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+                .spread(function (result) {
+                    return result.total;
+                });
+        }
+
         function typeSearch(arg) {
             var query = arg.query;
             var withPrivate = arg.withPrivateData ?  1 : 0;
@@ -206,6 +281,8 @@ define([
             narrativeObjectSearch: narrativeObjectSearch,
             referenceObjectSearchTotal: referenceObjectSearchTotal,
             narrativeObjectSearchTotal: narrativeObjectSearchTotal,
+            featuresSearch: featuresSearch,
+            featuresSearchTotal: featuresSearchTotal,
             typeSearch: typeSearch
         };
     }

@@ -6,7 +6,9 @@ define([
     './narrative/main',
     './narrative/tab',
     './reference/main',
-    './reference/tab'
+    './reference/tab',
+    './features/main',
+    './features/tab'
 ], function (
     ko,
     html,
@@ -15,7 +17,9 @@ define([
     NarrativeResultsComponent,
     NarrativeTabComponent,
     ReferenceDataResultsComponent,
-    ReferenceDataTabComponent
+    ReferenceDataTabComponent,
+    FeaturesResultsComponent,
+    FeaturesTabComponent
 ) {
     'use strict';
 
@@ -79,6 +83,34 @@ define([
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,
                                 total: params.referenceDataTotal
+                            }
+                        }
+                    }
+                }
+            }, false);
+            tabsetBus.send('add-tab', {
+                tab: {
+                    tab: {
+                        label: 'Genome Features',
+                        component: {
+                            name: FeaturesTabComponent.name(),
+                            params: {
+                                count: params.featuresTotal
+                            }
+                        }
+                    },
+                    panel: {
+                        component: {
+                            name: FeaturesResultsComponent.name(),
+                            // NB these params are bound here, not in the tabset.
+                            params: {
+                                view: params.view,
+                                searchInput: params.searchInput,
+                                forceSearch: params.forceSearch,
+                                searchTerms: params.searchTerms,
+                                overlayComponent: params.overlayComponent,
+                                selectedObjects: params.selectedObjects,
+                                total: params.featuresTotal
                             }
                         }
                     }
