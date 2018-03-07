@@ -175,7 +175,7 @@ define([
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 0,
-                    source_tags: null,
+                    source_tags: ['noindex'],
                     source_tags_blacklist: 1,
                 },
                 pagination: {
@@ -214,8 +214,8 @@ define([
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 0,
-                    source_tags: null,
-                    source_tags_blacklist: 0
+                    source_tags: ['noindex'],
+                    source_tags_blacklist: 1
                 },
                 pagination: {
                     start: 0,

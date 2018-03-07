@@ -62,13 +62,23 @@ define([
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 } 
+                var label;
                 if (!type.getDef().searchKeysMap[field]) {
+                    // TODO: make this configurable?
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
-                    return matches;
+                    switch (field) {
+                    case 'object_name':
+                        label = 'Object Name';
+                        break;
+                    default:
+                        label = field;
+                    }                   
+                } else {
+                    label =  type.getDef().searchKeysMap[field].label;
                 }
                 matches.push({
                     id: field,
-                    label: type.getDef().searchKeysMap[field].label,
+                    label: label,
                     highlights: obj.highlight[field].map(function (highlight) {
                         return {
                             highlight: highlight
