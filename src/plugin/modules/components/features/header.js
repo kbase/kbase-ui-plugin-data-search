@@ -77,7 +77,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1.5'
+                    flex: '1.6'
                 }
             }, [
                 'ID'
@@ -101,7 +101,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '1'
+                    flex: '0 0 6em'
                 }
             }, [
                 'Date'
