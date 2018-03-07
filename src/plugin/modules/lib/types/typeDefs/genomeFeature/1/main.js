@@ -33,7 +33,14 @@ define([
 
     function factory(params) {
         var object = params.object;
+
         function normalize() {
+            var proteinLength;
+            var proteinTranslation = object.data.protein_translation;
+            if (proteinTranslation) {
+                proteinLength = proteinTranslation.length;
+            }
+
             var normalized = {
                 featureType: object.data.type,
                 id: object.data.id,
@@ -49,8 +56,6 @@ define([
                         end = start + length - 1;
                         break;
                     case '-':
-                        // end = start;
-                        // start = end - length;
                         end = start - length + 1;
                         break;
                     default:
@@ -64,7 +69,8 @@ define([
                         end: end
                     };
                 }),
-                proteinTranslation: object.data.protein_translation,
+                proteinTranslation: proteinTranslation,
+                proteinLength: proteinLength, 
                 domain: object.parent_data.domain,
                 scientificName: object.parent_data.scientific_name,
                 taxonomy: utils.parseTaxonomy(object.parent_data.taxonomy)
@@ -103,6 +109,21 @@ define([
                 id: 'taxonomy',
                 label: 'Taxonomy',
                 component: TaxonomyComponent.name()
+            },
+            {
+                id: 'function',
+                label: 'Function'
+            },
+            {
+                id: 'proteinTranslation',
+                label: 'Protein Translation'                
+            },
+            {
+                id: 'proteinLength',
+                label: 'Protein Length',
+                unit: 'aa',
+                type: 'number',
+                format: '0,0'
             }
         ];
 

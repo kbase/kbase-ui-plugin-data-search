@@ -4,6 +4,7 @@ define([
     '../../../components/taxonomy',
     '../../../components/location',
     '../../../components/aliases',
+    '../../../components/stringArray',
     'yaml!./def.yaml'
 ], function (
     Props,
@@ -11,6 +12,7 @@ define([
     TaxonomyComponent,
     LocationComponent,
     AliasesComponent,
+    StringArrayComponent,
     def
 ) {
     'use strict';
@@ -34,6 +36,11 @@ define([
         var object = params.object;
 
         function normalize() {
+            var proteinLength;
+            var proteinTranslation = object.data.protein_translation;
+            if (proteinTranslation) {
+                proteinLength = proteinTranslation.length;
+            }
             var normalized = {
                 id: object.data.id,
                 featureType: object.data.type,
@@ -49,8 +56,6 @@ define([
                         end = start + length - 1;
                         break;
                     case '-':
-                        // end = start;
-                        // start = end - length;
                         end = start - length + 1;
                         break;
                     default:
@@ -67,7 +72,8 @@ define([
                 domain: object.parent_data.domain,
                 scientificName: object.parent_data.scientific_name,
                 taxonomy: utils.parseTaxonomy(object.parent_data.taxonomy),
-                proteinTranslation: object.data.protien_translation
+                proteinTranslation: proteinTranslation,
+                proteinLength: proteinLength
             };
             return normalized;
         }
@@ -103,6 +109,22 @@ define([
                 id: 'taxonomy',
                 label: 'Taxonomy',
                 component: TaxonomyComponent.name()
+            },
+            {
+                id: 'functions',
+                label: 'Functions',
+                component: StringArrayComponent.name()
+            },
+            {
+                id: 'proteinTranslation',
+                label: 'Protein Translation'                
+            },
+            {
+                id: 'proteinLength',
+                label: 'Protein ',
+                unit: 'aa',
+                type: 'number',
+                format: '0,0'
             }
         ];
 

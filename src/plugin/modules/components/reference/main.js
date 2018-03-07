@@ -301,6 +301,10 @@ define([
             overlayComponent: params.overlayComponent,
             selectedObjects: params.selectedObjects,
 
+            narrativesTotal: params.narrativesTotal,
+            referenceDataTotal: params.referenceDataTotal,
+            featuresTotal: params.featuresTotal,
+
             // ACTIONS
             doToggleShowMatches: doToggleShowMatches,
             doToggleShowDetails: doToggleShowDetails,
@@ -340,6 +344,10 @@ define([
                 name: ResultsComponent.name(),
                 params: {
                     searchState: 'searchState',
+                    narrativesTotal: 'narrativesTotal',
+                    referenceDataTotal: 'referenceDataTotal',
+                    featuresTotal: 'featuresTotal',
+
                     view: 'view',
                     overlayComponent: 'overlayComponent',
                     selectedObjects: 'selectedObjects',

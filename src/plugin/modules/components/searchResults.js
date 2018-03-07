@@ -52,7 +52,9 @@ define([
                                 searchTerms: params.searchTerms,
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,
-                                total: params.narrativesTotal,
+                                narrativesTotal: params.narrativesTotal,
+                                referenceDataTotal: params.referenceDataTotal,
+                                featuresTotal: params.featuresTotal,
                                 withPrivateData: params.withPrivateData,
                                 withPublicData: params.withPublicData
                             }
@@ -82,7 +84,10 @@ define([
                                 searchTerms: params.searchTerms,
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,
-                                total: params.referenceDataTotal
+                                narrativesTotal: params.narrativesTotal,
+                                referenceDataTotal: params.referenceDataTotal,
+                                featuresTotal: params.featuresTotal,
+
                             }
                         }
                     }
@@ -110,7 +115,10 @@ define([
                                 searchTerms: params.searchTerms,
                                 overlayComponent: params.overlayComponent,
                                 selectedObjects: params.selectedObjects,
-                                total: params.featuresTotal
+                                narrativesTotal: params.narrativesTotal,
+                                referenceDataTotal: params.referenceDataTotal,
+                                featuresTotal: params.featuresTotal,
+
                             }
                         }
                     }

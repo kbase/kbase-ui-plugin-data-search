@@ -8,6 +8,7 @@ define([
     'use strict';
 
     var t = html.tag,
+        div = t('div'),
         table = t('table'),
         thead = t('thead'),
         tbody = t('tbody'),
@@ -21,7 +22,7 @@ define([
         };
     }
 
-    function template() {
+    function buildAliasesTable() {
         return table({
             class: 'table table-kb-compact table-kb-plain'
         }, [
@@ -49,6 +50,17 @@ define([
                     })
                 ])
             ])
+        ]);
+    }
+
+    function template() {
+        return div([
+            '<!-- ko if: value && value.length > 0 -->',
+            buildAliasesTable(),
+            '<!-- /ko -->',
+            '<!-- ko if: !value ||  value.length === 0 -->',
+            'n/a',
+            '<!-- /ko -->',
         ]);
     }
 

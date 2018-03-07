@@ -13,6 +13,7 @@ define([
 
     var t = html.tag,
         p = t('p'),
+        hr = t('hr'),
         button = t('button'),
         div = t('div'),
         span = t('span'),
@@ -300,6 +301,10 @@ define([
         return {
             searchState: searchState,
             view: params.view,
+
+            narrativesTotal: params.narrativesTotal,
+            referenceDataTotal: params.referenceDataTotal,
+            featuresTotal: params.featuresTotal,
 
             // scroller: scroller,
 
@@ -758,6 +763,20 @@ define([
             }
         }, [
             p('Enter one or more terms above to find Reference Data in KBase.'),
+            hr({
+                style: {
+                    width: '50%'
+                }
+            }),
+            p('Reference Includes the following sources:'),
+            ul([
+                li('something - somewhere')
+            ]),
+            hr({
+                style: {
+                    width: '50%'
+                }
+            }),
             p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
               ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
         ]);
@@ -773,7 +792,53 @@ define([
                 padding: '20px',
             }
         }, [
-            'Sorry, nothing found'
+            p('Sorry, no Reference Data found.'),
+            '<!-- ko if: narrativesTotal -->',
+            p([
+                'However, there ',
+                ko.kb.pluralize('narrativesTotal()', 'is ', 'are '),
+                span({
+                    style: {
+                        fontWeight: 'bold'
+                    }
+                }, [
+                    span({
+                        dataBind: {
+                            typedText: {
+                                value: 'narrativesTotal',
+                                type: '"number"',
+                                format: '"0,0"'
+                            }
+                        }
+                    }),
+                    ' matching User Data object',
+                    ko.kb.pluralize('narrativesTotal()', '.', 's.')
+                ])
+            ]),
+            '<!-- /ko -->',
+            '<!-- ko if: featuresTotal -->',
+            p([
+                'However, there ',
+                ko.kb.pluralize('featuresTotal()', 'is ', 'are '),
+                span({
+                    style: {
+                        fontWeight: 'bold'
+                    }
+                }, [
+                    span({
+                        dataBind: {
+                            typedText: {
+                                value: 'featuresTotal',
+                                type: '"number"',
+                                format: '"0,0"'
+                            }
+                        }
+                    }),
+                    ' matching Genome Feature',
+                    ko.kb.pluralize('featuresTotal()', '.', 's.')
+                ])
+            ]),
+            '<!-- /ko -->'
         ]);
     }
 
