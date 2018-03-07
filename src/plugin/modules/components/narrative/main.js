@@ -373,6 +373,10 @@ define([
             doToggleShowMatches: doToggleShowMatches,
             doToggleShowDetails: doToggleShowDetails,
 
+            narrativesTotal: params.narrativesTotal,
+            referenceDataTotal: params.referenceDataTotal,
+            featuresTotal: params.featuresTotal,
+
             dispose: dispose
         };
     }
@@ -407,6 +411,10 @@ define([
                 name: ResultsComponent.name(),
                 params: {
                     buffer: 'searchState.buffer',
+                    narrativesTotal: 'narrativesTotal',
+                    referenceDataTotal: 'referenceDataTotal',
+                    featuresTotal: 'featuresTotal',
+
                     status: 'searchState.status',
                     view: 'view',
                     overlayComponent: 'overlayComponent',

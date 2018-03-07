@@ -31,6 +31,9 @@ define([
                     type: '"number"',
                     format: '"0,0"'
                 },
+                style: {
+                    'font-weight': 'count() ? "bold" : "normal"'
+                },
                 visible: 'typeof count() === "number"'
             }
         });

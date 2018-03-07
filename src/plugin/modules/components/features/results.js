@@ -13,6 +13,7 @@ define([
 
     var t = html.tag,
         p = t('p'),
+        hr = t('hr'),
         button = t('button'),
         div = t('div'),
         span = t('span'),
@@ -300,6 +301,10 @@ define([
         return {
             searchState: searchState,
             view: params.view,
+
+            narrativesTotal: params.narrativesTotal,
+            referenceDataTotal: params.referenceDataTotal,
+            featuresTotal: params.featuresTotal,
 
             // scroller: scroller,
 
@@ -767,6 +772,12 @@ define([
             }
         }, [
             p('Enter one or more terms above to find Reference Data in KBase.'),
+            hr({
+                style: {
+                    width: '50%'
+                }
+            }),
+          
             p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
               ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
         ]);
@@ -782,7 +793,50 @@ define([
                 padding: '20px',
             }
         }, [
-            'Sorry, nothing found'
+            p('Sorry, no Genome Features found.'),
+            '<!-- ko if: narrativesTotal -->',
+            p([
+                'However, there ',
+                ko.kb.pluralize('narrativesTotal()', 'is ', 'are '),
+                span({
+                    style: {
+                        fontWeight: 'bold'
+                    }
+                }, [
+                    span({
+                        typedText: {
+                            value: 'narrativesTotal',
+                            type: '"number"',
+                            format: '"0,0"'
+                        }
+                    }),
+                    ' matching User Data object',
+                    ko.kb.pluralize('narrativesTotal()', '.', 's.')
+                ])
+            ]),
+            '<!-- /ko -->',
+            '<!-- ko if: referenceDataTotal -->',
+            p([
+                'However, there ',
+                ko.kb.pluralize('referenceDataTotal()', 'is ', 'are '),
+                span({
+                    style: {
+                        fontWeight: 'bold'
+                    }
+                }, [
+                    span({
+                        typedText: {
+                            value: 'referenceDataTotal',
+                            type: '"number"',
+                            format: '"0,0"'
+                        }
+                    }),
+                    ' matching Reference Data object',
+                    ko.kb.pluralize('referenceDataTotal()', '.', 's.')
+                ])
+            ]),
+            '<!-- /ko -->',
+           
         ]);
     }
 
