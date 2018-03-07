@@ -521,6 +521,16 @@ define([
                 }
             }, div({
                 dataBind: {
+                    text: 'featureFunction'
+                }
+            })),
+            div({
+                class: styles.classes.rowCell,
+                style: {
+                    flex: '3'
+                }
+            }, div({
+                dataBind: {
                     text: 'scientificName'
                 }
             })),

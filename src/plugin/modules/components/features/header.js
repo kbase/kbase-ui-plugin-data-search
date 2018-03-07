@@ -88,6 +88,14 @@ define([
                     flex: '3'
                 }
             }, [
+                'Function'
+            ]),
+            div({
+                class: styles.classes.headerCell,
+                style: {
+                    flex: '3'
+                }
+            }, [
                 'Scientific name'
             ]),
             div({

@@ -81,33 +81,6 @@ define([
                 ')',
                 '<!-- /ko -->',
 
-                ': ',
-
-                '<!-- ko foreach: typeCounts -->',
-                span({
-                    dataBind: {
-                        typedText: {
-                            value: 'count',
-                            type: '"number"',
-                            format: '"0,0"'
-                        }
-                    }
-                }), ' ', 
-                span({
-                    dataBind: {
-                        labelText: {
-                            label: 'id',
-                            quantity: 'count',
-                            labels: '$root.labels'
-                        }
-                    }
-                }), 
-
-                '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
-                ', ',
-                '<!-- /ko -->',
-                '<!-- /ko -->',
-
                 '<!-- /ko -->',
 
                 '<!-- /ko -->'
