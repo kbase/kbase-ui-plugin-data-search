@@ -66,12 +66,13 @@ define([
                 var label;
                 if (!type.getDef().searchKeysMap[field]) {
                     // TODO: make this configurable?
-                    console.warn('highlight field ' + field + ' not found in type spec', obj);
+                    
                     switch (field) {
                     case 'object_name':
                         label = 'Object Name';
                         break;
                     default:
+                        console.warn('highlight field ' + field + ' not found in type spec', obj);
                         label = field;
                     }                   
                 } else {
