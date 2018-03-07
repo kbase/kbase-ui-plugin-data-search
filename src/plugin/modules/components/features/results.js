@@ -79,7 +79,8 @@ define([
         },   
         rowCell: {
             css: {
-                padding: '4px'
+                padding: '4px',
+                wordBreak: 'break-word'
             }
         },
         detailHeader: {
@@ -511,7 +512,8 @@ define([
             div({
                 class: styles.classes.rowCell,
                 style: {
-                    flex: '2'
+                    flex: '1.5',
+                    workBreak: 'break-all'
                 }
             }, buildObjectLink()),
             div({

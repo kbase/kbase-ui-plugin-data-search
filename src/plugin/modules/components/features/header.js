@@ -77,7 +77,7 @@ define([
             div({
                 class: styles.classes.headerCell,
                 style: {
-                    flex: '2'
+                    flex: '1.5'
                 }
             }, [
                 'ID'
