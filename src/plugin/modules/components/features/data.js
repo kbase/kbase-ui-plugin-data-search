@@ -110,6 +110,7 @@ define([
 
                 id: detailMap.id.value,
                 featureType: detailMap.featureType.value,
+                featureFunction: detailMap.function.value,
                 scientificName: detailMap.scientificName.value,
 
                 matches: matches,

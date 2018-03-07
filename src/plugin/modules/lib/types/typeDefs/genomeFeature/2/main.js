@@ -45,6 +45,7 @@ define([
                 id: object.data.id,
                 featureType: object.data.type,
                 aliases: parseAliases(object.data.aliases),
+                function: object.data.functions[0],
                 functions: object.data.functions,
                 location: object.data.location.map(function (location) {
                     var start = location[1];
@@ -109,6 +110,10 @@ define([
                 id: 'taxonomy',
                 label: 'Taxonomy',
                 component: TaxonomyComponent.name()
+            },
+            {
+                id: 'function',
+                label: 'Function'
             },
             {
                 id: 'functions',
