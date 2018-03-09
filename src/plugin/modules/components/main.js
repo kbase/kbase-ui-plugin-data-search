@@ -192,16 +192,19 @@ define([
                 withPublicData: 1
             };
         });
-        subscriptions.add(featuresTotalQuery.subscribe(function (newQuery) {
-            if (!newQuery.query) {
-                featuresTotal(null);
-                return;
-            }
-            return searchApi.featuresSearchTotal(newQuery)
-                .then(function (total) {
-                    featuresTotal(total);
-                });
-        }));
+        
+        if (runtime.allow('alpha')) {
+            subscriptions.add(featuresTotalQuery.subscribe(function (newQuery) {
+                if (!newQuery.query) {
+                    featuresTotal(null);
+                    return;
+                }
+                return searchApi.featuresSearchTotal(newQuery)
+                    .then(function (total) {
+                        featuresTotal(total);
+                    });
+            }));
+        }
 
         function grokErrorMessage(message) {
             if (message.error) {
