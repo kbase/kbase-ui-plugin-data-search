@@ -26,7 +26,10 @@ define([
     var t = html.tag,
         div = t('div');
 
-    function viewModel(params) {
+    function viewModel(params, componentInfo) {
+        var context = ko.contextFor(componentInfo.element);
+        var runtime = context['$root'].runtime;
+
         var tabsetBus = NanoBus.make();
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
@@ -93,37 +96,40 @@ define([
                     }
                 }
             }, false);
-            tabsetBus.send('add-tab', {
-                tab: {
-                    tab: {
-                        label: 'Genome Features',
-                        component: {
-                            name: FeaturesTabComponent.name(),
-                            params: {
-                                count: params.featuresTotal
-                            }
-                        }
-                    },
-                    panel: {
-                        component: {
-                            name: FeaturesResultsComponent.name(),
-                            // NB these params are bound here, not in the tabset.
-                            params: {
-                                view: params.view,
-                                searchInput: params.searchInput,
-                                forceSearch: params.forceSearch,
-                                searchTerms: params.searchTerms,
-                                overlayComponent: params.overlayComponent,
-                                selectedObjects: params.selectedObjects,
-                                narrativesTotal: params.narrativesTotal,
-                                referenceDataTotal: params.referenceDataTotal,
-                                featuresTotal: params.featuresTotal,
 
+            if (runtime.allow('alpha')) {
+                tabsetBus.send('add-tab', {
+                    tab: {
+                        tab: {
+                            label: 'Genome Features',
+                            component: {
+                                name: FeaturesTabComponent.name(),
+                                params: {
+                                    count: params.featuresTotal
+                                }
+                            }
+                        },
+                        panel: {
+                            component: {
+                                name: FeaturesResultsComponent.name(),
+                                // NB these params are bound here, not in the tabset.
+                                params: {
+                                    view: params.view,
+                                    searchInput: params.searchInput,
+                                    forceSearch: params.forceSearch,
+                                    searchTerms: params.searchTerms,
+                                    overlayComponent: params.overlayComponent,
+                                    selectedObjects: params.selectedObjects,
+                                    narrativesTotal: params.narrativesTotal,
+                                    referenceDataTotal: params.referenceDataTotal,
+                                    featuresTotal: params.featuresTotal,
+
+                                }
                             }
                         }
                     }
-                }
-            }, false);
+                }, false);
+            }
             tabsetBus.send('select-tab', 0);
         });
 
@@ -157,7 +163,9 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: {
+                createViewModel: viewModel
+            },
             template: template()
         };
     }
