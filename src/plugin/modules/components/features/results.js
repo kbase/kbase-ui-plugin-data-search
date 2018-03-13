@@ -2,12 +2,14 @@ define([
     'knockout-plus',
     'kb_common/html',
     '../dialogs/copyObjects',
-    '../funnyRandomPrompt'
+    '../funnyRandomPrompt',
+    '../../lib/types/components/stringArray'
 ], function (
     ko,
     html,
     CopyObjectComponent,
-    FunnyRandomPromptComponent
+    FunnyRandomPromptComponent,
+    StringArrayComponent
 ) {
     'use strict';
 
@@ -516,6 +518,13 @@ define([
                     workBreak: 'break-all'
                 }
             }, buildObjectLink()),
+            // TODO: we should abstract out the column
+            // definitions so we can define each value
+            // as either a raw value (e.g. string) or
+            // component, just as we do for detail view
+            // and in other search tools...
+            // but expediency says, just get it done 
+            // quickly first.
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -523,9 +532,20 @@ define([
                 }
             }, div({
                 dataBind: {
-                    text: 'featureFunction'
+                    component: {
+                        name: StringArrayComponent.quotedName(),
+                        params: {
+                            value: 'featureFunctions'
+                        }
+                    }
                 }
             })),
+            
+            // div({
+            //     dataBind: {
+            //         text: 'featureFunctions'
+            //     }
+            // })),
             div({
                 class: styles.classes.rowCell,
                 style: {

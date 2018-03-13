@@ -45,7 +45,7 @@ define([
                 id: object.data.id,
                 featureType: object.data.type,
                 aliases: parseAliases(object.data.aliases),
-                function: object.data.functions[0],
+                // function: object.data.functions[0],
                 functions: object.data.functions,
                 location: object.data.location.map(function (location) {
                     var start = location[1];
@@ -111,10 +111,10 @@ define([
                 label: 'Taxonomy',
                 component: TaxonomyComponent.name()
             },
-            {
-                id: 'function',
-                label: 'Function'
-            },
+            // {
+            //     id: 'function',
+            //     label: 'Function'
+            // },
             {
                 id: 'functions',
                 label: 'Functions',
@@ -126,7 +126,7 @@ define([
             },
             {
                 id: 'proteinLength',
-                label: 'Protein ',
+                label: 'Protein Length',
                 unit: 'aa',
                 type: 'number',
                 format: '0,0'

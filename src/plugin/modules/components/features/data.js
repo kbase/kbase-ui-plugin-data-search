@@ -123,7 +123,7 @@ define([
 
                 id: detailMap.id.value,
                 featureType: detailMap.featureType.value,
-                featureFunction: detailMap.function.value,
+                featureFunctions: detailMap.functions.value,
                 scientificName: detailMap.scientificName.value,
 
                 matches: matches,

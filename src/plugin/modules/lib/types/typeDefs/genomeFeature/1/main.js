@@ -4,6 +4,7 @@ define([
     '../../../components/taxonomy',
     '../../../components/location',
     '../../../components/aliases',
+    '../../../components/stringArray',
 
     'yaml!./def.yaml'
 ], function (
@@ -12,6 +13,7 @@ define([
     TaxonomyComponent,
     LocationComponent,
     AliasesComponent,
+    StringArrayComponent,
     def
 ) {
     'use strict';
@@ -41,34 +43,36 @@ define([
                 proteinLength = proteinTranslation.length;
             }
 
+            var location = object.data.location.map(function (location) {
+                var start = location[1];
+                var length = location[3];
+                var direction = location[2];
+                var end;
+                switch (direction) {
+                case '+':
+                    end = start + length - 1;
+                    break;
+                case '-':
+                    end = start - length + 1;
+                    break;
+                default:
+                    throw new Error('Invalid direction: ' + direction);
+                }
+                return {
+                    genome: location[0],
+                    start: start,
+                    direction: direction,
+                    length: length,
+                    end: end
+                };
+            });
+
             var normalized = {
                 featureType: object.data.type,
                 id: object.data.id,
                 aliases: parseAliases(object.data.aliases),
-                function: object.data.function,
-                location: object.data.location.map(function (location) {
-                    var start = location[1];
-                    var length = location[3];
-                    var direction = location[2];
-                    var end;
-                    switch (direction) {
-                    case '+':
-                        end = start + length - 1;
-                        break;
-                    case '-':
-                        end = start - length + 1;
-                        break;
-                    default:
-                        throw new Error('Invalid direction: ' + direction);
-                    }
-                    return {
-                        genome: location[0],
-                        start: start,
-                        direction: direction,
-                        length: length,
-                        end: end
-                    };
-                }),
+                functions: [object.data.function],
+                location: location,
                 proteinTranslation: proteinTranslation,
                 proteinLength: proteinLength, 
                 domain: object.parent_data.domain,
@@ -111,8 +115,9 @@ define([
                 component: TaxonomyComponent.name()
             },
             {
-                id: 'function',
-                label: 'Function'
+                id: 'functions',
+                label: 'Functions',
+                component: StringArrayComponent.name()
             },
             {
                 id: 'proteinTranslation',

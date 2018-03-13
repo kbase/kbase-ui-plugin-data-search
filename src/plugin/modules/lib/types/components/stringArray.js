@@ -8,7 +8,6 @@ define([
     'use strict';
 
     var t = html.tag,
-        span = t('span'),
         div = t('div'),
         table = t('table'),
         tbody = t('tbody'),
