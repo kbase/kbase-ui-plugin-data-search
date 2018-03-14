@@ -47,15 +47,13 @@ define([
             return Promise.all(typeIndex.map(function (type) {
                 var modulePath =[
                     './types/typeDefs', 
-                    type.module,
-                    String(type.version),
-                    'main'
+                    type.module
                 ].join('/');
                 return prequire([modulePath])
                     .spread(function (module) {
                         return {
                             type: type,
-                            module: module
+                            moduleClass: module
                         };
                     });
             }))
@@ -86,7 +84,9 @@ define([
                 throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);
             }
 
-            return type.module.make({object: searchObject});
+            // return type.module.make({object: searchObject});
+            // return a new instance of this index class.
+            return new type.moduleClass(runtime, searchObject);
         }
 
         function getLookup() {
@@ -96,20 +96,6 @@ define([
                     label: objectType.label
                 };
             });
-        }
-
-        function getIcon(type) {
-            var icon = runtime.service('type').getIcon({
-                type:  {
-                    module: type.getDef().kbaseTypeModule,
-                    name: type.getDef().kbaseTypeId,
-                    version: {
-                        major: null,
-                        minor: null
-                    }
-                }
-            });
-            return icon;
         }
 
         function start() {
@@ -127,7 +113,7 @@ define([
             getTypeForObject: getTypeForObject,
             getType: getType,
             getLookup: getLookup,
-            getIcon: getIcon
+            // getIcon: getIcon
         };
     }
 

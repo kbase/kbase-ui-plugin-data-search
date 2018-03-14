@@ -9,6 +9,7 @@ define([
     Rpc,
     stopWordsDb
 ) {
+    'use strict';
     function factory(config) {
         var runtime = config.runtime;
 

@@ -40,7 +40,7 @@ define([
         }
     });
 
-    function viewModel(params) {
+    function viewModel() {
         return {};
     }
 
@@ -88,7 +88,7 @@ define([
                     flex: '3'
                 }
             }, [
-                'Function'
+                'Functions'
             ]),
             div({
                 class: styles.classes.headerCell,

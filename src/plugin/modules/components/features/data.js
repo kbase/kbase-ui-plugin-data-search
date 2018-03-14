@@ -46,9 +46,7 @@ define([
                 throw new Error('Cannot type this object');
             }
 
-            obj.type = type.getDef();
-
-            var icon = types.getIcon(type);
+            var icon = type.getIcon();
 
             var ref = type.getRef();
             var detail = type.detail();
@@ -63,22 +61,12 @@ define([
                     return matches;
                 } 
 
-                var label;
-                if (!type.getDef().searchKeysMap[field]) {
-                    // TODO: make this configurable?
-                    
-                    switch (field) {
-                    case 'object_name':
-                        label = 'Object Name';
-                        break;
-                    default:
-                        console.warn('highlight field ' + field + ' not found in type spec', obj);
-                        label = field;
-                    }                   
-                } else {
-                    label =  type.getDef().searchKeysMap[field].label;
-                }
-
+                var label = type.getSearchFieldLabel(field);
+                if (!label) {
+                    label = field;
+                    console.warn('highlight field ' + field + ' not found in type spec', obj);
+                }  
+               
                 matches.push({
                     id: field,
                     label: label,
@@ -100,14 +88,13 @@ define([
 
             var vm = {
                 type: {
-                    id: obj.type,
-                    label: type.getDef().label,
+                    label: type.getLabel(),
                     icon: icon
                 },
                 matchClass: {
-                    id: type.getDef().ui.class,
-                    copyable: type.getDef().ui.copyable,
-                    viewable: type.getDef().ui.viewable,
+                    id: type.getUIClass(),
+                    copyable: type.isCopyable(),
+                    viewable: type.isViewable(),
                     ref: ref
                 },
 
@@ -123,7 +110,7 @@ define([
 
                 id: detailMap.id.value,
                 featureType: detailMap.featureType.value,
-                featureFunction: detailMap.function.value,
+                featureFunctions: detailMap.functions.value,
                 scientificName: detailMap.scientificName.value,
 
                 matches: matches,

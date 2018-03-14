@@ -56,9 +56,6 @@ define([
             return (item.trim(' ').length !== 0);
         });
     }
-
-    
-
     
     function processTypeDef(def) {
         def.searchKeysMap = {};

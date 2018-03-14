@@ -8,8 +8,6 @@ define([
     'use strict';
 
     var t = html.tag,
-        span = t('span'),
-        div = t('div'),
         table = t('table'),
         thead = t('thead'),
         tbody = t('tbody'),
@@ -21,100 +19,6 @@ define([
         return {
             value: params.value
         };
-    }
-
-    function buildLocationList() {
-        return div({
-            dataBind: {
-                foreach: 'value'
-            }
-        }, [
-            div([
-                span({
-                    dataBind: {
-                        typedText: {
-                            value: 'start',
-                            type: '"number"',
-                            format: '"0,0"'
-                        }
-                    }
-                }), 
-                // ' ',
-                // '<!-- ko if: start < end -->',
-                // '→',
-                // '<!-- /ko -->',
-                // '<!-- ko if: start > end -->',
-                // '←',
-                // '<!-- /ko -->',
-                // '<!-- ko if: start === end -->',
-                // '=',
-                // '<!-- /ko -->',
-                // ' ',
-                ' to ',
-                span({
-                    dataBind: {
-                        typedText: {
-                            value: 'end',
-                            type: '"number"',
-                            format: '"0,0"'
-                        }
-                    }
-                }),
-                ' (' + 
-                span({
-                    dataBind: {
-                        text: 'direction'
-                    }
-                }), 
-                '): ',
-                span({
-                    dataBind: {
-                        typedText: {
-                            value: 'length',
-                            type: '"number"',
-                            format: '"0,0"'
-                        }
-                    }
-                }), 
-                'bp'
-            ])
-            // div([
-            //     'd:', 
-            //     span({
-            //         dataBind: {
-            //             text: 'direction'
-            //         }
-            //     }),
-            //     ', ',
-            //     's:', 
-            //     span({
-            //         dataBind: {
-            //             text: 'start'
-            //         }
-            //     }),
-            //     ', ',
-            //     'e:', 
-            //     span({
-            //         dataBind: {
-            //             text: 'end'
-            //         }
-            //     }),
-            //     ', ',
-            //     'l:', 
-            //     span({
-            //         dataBind: {
-            //             text: 'length'
-            //         }
-            //     }),
-            //     ', ',
-            //     'g:', 
-            //     span({
-            //         dataBind: {
-            //             text: 'genome'
-            //         }
-            //     }),
-            // ])    
-        ]);
     }
 
     function buildLocationTable() {

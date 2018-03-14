@@ -1,10 +1,12 @@
 define([], function () {
-    var lastBusId = 0;
+    'use strict';
+
+    // var lastBusId = 0;
 
     function NanoBus() {
         var queue = [];
-        var lastListenerId = 0;
-        var busId = lastBusId += 1;
+        // var lastListenerId = 0;
+        // var busId = lastBusId += 1;
         // var runInterval = 0;
         var messageReceivers = {};
 

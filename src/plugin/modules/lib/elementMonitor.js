@@ -1,5 +1,5 @@
 define([], function () {
-
+    'use strict';
     function ElementMonitor(params) {
         var element = params.element;
 
