@@ -40,7 +40,7 @@ define([
         }
     });
 
-    function viewModel(params) {
+    function viewModel() {
         return {};
     }
 

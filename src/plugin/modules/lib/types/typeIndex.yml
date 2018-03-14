@@ -4,44 +4,44 @@
 - 
   id: narrative
   version: 1
-  module: narrative
+  module: NarrativeIndex1
 - 
   id: genome
   version: 1
-  module: genome
+  module: GenomeIndex1
 - 
   id: genome
   version: 2
-  module: genome
+  module: GenomeIndex2
 - 
   id: assembly
   version: 1
-  module: assembly
+  module: AssemblyIndex1
 - 
   id: genomefeature
   version: 1
-  module: genomeFeature
+  module: GenomeFeatureIndex1
 - 
   id: genomefeature
   version: 2
-  module: genomeFeature
+  module: GenomeFeatureIndex2
 - 
   id: assemblycontig
   version: 1
-  module: assemblyContig
+  module: AssemblyContigIndex1
 - 
   id: pairedendlibrary
   version: 1
-  module: pairedEndLibrary
+  module: PairedEndLibraryIndex1
 - 
   id: singleendlibrary
   version: 1
-  module: singleEndLibrary
+  module: SingleEndLibraryIndex1
 -
   id: fbamodel
   version: 1
-  module: fbaModel
+  module: FBAModelIndex1
 -
   id: media
   version: 1
-  module: media
+  module: MediaIndex1

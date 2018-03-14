@@ -1,4 +1,5 @@
 define([], function () {
+    'use strict';
     function HeightMonitor(params) {
         var element = params.element;
         var onHeightCalc = params.onUpdate;

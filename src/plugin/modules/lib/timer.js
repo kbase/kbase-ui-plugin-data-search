@@ -1,7 +1,7 @@
 define([], function () {
     'use strict';
 
-    function factory(config) {
+    function factory() {
         var timers = [];
         var timersMap = {};
 
@@ -28,7 +28,7 @@ define([], function () {
                 var timer = timersMap[name];
                 var elapsed = timer.elapsed === undefined ? 'running' : timer.elapsed;
                 
-                console.log('timer: ' + name + ':' + elapsed);
+                console.info('timer: ' + name + ':' + elapsed);
             });
         }
 

@@ -9,6 +9,7 @@ define([
     exceptions,
     errors
 ) {
+    'use strict';
     function factory(config) {
         var runtime = config.runtime;
 
@@ -36,14 +37,14 @@ define([
                 .catch(function (err) {
                     if (err instanceof exceptions.AjaxError) {
                         console.error('AJAX Error', err);
-                        var message = 'An error was encountered connecting to a service';
+                        // let message = 'An error was encountered connecting to a service';
                         throw new errors.DataSearchError('AJAX Error: ' + err.name, err.code, err.message, null, {
                             originalError: err
                         });
                     } else if (err instanceof exceptions.RpcError) {
                         console.error('RPC Error', err);
-                        var message = 'An error was encountered running an rpc method';
-                        var detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
+                        let message = 'An error was encountered running an rpc method';
+                        let detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
                                       'the error returned from the service is "' + (err.message || 'unknown') + '"';
                         throw new errors.DataSearchError('service-call-error', err.name, message, detail , {
                             originalError: err

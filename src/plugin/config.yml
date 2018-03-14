@@ -13,14 +13,14 @@ install:
         -
             id: data-search_panel
             module: panel
-            type: factory
+            type: factory           
     routes:
         -
             path: [search]
             queryParams: 
                 param1: {}
             widget: data-search_panel
-            authorization: true
+            authorization: true           
     menu:
         -
             name: search

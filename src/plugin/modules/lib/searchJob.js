@@ -1,4 +1,5 @@
 define([], function () {
+    'use strict';
     function SearchJob() {
         var job = null;
         var state = null;
