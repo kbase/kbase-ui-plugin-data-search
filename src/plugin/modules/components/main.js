@@ -404,6 +404,7 @@ define([
     function template() {
         return div({
             class: styles.classes.component,
+            dataKBTesthookComponent: 'main',
             style: {
                 paddingRight: '12px',
                 paddingLeft: '12px'

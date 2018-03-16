@@ -1,0 +1,45 @@
+[
+    {
+        "description": "Unauthenticated",
+        "specs": [
+            {
+                "description": "should get the signin page",
+                "baseSelector": [
+                    {
+                        "type": "plugin",
+                        "value": "data-search"
+                    },
+                    {
+                        "type": "component",
+                        "value": "main"
+                    }
+                ],
+                "tasks": [
+                    {
+                        "title": "login",
+                        "subtask": "dashboard"
+                    },
+                    {
+                        "title": "now go to search",
+                        "navigate": {
+                            "path": "search"
+                        }
+                    },
+                    {
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "search-bar"
+                            }
+                        ],
+                        "wait": 10000
+                    },
+                    {
+                        "title": "logout",
+                        "subtask": "logout"
+                    }
+                ]
+            }
+        ]
+    }
+]

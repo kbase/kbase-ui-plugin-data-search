@@ -756,6 +756,7 @@ define([
     function buildNoSearch() {
         return div({
             class: 'alert alert-info',
+            dataKBTesthookAlert: 'no-search',
             style: {
                 margin: '40px auto 0 auto',
                 maxWidth: '40em',
@@ -785,6 +786,7 @@ define([
     function buildNotFound() {
         return div({
             class: 'alert alert-warning',
+            dataKBTesthookAlert: 'not-found',
             style: {
                 margin: '40px auto 0 auto',
                 maxWidth: '40em',
@@ -862,7 +864,8 @@ define([
 
     function template() {
         return div({
-            class: styles.classes.component
+            class: styles.classes.component,
+            dataKBTesthookComponent: 'results'
         }, [
             div({
                 style: {

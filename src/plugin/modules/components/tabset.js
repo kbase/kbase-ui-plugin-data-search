@@ -90,6 +90,7 @@ define([
             // }
             // params.component.params = params;
             return {
+                id: params.id,
                 tab: {
                     label: params.tab.label,
                     component: params.tab.component
@@ -157,7 +158,10 @@ define([
             a({
                 dataBind: {
                     click: '$component.doSelectTab',
-                    with: 'tab'
+                    // with: 'tab',
+                    attr: {
+                        'data-k-b-testhook-tab': 'id'
+                    }
                 },
                 role: 'tab',
                 style: {
@@ -166,17 +170,18 @@ define([
             }, [                
                 span({
                     dataBind: {
-                        text: 'label'
+                        text: 'tab.label'
                     }
                 }),
                 '<!-- ko if: $data.component -->',
                 span({
                     dataBind: {
                         component: {
-                            name: 'component.name',
-                            params: 'component.params'
+                            name: 'tab.component.name',
+                            params: 'tab.component.params'
                         }
-                    }
+                    },
+                    dataKBTesthookButton: 'tab'
                 }),
                 '<!-- /ko -->',
                 '<!-- ko if: $parent.closable -->',
@@ -244,7 +249,8 @@ define([
 
     function template() {
         return div({
-            class: 'component-tabset'
+            class: 'component-tabset',
+            dataKBTesthookComponent: 'tabset'
         }, [
             ul({
                 dataBind: {
