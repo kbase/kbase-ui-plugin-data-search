@@ -84,6 +84,7 @@ define([
             hostNode = node;
             container = hostNode.appendChild(document.createElement('div'));
             container.classList.add(styles.classes.panel);
+            container.setAttribute('data-k-b-testhook-plugin', 'data-search');
 
             return null;
         }

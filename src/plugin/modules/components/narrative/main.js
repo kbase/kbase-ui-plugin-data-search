@@ -383,7 +383,8 @@ define([
 
     function template() {
         return div({
-            class: styles.classes.main
+            class: styles.classes.main,
+            dataKBTesthookComponent: 'narrative-main'
         }, [
             div({
                 class: styles.classes.navbar

@@ -336,6 +336,7 @@ define([
                             keyup: 'doKeyUp'
                         }
                     },
+                    dataKBTesthookInput: 'search-input',
                     placeholder: 'Search KBase Data'
                 }),
                 '<!-- ko if: showHistory -->',
@@ -443,7 +444,8 @@ define([
 
     function template() {
         return div({
-            class: styles.classes.component
+            class: styles.classes.component,
+            dataKBTesthookComponent: 'search-bar'
         }, [
             div({
                 styles: {

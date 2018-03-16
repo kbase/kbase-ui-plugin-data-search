@@ -316,7 +316,8 @@ define([
 
     function template() {
         return div({
-            class: styles.classes.main
+            class: styles.classes.main,
+            dataKBTesthookComponent: 'reference-data-main'
         }, [
             div({
                 class: styles.classes.navbar

@@ -318,7 +318,8 @@ define([
 
     function template() {
         return div({
-            class: styles.classes.main
+            class: styles.classes.main,
+            dataKBTesthookComponent: 'genome-features-main'
         }, [
             div({
                 class: styles.classes.navbar

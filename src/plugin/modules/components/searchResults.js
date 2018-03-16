@@ -34,7 +34,8 @@ define([
         tabsetBus.on('ready', function () {
             tabsetBus.send('add-tab', {
                 tab: {
-                    tab: {
+                    id: 'user-data',
+                    tab: {                        
                         label: 'User Data',
                         component: {
                             name: NarrativeTabComponent.name(),
@@ -67,6 +68,7 @@ define([
             }, false);
             tabsetBus.send('add-tab', {
                 tab: {
+                    id: 'reference-data',
                     tab: {
                         label: 'Reference Data',
                         component: {
@@ -100,7 +102,8 @@ define([
             if (runtime.allow('alpha')) {
                 tabsetBus.send('add-tab', {
                     tab: {
-                        tab: {
+                        id: 'genome-features',
+                        tab: {                           
                             label: 'Genome Features',
                             component: {
                                 name: FeaturesTabComponent.name(),
