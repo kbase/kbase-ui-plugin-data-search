@@ -1,0 +1,205 @@
+[
+    {
+        "description": "No search alert should show on each tab",
+        "specs": [
+            {
+                "description": "should get the signin page",
+                "baseSelector": [
+                    {
+                        "type": "plugin",
+                        "value": "data-search"
+                    },
+                    {
+                        "type": "component",
+                        "value": "main"
+                    }
+                ],
+                "tasks": [
+                    {
+                        "title": "login",
+                        "subtask": "dashboard"
+                    },
+                    {
+                        "title": "now go to search",
+                        "navigate": {
+                            "path": "search"
+                        }
+                    },
+                    {
+                        "title": "Click the search input to focus on it",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "search-bar"
+                            },
+                            {
+                                "type": "input",
+                                "value": "search-input"
+                            }
+                        ],
+                        "wait": 5000,
+                        "action": "click"                       
+                    },                   
+                    {
+                        "title": "Do a search which returns nothing",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "search-bar"
+                            },
+                            {
+                                "type": "input",
+                                "value": "search-input"
+                            }
+                        ],
+                        "action": "keys",
+                        "params": {
+                            "keys": ["c", "o", "l", "i", "Enter"]
+                        }
+                    },
+                    {
+                        "title": "Check that the narrative tab result count is rendered",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "tabset"
+                            },
+                            {
+                                "type": "tab",
+                                "value": "reference-data"
+                            },
+                            {
+                                "type": "component",
+                                "value": "tab-total-count"
+                            }
+                        ],
+                        "wait": 10000,
+                        "exists": true
+                    },
+                    {
+                        "title": "Check that narrative search results are rendered",
+                        "disabled": true,
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "narrative-main"
+                            },
+                            {
+                                "type": "component",
+                                "value": "results"
+                            },
+                            {
+                                "type": "alert",
+                                "value": "not-found"
+                            }
+                        ],
+                        "wait": 10000
+                    },
+                    {
+                        "title": "Check that the reference data tab result count is rendered",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "tabset"
+                            },
+                            {
+                                "type": "tab",
+                                "value": "reference-data"
+                            },
+                            {
+                                "type": "component",
+                                "value": "tab-total-count"
+                            }
+                        ],
+                        "exists": true
+                    },
+                    {
+                        "title": "select the reference data tab",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "tabset"
+                            },
+                            {
+                                "type": "tab",
+                                "value": "reference-data"
+                            }
+                        ],
+                        "action": "click"
+                    },
+                   
+                    {
+                        "title": "Check that reference data search results are rendered",
+                        "disabled": true,
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "reference-data-main"
+                            },
+                            {
+                                "type": "component",
+                                "value": "results"
+                            },
+                            {
+                                "type": "alert",
+                                "value": "not-found"
+                            }
+                        ],
+                        "wait": 10000
+                    },
+
+                    {
+                        "title": "Check that the features tab result count is rendered",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "tabset"
+                            },
+                            {
+                                "type": "tab",
+                                "value": "genome-features"
+                            },
+                            {
+                                "type": "component",
+                                "value": "tab-total-count"
+                            }
+                        ],
+                        "exists": true
+                    },
+                    {
+                        "title": "select the features data tab",
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "tabset"
+                            },
+                            {
+                                "type": "tab",
+                                "value": "genome-features"
+                            }
+                        ],
+                        "action": "click"
+                    },
+                    {
+                        "disabled": true,
+                        "selector": [
+                            {
+                                "type": "component",
+                                "value": "genome-features-main"
+                            },
+                            {
+                                "type": "component",
+                                "value": "results"
+                            },
+                            {
+                                "type": "alert",
+                                "value": "not-found"
+                            }
+                        ],
+                        "wait": 10000
+                    }
+                ]
+            }
+        ]
+    }
+]

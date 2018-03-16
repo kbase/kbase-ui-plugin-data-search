@@ -173,7 +173,7 @@ define([
                         text: 'tab.label'
                     }
                 }),
-                '<!-- ko if: $data.component -->',
+                '<!-- ko if: tab.component -->',
                 span({
                     dataBind: {
                         component: {
