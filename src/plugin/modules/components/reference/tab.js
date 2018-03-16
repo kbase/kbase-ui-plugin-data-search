@@ -35,7 +35,8 @@ define([
                     'font-weight': 'count() ? "bold" : "normal"'
                 },
                 visible: 'typeof count() === "number"'
-            }
+            },
+            dataKBTesthookComponent: 'tab-total-count'
         });
     }
 
