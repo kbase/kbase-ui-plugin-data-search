@@ -20,18 +20,20 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
-            var m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
-            var featureType = m[4];
-            var featureId = m[5];
+            let m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
+            let featureType = m[4];
+            let featureId = m[5];
             // e.g. https://ci.kbase.us/#dataview/29768/2?sub=Feature&subid=b0001
-            var subObjectRef = m.slice(1, 4).join('/') + 
+            let subObjectRef = m.slice(1, 4).join('/') + 
                             '?sub=' + featureType + 
                             '&subid=' + featureId;
+            let objectRef = m.slice(1, 4).join('/');
+
             this.objectRef = {
                 workspaceId: parseInt(m[1]),
                 objectId: parseInt(m[2]),
                 version: parseInt(m[3]),
-                ref: subObjectRef,
+                objectRef: objectRef,
                 subObjectRef: subObjectRef,
                 featureType: featureType,
                 feature: featureId,

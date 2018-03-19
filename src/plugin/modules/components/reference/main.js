@@ -193,7 +193,7 @@ define([
 
                     // TODO: we need an ES5 
                     result.items.forEach(function (object) {
-                        if (selected[object.matchClass.ref.ref]) {
+                        if (selected[object.matchClass.ref.objectRef]) {
                             object.selected(true);
                         }
                     });

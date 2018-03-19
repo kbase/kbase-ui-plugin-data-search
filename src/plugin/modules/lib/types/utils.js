@@ -72,40 +72,6 @@ define([
         });
         return def;
     }
-
-    function objectGuidToRef(guid) {
-        var m = guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-        var objectRef = m.slice(1, 4).join('/');
-        return {
-            workspaceId: parseInt(m[1]),
-            objectId: parseInt(m[2]),
-            version: parseInt(m[3]),
-            ref: objectRef,
-            dataviewId: objectRef
-        };
-    }
-
-    function subObjectGuidToRef(guid) {
-        var m = guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
-        var featureType = m[4];
-        var featureId = m[5];
-        // e.g. https://ci.kbase.us/#dataview/29768/2?sub=Feature&subid=b0001
-        var subObjectRef = m.slice(1, 4).join('/') + 
-                        '?sub=' + featureType + 
-                        '&subid=' + featureId;
-        return {
-            workspaceId: parseInt(m[1]),
-            objectId: parseInt(m[2]),
-            version: parseInt(m[3]),
-            ref: subObjectRef,
-            subObjectRef: subObjectRef,
-            featureType: featureType,
-            feature: featureId,
-            featureId: featureId,
-            dataviewId: subObjectRef
-        };
-    }
-
     function dataToDetail(data, detailFields) {
         var props = Props.make({data: data});
         return detailFields.map(function (field) {
@@ -126,8 +92,6 @@ define([
         padRight: padRight,
         parseTaxonomy: parseTaxonomy,
         processTypeDef: processTypeDef,
-        objectGuidToRef: objectGuidToRef,
-        subObjectGuidToRef: subObjectGuidToRef,
         dataToDetail: dataToDetail
     };
 });
