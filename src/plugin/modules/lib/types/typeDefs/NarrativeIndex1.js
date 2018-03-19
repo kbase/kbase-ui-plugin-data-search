@@ -1,9 +1,12 @@
 define([
-    '../indexObjectBase'
+    '../indexBase'
 ], function (
-    IndexObjectBase
+    IndexBase
 ) {
     'use strict';
+
+    const indexId = 'Narrative';
+    const indexVersion = 1;
 
     const kbaseTypeModule = 'KBaseNarrative';
     const kbaseTypeId = 'Narrative';
@@ -78,13 +81,12 @@ define([
             value: 'creator'
         }
     ];
-      
 
-    class NarrativeIndex1 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
+    class NarrativeIndex1 extends IndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
+                indexVersion,
                 detailFieldDefs,
                 searchFields,
                 sortFields,
@@ -94,13 +96,29 @@ define([
                 isViewable,
                 isCopyable,
                 uiClass
-            });
+            }));
         }
 
         objectToData() {
             return {
                 title: this.object.key_props.title
             };
+        }
+
+        getRef() {
+            if (this.objectRef) {
+                return this.objectRef;
+            }
+            var m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
+            var objectRef = m.slice(1, 4).join('/');
+            this.objectRef =  {
+                workspaceId: parseInt(m[1]),
+                objectId: parseInt(m[2]),
+                version: parseInt(m[3]),
+                ref: objectRef,
+                dataviewId: objectRef
+            };
+            return this.objectRef;
         }
     }
  

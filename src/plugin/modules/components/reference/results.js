@@ -631,7 +631,8 @@ define([
                         component: {
                             name: '$data.component',
                             params: {
-                                value: '$data.value'
+                                value: '$data.value',
+                                params: '$data.params'
                             }
                         }
                     }

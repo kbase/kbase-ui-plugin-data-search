@@ -1,17 +1,17 @@
 define([
-    '../indexObjectBase'
+    '../objectIndexBase'
 ], function (
-    IndexObjectBase
+    ObjectIndexBase
 ) {
     'use strict';
+
+    const indexId = 'Media';
+    const indexVersion = 1;
 
     const kbaseTypeModule = 'KBaseGenomeAnnotations';
     const kbaseTypeId = 'Assembly';
 
     const label = 'Media';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -93,21 +93,18 @@ define([
 
     const sortFields = [];
 
-    class MediaIndex1 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
+    class MediaIndex1 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
+                indexVersion,
                 detailFieldDefs,
                 searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {

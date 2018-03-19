@@ -1,9 +1,9 @@
 [
     {
-        "description": "No search alert should show on each tab",
+        "description": "Search for 'coli''",
         "specs": [
             {
-                "description": "should get the signin page",
+                "description": "should  should reveal 1 or more hits for each tab",
                 "baseSelector": [
                     {
                         "type": "plugin",
@@ -58,7 +58,7 @@
                         }
                     },
                     {
-                        "title": "Check that the narrative tab result count is rendered",
+                        "title": "Check that the user data tab result count is rendered",
                         "selector": [
                             {
                                 "type": "component",
@@ -66,18 +66,20 @@
                             },
                             {
                                 "type": "tab",
-                                "value": "reference-data"
-                            },
+                                "value": "user-data"
+                            },                            
                             {
                                 "type": "component",
                                 "value": "tab-total-count"
                             }
                         ],
-                        "wait": 10000,
-                        "exists": true
+                        "waitForText": 10000,
+                        "number": {
+                            "greaterThan": 0
+                        }
                     },
                     {
-                        "title": "Check that narrative search results are rendered",
+                        "title": "Check that user data search results are rendered",
                         "disabled": true,
                         "selector": [
                             {
@@ -111,7 +113,10 @@
                                 "value": "tab-total-count"
                             }
                         ],
-                        "exists": true
+                        "wait": 10000,
+                        "number": {
+                            "equal": 0
+                        }
                     },
                     {
                         "title": "select the reference data tab",
@@ -164,7 +169,10 @@
                                 "value": "tab-total-count"
                             }
                         ],
-                        "exists": true
+                        "wait": 10000,
+                        "number": {
+                            "greaterThan": 0
+                        }
                     },
                     {
                         "title": "select the features data tab",

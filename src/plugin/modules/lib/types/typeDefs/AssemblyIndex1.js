@@ -1,7 +1,7 @@
 define([
-    '../indexObjectBase'
+    '../objectIndexBase'
 ], function (
-    IndexObjectBase
+    ObjectIndexBase
 ) {
     'use strict';
 
@@ -10,9 +10,6 @@ define([
     const kbaseTypeModule = 'KBaseGenomeAnnotations';
     const kbaseTypeId = 'Assembly';
     const label = 'Assembly';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -39,7 +36,7 @@ define([
         }
     ];
 
-    const indexFields = {
+    const searchFields = {
         name: {
             label: 'Name',
             type: 'string'
@@ -78,23 +75,18 @@ define([
     ];
 
 
-    class AssemblyIndex extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
-                indexId,
+    class AssemblyIndex1 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
                 indexVersion,
                 detailFieldDefs,
-                indexFields,
+                searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {
@@ -108,5 +100,5 @@ define([
         }
     }
  
-    return AssemblyIndex;
+    return AssemblyIndex1;
 });

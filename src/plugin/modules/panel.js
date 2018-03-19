@@ -47,6 +47,7 @@ define([
                 appBus: appBus,
                 runtime: runtime,
                 types: types,
+                // TODO: generate from the registered types.
                 labels: {
                     narrative: {
                         singular: 'Narrative',
@@ -75,6 +76,14 @@ define([
                     media: {
                         singular: 'Media',
                         plural: 'Media'
+                    },
+                    taxon: {
+                        singular: 'Taxon',
+                        plural: 'Taxa'
+                    },
+                    tree: {
+                        singular: 'Tree',
+                        plural: 'Trees'
                     }
                 }
             };

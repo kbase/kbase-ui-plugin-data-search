@@ -1,17 +1,17 @@
 define([
-    '../indexObjectBase'
+    '../objectIndexBase'
 ], function (
-    IndexObjectBase
+    ObjectIndexBase
 ) {
     'use strict';
+
+    const indexId = 'PairedEndLibrary';
+    const indexVersion = 1;
 
     const kbaseTypeModule = 'KBaseAssembly';
     const kbaseTypeId = 'PairedEndLibrary';
 
     const label = 'Paired End Library';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -112,21 +112,18 @@ define([
         }
     ];
 
-    class PairedEndLibraryIndex1 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
+    class PairedEndLibraryIndex1 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
+                indexVersion,
                 detailFieldDefs,
                 searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {
