@@ -1,5 +1,5 @@
 define([
-    '../defaultIndexBase'
+    '../DefaultIndexBase'
 ], function (
     DefaultIndexBase
 ) {

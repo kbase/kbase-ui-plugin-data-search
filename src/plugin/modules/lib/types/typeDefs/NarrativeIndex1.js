@@ -1,5 +1,5 @@
 define([
-    '../indexBase'
+    '../IndexBase'
 ], function (
     IndexBase
 ) {

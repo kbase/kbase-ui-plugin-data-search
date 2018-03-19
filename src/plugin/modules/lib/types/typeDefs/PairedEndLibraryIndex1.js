@@ -1,5 +1,5 @@
 define([
-    '../objectIndexBase'
+    '../ObjectIndexBase'
 ], function (
     ObjectIndexBase
 ) {

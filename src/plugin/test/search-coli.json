@@ -115,7 +115,7 @@
                         ],
                         "wait": 10000,
                         "number": {
-                            "equal": 0
+                            "greaterThan": 0
                         }
                     },
                     {
