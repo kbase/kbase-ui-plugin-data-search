@@ -1,8 +1,10 @@
 define([
-    'knockout-plus',
+    'kb_ko/KO',
+    'kb_ko/lib/viewModelBase',
     'kb_common/html'
 ], function (
-    ko,
+    KO,
+    ViewModelBase,
     html
 ) {
     'use strict';
@@ -14,19 +16,20 @@ define([
         tr = t('tr'),
         td = t('td');
 
-    function viewModel(params) {
-        var featureCounts = [];
-        if (params.value && typeof params.value === 'object') {
-            Object.keys(params.value).forEach(function (key) {
-                featureCounts.push({
-                    key: key,
-                    value: params.value[key]
+    class ViewModel extends ViewModelBase {
+        constructor(params) {
+            super(params);
+
+            this.featureCounts = [];
+            if (params.value && typeof params.value === 'object') {
+                Object.keys(params.value).forEach((key) => {
+                    this.featureCounts.push({
+                        key: key,
+                        value: params.value[key]
+                    });
                 });
-            });
+            }
         }
-        return {
-            featureCounts: featureCounts
-        };
     }
 
     var styles = html.makeStyles({
@@ -100,11 +103,11 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: ViewModel,
             template: template(),
             stylesheet: styles.sheet
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

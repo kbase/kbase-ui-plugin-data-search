@@ -482,7 +482,8 @@ define([
 
     function buildObjectView() {
         return div({
-            class: [styles.classes.row, styles.classes.objectRow]
+            class: [styles.classes.row, styles.classes.objectRow],
+            dataKBTesthookElement: 'object-row'
         }, [
             div({
                 class: styles.classes.rowCell,

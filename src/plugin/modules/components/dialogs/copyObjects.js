@@ -462,13 +462,14 @@ define([
                         table({
                             class: styles.classes.viewTable
                         }, [
-                            tr([
-                                th('type'),
-                                td({
-                                    dataBind: {
-                                        text: 'objectInfo.type'
-                                    }
-                                })]),
+                            // tr([
+                            //     th('type'),
+                            //     td({
+                            //         dataBind: {
+                            //             text: 'objectInfo.type'
+                            //         }
+                            //     })]),
+                                                          
                             tr([
                                 th('name'),
                                 td({
@@ -477,16 +478,52 @@ define([
                                     }
                                 })]),
                             tr([
-                                th('name'),
+                                th('modified'),
                                 td({
                                     dataBind: {
                                         typedText: {
-                                            value: 'objectInfo.modifiedDate',
+                                            value: 'objectInfo.saveDate',
                                             type: '"date"',
                                             format: '"MM/DD/YYYY"'
                                         }
                                     }
-                                })])
+                                })]),
+                            tr([
+                                th('by'),
+                                td({
+                                    dataBind: {
+                                        text: 'objectInfo.saved_by'
+                                    }
+                                })]),
+                            tr([
+                                th('type'),
+                                td({
+                                    dataBind: {
+                                        text: 'objectInfo.typeName'
+                                    }
+                                })]),                                
+                            tr([
+                                th('module'),
+                                td({
+                                    dataBind: {
+                                        text: 'objectInfo.typeModule'
+                                    }
+                                })]),                                
+                            tr([
+                                th('version'),
+                                td([
+                                    span({
+                                        dataBind: {
+                                            text: 'objectInfo.typeMajorVersion'
+                                        }
+                                    }),
+                                    '.',
+                                    span({
+                                        dataBind: {
+                                            text: 'objectInfo.typeMinorVersion'
+                                        }
+                                    })
+                                ])])
                         ]),
                         '<!-- /ko -->',
                         '<!-- /ko -->'                        

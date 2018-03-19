@@ -1,8 +1,10 @@
 define([
-    'knockout-plus',
+    'kb_ko/KO',
+    'kb_ko/lib/viewModelBase',
     'kb_common/html'
 ], function (
-    ko,
+    KO,
+    ViewModelBase,
     html
 ) {
     'use strict';
@@ -15,10 +17,12 @@ define([
         th = t('th'),
         td = t('td');
 
-    function viewModel(params) {
-        return {
-            value: params.value
-        };
+    class ViewModel extends ViewModelBase {
+        constructor(params) {
+            super(params);
+
+            this.value = params.value;
+        }
     }
 
     function buildLocationTable() {
@@ -99,10 +103,10 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: ViewModel,
             template: template()
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });
