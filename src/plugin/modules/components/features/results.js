@@ -3,13 +3,15 @@ define([
     'kb_common/html',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt',
-    '../../lib/types/components/stringArray'
+    '../../lib/types/components/stringArray',
+    '../../lib/ui'
 ], function (
     ko,
     html,
     CopyObjectComponent,
     FunnyRandomPromptComponent,
-    StringArrayComponent
+    StringArrayComponent,
+    ui
 ) {
     'use strict';
 
@@ -622,37 +624,43 @@ define([
                         text: 'label'
                     }
                 }),
-                '<!-- ko if: $data.highlights -->',
+                // '<!-- ko if: $data.highlights -->',
             
-                td([
-                    '<!-- ko foreach: $data.highlights -->',
-                    span({
-                        class: styles.classes.highlight,
-                        dataBind: {
-                            html: 'highlight'
-                        }
-                    }),
-                    // span({
-                    //     dataBind: {
-                    //         text: 'before'
-                    //     }
-                    // }), ' ',
-                    // span({
-                    //     dataBind: {
-                    //         text: 'match'
-                    //     },
-                    //     class: 'highlight'
-                    // }), ' ', 
-                    // span({
-                    //     dataBind: {
-                    //         text: 'after'
-                    //     }
-                    // }),
-                    '<!-- /ko -->',
-                ]),
+                // td([
+                //     '<!-- ko foreach: $data.highlights -->',
+                //     span({
+                //         class: styles.classes.highlight,
+                //         dataBind: {
+                //             html: 'highlight'
+                //         }
+                //     }),
+                //     // span({
+                //     //     dataBind: {
+                //     //         text: 'before'
+                //     //     }
+                //     // }), ' ',
+                //     // span({
+                //     //     dataBind: {
+                //     //         text: 'match'
+                //     //     },
+                //     //     class: 'highlight'
+                //     // }), ' ', 
+                //     // span({
+                //     //     dataBind: {
+                //     //         text: 'after'
+                //     //     }
+                //     // }),
+                //     '<!-- /ko -->',
+                // ]),
                 
+                // '<!-- /ko -->',
+                // '<!-- ko ifnot: $data.highlights -->',
+                
+                '<!-- ko ifnot: $data.value -->',
+                td(ui.buildNA()),
                 '<!-- /ko -->',
-                '<!-- ko ifnot: $data.highlights -->',
+                
+                '<!-- ko if: $data.value -->',
 
                 '<!-- ko if: $data.type -->',
                 td({
@@ -689,6 +697,8 @@ define([
                 '<!-- /ko -->',
 
                 '<!-- /ko -->'
+
+                // '<!-- /ko -->'
             ]))
         ]);
     }
@@ -839,12 +849,15 @@ define([
                     }
                 }, [
                     span({
-                        typedText: {
-                            value: 'narrativesTotal',
-                            type: '"number"',
-                            format: '"0,0"'
+                        dataBind: {
+                            typedText: {
+                                value: 'narrativesTotal',
+                                type: '"number"',
+                                format: '"0,0"'
+                            }
                         }
                     }),
+
                     ' matching User Data object',
                     ko.kb.pluralize('narrativesTotal()', '.', 's.')
                 ])
@@ -860,10 +873,12 @@ define([
                     }
                 }, [
                     span({
-                        typedText: {
-                            value: 'referenceDataTotal',
-                            type: '"number"',
-                            format: '"0,0"'
+                        dataBind: {
+                            typedText: {
+                                value: 'referenceDataTotal',
+                                type: '"number"',
+                                format: '"0,0"'
+                            }
                         }
                     }),
                     ' matching Reference Data object',

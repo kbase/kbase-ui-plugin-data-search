@@ -5,15 +5,15 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         button = t('button'),    
         span = t('span'),
         div = t('div');
 
     function buildDialog(arg) {
-        var type = arg.type || 'default';
-        var titleColor;
-        var iconClass;
+        let type = arg.type || 'default';
+        let titleColor;
+        let iconClass;
         switch (type) {
         case 'warning':
             iconClass = 'exclamation-triangle';
@@ -42,7 +42,7 @@ define([
             titleColor = '#000';
         }
 
-        var icon;
+        let icon;
         if (iconClass) {
             icon = span({
                 class: 'fa fa-' + iconClass,
@@ -65,13 +65,13 @@ define([
             icon = '';
         }
 
-        var buttons = arg.buttons || [{
+        let buttons = arg.buttons || [{
             label: 'Close',
             onClick: 'onClose'
         }];
 
-        var buttonsContent = buttons.map(function (btn) {
-            var buttonBindings = {
+        let buttonsContent = buttons.map(function (btn) {
+            let buttonBindings = {
                 click: btn.onClick
             };
             if (btn.enable) {
@@ -134,7 +134,7 @@ define([
 
     function bootstrapTextColor(type) {
         type = type || 'default';
-        var color;
+        let color;
         switch (type) {
         case 'warning':
             color = '#8a6d3b';
@@ -160,9 +160,9 @@ define([
     }
 
     function buildFullHeightDialog(arg) {
-        var type = arg.type || 'default';
-        var titleColor;
-        var iconClass;
+        let type = arg.type || 'default';
+        let titleColor;
+        let iconClass;
         switch (type) {
         case 'warning':
             iconClass = 'exclamation-triangle';
@@ -190,7 +190,7 @@ define([
             titleColor = '#000';
         }
 
-        var icon;
+        let icon;
         if (iconClass) {
             icon = span({
                 class: 'fa fa-' + iconClass,
@@ -202,12 +202,12 @@ define([
             icon = '';
         }
 
-        var buttons = arg.buttons || [{
+        let buttons = arg.buttons || [{
             label: 'Close',
             onClick: 'onClose'
         }];
 
-        var buttonsContent = buttons.map(function (btn) {
+        let buttonsContent = buttons.map(function (btn) {
             return button({
                 type: 'button',
                 class: 'btn btn-' + (btn.type || 'default'),
@@ -269,9 +269,19 @@ define([
         ]);
     }
 
+    function  buildNA() {
+        return span({
+            style: {
+                fontStyle: 'italic',
+                color: '#AAA'
+            }
+        }, 'n/a');
+    }
+
     return {
-        buildDialog: buildDialog,
-        buildFullHeightDialog: buildFullHeightDialog,
-        bootstrapTextColor: bootstrapTextColor
+        buildDialog,
+        buildFullHeightDialog,
+        bootstrapTextColor,
+        buildNA
     };
 });

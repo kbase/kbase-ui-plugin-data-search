@@ -1,23 +1,34 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    '../../ui'
 ], function (
     ko,
-    html
+    html,
+    ui
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         span = t('span'),
         div = t('div');
 
     function viewModel(params) {
+        let isEmpty;
+        if (!params.value) {
+            isEmpty = true;
+        } else if (params.value.length === 0) {
+            isEmpty = true;
+        } else {
+            isEmpty = false;
+        }
         return {
-            value: params.value
+            value: params.value,
+            isEmpty: isEmpty
         };
     }
 
-    function template() {
+    function buildLineage() {
         return div({
             dataBind: {
                 foreach: 'value'
@@ -31,6 +42,17 @@ define([
             '<!-- ko if: $index() !== $parent.value.length - 1 -->',
             ' > ',
             '<!-- /ko -->'            
+        ]);
+    }
+
+    function template() {        
+        return div([
+            '<!-- ko if: isEmpty -->',
+            ui.buildNA(),
+            '<!-- /ko -->',
+            '<!-- ko ifnot: isEmpty -->',
+            buildLineage(),
+            '<!-- /ko -->'
         ]);
     }
 

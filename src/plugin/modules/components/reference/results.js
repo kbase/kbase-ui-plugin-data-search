@@ -410,6 +410,12 @@ define([
     
     function buildObjectLink() {
         return [
+            // 'x',
+            // span({
+            //     dataBind: {
+            //         text: 'JSON.stringify(matchClass)'
+            //     }
+            // }),
             '<!-- ko switch: matchClass.id -->',
 
             '<!-- ko case: "dataObject" -->',
