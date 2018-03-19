@@ -1,9 +1,11 @@
 define([
-    'knockout-plus',
+    'kb_ko/KO',
+    'kb_ko/lib/viewModelBase',
     'kb_common/html',
     '../../ui'
 ], function (
-    ko,
+    KO,
+    ViewModelBase,
     html,
     ui
 ) {
@@ -13,19 +15,22 @@ define([
         span = t('span'),
         div = t('div');
 
-    function viewModel(params) {
-        let isEmpty;
-        if (!params.value) {
-            isEmpty = true;
-        } else if (params.value.length === 0) {
-            isEmpty = true;
-        } else {
-            isEmpty = false;
+    class ViewModel extends ViewModelBase {
+        constructor(params) {
+            super(params);
+
+            this.value = params.value;
+
+            let isEmpty;
+            if (!params.value) {
+                isEmpty = true;
+            } else if (params.value.length === 0) {
+                isEmpty = true;
+            } else {
+                isEmpty = false;
+            }
+            this.isEmpty = isEmpty;
         }
-        return {
-            value: params.value,
-            isEmpty: isEmpty
-        };
     }
 
     function buildLineage() {
@@ -58,10 +63,10 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: ViewModel,
             template: template()
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

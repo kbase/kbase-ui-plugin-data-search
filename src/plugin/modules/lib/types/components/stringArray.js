@@ -1,8 +1,10 @@
 define([
-    'knockout-plus',
+    'kb_ko/KO',
+    'kb_ko/lib/viewModelBase',
     'kb_common/html'
 ], function (
-    ko,
+    KO,
+    ViewModelBase,
     html
 ) {
     'use strict';
@@ -43,11 +45,13 @@ define([
         }
     });
 
-    function viewModel(params) {
-        return {
-            items: params.value
-        };
+    class ViewModel extends ViewModelBase {
+        constructor(params) {
+            super(params);
+            this.items = params.value;
+        }
     }
+
 
     function template() {
         return div({}, [
@@ -73,11 +77,11 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: ViewModel,
             template: template(),
             stylesheet: styles.sheet
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });
