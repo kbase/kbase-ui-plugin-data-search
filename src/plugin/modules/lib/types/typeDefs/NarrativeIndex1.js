@@ -115,7 +115,7 @@ define([
                 workspaceId: parseInt(m[1]),
                 objectId: parseInt(m[2]),
                 version: parseInt(m[3]),
-                ref: objectRef,
+                objectRef: objectRef,
                 dataviewId: objectRef
             };
             return this.objectRef;

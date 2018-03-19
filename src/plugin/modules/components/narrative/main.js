@@ -233,7 +233,7 @@ define([
                     // TODO: use the es5-collections map for the selected objects.
                     result.narratives.forEach(function (item) {
                         item.objects.forEach(function (object) {
-                            if (selected[object.matchClass.ref.ref]) {
+                            if (selected[object.matchClass.ref.objectRef]) {
                                 object.selected(true);
                             }
                         });

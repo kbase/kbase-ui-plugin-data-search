@@ -230,7 +230,7 @@ define([
             params.overlayComponent({
                 name: CopyObjectComponent.name(),
                 viewModel: {
-                    objectsToCopy: [data.matchClass.ref.ref]
+                    objectsToCopy: [data.matchClass.ref.objectRef]
                 }
             });
         }
@@ -278,10 +278,10 @@ define([
 
         function doToggleSelected(data) {
             data.selected(data.selected() ? false : true);
-            if (params.selectedObjects().indexOf(data.matchClass.ref.ref) >= 0) {
-                params.selectedObjects.remove(data.matchClass.ref.ref);
+            if (params.selectedObjects().indexOf(data.matchClass.ref.objectRef) >= 0) {
+                params.selectedObjects.remove(data.matchClass.ref.objectRef);
             } else {
-                params.selectedObjects.push(data.matchClass.ref.ref);
+                params.selectedObjects.push(data.matchClass.ref.objectRef);
             }
         }
 

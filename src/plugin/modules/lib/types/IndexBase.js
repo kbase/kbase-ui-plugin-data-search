@@ -65,21 +65,22 @@ define([], function () {
             return this.detailFields;
         }
 
-        getRef() {
-            if (this.objectRef) {
-                return this.objectRef;
-            }
-            let m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-            let objectRef = m.slice(1, 4).join('/');
-            this.objectRef =  {
-                workspaceId: parseInt(m[1]),
-                objectId: parseInt(m[2]),
-                version: parseInt(m[3]),
-                ref: objectRef,
-                dataviewId: objectRef
-            };
-            return this.objectRef;
-        }
+        // getRef() {
+        //     if (this.objectRef) {
+        //         return this.objectRef;
+        //     }
+        //     let m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
+        //     let objectRef = m.slice(1, 4).join('/');
+        //     this.objectRef =  {
+        //         workspaceId: parseInt(m[1]),
+        //         objectId: parseInt(m[2]),
+        //         version: parseInt(m[3]),
+        //         ref: objectRef,
+
+        //         dataviewId: objectRef
+        //     };
+        //     return this.objectRef;
+        // }
 
         getIcon() {
             return this.runtime.service('type').getIcon({

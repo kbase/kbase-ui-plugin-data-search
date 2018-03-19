@@ -235,7 +235,7 @@ define([
             params.overlayComponent({
                 name: CopyObjectComponent.name(),
                 viewModel: {
-                    objectsToCopy: [data.matchClass.ref.ref]
+                    objectsToCopy: [data.matchClass.ref.subObjectRef]
                 }
             });
         }
@@ -413,7 +413,7 @@ define([
         ];
     }
     
-    function buildObjectLink() {
+    function buildSubObjectLink() {
         return [
             '<!-- ko switch: matchClass.id -->',
 
@@ -422,7 +422,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: '"#dataview/" + matchClass.ref.dataviewId'
+                        href: '"#dataview/" + matchClass.ref.subObjectRef'
                     },
                     text: 'id'
                 },
@@ -439,6 +439,20 @@ define([
             '<!-- /ko -->',
 
             '<!-- /ko -->'
+        ];
+    }
+
+    function buildScientificNameField() {
+        return [
+            a({
+                dataBind: {
+                    attr: {
+                        href: '"#dataview/" + matchClass.ref.objectRef'
+                    },
+                    text: 'scientificName'
+                },
+                target: '_blank'
+            })
         ];
     }
 
@@ -520,7 +534,7 @@ define([
                     flex: '1.6',
                     workBreak: 'break-all'
                 }
-            }, buildObjectLink()),
+            }, buildSubObjectLink()),
             // TODO: we should abstract out the column
             // definitions so we can define each value
             // as either a raw value (e.g. string) or
@@ -554,11 +568,7 @@ define([
                 style: {
                     flex: '3'
                 }
-            }, div({
-                dataBind: {
-                    text: 'scientificName'
-                }
-            })),
+            }, buildScientificNameField()),
             div({
                 class: styles.classes.rowCell,
                 style: {
