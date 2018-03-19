@@ -52,7 +52,7 @@ define([
         },
         {
             id: 'taxonomy',
-            label: 'Taxonomy',
+            label: 'Lineage',
             component: TaxonomyComponent.name()
         },
         {
@@ -151,10 +151,9 @@ define([
         if (!aliases) {
             return [];
         }
-
         return aliases.map(function (alias) {
             return {
-                type: 'n/a',
+                type: null,
                 alias: alias
             };
         });

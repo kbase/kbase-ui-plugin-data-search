@@ -1,14 +1,17 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    '../../ui'
 ], function (
     ko,
-    html
+    html,
+    ui
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         div = t('div'),
+        span = t('span'),
         table = t('table'),
         thead = t('thead'),
         tbody = t('tbody'),
@@ -38,11 +41,23 @@ define([
                 }
             }, [
                 tr([
-                    td({
-                        dataBind: {
-                            text: 'type'
-                        }
-                    }),
+                    td([
+                        '<!-- ko ifnot: type -->',
+                        ui.buildNA(),
+                        span({
+                            dataBind: {
+                                text: 'type'
+                            }
+                        }),
+                        '<!-- /ko -->',
+                        '<!-- ko if: type -->',
+                        span({
+                            dataBind: {
+                                text: 'type'
+                            }
+                        }),
+                        '<!-- /ko -->',
+                    ]),
                     td({
                         dataBind: {
                             text: 'alias'
@@ -59,7 +74,7 @@ define([
             buildAliasesTable(),
             '<!-- /ko -->',
             '<!-- ko if: !value ||  value.length === 0 -->',
-            'n/a',
+            ui.buildNA(),
             '<!-- /ko -->',
         ]);
     }

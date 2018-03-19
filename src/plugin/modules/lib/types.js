@@ -66,7 +66,7 @@ define([
 
             if (!type) {
                 // Use the default type class
-                console.log('using default index', object);
+                // console.log('using default index', object);
                 return new DefaultObjectIndex({runtime, object});
                 // console.error('Object type not found!!!', objectTypeVersion, objectType, searchObject, objectTypeMap);
                 // throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);

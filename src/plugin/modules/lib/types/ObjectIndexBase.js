@@ -11,10 +11,9 @@ define([
 
     class ObjectIndexBase extends IndexBase {
         constructor(params) {
-            Object.assign({}, params, {
+            super(Object.assign({}, params, {
                 isViewable, isCopyable, uiClass
-            });
-            super(params);            
+            }));            
         }
        
         getRef() {

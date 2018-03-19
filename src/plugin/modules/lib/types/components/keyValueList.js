@@ -1,9 +1,11 @@
 define([
     'knockout-plus',
-    'kb_common/html'
+    'kb_common/html',
+    '../../ui'
 ], function (
     ko,
-    html
+    html,
+    ui
 ) {
     'use strict';
 
@@ -70,7 +72,7 @@ define([
             buildTable(),
             '<!-- /ko -->',
             '<!-- ko if: !value ||  value.length === 0 -->',
-            'n/a',
+            ui.buildNA(),
             '<!-- /ko -->',
         ]);
     }
