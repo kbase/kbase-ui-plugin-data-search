@@ -746,7 +746,8 @@ define([
             }
         }, [
             div({
-                class: styles.classes.objectItemRow
+                class: styles.classes.objectItemRow,
+                dataKBTesthookElement: 'object-row'
             }, [
                 buildMatchViewObject(),
                 
@@ -888,6 +889,7 @@ define([
     function buildNarrativeRow() {
         return  div({
             class: [styles.classes.row, styles.classes.narrativeRow],
+            dataKBTesthookElement: 'narrative-row'
         }, [
             // columns
             div({
