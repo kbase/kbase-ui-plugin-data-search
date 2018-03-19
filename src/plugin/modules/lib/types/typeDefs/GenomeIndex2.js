@@ -1,7 +1,7 @@
 define([
     'kb_common/props',
     '../utils',
-    '../objectIndexBase',
+    '../ObjectIndexBase',
     '../components/taxonomy',
     '../components/featureCounts',
     '../components/stringArray'

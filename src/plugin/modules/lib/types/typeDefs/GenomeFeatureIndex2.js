@@ -1,5 +1,5 @@
 define([
-    '../subObjectIndexBase',
+    '../SubObjectIndexBase',
     '../utils',
     '../components/taxonomy',
     '../components/location',

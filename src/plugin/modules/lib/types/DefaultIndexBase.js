@@ -1,5 +1,5 @@
 define([
-    './indexBase',
+    './IndexBase',
     './components/stringArray',
     './components/keyValueList'
 ], function (
