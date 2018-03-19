@@ -4,8 +4,16 @@ define([
     IndexBase
 ) {
     'use strict';
-    class IndexObjectBase extends IndexBase {
+
+    const isViewable = true;
+    const isCopyable = true; 
+    const uiClass = 'dataObject';  
+
+    class ObjectIndexBase extends IndexBase {
         constructor(params) {
+            Object.assign({}, params, {
+                isViewable, isCopyable, uiClass
+            });
             super(params);            
         }
        
@@ -26,5 +34,5 @@ define([
         }
     }
 
-    return IndexObjectBase;
+    return ObjectIndexBase;
 });

@@ -1,14 +1,14 @@
 define([
     'kb_common/props',
     '../utils',
-    '../indexObjectBase',
+    '../objectIndexBase',
     '../components/taxonomy',
     '../components/featureCounts',
     '../components/stringArray'
 ], function (
     Props,
     utils,
-    IndexObjectBase,
+    ObjectIndexBase,
     TaxonomyComponent,
     FeatureCountsComponent,
     StringArrayComponent
@@ -22,9 +22,6 @@ define([
     const kbaseTypeId = 'Genome';
 
     const label = 'Genome';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -36,13 +33,13 @@ define([
             label: 'Domain'
         },
         {
-            id: 'taxonomy',
-            label: 'Taxonomy',
-            component: TaxonomyComponent.name()
-        },
-        {
             id: 'scientificName',
             label: 'Scientific name'
+        },
+        {
+            id: 'taxonomy',
+            label: 'Lineage',
+            component: TaxonomyComponent.name()
         },
         {
             id: 'notes',
@@ -77,11 +74,6 @@ define([
             format: '0,0'
         },
         {
-            id: 'warnings',
-            label: 'Warnings',
-            component: StringArrayComponent.name()
-        },
-        {
             id: 'featureCounts',
             label: 'Feature Counts',
             component: FeatureCountsComponent.name()
@@ -89,6 +81,11 @@ define([
         {
             id: 'genomeTiers',
             label: 'Genome Tiers',
+            component: StringArrayComponent.name()
+        },
+        {
+            id: 'warnings',
+            label: 'Warnings',
             component: StringArrayComponent.name()
         },
         {
@@ -178,23 +175,18 @@ define([
     ];
       
 
-    class GenomeIndex2 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
-                indexId,
+    class GenomeIndex2 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
                 indexVersion,
                 detailFieldDefs,
-                searchFields, 
+                searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {

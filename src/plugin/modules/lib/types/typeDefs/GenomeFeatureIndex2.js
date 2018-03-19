@@ -1,12 +1,12 @@
 define([
-    '../indexSubObjectBase',
+    '../subObjectIndexBase',
     '../utils',
     '../components/taxonomy',
     '../components/location',
     '../components/aliases',
     '../components/stringArray'
 ], function (
-    IndexSubObjectBase,
+    SubObjectIndexBase,
     utils,
     TaxonomyComponent,
     LocationComponent,
@@ -15,13 +15,13 @@ define([
 ) {
     'use strict';
 
+    const indexId = 'GenomeFeature';
+    const indexVersion = 1;
+
     const kbaseTypeModule = 'KBaseGenomes';
     const kbaseTypeId = 'GenomeFeature';
 
     const label = 'Genome Feature';
-    const isViewable = true;
-    const isCopyable = false; 
-    const uiClass = 'subObject';
 
     const detailFieldDefs = [
         {
@@ -153,21 +153,18 @@ define([
         });
     }
 
-    class GenomeFeature2 extends IndexSubObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
+    class GenomeFeature2 extends SubObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
+                indexVersion,
                 detailFieldDefs,
-                searchFields, 
+                searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {

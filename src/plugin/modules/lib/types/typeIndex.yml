@@ -33,6 +33,10 @@
   id: pairedendlibrary
   version: 1
   module: PairedEndLibraryIndex1
+-
+  id: pangenome
+  version: 1
+  module: PangenomeIndex1
 - 
   id: singleendlibrary
   version: 1
@@ -45,3 +49,11 @@
   id: media
   version: 1
   module: MediaIndex1
+-
+  id: taxon
+  version: 1
+  module: TaxonIndex1
+-
+  id: tree
+  version: 1
+  module: TreeIndex1

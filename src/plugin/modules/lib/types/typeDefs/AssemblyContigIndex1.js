@@ -1,7 +1,7 @@
 define([
-    '../indexSubObjectBase'
+    '../subObjectIndexBase'
 ], function (
-    IndexSubObjectBase
+    SubObjectIndexBase
 ) {
     'use strict';
 
@@ -12,9 +12,6 @@ define([
     const kbaseTypeId = 'AssemblyContig';
 
     const label = 'Assembly Contig';
-    const isViewable = true;
-    const isCopyable = false; 
-    const uiClass = 'subObject';
 
     const detailFieldDefs = [
         {
@@ -75,11 +72,9 @@ define([
     ];
       
 
-    class AssemblyContig1 extends IndexSubObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
+    class AssemblyContig1 extends SubObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
                 indexId, 
                 indexVersion,
                 detailFieldDefs,
@@ -87,11 +82,8 @@ define([
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {

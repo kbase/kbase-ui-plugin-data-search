@@ -58,7 +58,8 @@ define([], function () {
                     format: field.format,
                     component: field.component,
                     missing: field.missing,
-                    default: field.default
+                    default: field.default,
+                    params: field.params
                 });
             });
             return this.detailFields;

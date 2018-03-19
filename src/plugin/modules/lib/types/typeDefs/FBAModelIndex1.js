@@ -1,10 +1,10 @@
 define([
-    '../indexObjectBase',
+    '../objectIndexBase',
     '../components/taxonomy',
     '../utils'
     
 ], function (
-    IndexObjectBase,
+    ObjectIndexBase,
     TaxonomyComponent,
     utils
 ) {
@@ -17,9 +17,6 @@ define([
     const kbaseTypeId = 'FBAModel';
 
     const label = 'FBA Model';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -129,23 +126,18 @@ define([
     const sortFields = [];
       
 
-    class FBAModelIndex1 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
-                indexId,
+    class FBAModelIndex1 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {

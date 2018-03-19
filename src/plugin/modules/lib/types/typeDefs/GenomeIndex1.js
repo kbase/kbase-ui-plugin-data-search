@@ -1,12 +1,12 @@
 define([
     'kb_common/props',
     '../utils',
-    '../indexObjectBase',
+    '../objectIndexBase',
     '../components/taxonomy'
 ], function (
     Props,
     utils,
-    IndexObjectBase,
+    ObjectIndexBase,
     TaxonomyComponent
 ) {
     'use strict';
@@ -18,9 +18,6 @@ define([
     const kbaseTypeId = 'Genome';
 
     const label = 'Genome';
-    const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';
 
     const detailFieldDefs = [
         {
@@ -33,7 +30,7 @@ define([
         },
         {
             id: 'taxonomy',
-            label: 'Taxonomy',
+            label: 'Lineage',
             component: TaxonomyComponent.name()
         },
         {
@@ -46,12 +43,14 @@ define([
             type: 'number',
             format: '0,0'
         },
-        {
-            id: 'contigCount',
-            label: '# Contigs',
-            type: 'number',
-            format: '0,0'
-        }
+        // seems to never be present
+
+        // {
+        //     id: 'contigCount',
+        //     label: '# Contigs',
+        //     type: 'number',
+        //     format: '0,0'
+        // }
     ];
 
     const searchFields = {
@@ -64,7 +63,7 @@ define([
             type: 'string'
         },
         taxonomy: {
-            label: 'Taxonomy',
+            label: 'Lineage',
             type: 'string'
         },
         scientific_name: {
@@ -102,33 +101,40 @@ define([
       
       
 
-    class GenomeIndex1 extends IndexObjectBase {
-        constructor(runtime, object) {
-            super({
-                runtime,
-                object,
-                indexId,
+    class GenomeIndex1 extends ObjectIndexBase {
+        constructor(params) {
+            super(Object.assign({}, params, {
+                indexId, 
                 indexVersion,
                 detailFieldDefs,
-                searchFields, 
+                searchFields,
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label,
-                isViewable,
-                isCopyable,
-                uiClass
-            });
+                label
+            }));
         }
 
         objectToData() {
+            let data = this.object.data;
+            let contigCount;
+            if (this.object.key_props.contigs) {
+                try {
+                    contigCount = parseInt(this.object.key_props.contigs, 10);
+                } catch (ex) {
+                    contigCount = null;
+                }
+            } else {
+                contigCount = null;
+            }
+            // console.log('CONTIG?', this.object.key_props.contigs, this.object);
             return {
-                id: this.object.data.id,
-                domain: this.object.data.domain,
-                taxonomy: utils.parseTaxonomy(this.object.data.taxonomy),
-                scientificName: this.object.data.scientific_name,
-                featureCount: this.object.data.features,
-                contigCount: this.object.data.contigs,
+                id: data.id,
+                domain: data.domain,
+                taxonomy: utils.parseTaxonomy(data.taxonomy),
+                scientificName: data.scientific_name,
+                featureCount: data.features,
+                contigCount: contigCount,
             };
         }
     }

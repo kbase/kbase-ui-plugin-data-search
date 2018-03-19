@@ -1,25 +1,13 @@
 define([
     'bluebird',
     'require',
+    './types/typeDefs/DefaultObjectIndex',
     'yaml!./types/typeIndex.yml'
-    // './types/narrative',
-    // './types/genome',
-    // './types/genomeFeature',
-    // './types/assembly',
-    // './types/assemblyContig',
-    // './types/pairedEndLibrary',
-    // './types/singleEndLibrary'
 ], function (
     Promise,
     localRequire,
+    DefaultObjectIndex,
     typeIndex
-    // narrative,
-    // genome,
-    // genomeFeature,
-    // assembly,
-    // assemblyContig,
-    // pairedEndLibrary,
-    // singleEndLibrary
 ) {
     'use strict';
 
@@ -36,12 +24,9 @@ define([
     }
 
     function factory(params) {
-
         var runtime = params.runtime;
-
         var objectTypes; 
         var objectTypeMap;
-
 
         function loadTypes() {
             return Promise.all(typeIndex.map(function (type) {
@@ -73,20 +58,23 @@ define([
             return objectTypeMap[key];
         }
 
-        function getTypeForObject(searchObject) {
-            var objectType = searchObject.object_props.type.toLowerCase();
-            var objectTypeVersion = parseInt(searchObject.object_props.type_ver, 10);
-            var objectTypeId = [objectType, objectTypeVersion].join('.');
-            var type = objectTypeMap[objectTypeId];
+        function getTypeForObject(object) {
+            let objectType = object.object_props.type.toLowerCase();
+            let objectTypeVersion = parseInt(object.object_props.type_ver, 10);
+            let objectTypeId = [objectType, objectTypeVersion].join('.');
+            let type = objectTypeMap[objectTypeId];
 
             if (!type) {
-                console.error('Object type not found!!!', objectTypeVersion, objectType, searchObject, objectTypeMap);
-                throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);
+                // Use the default type class
+                console.log('using default index', object);
+                return new DefaultObjectIndex({runtime, object});
+                // console.error('Object type not found!!!', objectTypeVersion, objectType, searchObject, objectTypeMap);
+                // throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);
             }
 
             // return type.module.make({object: searchObject});
             // return a new instance of this index class.
-            return new type.moduleClass(runtime, searchObject);
+            return new type.moduleClass({runtime, object});
         }
 
         function getLookup() {
