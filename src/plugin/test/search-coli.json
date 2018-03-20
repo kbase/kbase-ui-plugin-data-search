@@ -137,8 +137,8 @@
                     },
                    
                     {
-                        "title": "Check that reference data search results are rendered",
-                        "disabled": true,
+                        "title": "Check that user data search results are rendered",
+                        "disabled": false,
                         "selector": [
                             {
                                 "type": "component",
@@ -149,11 +149,14 @@
                                 "value": "results"
                             },
                             {
-                                "type": "alert",
-                                "value": "not-found"
+                                "type": "element",
+                                "value": "object-row"
                             }
                         ],
-                        "wait": 10000
+                        "wait": 10000,
+                        "count": {
+                            "equal": 20
+                        }
                     },
 
                     {
@@ -192,7 +195,8 @@
                         "action": "click"
                     },
                     {
-                        "disabled": true,
+                        "title": "Check that features search results are rendered",
+                        "disabled": false,
                         "selector": [
                             {
                                 "type": "component",
@@ -203,11 +207,14 @@
                                 "value": "results"
                             },
                             {
-                                "type": "alert",
-                                "value": "not-found"
+                                "type": "element",
+                                "value": "object-row"
                             }
                         ],
-                        "wait": 10000
+                        "wait": 10000,
+                        "count": {
+                            "equal": 20
+                        }
                     }
                 ]
             }
