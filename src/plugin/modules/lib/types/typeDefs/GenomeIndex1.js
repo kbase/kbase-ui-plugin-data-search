@@ -45,12 +45,12 @@ define([
         },
         // seems to never be present
 
-        // {
-        //     id: 'contigCount',
-        //     label: '# Contigs',
-        //     type: 'number',
-        //     format: '0,0'
-        // }
+        {
+            id: 'contigCount',
+            label: '# Contigs',
+            type: 'number',
+            format: '0,0'
+        }
     ];
 
     const searchFields = {
