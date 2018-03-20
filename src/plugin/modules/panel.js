@@ -24,14 +24,6 @@ define([
                 runtime: runtime
             });
 
-        var styles = html.makeStyles({
-            panel: {
-                flex: '1 1 0px',
-                display: 'flex',
-                flexDirection: 'column'
-            }
-        });
-
         function template() {
             return ko.kb.komponent({
                 name: MainComponent.name(),
@@ -88,11 +80,12 @@ define([
                 }
             };
         }
-
         function attach(node) {
             hostNode = node;
             container = hostNode.appendChild(document.createElement('div'));
-            container.classList.add(styles.classes.panel);
+            container.style.flex = '1 1 0px';
+            container.style.display = 'flex';
+            container.style['flex-direction'] = 'column';
             container.setAttribute('data-k-b-testhook-plugin', 'data-search');
 
             return null;
@@ -103,7 +96,7 @@ define([
                     return appBus.start();
                 })
                 .then(function () {
-                    container.innerHTML = [styles.sheet, template()].join('');
+                    container.innerHTML = template();
                     ko.applyBindings(viewModel, container, function (context) {
                         context.runtime = runtime;
                     });

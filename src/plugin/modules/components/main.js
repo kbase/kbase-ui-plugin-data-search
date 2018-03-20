@@ -1,6 +1,7 @@
 define([
     'knockout-plus',
     'kb_common/html',
+    './navBar',
     './searchBar',
     './toolBar',
     './searchResults',
@@ -13,6 +14,7 @@ define([
 ], function (
     ko,
     html,
+    NavBarComponent,
     SearchBarComponent,
     ToolBarComponent,
     SearchResultsComponent,
@@ -304,7 +306,12 @@ define([
         component: {
             flex: '1 1 0px',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            paddingRight: '12px',
+            paddingLeft: '12px'
+        },
+        navArea: {
+            flex: '0 0 50px',
         },
         searchArea: {
             flex: '0 0 50px',
@@ -380,6 +387,26 @@ define([
         ]);
     }
 
+    function buildNavArea() {
+        return div({
+            style: {
+                flex: '1 1 0px',
+                display: 'flex',
+                flexDirection: 'row'
+            }
+        }, [
+            div({
+                style: {
+                    flex: '1'
+                }
+            },  ko.kb.komponent({
+                name: NavBarComponent.name(),
+                params: {
+                }
+            }))
+        ]);
+    }
+
     function buildResultsArea() {
         return ko.kb.komponent({
             name: SearchResultsComponent.name(),
@@ -404,29 +431,24 @@ define([
     function template() {
         return div({
             class: styles.classes.component,
-            dataKBTesthookComponent: 'main',
-            style: {
-                paddingRight: '12px',
-                paddingLeft: '12px'
-            }
+            dataKBTesthookComponent: 'main',            
         }, [
             div({
-                class: styles.classes.component
+                class: styles.classes.navArea
+            }, buildNavArea()),
+            // The search input area
+            div({
+                class: styles.classes.searchArea
+            }, buildInputArea()),
+            // The search filter area
+            // div({
+            //     class: styles.classes.filterArea
+            // }, buildToolbarArea()),
+            // The search results / error / message area
+            div({
+                class: styles.classes.resultArea
             }, [
-                // The search input area
-                div({
-                    class: styles.classes.searchArea
-                }, buildInputArea()),
-                // The search filter area
-                // div({
-                //     class: styles.classes.filterArea
-                // }, buildToolbarArea()),
-                // The search results / error / message area
-                div({
-                    class: styles.classes.resultArea
-                }, [
-                    buildResultsArea(),
-                ])
+                buildResultsArea(),
             ]),
             ko.kb.komponent({
                 name: 'generic/overlay-panel-bootstrappish',
