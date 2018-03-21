@@ -777,17 +777,17 @@ define([
                     width: '50%'
                 }
             }),
-            p('Reference Includes the following sources:'),
+            p('Reference Data is provided by the following sources:'),
             ul([
-                li('something - somewhere')
+                li('RefSeq - NCBI Reference Sequence Database')
             ]),
             hr({
                 style: {
                     width: '50%'
                 }
             }),
-            p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
-              ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
+            p('All search terms are logically "and"ed together -- your search will match data objects whose properties collectively match all of the terms you submit. ' + 
+            'In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
         ]);
     }
 

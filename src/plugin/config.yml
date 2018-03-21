@@ -18,13 +18,14 @@ install:
         -
             path: [search]
             queryParams: 
-                param1: {}
+                q: {}
             widget: data-search_panel
             authorization: true           
     menu:
         -
             name: search
             path: [search]
+            
             label: Search
             icon: search
             beta: true

@@ -24,10 +24,14 @@ define([
                 runtime: runtime
             });
 
+        var initialQuery;
+
         function template() {
             return ko.kb.komponent({
                 name: MainComponent.name(),
-                params: {}
+                params: {
+                    initialQuery: 'initialQuery'
+                }
             });
         }
 
@@ -39,6 +43,7 @@ define([
                 appBus: appBus,
                 runtime: runtime,
                 types: types,
+                initialQuery: initialQuery,
                 // TODO: generate from the registered types.
                 labels: {
                     narrative: {
@@ -90,7 +95,8 @@ define([
 
             return null;
         }
-        function start() {
+        function start(params) {
+            initialQuery = params.q;
             return types.start()
                 .then(function () {
                     return appBus.start();
