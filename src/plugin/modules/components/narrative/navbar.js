@@ -2,7 +2,7 @@ define([
     'knockout-plus',
     'kb_common/html',
     './summary',
-    './accessControl'
+    '../controls/accessControl'
 ], function (
     ko,
     html,

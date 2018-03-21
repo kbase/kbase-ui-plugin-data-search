@@ -53,6 +53,13 @@ define([
             fontWeight: 'normal',
             marginRight: '4px',
             marginLeft: '6px'
+        },
+        fieldGroupLabel: {
+            fontWeight: 'bold',
+            color: 'gray',
+            marginTop: '8px',
+            marginRight: '4px'
+            // fontSize: '80%'
         }
     });
 
@@ -67,7 +74,9 @@ define([
         return div({
             class: 'form-inline',
         }, [
-            'Include ',
+            span({
+                class: styles.classes.fieldGroupLabel
+            }, 'Access:'),
             span({
                 class: ['form-control', styles.classes.checkboxControl],
                 title: 'Indicate whether to show private data - your data or shared directly with you',
@@ -101,8 +110,7 @@ define([
                     }
                 }),
                 ' Public'
-            ])),
-            ' data'
+            ]))
         ]);
     }
 

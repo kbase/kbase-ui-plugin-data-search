@@ -130,6 +130,8 @@ define([
             return Promise.all([
                 searchApi.featuresSearch({
                     query: query.terms.join(' '),
+                    withPrivateData: query.withPrivateData,
+                    withPublicData: query.withPublicData,
                     page: query.start || 0,
                     pageSize: searchConfig.fetchSize
                 })

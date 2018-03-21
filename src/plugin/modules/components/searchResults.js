@@ -66,6 +66,43 @@ define([
                     }
                 }
             }, false);
+
+            if (runtime.allow('alpha')) {
+                tabsetBus.send('add-tab', {
+                    tab: {
+                        id: 'genome-features',
+                        tab: {                           
+                            label: 'Genome Features',
+                            component: {
+                                name: FeaturesTabComponent.name(),
+                                params: {
+                                    count: params.featuresTotal
+                                }
+                            }
+                        },
+                        panel: {
+                            component: {
+                                name: FeaturesResultsComponent.name(),
+                                // NB these params are bound here, not in the tabset.
+                                params: {
+                                    view: params.view,
+                                    searchInput: params.searchInput,
+                                    forceSearch: params.forceSearch,
+                                    searchTerms: params.searchTerms,
+                                    overlayComponent: params.overlayComponent,
+                                    selectedObjects: params.selectedObjects,
+                                    narrativesTotal: params.narrativesTotal,
+                                    referenceDataTotal: params.referenceDataTotal,
+                                    featuresTotal: params.featuresTotal,
+                                    withPrivateData: params.withPrivateData,
+                                    withPublicData: params.withPublicData                                
+                                }
+                            }
+                        }
+                    }
+                }, false);
+            }
+
             tabsetBus.send('add-tab', {
                 tab: {
                     id: 'reference-data',
@@ -99,40 +136,7 @@ define([
                 }
             }, false);
 
-            if (runtime.allow('alpha')) {
-                tabsetBus.send('add-tab', {
-                    tab: {
-                        id: 'genome-features',
-                        tab: {                           
-                            label: 'Genome Features',
-                            component: {
-                                name: FeaturesTabComponent.name(),
-                                params: {
-                                    count: params.featuresTotal
-                                }
-                            }
-                        },
-                        panel: {
-                            component: {
-                                name: FeaturesResultsComponent.name(),
-                                // NB these params are bound here, not in the tabset.
-                                params: {
-                                    view: params.view,
-                                    searchInput: params.searchInput,
-                                    forceSearch: params.forceSearch,
-                                    searchTerms: params.searchTerms,
-                                    overlayComponent: params.overlayComponent,
-                                    selectedObjects: params.selectedObjects,
-                                    narrativesTotal: params.narrativesTotal,
-                                    referenceDataTotal: params.referenceDataTotal,
-                                    featuresTotal: params.featuresTotal,
-
-                                }
-                            }
-                        }
-                    }
-                }, false);
-            }
+           
             tabsetBus.send('select-tab', 0);
         });
 

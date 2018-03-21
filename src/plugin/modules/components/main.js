@@ -190,8 +190,8 @@ define([
 
             return {
                 query: terms.join(' '),
-                withPrivateData: 1,
-                withPublicData: 1
+                withPrivateData: withPrivateData(),
+                withPublicData: withPublicData()
             };
         });
         
