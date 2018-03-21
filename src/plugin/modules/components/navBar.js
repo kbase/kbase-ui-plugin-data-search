@@ -7,24 +7,26 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         div = t('div'),
         span = t('span'),
-        a = t('a');
-        
+        a = t('a');        
 
     /*
     params are:
         searchInput
         searchHistory
     */
-    function viewModel() {
+    function viewModel(params) {
+        let searchInputQueryValue = ko.pureComputed(function () {
+            return encodeURIComponent(params.searchInput() || '');
+        });
         return {
-           
+            searchInputQueryValue
         };
     }
 
-    var styles = html.makeStyles({
+    let styles = html.makeStyles({
         component: {
             flex: '1 1 0px',
             display: 'flex',
@@ -101,7 +103,21 @@ define([
         },
         navLink: {
             css: {
-                padding: '4px'
+                display: 'inline-block',
+                padding: '6px',
+                margin: '4px',
+                cursor: 'pointer',
+                verticalAlign: 'center'
+            },
+            pseudo: {
+                hover: {
+                    backgroundColor: '#DDD'
+                }
+            },
+            modifiers: {
+                active: {
+                    backgroundColor: '#DDD'
+                }
             }
         },
         label: {
@@ -112,9 +128,6 @@ define([
         }
     });
   
-
-  
-
     function buildNavBar() {
         return div({
             class:  styles.classes.navBar
@@ -123,15 +136,19 @@ define([
                 class: styles.classes.label
             }, 'Search:'),
             a({
-                href: '#jgi-search',
-                class: styles.classes.navLink
+                dataBind: {
+                    attr: {
+                        href: '"#jgi-search?q=" + searchInputQueryValue()'
+                    }
+                },
+                class: [styles.classes.navLink]
             }, 'JGI'), 
             span({
-                class: styles.classes.navLink
-            }, 'KBase'), 
-            span({
-                class: styles.classes.navLink
-            }, 'Reference Data')
+                class: [styles.classes.navLink, styles.scopes.active]
+            }, 'KBase - User Data, Reference Data, Features'), 
+            // span({
+            //     class: [styles.classes.navLink, styles.scopes.active]
+            // }, 'Reference Data')
         ]);
     }
 

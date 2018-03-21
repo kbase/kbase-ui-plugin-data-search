@@ -47,7 +47,7 @@ define([
         var overlayComponent = ko.observable();
 
         // SEARCH INPUTS
-        var searchInput = ko.observable();
+        var searchInput = ko.observable(params.initialQuery);
 
         var forceSearch = ko.observable();
 
@@ -402,6 +402,7 @@ define([
             },  ko.kb.komponent({
                 name: NavBarComponent.name(),
                 params: {
+                    searchInput: 'searchInput'
                 }
             }))
         ]);
