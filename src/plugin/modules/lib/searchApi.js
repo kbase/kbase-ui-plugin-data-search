@@ -190,8 +190,8 @@ define([
                     include_highlight: 1
                 },
                 access_filter: {
-                    with_private: 0,
-                    with_public: 1
+                    with_private: arg.withPrivateData ? 1 : 0,
+                    with_public: arg.withPublicData ? 1 : 0
                 },
                 sorting_rules: [{
                     is_object_property: 0,
@@ -229,8 +229,8 @@ define([
                     include_highlight: 1
                 },
                 access_filter: {
-                    with_private: 0,
-                    with_public: 1
+                    with_private: arg.withPrivateData ? 1 : 0,
+                    with_public: arg.withPublicData ? 1 : 0
                 }
             };
 

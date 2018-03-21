@@ -1,11 +1,13 @@
 define([
     'knockout-plus',
     'kb_common/html',
-    './summary'
+    './summary',
+    '../controls/accessControl'
 ], function (
     ko,
     html,
-    SummaryComponent
+    SummaryComponent,
+    AccessControlComponent
 ) {
     'use strict';
 
@@ -70,7 +72,11 @@ define([
             typeCounts: params.typeCounts,
             resultCount: params.resultCount,
             searchStatus: params.searchStatus,
-            searchSpaceCount: params.searchSpaceCount
+            searchSpaceCount: params.searchSpaceCount,
+
+            // for access control
+            withPrivateData: params.withPrivateData,
+            withPublicData: params.withPublicData
         };
     }
 
@@ -201,6 +207,25 @@ define([
                             resultCount: 'resultCount',
                             searchStatus: 'searchStatus',
                             searchSpaceCount: 'searchSpaceCount'
+                        }
+                    }
+                }
+            })),
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }
+            }, div({
+                dataBind: {
+                    component: {
+                        name: AccessControlComponent.quotedName(),
+                        params: {
+                            withPrivateData: 'withPrivateData',
+                            withPublicData: 'withPublicData',
                         }
                     }
                 }

@@ -54,7 +54,7 @@ define([
         }
     });     
 
-    function SearchState() {
+    function SearchState(params) {
         var pageSize = ko.observable(20);
 
         // Paging
@@ -93,6 +93,10 @@ define([
             return Math.ceil(totalItems / pageSize());
         });
 
+        var withPrivateData = params.withPrivateData;
+
+        var withPublicData = params.withPublicData;
+
         return {
             pageSize: pageSize,
             page: page,
@@ -103,7 +107,11 @@ define([
             isTruncated: isTruncated,
             totalSearchHits: totalSearchHits,
             totalSearchSpace: totalSearchSpace,
-            summary: summary
+            summary: summary,
+
+            withPrivateData: withPrivateData,
+            withPublicData: withPublicData
+
         };
     }
 
@@ -116,7 +124,10 @@ define([
         var subscriptions = ko.kb.SubscriptionManager.make();
 
         // the search view model...
-        var searchState = SearchState();
+        var searchState = SearchState({
+            withPrivateData: params.withPrivateData,
+            withPublicData: params.withPublicData
+        });
 
         var data = Data.make({
             runtime: runtime,
@@ -164,7 +175,9 @@ define([
                 .then(function () {
                     return data.search({
                         start: query.start,
-                        terms: query.terms
+                        terms: query.terms,
+                        withPrivateData: query.withPrivateData,
+                        withPublicData: query.withPublicData
                     });
                 })
                 .then(function (result) {
@@ -250,7 +263,9 @@ define([
                 terms: terms.terms,
                 start: start,
                 pageSize: searchState.pageSize(),
-                forced: params.forceSearch()
+                forced: params.forceSearch(),
+                withPrivateData: searchState.withPrivateData(),
+                withPublicData: searchState.withPublicData()
             };
         });
         
@@ -332,7 +347,10 @@ define([
                     typeCounts: 'searchState.summary',
                     resultCount: 'searchState.totalSearchHits',
                     searchStatus: 'searchState.status',
-                    searchSpaceCount: 'searchState.totalSearchSpace'
+                    searchSpaceCount: 'searchState.totalSearchSpace',
+
+                    withPrivateData: 'searchState.withPrivateData',
+                    withPublicData: 'searchState.withPublicData',
                 }
             })),
             div({
