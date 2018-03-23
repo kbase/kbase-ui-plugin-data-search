@@ -47,7 +47,7 @@ define([
         var overlayComponent = ko.observable();
 
         // SEARCH INPUTS
-        var searchInput = ko.observable(params.initialQuery);
+        var searchInput = ko.observable();
 
         var forceSearch = ko.observable();
 
@@ -278,6 +278,10 @@ define([
             appBus.stop();
             subscriptions.dispose();
         }
+
+        // MAIN (INIT)
+
+        searchInput(params.initialQuery);
 
         return {
             appBus: appBus,
