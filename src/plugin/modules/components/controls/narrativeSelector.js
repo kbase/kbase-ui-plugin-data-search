@@ -1,33 +1,40 @@
 define([
-    'knockout-plus',
+    'knockout',
+    'kb_ko/KO',
+    'kb_ko/lib/generators',
+    'kb_ko/lib/subscriptionManager',
     'kb_common/html',
     '../../lib/data'
 ], function (
     ko,
+    KO,
+    gen,
+    SubscriptionManager,
     html,
     Data
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         div = t('div'),
         span = t('span'),
         input = t('input'),
         select = t('select');
 
     function viewModel(params, componentInfo) {
-        var context = ko.contextFor(componentInfo.element);
-        var runtime = context['$root'].runtime;
-        var subscriptions = ko.kb.SubscriptionManager.make();
+        let context = ko.contextFor(componentInfo.element);
+        let runtime = context['$root'].runtime;
 
-        var data = Data.make({
+        let subscriptions = new SubscriptionManager;
+
+        let data = Data.make({
             runtime: runtime
         });
 
-        var selectedNarrative = ko.observable();
+        let selectedNarrative = ko.observable();
         selectedNarrative.syncWith(params.selectedNarrative);
 
-        var sortOptions = [
+        let sortOptions = [
             {
                 label: 'Title',
                 value: 'title',
@@ -44,9 +51,9 @@ define([
                 selected: ko.observable(false)
             },
         ];
-        var sortOption = ko.observable('date');
+        let sortOption = ko.observable('date');
 
-        var sortDirection = ko.observable('descending');
+        let sortDirection = ko.observable('descending');
 
         function doToggleSort() {
             sortDirection(sortDirection() === 'descending' ? 'ascending' : 'descending');
@@ -54,9 +61,9 @@ define([
 
         // TODO: a ready() flag so we can disable the control until data is loaded.
 
-        var ready = ko.observable(false);
-        var narratives = ko.observableArray([]);
-        var error = ko.observable();
+        let ready = ko.observable(false);
+        let narratives = ko.observableArray([]);
+        let error = ko.observable();
         data.getWritableNarratives()
             .then(function (writableNarratives) {
                 writableNarratives.forEach(function (narrative) {
@@ -86,11 +93,11 @@ define([
                 error(err);
             });
 
-        var inputValue = ko.observable().extend({rateLimit: 150});
+        let inputValue = ko.observable().extend({rateLimit: 150});
 
-        var loading = ko.observable(false);
+        let loading = ko.observable(false);
 
-        var searchExpression = ko.pureComputed(function () {
+        let searchExpression = ko.pureComputed(function () {
             if (!inputValue() || inputValue().length < 2) {
                 return null;
             }
@@ -106,7 +113,7 @@ define([
             return 0;
         }
 
-        var sortDir = ko.pureComputed(function () {
+        let sortDir = ko.pureComputed(function () {
             if (sortDirection() === 'ascending') {
                 return 1;
             } else {
@@ -133,7 +140,7 @@ define([
         //         })
         // });
 
-        var narrativesFiltered = ko.pureComputed(function () {
+        let narrativesFiltered = ko.pureComputed(function () {
             var search = searchExpression();
 
             var nar;
@@ -197,8 +204,9 @@ define([
             selected.active(false);
         }
 
-        function doCancelSearch() {
-            inputValue.reset();
+        function doClearSearch() {
+            inputValue('');
+            // inputValue.reset();
             // restoring the value should be all we need to do... 
         }
 
@@ -214,13 +222,13 @@ define([
             searchCount: searchCount,
             isSearching: isSearching,
             doSelectValue: doSelectValue,
-            doCancelSearch: doCancelSearch,
+            doClearSearch: doClearSearch,
             tooManyResults: tooManyResults,
             sortOptions: sortOptions,
             sortOption: sortOption,
             sortDirection: sortDirection,
             ready: ready,
-
+        
             doDeactivate: doDeactivate,
             doActivate: doActivate,
             doToggleSort: doToggleSort,
@@ -253,6 +261,19 @@ define([
         hoverRow: {
             css: {
                 backgroundColor: 'silver'
+            }
+        },
+        addonButton: {
+            css: {
+
+            },
+            pseudoClasses: {
+                hover: {
+                    backgroundColor: 'rgba(200,200,200,0.5)'
+                },
+                active: {
+                    backgroundColor: 'rgba(200,200,200,1)'
+                }
             }
         }
     });
@@ -309,27 +330,27 @@ define([
                         }
                     })),
                     span({
-                        class: 'input-group-addon fa',
+                        class: ['input-group-addon', 'fa', styles.classes.addonButton],
                         style: {
                             display: 'block',
                             flex: '0 0 auto',
                             width: 'auto'
                         },
                         dataBind: {
-                            class: 'sortDirection() === "ascending" ? "fa-sort-desc" : "fa-sort-asc"',
+                            class: 'sortDirection() === "ascending" ? "fa-sort-asc" : "fa-sort-desc"',
                             click: 'doToggleSort'
                         }
                     }),
                    
                     span({
-                        class: 'input-group-addon fa fa-times',
+                        class: ['input-group-addon', 'fa', 'fa-times', styles.classes.addonButton],
                         style: {
                             cursor: 'pointer',
                             width: 'auto'
                         },
                         dataBind: {
-                            click: 'doCancelSearch',
-                            enabled: 'inputValue().length > 0'
+                            click: 'doClearSearch',
+                            enable: 'inputValue'
                         }
                     })
                 ])),
@@ -368,33 +389,34 @@ define([
                             }
                         }, [
                             'Showing ',
-                            '<!-- ko if: narrativesFiltered().length = totalCount() -->',
-                            'all ', 
-                            span({
-                                dataBind: {
-                                    typedText: {
-                                        value: 'totalCount',
-                                        type: '"number"',
-                                        format: '"0,0"'
-                                    }
-                                }
-                            }),
-                            ' writable narratives',
-                            '<!-- /ko -->',
-                            '<!-- ko if: narrativesFiltered().length < totalCount() -->',
-                            span({
-                                dataBind: {
-                                    text: 'narrativesFiltered().length'
-                                }
-                            }),
-                            ' out of ',
-                            span({
-                                dataBind: {
-                                    text: 'totalCount'
-                                }
-                            }),
-                            ' writable narratives',
-                            '<!-- /ko -->'
+                            gen.if('narrativesFiltered().length === totalCount()', 
+                                span([
+                                    'all ', 
+                                    span({
+                                        dataBind: {
+                                            typedText: {
+                                                value: 'totalCount',
+                                                type: '"number"',
+                                                format: '"0,0"'
+                                            }
+                                        }
+                                    }),
+                                    ' writable narratives'
+                                ]),
+                                span([
+                                    span({
+                                        dataBind: {
+                                            text: 'narrativesFiltered().length'
+                                        }
+                                    }),
+                                    ' out of ',
+                                    span({
+                                        dataBind: {
+                                            text: 'totalCount'
+                                        }
+                                    }),
+                                    ' writable narratives'
+                                ]))
                         ])
                     ]),
                     div({
@@ -521,5 +543,5 @@ define([
             stylesheet: styles.sheet
         };
     }
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

@@ -1,6 +1,8 @@
 define([
     'bluebird',
-    'knockout-plus',
+    'knockout',
+    'kb_ko/KO',
+    'kb_ko/lib/generators',
     'kb_common/html',
     'kb_common/bootstrapUtils',
     'kb_service/utils',
@@ -12,6 +14,8 @@ define([
 ], function (
     Promise,
     ko,
+    KO,
+    gen,
     html,
     BS,
     apiUtils,
@@ -22,7 +26,7 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    let t = html.tag,
         a = t('a'),
         h3 = t('h3'),
         div = t('div'),
@@ -35,74 +39,7 @@ define([
         tr = t('tr'), td = t('td'), th = t('th'),
         p = t('p'), b = t('b');
 
-    var styles = html.makeStyles({
-        viewTable: {
-            css: {
-                width: '100%'
-            },
-            inner: {
-                td: {
-                    border: 'none',
-                    padding: '3px',
-                    verticalAlign: 'top'
-                },
-                th: {
-                    border: 'none',
-                    padding: '3px',
-                    verticalAlign: 'top',
-                    fontWeight: 'normal'
-                },
-                'td:nth-child(1)': {
-                    width: '30%'
-                },
-                'th:nth-child(1)': {
-                    width: '30%'
-                }
-            }
-        },
-        selectedObjectsTable: {
-            css: {
-                width: '100%'
-            },
-            inner: {
-                'tbody tr:hover': {
-                    backgroundColor: 'rgba(200,200,200,0.8)'
-                },
-                td: {
-                    borderBottom: '1px solid rgba(200,200,200,0.8)',
-                    padding: '3px',
-                    verticalAlign: 'middle'
-                },
-                th: {
-                    borderBottom: '1px solid rgba(200,200,200,0.8)',
-                    padding: '3px',
-                    verticalAlign: 'top',
-                    fontWeight: 'normal',
-                    fontStyle: 'italic'
-                },
-                'td:nth-child(1)': {
-                    width: '30%'
-                },
-                'th:nth-child(1)': {
-                    width: '30%'
-                },
-                'td:nth-child(3)': {
-                    textAlign: 'center'
-                },
-                'th:nth-child(3)': {
-                    textAlign: 'center'
-                }
-            }
-        },
-        selectableRow: {
-            css: {},
-            modifiers: {
-                selected: {
-                    backgroundColor: 'rgba(200,200,200,1)'
-                }
-            }
-        }
-    });
+    // VIEWMODEL    
 
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
@@ -110,6 +47,11 @@ define([
         var objectsToCopy = ko.unwrap(params.objectsToCopy);
         var objectToView = ko.observable();
         var subscriptions = ko.kb.SubscriptionManager.make();
+
+        var messages = {
+            removeObjectFromList: 'Remove this object from the list of selected objects to copy.',
+            cannotRemoveLastObjectFromList: 'Sorry, cannot remove the last object from the list.'            
+        };
        
         function viewObject(ref) {
             data.getObjectInfo(ref)
@@ -349,6 +291,7 @@ define([
             canCopy: canCopy,
             objectToView: objectToView,
             copyStatus: copyStatus,
+            messages: messages,
 
             // Actions
             doClose: doClose,
@@ -360,6 +303,77 @@ define([
         };
     }
 
+    // UI 
+
+    var styles = html.makeStyles({
+        viewTable: {
+            css: {
+                width: '100%'
+            },
+            inner: {
+                td: {
+                    border: 'none',
+                    padding: '3px',
+                    verticalAlign: 'top'
+                },
+                th: {
+                    border: 'none',
+                    padding: '3px',
+                    verticalAlign: 'top',
+                    fontWeight: 'normal'
+                },
+                'td:nth-child(1)': {
+                    width: '30%'
+                },
+                'th:nth-child(1)': {
+                    width: '30%'
+                }
+            }
+        },
+        selectedObjectsTable: {
+            css: {
+                width: '100%'
+            },
+            inner: {
+                'tbody tr:hover': {
+                    backgroundColor: 'rgba(200,200,200,0.8)'
+                },
+                td: {
+                    borderBottom: '1px solid rgba(200,200,200,0.8)',
+                    padding: '3px',
+                    verticalAlign: 'middle'
+                },
+                th: {
+                    borderBottom: '1px solid rgba(200,200,200,0.8)',
+                    padding: '3px',
+                    verticalAlign: 'top',
+                    fontWeight: 'normal',
+                    fontStyle: 'italic'
+                },
+                'td:nth-child(1)': {
+                    width: '30%'
+                },
+                'th:nth-child(1)': {
+                    width: '30%'
+                },
+                'td:nth-child(3)': {
+                    textAlign: 'center'
+                },
+                'th:nth-child(3)': {
+                    textAlign: 'center'
+                }
+            }
+        },
+        selectableRow: {
+            css: {},
+            modifiers: {
+                selected: {
+                    backgroundColor: 'rgba(200,200,200,1)'
+                }
+            }
+        }
+    });
+
     function buildObjectList() {
         return div({class: 'container-fluid'}, [
             h3('Selected objects'),
@@ -369,66 +383,66 @@ define([
                 div({
                     class: 'col-md-8'
                 }, [
-                    '<!-- ko ifnot: selectedObjects().length -->',
-                    'no objects selected',
-                    '<!-- /ko -->',
-                    '<!-- ko if: selectedObjects().length -->',
-                    table({ 
-                        class: styles.classes.selectedObjectsTable
-                    }, [
-                        thead([
-                            tr([
-                                th('type'),
-                                th('object name'),
-                                th('remove')
-                            ])
-                        ]),
-                        tbody({
-                            dataBind: {
-                                foreach: 'selectedObjects'
-                            }
+                    gen.ifnot('selectedObjects().length',
+                        span('no objects selected'),
+                        table({ 
+                            class: styles.classes.selectedObjectsTable
                         }, [
-                            tr({
-                                class: [styles.classes.selectableRow],
-                                style: {
-                                    cursor: 'pointer'
-                                },
+                            thead([
+                                tr([
+                                    th('type'),
+                                    th('object name'),
+                                    th('remove')
+                                ])
+                            ]),
+                            tbody({
                                 dataBind: {
-                                    click: '$component.doSelectObject',
-                                    class: 'selected() ? "' + styles.scopes.selected + '" : false'
+                                    foreach: 'selectedObjects'
                                 }
                             }, [
-                                td({
+                                tr({
+                                    class: [styles.classes.selectableRow],
                                     style: {
-                                        width: '2em'
+                                        cursor: 'pointer'
                                     },
                                     dataBind: {
-                                        text: 'objectInfo.typeName'
+                                        click: '$component.doSelectObject',
+                                        class: 'selected() ? "' + styles.scopes.selected + '" : false'
                                     }
-                                }),
-                                td({
-                                    dataBind: {
-                                        text: 'objectInfo.name'
-                                    }
-                                }),
-                                td({
-                                    style: {
-                                        textAlign: 'center'
-                                    }
-                                }, button({
-                                    type: 'button',
-                                    title: 'Remove this object from the list of selected objects to copy.',
-                                    class: 'btn btn-xs btn-danger btn-kb-flat',
-                                    dataBind: {
-                                        click: '$component.doRemoveObject'
-                                    }
-                                }, span({
-                                    class: 'fa fa-times'
-                                })))
+                                }, [
+                                    td({
+                                        style: {
+                                            width: '2em'
+                                        },
+                                        dataBind: {
+                                            text: 'objectInfo.typeName'
+                                        }
+                                    }),
+                                    td({
+                                        dataBind: {
+                                            text: 'objectInfo.name'
+                                        }
+                                    }),
+                                    td({
+                                        style: {
+                                            textAlign: 'center'
+                                        }
+                                    }, button({
+                                        type: 'button',
+                                        class: 'btn btn-xs btn-danger btn-kb-flat',
+                                        dataBind: {
+                                            click: '$component.doRemoveObject',
+                                            enable: '$component.selectedObjects().length > 1',
+                                            attr: {
+                                                title: '$component.selectedObjects().length > 1 ? $component.messages.removeObjectFromList : $component.messages.cannotRemoveLastObjectFromList'
+                                            }
+                                        }
+                                    }, span({
+                                        class: 'fa fa-times'
+                                    })))
+                                ])
                             ])
-                        ])
-                    ]), 
-                    '<!-- /ko -->'
+                        ]))
                 ]),               
                 div({
                     class: 'col-md-4'
@@ -636,28 +650,25 @@ define([
                             class: 'col-sm-10'
                         }, [
                             'Copy into an existing Narrative: ',
-                            '<!-- ko ifnot: copyMethod() === "existing" -->',
-                            div({
-                                style: {
-                                    fontStyle: 'italic'
-                                }
-                            }, 'select a writable narrative.'),
-                            '<!-- /ko -->',
-                            '<!-- ko if: copyMethod() === "existing" -->',
-                            div({
-                                style: {
-                                    marginBottom: '20px'
-                                },
-                                dataBind: {
-                                    component: {
-                                        name: NarrativeSelectorComponent.quotedName(),
-                                        params: {
-                                            selectedNarrative: 'selectedNarrative'
+                            gen.ifnot('copyMethod() === "existing"',
+                                div({
+                                    style: {
+                                        fontStyle: 'italic'
+                                    }
+                                }, 'select a writable narrative.'),
+                                div({
+                                    style: {
+                                        marginBottom: '20px'
+                                    },
+                                    dataBind: {
+                                        component: {
+                                            name: NarrativeSelectorComponent.quotedName(),
+                                            params: {
+                                                selectedNarrative: 'selectedNarrative'
+                                            }
                                         }
                                     }
-                                }
-                            }),
-                            '<!-- /ko -->'
+                                })),
                         ])
                     ])
                 ]),
@@ -902,5 +913,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

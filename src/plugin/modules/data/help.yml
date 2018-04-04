@@ -28,9 +28,9 @@ topics:
 
       ### Private vs Public Data
 
-      For _User Data_, you may select whether to search across private data only, public data only, or both. Private data is that contained in Narratives you own, or have been shared with you. Public data is contained in Narratives which are made readable to all KBase users.
+      For _User Data_, you may select whether to search across private data only, public data only, or both. Private data is that contained in Narratives your own, or have been shared with you. Public data is contained in Narratives which are made readable to all KBase users.
 
-      _Reference Data_, by it's nature, is always public, so there is no privacy filtering available for it.
+      _Reference Data_, by its nature, is always public, so there is no privacy filtering available for it.
 
   # -
   #   id: how-indexed
@@ -84,6 +84,7 @@ topics:
       Images should not be embedded directly into a document, but used as references. Images are stored in locally in the plugin
       in the resources/images directory. You should use the special prefix $IMAGES/ with your images. The help viewer will translate 
       these into the correct format for loading images in the ui.
+
 
       ## Headers
 
