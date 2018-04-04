@@ -10,7 +10,8 @@ define([
     './dialogs/searchError',
     '../lib/searchApi',
     '../lib/data',
-    '../lib/errors'
+    '../lib/errors',
+    '../lib/profile'
 ], function (
     ko,
     html,
@@ -23,7 +24,8 @@ define([
     SearchErrorComponent,
     SearchApi,
     Data,
-    errors
+    errors,
+    Profile
 ) {
     'use strict';
 
@@ -133,8 +135,54 @@ define([
             return [];
         });
 
+        // SEARCH HISTORY
 
         var searchHistory = ko.observableArray();
+
+        function getSearchHistory() {
+            var profile = Profile.make({
+                runtime: runtime
+            });
+            return profile.getHistory('search')
+                .spread(function (result, error) {
+                    if (result) {
+                        return result;
+                    } else {
+                        // showError(error);
+                        appBus.send('error', error);
+                    }
+                });
+        }
+
+        function saveSearchHistory(history) {
+            var profile = Profile.make({
+                runtime: runtime
+            });
+            return profile.saveHistory('search', history)
+                .spread(function (result, error) {
+                    if (result) {
+                        return result;
+                    } else {
+                        appBus.send('error', error);
+                        // showError(error);
+                    }
+                });
+        }
+
+        subscriptions.add(searchHistory.subscribe(function (newValue) {
+            saveSearchHistory(newValue);
+        }));
+
+        getSearchHistory()
+            .then(function (history) {
+                searchHistory(history);
+            })
+            .catch(function (err) {
+                console.error('ERROR retrieving search history', err);
+            });
+
+
+        
 
         var resultsView = ko.observable('detail');
 
