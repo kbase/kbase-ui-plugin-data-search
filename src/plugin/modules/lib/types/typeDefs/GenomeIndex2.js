@@ -29,12 +29,12 @@ define([
             label: 'KBase ID'
         },
         {
-            id: 'domain',
-            label: 'Domain'
-        },
-        {
             id: 'scientificName',
             label: 'Scientific name'
+        },
+        {
+            id: 'domain',
+            label: 'Domain'
         },
         {
             id: 'taxonomy',
@@ -44,10 +44,6 @@ define([
         {
             id: 'notes',
             label: 'Notes'
-        },
-        {
-            id: 'source',
-            label: 'Source'
         },
         {
             id: 'featureCount',
@@ -94,7 +90,16 @@ define([
             type: 'boolean',
             // default: false,
             missing: 'n/a'
+        },
+        {
+            id: 'source',
+            label: 'Source'
+        },
+        {
+            id: 'sourceID',
+            label: 'Source ID'
         }
+
     ];
 
     const searchFields = {
@@ -120,6 +125,10 @@ define([
         },
         source: {
             label: 'Source',
+            type: 'string'
+        },
+        source_id: {
+            label: 'Source ID',
             type: 'string'
         },
         features: {
@@ -190,22 +199,21 @@ define([
         }
 
         objectToData() {
+            let data = this.object.data;
             return {
-                id: this.object.data.id,
-                // assemblyGuid: object.data.assembly_guid,
-                domain: this.object.data.domain,
-                taxonomy: utils.parseTaxonomy(this.object.data.taxonomy),
-                scientificName: this.object.data.scientific_name,
-                notes: this.object.data.notes,
-                source: this.object.data.source,
-                featureCount: this.object.data.features,
-                contigCount: this.object.data.contigs,
-                cdsCount: this.object.data.cdss,
-                mrnaCount: this.object.data.mrnas,
-                nonCodingFeatureCount: this.object.data.non_coding_features,
-                warnings: this.object.data.warnings,
-                featureCounts: this.object.data.feature_counts,
-                genomeTiers: this.object.data.genome_tiers
+                id: data.id,
+                domain: data.domain,
+                taxonomy: utils.parseTaxonomy(data.taxonomy),
+                scientificName: data.scientific_name,
+                notes: data.notes,
+                featureCount: data.features,
+                contigCount: data.contigs,
+                cdsCount: data.cdss,
+                mrnaCount: data.mrnas,
+                nonCodingFeatureCount: data.non_coding_features,
+                warnings: data.warnings,
+                featureCounts: data.feature_counts,
+                genomeTiers: data.genome_tiers
             };
         }
     }

@@ -104,8 +104,8 @@ define([
     class DefaultObjectIndexBase extends IndexBase {
         constructor(params) {
             
-            let indexId = params.object.object_props.type.toLowerCase();
-            let indexVersion = parseInt(params.object.object_props.type_ver, 10);
+            let indexId = params.object.type.toLowerCase();
+            let indexVersion = params.object.type_ver;
             // TODO: search api needs to return this
             let kbaseTypeModule = null;
             let kbaseTypeId = null;

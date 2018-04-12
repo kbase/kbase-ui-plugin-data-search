@@ -51,6 +51,11 @@ define([
         // SEARCH INPUTS
         var searchInput = ko.observable();
 
+        subscriptions.add(searchInput.subscribe(function (newValue) {
+            // console.log('searcn in put upcated?', newValue);
+            addToSearchHistory(newValue);
+        }));
+
         var forceSearch = ko.observable();
 
 
@@ -169,20 +174,24 @@ define([
                 });
         }
 
+        function addToSearchHistory(value) {
+            // Remove the search input if it is already in the list
+            searchHistory.remove(value);
+
+            // Add the item to the top of the list.
+            searchHistory.unshift(value);
+
+            // remove the last entry if we have exceeded 10 items.
+            // the last entry will be the oldest one.
+            if (searchHistory().length > 10) {
+                searchHistory.pop();
+            }
+        }
+
         subscriptions.add(searchHistory.subscribe(function (newValue) {
             saveSearchHistory(newValue);
         }));
 
-        getSearchHistory()
-            .then(function (history) {
-                searchHistory(history);
-            })
-            .catch(function (err) {
-                console.error('ERROR retrieving search history', err);
-            });
-
-
-        
 
         var resultsView = ko.observable('detail');
 
@@ -329,7 +338,16 @@ define([
 
         // MAIN (INIT)
 
-        searchInput(params.initialQuery);
+        getSearchHistory()
+            .then(function (history) {
+                searchHistory(history);
+            })
+            .then(function () {
+                searchInput(params.initialQuery);
+            })
+            .catch(function (err) {
+                console.error('ERROR retrieving search history', err);
+            });
 
         return {
             appBus: appBus,

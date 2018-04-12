@@ -59,17 +59,14 @@ define([
         }
 
         function getTypeForObject(object) {
-            let objectType = object.object_props.type.toLowerCase();
-            let objectTypeVersion = parseInt(object.object_props.type_ver, 10);
+            let objectType = object.type.toLowerCase();
+            let objectTypeVersion = object.type_ver;
             let objectTypeId = [objectType, objectTypeVersion].join('.');
             let type = objectTypeMap[objectTypeId];
 
             if (!type) {
                 // Use the default type class
-                // console.log('using default index', object);
                 return new DefaultObjectIndex({runtime, object});
-                // console.error('Object type not found!!!', objectTypeVersion, objectType, searchObject, objectTypeMap);
-                // throw new Error('Object type not found!!: ' + searchObject.object_props.type, objectTypeMap);
             }
 
             // return type.module.make({object: searchObject});

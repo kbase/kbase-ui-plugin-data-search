@@ -25,6 +25,10 @@ define([
             label: 'KBase ID'
         },
         {
+            id: 'scientificName',
+            label: 'Scientific name'
+        },
+        {
             id: 'domain',
             label: 'Domain'
         },
@@ -34,23 +38,40 @@ define([
             component: TaxonomyComponent.name()
         },
         {
-            id: 'scientificName',
-            label: 'Scientific name'
-        },
-        {
             id: 'featureCount',
             label:' # Features',
             type: 'number',
             format: '0,0'
         },
-        // seems to never be present
-
+        {
+            id: 'cdsCount',
+            label: '# CDSs',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'mrnaCount',
+            label: '# mRNAs',
+            type: 'number',
+            format: '0,0'
+        },
         {
             id: 'contigCount',
             label: '# Contigs',
             type: 'number',
             format: '0,0'
+        },
+        {
+            id: 'source',
+            label: 'Source',
+            type: 'string'
+        },
+        {
+            id: 'sourceId',
+            label: 'Source ID', 
+            type: 'string'
         }
+
     ];
 
     const searchFields = {
@@ -70,17 +91,33 @@ define([
             label: 'Scientific Name',
             type: 'string'
         },
-        features: {
+        feature_count: {
             label: 'Feature Count',
             type: 'integer'
         },
-        assembly_ref: {
-            label: 'Asssembly Ref',
-            type: 'string'
+        cds_count: {
+            label: 'CDS Count',
+            type: 'integer'
         },
+        mrna_count: {
+            label: 'mRNA Count',
+            type: 'integer'
+        },
+        // assembly_ref: {
+        //     label: 'Asssembly Ref',
+        //     type: 'string'
+        // },
         contigs: {
             label: 'Contig Count',
             type: 'integer'
+        },
+        source: {
+            label: 'Source',
+            type: 'string'
+        },
+        source_id: {
+            label: 'Source ID',
+            type: 'string'
         }
     };
 
@@ -98,7 +135,19 @@ define([
             label: 'Scientific name'
         }
     ];
-      
+
+    // function keyPropsIntValue(object, prop, defaultValue) {
+    //     let propsValue = object.key_props[prop];
+    //     if (propsValue) {
+    //         try {
+    //             return parseInt(propsValue, 10);
+    //         } catch (ex) {
+    //             return defaultValue;
+    //         }
+    //     } else {
+    //         return defaultValue;
+    //     }
+    // }
       
 
     class GenomeIndex1 extends ObjectIndexBase {
@@ -117,24 +166,21 @@ define([
 
         objectToData() {
             let data = this.object.data;
-            let contigCount;
-            if (this.object.key_props.contigs) {
-                try {
-                    contigCount = parseInt(this.object.key_props.contigs, 10);
-                } catch (ex) {
-                    contigCount = null;
-                }
-            } else {
-                contigCount = null;
-            }
-            // console.log('CONTIG?', this.object.key_props.contigs, this.object);
+            // console.log('do we need to??', data);
             return {
                 id: data.id,
                 domain: data.domain,
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
                 featureCount: data.features,
-                contigCount: contigCount,
+                mrnaCount: data.mrnas,
+                cdsCount: data.cdss,
+                // featureCount: keyPropsIntValue(this.object, 'feature_count', null),
+                // mrnaCount: keyPropsIntValue(this.object, 'mrna_count', null),
+                // cdsCount: keyPropsIntValue(this.object, 'cds_count', null),
+                contigCount: data.num_contigs,
+                source: data.source,
+                sourceId: data.source_id
             };
         }
     }
