@@ -35,18 +35,6 @@ define([
 
         var showHistory = ko.observable(false);
 
-        function addToSearchHistory(value) {
-            if (searchHistory.indexOf(value) !== -1) {
-                return;
-            }
-            
-            searchHistory.push(value);
-
-            if (searchHistory().length > 10) {
-                searchHistory.shift();
-            }
-        }
-
         function doToggleHistory() {
             showHistory(!showHistory());
         }
@@ -82,7 +70,6 @@ define([
         // the search query.
         subscriptions.add(searchInput.subscribe(function (newValue) {
             // add to history if not already there...
-            addToSearchHistory(newValue);
             params.searchInput(newValue);
         }));
 

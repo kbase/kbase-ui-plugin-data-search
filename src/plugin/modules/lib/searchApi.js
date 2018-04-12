@@ -270,7 +270,7 @@ define([
                 throw new Error('Invalid data source: ' + arg.dataSource);
             }
 
-            return rpc.call('KBaseSearchEngine', 'search_types', param)
+            return rpc.call('KBaseSearchEngine', 'search_types', param)            
                 .spread(function (result) {
                     return result;
                 });
