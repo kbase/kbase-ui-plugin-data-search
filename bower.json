@@ -1,6 +1,6 @@
 {
-    "name": "kbase-ui-plugin-simple-sample",
-    "description": "A plugin which can serve as an example or a starting point for a new plugin",
+    "name": "kbase-ui-plugin-data-search",
+    "description": "Data search against KBaseSearchEngine",
     "author": [
         "kbase"
     ],
@@ -13,7 +13,7 @@
     "main": "src/plugin/config.yml",
     "repository": {
         "type": "git",
-        "url": "git://github.com/kbase/kbase-ui-plugin-simple-sample"
+        "url": "git://github.com/kbase/kbase-ui-plugin-data-search"
     },
     "dependencies": {
         "bluebird": "^3.0.0",
