@@ -981,7 +981,11 @@ define([
                     textAlign: 'right'
                 },
                
-            }, buildNarrativeOptionsColumn())
+            }, [
+                '<!-- ko if: isNarrative -->',
+                buildNarrativeOptionsColumn(),
+                '<!-- /ko -->'
+            ])
         ]);
     }
 
