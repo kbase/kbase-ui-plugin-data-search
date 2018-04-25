@@ -27,7 +27,7 @@ define([
 
     function rowBackgroundColor(opacity) {
         return 'rgba(220,220,220,' + opacity + ')';
-    }        
+    }
 
     var styles = html.makeStyles({
         component: {
@@ -40,14 +40,14 @@ define([
         },
         body: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'column'
             }
-        },   
+        },
         row: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center'
@@ -66,7 +66,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        },      
+        },
         objectRow: {
             css: {
                 backgroundColor: rowBackgroundColor(0.6),
@@ -76,7 +76,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.8)
                 }
             }
-        },   
+        },
         rowCell: {
             css: {
                 padding: '4px'
@@ -99,7 +99,7 @@ define([
                     backgroundColor: 'yellow',
                     fontWeight: 'bold'
                 }
-            }            
+            }
         },
         resultsTable: {
             css: {
@@ -127,7 +127,7 @@ define([
                     wordBreak: 'break-word'
                 }
             }
-        }, 
+        },
         highlightsTable: {
             css: {
                 border: '0.5px solid rgba(220,220,220,0.5)',
@@ -216,12 +216,12 @@ define([
                 marginTop: '10px'
             }
         }
-    });        
+    });
 
     function viewModel(params) {
-        // If this is not an Element, it was installed with a comment and 
+        // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
-        
+
         var searchState = params.searchState;
 
         // ACTIONS
@@ -266,9 +266,9 @@ define([
                 data.showDetails(true);
             }
         }
-       
+
         function doNextPage() {
-            
+
             params.doNextPage();
         }
 
@@ -407,7 +407,7 @@ define([
             '<!-- /ko -->'
         ];
     }
-    
+
     function buildObjectLink() {
         return [
             // 'x',
@@ -589,7 +589,7 @@ define([
                     }
                 }),
                 '<!-- ko if: $data.highlights -->',
-            
+
                 td([
                     '<!-- ko foreach: $data.highlights -->',
                     span({
@@ -608,7 +608,7 @@ define([
                     //         text: 'match'
                     //     },
                     //     class: 'highlight'
-                    // }), ' ', 
+                    // }), ' ',
                     // span({
                     //     dataBind: {
                     //         text: 'after'
@@ -616,7 +616,7 @@ define([
                     // }),
                     '<!-- /ko -->',
                 ]),
-                
+
                 '<!-- /ko -->',
                 '<!-- ko ifnot: $data.highlights -->',
 
@@ -700,13 +700,13 @@ define([
                                 fontStyle: 'italic'
                             }
                         }, [
-                            'No matches reported ... ', 
+                            'No matches reported ... ',
                             span({class: 'fa fa-bug fa-rotate-90'}),
                             ' ... it is a mystery!'
                         ]),
                         '<!-- /ko -->',
 
-                        '<!-- /ko -->'                                
+                        '<!-- /ko -->'
                     ]),
                     div({
                         style: {
@@ -731,7 +731,7 @@ define([
             ])
         ]);
     }
-   
+
     function buildRow() {
         return div({
             class: styles.classes.resultsRow,
@@ -771,7 +771,7 @@ define([
                 padding: '20px'
             }
         }, [
-            p('Enter one or more terms above to find Reference Data in KBase.'),
+            p('Enter one or more terms above to search Reference Data in KBase.'),
             hr({
                 style: {
                     width: '50%'
@@ -786,8 +786,8 @@ define([
                     width: '50%'
                 }
             }),
-            p('All search terms are logically "and"ed together -- your search will match data objects whose properties collectively match all of the terms you submit. ' + 
-            'In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
+            p('Multiple search terms are treated as “AND” statements.' ' The search will find objects or text that include all of the terms you submit. ' +
+            'Terms are matched against whole words; no partial matches will be listed. Other search operators and wildcards are not currently supported.')
         ]);
     }
 
@@ -889,7 +889,7 @@ define([
 
                 '<!-- ko case: "notfound" -->',
                 buildNotFound(),
-                '<!-- /ko -->',                
+                '<!-- /ko -->',
 
                 '<!-- ko case: "searching" -->',
                 buildSearching(),

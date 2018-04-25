@@ -22,7 +22,7 @@ define([
         a = t('a'),
         ul = t('ul'),
         li = t('li'),
-        table = t('table'),   
+        table = t('table'),
         tbody = t('tbody'),
         tr = t('tr'),
         td = t('td');
@@ -42,14 +42,14 @@ define([
         },
         body: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'column'
             }
-        },   
+        },
         row: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center'
@@ -68,7 +68,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        }, 
+        },
         narrativeRow: {
             css: {
                 backgroundColor: rowBackgroundColor(0.8),
@@ -78,7 +78,7 @@ define([
                     backgroundColor: rowBackgroundColor(1)
                 }
             }
-        }, 
+        },
         objectRow: {
             css: {
                 backgroundColor: rowBackgroundColor(0.6),
@@ -88,7 +88,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.8)
                 }
             }
-        }, 
+        },
         objectItemRow: {
             css: {
                 // marginBottom: '10px'
@@ -116,7 +116,7 @@ define([
                     backgroundColor: 'yellow',
                     fontWeight: 'bold'
                 }
-            }            
+            }
         },
         resultsTable: {
             css: {
@@ -230,9 +230,9 @@ define([
     });
 
     function viewModel(params) {
-        // If this is not an Element, it was installed with a comment and 
+        // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
-        
+
         // var searchState = params.searchState;
 
         // ACTIONS
@@ -276,8 +276,8 @@ define([
         function doShowDetails() {
             view('detail');
         }
-       
-        function doNextPage() {            
+
+        function doNextPage() {
             params.doNextPage();
         }
 
@@ -340,7 +340,7 @@ define([
             dispose: dispose
         };
     }
- 
+
     function buildNarrativeOptionsColumn() {
         return div({
         }, [
@@ -471,7 +471,7 @@ define([
             '<!-- /ko -->'
         ];
     }
-    
+
     function buildObjectLink() {
         return [
             '<!-- ko switch: matchClass.id -->',
@@ -581,7 +581,7 @@ define([
                     flex: '4'
                 }
             }, buildObjectLink()),
-            
+
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -609,7 +609,7 @@ define([
         return table({
             class: styles.classes.highlightsTable,
         }, [
-            
+
             tbody({
                 dataBind: {
                     foreach: 'matches'
@@ -666,7 +666,7 @@ define([
                     }
                 }),
                 '<!-- ko if: $data.highlights -->',
-            
+
                 td([
                     '<!-- ko foreach: $data.highlights -->',
                     span({
@@ -674,7 +674,7 @@ define([
                         dataBind: {
                             html: 'highlight'
                         }
-                    }), 
+                    }),
                     // span({
                     //     dataBind: {
                     //         text: 'before'
@@ -685,7 +685,7 @@ define([
                     //         text: 'match'
                     //     },
                     //     class: 'highlight'
-                    // }), ' ', 
+                    // }), ' ',
                     // span({
                     //     dataBind: {
                     //         text: 'after'
@@ -693,7 +693,7 @@ define([
                     // }),
                     '<!-- /ko -->',
                 ]),
-                
+
                 '<!-- /ko -->',
                 '<!-- ko ifnot: $data.highlights -->',
 
@@ -750,7 +750,7 @@ define([
                 dataKBTesthookElement: 'object-row'
             }, [
                 buildMatchViewObject(),
-                
+
                 '<!-- ko if: $component.view() === "matches" || $component.view() === "detail" -->',
                 div({
                     style: {
@@ -788,14 +788,14 @@ define([
                                 fontStyle: 'italic'
                             }
                         }, [
-                            'No matches reported ... ', 
+                            'No matches reported ... ',
                             span({class: 'fa fa-bug fa-rotate-90'}),
                             ' ... it is a mystery!'
                         ]),
                         '<!-- /ko -->',
 
 
-                        '<!-- /ko -->'                                
+                        '<!-- /ko -->'
                     ]),
                     div({
                         style: {
@@ -904,7 +904,7 @@ define([
                 a({
                     dataBind: {
                         attr: {
-                            href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'                        
+                            href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'
                         }
                     },
                     style: {
@@ -913,11 +913,11 @@ define([
                     },
                     target: '_blank'
                 }, [
-                    buildNarrativeIcon(),                    
+                    buildNarrativeIcon(),
                     span({
                         style: {
                             marginLeft: '3px',
-                            // just nudge it down to align more harmoniously with 
+                            // just nudge it down to align more harmoniously with
                             // the icon.
                             marginTop: '3px'
                         },
@@ -936,7 +936,7 @@ define([
                         dataBind: {
                             text: 'ref.workspaceId'
                         }
-                    }), 
+                    }),
                     ' (not a Narrative)'
                 ]),
                 '<!-- /ko -->'
@@ -980,7 +980,7 @@ define([
                     flex: '0 0 4em',
                     textAlign: 'right'
                 },
-               
+
             }, [
                 '<!-- ko if: isNarrative -->',
                 buildNarrativeOptionsColumn(),
@@ -1011,22 +1011,21 @@ define([
             }
         }, [
             // p('No active search'),
-            p('Enter one or more terms above to find data in user Narratives, including Genomes, Assemblies, FBA Models, Narratives, and more!'),
+            p('Enter one or more terms above to find user data and Narratives.'),
             hr({
                 style: {
                     width: '50%'
                 }
             }),
-            p('The search will encompass all your Narratives and Narratives shared with you (Private) and/or Narratives shared all KBase users (Public).'),
-            p('The search applies to data objects within Narratives and to the Narratives themselves (text and app cells).'),
+            p('This will search both text and data in all your Narratives, Narratives shared with you (Private), and Narratives shared with all KBase users (Public).'),
             hr({
                 style: {
                     width: '50%'
                 }
             }),
             p([
-                'All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ', 
-                'In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.'
+                'Multiple search terms are treated as “AND”  statements. The search will find objects or text that include all of the terms you submit. ',
+                'Terms are matched against whole words; no partial matches will be listed. Other search operators and wildcards are not currently supported.'
             ])
         ]);
     }
@@ -1093,7 +1092,7 @@ define([
     }
 
     function buildSearching() {
-        
+
         return div({
             class: 'well',
             style: {
