@@ -786,8 +786,12 @@ define([
                     width: '50%'
                 }
             }),
-            p('Multiple search terms are treated as “AND” statements.' ' The search will find objects or text that include all of the terms you submit. ' +
-            'Terms are matched against whole words; no partial matches will be listed. Other search operators and wildcards are not currently supported.')
+            p([
+                'Multiple search terms are treated as “AND” statements. ',
+                'The search will find objects or text that include all of the terms you submit. ',
+                'Terms are matched against whole words; no partial matches will be listed. ',
+                'Other search operators and wildcards are not currently supported.'
+            ])
         ]);
     }
 
