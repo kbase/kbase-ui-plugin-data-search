@@ -1,10 +1,12 @@
 define([
-    'kb_ko/KO',
-    'kb_ko/lib/viewModelBase',
+    'kb_knockout/registry',
+    'kb_knockout/lib/generators',
+    'kb_knockout/lib/viewModelBase',
     'kb_common/html',
     '../../ui'
 ], function (
-    KO,
+    reg,
+    gen,
     ViewModelBase,
     html,
     ui
@@ -44,20 +46,13 @@ define([
                     text: '$data'
                 }
             }),
-            '<!-- ko if: $index() !== $parent.value.length - 1 -->',
-            ' > ',
-            '<!-- /ko -->'            
+            gen.if('$index() !== $parent.value.length - 1', ' > ')
         ]);
     }
 
     function template() {        
         return div([
-            '<!-- ko if: isEmpty -->',
-            ui.buildNA(),
-            '<!-- /ko -->',
-            '<!-- ko ifnot: isEmpty -->',
-            buildLineage(),
-            '<!-- /ko -->'
+            gen.if('isEmpty', ui.buildNA(), buildLineage())
         ]);
     }
 
@@ -68,5 +63,5 @@ define([
         };
     }
 
-    return KO.registerComponent(component);
+    return reg.registerComponent(component);
 });

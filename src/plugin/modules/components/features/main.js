@@ -67,6 +67,8 @@ define([
 
         // holds search result items for display
         var buffer = ko.observableArray();
+
+        var grouped = ko.observableArray();
        
         // position of first item in the buffer in the total search results space.
         // var firstItemPosition = ko.observable();
@@ -104,14 +106,16 @@ define([
             status: status,
             searching: searching,
             buffer: buffer,
+            grouped: grouped,
             isTruncated: isTruncated,
             totalSearchHits: totalSearchHits,
             totalSearchSpace: totalSearchSpace,
             summary: summary,
 
+            withUserData: ko.observable(true),
+            withReferenceData: ko.observable(true),
             withPrivateData: withPrivateData,
             withPublicData: withPublicData
-
         };
     }
 
@@ -126,7 +130,7 @@ define([
         // the search view model...
         var searchState = SearchState({
             withPrivateData: params.withPrivateData,
-            withPublicData: params.withPublicData
+            withPublicData: params.withPublicData,
         });
 
         var data = Data.make({
@@ -176,6 +180,8 @@ define([
                     return data.search({
                         start: query.start,
                         terms: query.terms,
+                        withUserData: query.withUserData,
+                        withReferenceData: query.withReferenceData,
                         withPrivateData: query.withPrivateData,
                         withPublicData: query.withPublicData
                     });
@@ -205,6 +211,7 @@ define([
                     }, {});
 
                     // TODO: we need an ES5 
+                    // TODO: working? what does this do?
                     result.items.forEach(function (object) {
                         if (selected[object.matchClass.ref.ref]) {
                             object.selected(true);
@@ -212,6 +219,7 @@ define([
                     });
 
                     searchState.buffer(result.items);
+                    searchState.grouped(result.grouped);
                     searchState.isTruncated(result.isTruncated);
                     searchState.totalSearchHits(result.summary.totalSearchHits);
                     // TODO: remove summary altogether
@@ -264,6 +272,8 @@ define([
                 start: start,
                 pageSize: searchState.pageSize(),
                 forced: params.forceSearch(),
+                withUserData: searchState.withUserData(),
+                withReferenceData: searchState.withReferenceData(),
                 withPrivateData: searchState.withPrivateData(),
                 withPublicData: searchState.withPublicData()
             };
@@ -349,16 +359,19 @@ define([
                     searchStatus: 'searchState.status',
                     searchSpaceCount: 'searchState.totalSearchSpace',
 
+                    withUserData: 'searchState.withUserData',
+                    withReferenceData: 'searchState.withReferenceData',
+
                     withPrivateData: 'searchState.withPrivateData',
                     withPublicData: 'searchState.withPublicData',
                 }
             })),
-            div({
-                class: styles.classes.header
-            },  ko.kb.komponent({
-                name: HeaderComponent.name(),
-                params: {}
-            })),
+            // div({
+            //     class: styles.classes.header
+            // },  ko.kb.komponent({
+            //     name: HeaderComponent.name(),
+            //     params: {}
+            // })),
             div({
                 class: styles.classes.results
             },  ko.kb.komponent({

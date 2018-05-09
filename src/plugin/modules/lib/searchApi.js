@@ -170,13 +170,28 @@ define([
             var start = arg.page * arg.pageSize;
             var count = arg.pageSize;
 
+            let sourceTags;
+            let blacklistTags = false;
+            if (arg.withReferenceData) {
+                if (arg.withUserData) {
+                    sourceTags = [];
+                } else {
+                    sourceTags = ['refdata'];
+                }
+            } else if (arg.withUserData) {
+                sourceTags = ['refdata'];
+                blacklistTags = 1;
+            } else {
+                sourceTags = ['nothing'];
+            }
+
             var param = {
                 object_types: ['GenomeFeature'],
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 0,
-                    source_tags: ['noindex'],
-                    source_tags_blacklist: 1,
+                    source_tags: sourceTags,
+                    source_tags_blacklist: blacklistTags ? 1 : 0,
                 },
                 pagination: {
                     start: start,
@@ -194,9 +209,21 @@ define([
                     with_public: arg.withPublicData ? 1 : 0
                 },
                 sorting_rules: [{
+                    is_object_property: 1,
+                    property: 'genome_scientific_name',
+                    ascending: 1
+                }, {
                     is_object_property: 0,
-                    property: 'timestamp',
-                    ascending: 0
+                    property: 'guid',
+                    ascending: 1
+                }, {
+                    is_object_property: 1,
+                    property: 'feature_type',
+                    ascending: 1
+                }, {
+                    is_object_property: 1,
+                    property: 'id',
+                    ascending: 1
                 }]
             };
 

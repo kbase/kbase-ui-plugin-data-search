@@ -3,14 +3,18 @@ define([
     'moment',
     'knockout-plus',
     'kb_service/utils',
+    'kb_common/jsonRpc/genericClient',
     '../../lib/searchApi',
+    '../../lib/types/utils',
     'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
     moment,
     ko,
-    apiUtils,
+    ServiceUtils,
+    GenericClient,
     SearchAPI,
+    utils,
     stopWordsDb
 ) {
     'use strict';
@@ -97,7 +101,7 @@ define([
                     viewable: type.isViewable(),
                     ref: ref
                 },
-
+                ref: ref,
                 // Detail, type-specific
                 detail: detail,
 
@@ -111,7 +115,7 @@ define([
                 id: detailMap.id.value,
                 featureType: detailMap.featureType.value,
                 featureFunctions: detailMap.functions.value,
-                scientificName: detailMap.scientificName.value,
+                // scientificName: detailMap.scientificName.value,
 
                 matches: matches,
                 selected: ko.observable(),
@@ -122,6 +126,63 @@ define([
             return vm;
         }
 
+        function objectInfoToGenomeInfo(info) {
+            let [objectId, objectName, /* type */, saveDate, objectVersion, savedBy,
+                workspaceId, /* workspaceName */, /* checksum */, /*size */, meta] = info;
+
+            return {
+                // genome info extracted mostly from the metadata
+                scientificName: meta['Name'],
+                kbaseGenomeId: null,
+                domain: meta['Domain'],
+                lineage: utils.parseTaxonomy(meta['Taxonomy']),
+                source: meta['Source'],
+                sourceId: meta['Source ID'],
+                dnaSize: parseInt(meta['Size'], 10),
+                contigCount: parseInt(meta['Number contigs']),
+                featureCount: parseInt(meta['Number features']),
+                gcContent: parseFloat(meta['GC content']),
+
+                // object ref
+                ref: [workspaceId, objectId, objectVersion].map(String).join('/'),
+                objectId: objectId,
+                workspaceId: workspaceId,
+                objectVersion: objectVersion,
+                objectName: objectName,
+
+                // object stats
+                lastSavedAt: new Date(saveDate),
+                lastSavedBy: savedBy,
+
+                // source info ... narrative or ref data
+
+            };
+        }
+
+        function workspaceInfoToContainerInfo(info) {
+            let [id, workspace, owner, moddate, /* max_objid */, 
+                /* user_permission */, 
+                /* globalread */, /* lockstat */, metadata] = info;
+            // ServiceUtils.workspaceInfoToObject(info);
+            let containerInfo = {
+                workspaceId: id,
+                owner: owner,
+                modificationDate: new Date(moddate)
+            };
+            if ('narrative' in metadata) {
+                containerInfo.type = 'narrative';
+                containerInfo.title = metadata['narrative_nice_name'];
+                containerInfo.objectId = parseInt(metadata['narrative'], 10);
+            } else if (metadata['searchtags'] && metadata['searchtags'].match(/refdata/)) {
+                containerInfo.type = 'refdata';
+                containerInfo.title = workspace;
+            } else {
+                containerInfo.type = 'unknown';
+                containerInfo.title = workspace;
+            }
+            return containerInfo;
+        }
+
         function search(query) {
             var searchApi = SearchAPI.make({
                 runtime: params.runtime
@@ -130,6 +191,8 @@ define([
             return Promise.all([
                 searchApi.featuresSearch({
                     query: query.terms.join(' '),
+                    withUserData: query.withUserData,
+                    withReferenceData: query.withReferenceData,
                     withPrivateData: query.withPrivateData,
                     withPublicData: query.withPublicData,
                     page: query.start || 0,
@@ -153,21 +216,132 @@ define([
                     } else {
                         totalSearchHits = objectResults.total;
                     }
-                    return {
-                        items: objects,
-                        first: query.start,
-                        isTruncated: true,
-                        summary: {
-                            // totalByType: totalByType,
-                            totalSearchHits: totalSearchHits,
-                            totalSearchSpace: objectResults.total,
-                            isTruncated: (totalSearchHits < objectResults.total)
-                        },
-                        stats: {
-                            objectSearch: objectResults.search_time,
-                            // typeSearch: typeResults.search_time
+
+                    // Do grouping
+                    var byObjectRef = objects.reduce((byObjectRef, object) => {
+                        let ref = object.ref.objectRef;
+                        if (!byObjectRef[ref]) {
+                            byObjectRef[ref] = {
+                                ref: object.ref,
+                                items: []
+                            };
                         }
-                    };
+                        byObjectRef[ref].items.push(object);
+                        return byObjectRef;
+                    }, {});
+                    let groupedByObjectRef = Object.keys(byObjectRef).map((ref) => {
+                        let group = byObjectRef[ref];
+                        return group;
+                    });
+
+                    // Fake the object manifest for now...
+                    let workspaces = groupedByObjectRef.reduce((workspaces, group) => {
+                        let workspaceId = group.ref.workspaceId;
+                        workspaces[String(workspaceId)] = true;
+                        return workspaces;
+                    }, {});
+
+                    let workspaceIdentities = Object.keys(workspaces).map((workspaceId) => {
+                        return {
+                            id: parseInt(workspaceId, 10)
+                        };
+                    });
+
+                    let objectSpecs = groupedByObjectRef.map((group) => {
+                        return {
+                            wsid: group.ref.workspaceId,
+                            objid: group.ref.objectId,
+                            ver: group.ref.version
+                        };
+                    });
+
+                    let workspace = new GenericClient({
+                        module: 'Workspace',
+                        url: params.runtime.config('services.Workspace.url'),
+                        token: params.runtime.service('session').getAuthToken()
+                    });
+
+                    return Promise.all([
+                        Promise.all(workspaceIdentities.map((id) => {
+                            return workspace.callFunc('get_workspace_info', [id])
+                                .spread((info) => {
+                                    return workspaceInfoToContainerInfo(info);
+                                });
+                        })),
+                        Promise.try(() => {
+                            if (objectSpecs.length === 0) {
+                                return [];
+                            }
+                            return workspace.callFunc('get_object_info3', [{
+                                objects: objectSpecs,
+                                includeMetadata: 1,
+                                ignoreErrors: 1
+                            }]).spread((result) => {
+                                return result.infos.map((info) => {
+                                    if (info) {
+                                        return objectInfoToGenomeInfo(info);
+                                    } else {
+                                        // Sometimes an object may have been deleted, but it is still indexed.
+                                        return null;
+                                    }
+                                });
+                            });
+                        })
+                    ])
+                        .spread((workspaceInfo, objectInfo) => {
+
+                            let objectInfoMap = {};
+                            objectInfo.forEach((info) => {
+                                if (!info) {
+                                    return;
+                                }
+                                objectInfoMap[info.ref] = info;
+                            });
+
+                            let workspaceInfoMap = {};
+                            workspaceInfo.forEach((info) => {
+                                workspaceInfoMap[String(info.workspaceId)] = info;
+                            });
+
+                            groupedByObjectRef.forEach((group) => {
+                                group.genomeInfo = objectInfoMap[group.ref.objectRef];
+                                // console.log('hmm', group.genomeInfo);
+
+                                // ui controls
+
+                                // group details opened?
+                                group.isOpen = ko.observable(false);
+
+                                // group items showing...
+                                group.showItemDetail = ko.observable(false);
+                                group.showItemMatches = ko.observable(false);
+
+                                group.workspaceInfo = workspaceInfoMap[String(group.ref.workspaceId)];
+                            });
+
+                            // remove any groups for which the genome object does not exists
+                            // (deleted or permissions problem)
+                            groupedByObjectRef = groupedByObjectRef.filter((group) => {
+                                return group.genomeInfo ? true : false;
+                            });
+
+                            return {
+                                items: objects,
+                                grouped: groupedByObjectRef,
+                                first: query.start,
+                                isTruncated: true,
+                                summary: {
+                                    // totalByType: totalByType,
+                                    totalSearchHits: totalSearchHits,
+                                    totalSearchSpace: objectResults.total,
+                                    isTruncated: (totalSearchHits < objectResults.total)
+                                },
+                                stats: {
+                                    objectSearch: objectResults.search_time,
+                                    // typeSearch: typeResults.search_time
+                                }
+                            };
+                        });
                 });
         }
 

@@ -4,14 +4,16 @@ define([
     '../components/taxonomy',
     '../components/location',
     '../components/aliases',
-    '../components/stringArray'
+    '../components/stringArray',
+    '../components/proteinTranslation'
 ], function (
     SubObjectIndexBase,
     utils,
     TaxonomyComponent,
     LocationComponent,
     AliasesComponent,
-    StringArrayComponent
+    StringArrayComponent,
+    ProteinTranslationComponent
 ) {
     'use strict';
 
@@ -42,27 +44,23 @@ define([
             label: 'Location',
             component: LocationComponent.name()
         },
-        {
-            id: 'domain',
-            label: 'Domain'
-        },
-        {
-            id: 'scientificName',
-            label: 'Scientific name'
-        },
-        {
-            id: 'taxonomy',
-            label: 'Lineage',
-            component: TaxonomyComponent.name()
-        },
+        // {
+        //     id: 'domain',
+        //     label: 'Domain'
+        // },
+        // {
+        //     id: 'scientificName',
+        //     label: 'Scientific name'
+        // },
+        // {
+        //     id: 'taxonomy',
+        //     label: 'Lineage',
+        //     component: TaxonomyComponent.name()
+        // },
         {
             id: 'functions',
             label: 'Functions',
             component: StringArrayComponent.name()
-        },
-        {
-            id: 'proteinTranslation',
-            label: 'Protein Translation'                
         },
         {
             id: 'proteinLength',
@@ -70,6 +68,11 @@ define([
             unit: 'aa',
             type: 'number',
             format: '0,0'
+        },
+        {
+            id: 'proteinTranslation',
+            label: 'Protein Translation',
+            component: ProteinTranslationComponent.name()
         }
     ];
 
@@ -188,13 +191,16 @@ define([
                 var end;
                 switch (direction) {
                 case '+':
+                case '>':
                     end = start + length - 1;
                     break;
                 case '-':
+                case '<':
                     end = start - length + 1;
                     break;
                 default:
-                    throw new Error('Invalid direction: ' + direction);
+                    console.error('error: Invalid location direction symbol: ' + direction, location);
+                    throw new Error('Invalid location direction symbol: ' + direction);
                 }
                 return {
                     genome: location[0],
@@ -212,10 +218,10 @@ define([
                 functions: [data.function],
                 location: location,
                 proteinTranslation: proteinTranslation,
-                proteinLength: proteinLength, 
-                domain: this.object.parent_data.domain,
-                scientificName: this.object.parent_data.scientific_name,
-                taxonomy: utils.parseTaxonomy(this.object.parent_data.taxonomy)
+                proteinLength: proteinLength 
+                // domain: this.object.parent_data.domain,
+                // scientificName: this.object.parent_data.scientific_name,
+                // taxonomy: utils.parseTaxonomy(this.object.parent_data.taxonomy)
             };
         }
     }
