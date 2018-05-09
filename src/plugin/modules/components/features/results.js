@@ -385,7 +385,6 @@ define([
                 params.doToggleShowMatches(data.showDetails());
                 return;
             }
-            // console.log('toggle', data.showItemDetail());
             if (data.showItemMatches()) {
                 data.showItemMatches(false);
                 data.items.forEach((item) => {
@@ -407,7 +406,6 @@ define([
                 params.doToggleShowDetails(data.showDetails());
                 return;
             }
-            // console.log('toggle', data.showItemDetail());
             if (data.showItemDetail()) {
                 data.showItemDetail(false);
                 data.items.forEach((item) => {
@@ -416,7 +414,6 @@ define([
                 });
             } else {
                 data.showItemMatches(false);
-                console.log('show item matches?', data.showItemMatches());
                 data.showItemDetail(true);
                 data.items.forEach((item) => {
                     item.showMatches(true);

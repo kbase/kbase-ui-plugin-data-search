@@ -42,9 +42,6 @@ define([
             }, {});
 
             var icon = type.getIcon();
-            // if (icon && icon.type !== 'fontAwesome') {
-            //     console.log('icon?', icon);
-            // }
 
             var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
                 if (field === 'source_tags') {
@@ -163,7 +160,6 @@ define([
             var searchApi = SearchAPI.make({
                 runtime: params.runtime
             });
-            // console.log('search api query:', query);
             return Promise.all([
                 searchApi.narrativeObjectSearch({
                     query: query.terms.join(' '),
@@ -180,11 +176,9 @@ define([
                 })
             ])
                 .spread(function (objectResults, typeResults) {
-                    // console.log('search api results (object, type):', JSON.parse(JSON.stringify(objectResults)), typeResults);
                     var objects = objectResults.objects.map(function (object) {
                         return objectToViewModel(object);
                     });
-                    // console.log('objects ordered??', objects.map(function (o) {return [o.date, o.matchClass.ref.workspaceId, o.type.id];}));
                     var totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
                         return {
                             id: typeName.toLowerCase(),

@@ -166,7 +166,6 @@ define([
 
         objectToData() {
             let data = this.object.data;
-            // console.log('do we need to??', data);
             return {
                 id: data.id,
                 domain: data.domain,

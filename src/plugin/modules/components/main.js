@@ -52,7 +52,6 @@ define([
         var searchInput = ko.observable();
 
         subscriptions.add(searchInput.subscribe(function (newValue) {
-            // console.log('searcn in put upcated?', newValue);
             addToSearchHistory(newValue);
         }));
 
