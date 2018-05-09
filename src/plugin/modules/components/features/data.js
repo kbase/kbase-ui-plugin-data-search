@@ -129,7 +129,10 @@ define([
         function objectInfoToGenomeInfo(info) {
             let [objectId, objectName, /* type */, saveDate, objectVersion, savedBy,
                 workspaceId, /* workspaceName */, /* checksum */, /*size */, meta] = info;
-
+            // JS doesn't like the +0000 offset in the date string.            
+            let savedDate = saveDate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
+                return '+' + hours + ':' + minutes;
+            });
             return {
                 // genome info extracted mostly from the metadata
                 scientificName: meta['Name'],
@@ -151,7 +154,7 @@ define([
                 objectName: objectName,
 
                 // object stats
-                lastSavedAt: new Date(saveDate),
+                lastSavedAt: new Date(savedDate),
                 lastSavedBy: savedBy,
 
                 // source info ... narrative or ref data
@@ -164,10 +167,13 @@ define([
                 /* user_permission */, 
                 /* globalread */, /* lockstat */, metadata] = info;
             // ServiceUtils.workspaceInfoToObject(info);
+            let modifiedDate = moddate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
+                return '+' + hours + ':' + minutes;
+            });
             let containerInfo = {
                 workspaceId: id,
                 owner: owner,
-                modificationDate: new Date(moddate)
+                modificationDate: new Date(modifiedDate)
             };
             if ('narrative' in metadata) {
                 containerInfo.type = 'narrative';
