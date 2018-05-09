@@ -268,7 +268,7 @@ define([
             class: 'input-group'
         }, [
             div({
-                class: 'input-group-addon',
+                class: 'input-group-addon ' + styles.classes.addonButton,
                 title: 'Click me to run the search',
                 style: {
                     cursor: 'pointer',

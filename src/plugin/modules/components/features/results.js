@@ -612,42 +612,42 @@ define([
     //     ];
     // }
 
-    function buildObjectIcon() {
-        return [
-            '<!-- ko if: type.icon -->',
+    // function buildObjectIcon() {
+    //     return [
+    //         '<!-- ko if: type.icon -->',
 
-            '<!-- ko if: type.icon.type === "fontAwesome" -->',
-            span({
-                // class: 'fa-2x',
-                dataBind: {
-                    class: 'type.icon.classes.join(" ")',
-                    style: {
-                        color: 'type.icon.color'
-                    }
-                }
-            }),
-            '<!-- /ko -->',
+    //         '<!-- ko if: type.icon.type === "fontAwesome" -->',
+    //         span({
+    //             // class: 'fa-2x',
+    //             dataBind: {
+    //                 class: 'type.icon.classes.join(" ")',
+    //                 style: {
+    //                     color: 'type.icon.color'
+    //                 }
+    //             }
+    //         }),
+    //         '<!-- /ko -->',
 
-            '<!-- ko if: type.icon.type === "kbase" -->',
-            span({
-                dataBind: {
-                    class: 'type.icon.classes.join(" ")',
-                    style: {
-                        color: 'type.icon.color'
-                    }
-                }
-            }),
-            '<!-- /ko -->',
+    //         '<!-- ko if: type.icon.type === "kbase" -->',
+    //         span({
+    //             dataBind: {
+    //                 class: 'type.icon.classes.join(" ")',
+    //                 style: {
+    //                     color: 'type.icon.color'
+    //                 }
+    //             }
+    //         }),
+    //         '<!-- /ko -->',
 
-            '<!-- /ko -->',
+    //         '<!-- /ko -->',
 
-            '<!-- ko ifnot: type.icon -->',
-            span({
-                class: 'fa fa-file-o'
-            }),
-            '<!-- /ko -->'
-        ];
-    }
+    //         '<!-- ko ifnot: type.icon -->',
+    //         span({
+    //             class: 'fa fa-file-o'
+    //         }),
+    //         '<!-- /ko -->'
+    //     ];
+    // }
 
     function buildObjectView() {
         return div({

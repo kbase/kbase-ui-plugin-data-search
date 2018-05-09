@@ -105,7 +105,8 @@ define([
 
             return {
                 terms: stopWordsStripped,
-                diagnosis: 'ok'
+                diagnosis: 'ok',
+                force: forceSearch()
             };
         });
 
