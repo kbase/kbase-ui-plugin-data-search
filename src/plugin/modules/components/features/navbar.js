@@ -2,12 +2,14 @@ define([
     'knockout-plus',
     'kb_common/html',
     './summary',
-    '../controls/accessControl'
+    '../controls/accessControl',
+    '../controls/dataSource'
 ], function (
     ko,
     html,
     SummaryComponent,
-    AccessControlComponent
+    AccessControlComponent,
+    DataSourceComponent
 ) {
     'use strict';
 
@@ -73,6 +75,10 @@ define([
             resultCount: params.resultCount,
             searchStatus: params.searchStatus,
             searchSpaceCount: params.searchSpaceCount,
+
+            // for workspace type
+            withUserData: params.withUserData,
+            withReferenceData: params.withReferenceData,
 
             // for access control
             withPrivateData: params.withPrivateData,
@@ -207,6 +213,25 @@ define([
                             resultCount: 'resultCount',
                             searchStatus: 'searchStatus',
                             searchSpaceCount: 'searchSpaceCount'
+                        }
+                    }
+                }
+            })),
+            div({
+                style: {
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }
+            }, div({
+                dataBind: {
+                    component: {
+                        name: DataSourceComponent.quotedName(),
+                        params: {
+                            withUserData: 'withUserData',
+                            withReferenceData: 'withReferenceData',
                         }
                     }
                 }

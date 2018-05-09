@@ -84,7 +84,8 @@
 .table.table-kb-plain > thead > tr > th {
     vertical-align: middle;
     border: none;
-    color: gray;
+    color: #777;
+    font-weight: normal;
 }
 
 .table.table-kb-compact td {
