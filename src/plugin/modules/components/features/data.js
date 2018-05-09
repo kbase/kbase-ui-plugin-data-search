@@ -281,11 +281,12 @@ define([
                                 includeMetadata: 1,
                                 ignoreErrors: 1
                             }]).spread((result) => {
-                                return result.infos.map((info) => {
+                                return result.infos.map((info, index) => {
                                     if (info) {
                                         return objectInfoToGenomeInfo(info);
                                     } else {
                                         // Sometimes an object may have been deleted, but it is still indexed.
+                                        console.warn('Cannot get info for object', objectSpecs[index]);
                                         return null;
                                     }
                                 });
@@ -309,7 +310,6 @@ define([
 
                             groupedByObjectRef.forEach((group) => {
                                 group.genomeInfo = objectInfoMap[group.ref.objectRef];
-                                // console.log('hmm', group.genomeInfo);
 
                                 // ui controls
 
