@@ -96,7 +96,8 @@ define([
                     full_text_in_all: query,
                     exclude_subobjects: 1,
                     source_tags: ['refdata', 'noindex'],
-                    source_tags_blacklist: 1
+                    source_tags_blacklist: 1,
+                    addNarrativeInfo: 1
                 },
                 pagination: {
                     start: start,
@@ -192,6 +193,7 @@ define([
                     exclude_subobjects: 0,
                     source_tags: sourceTags,
                     source_tags_blacklist: blacklistTags ? 1 : 0,
+                    addWorkspaceInfo: 1
                 },
                 pagination: {
                     start: start,

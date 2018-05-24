@@ -158,7 +158,6 @@ define([
                 lastSavedBy: savedBy,
 
                 // source info ... narrative or ref data
-
             };
         }
 
@@ -221,7 +220,7 @@ define([
                         totalSearchHits = objectResults.total;
                     }
 
-                    // Do grouping
+                    // Group the results by object reference.
                     var byObjectRef = objects.reduce((byObjectRef, object) => {
                         let ref = object.ref.objectRef;
                         if (!byObjectRef[ref]) {
@@ -238,114 +237,58 @@ define([
                         return group;
                     });
 
-                    // Fake the object manifest for now...
-                    let workspaces = groupedByObjectRef.reduce((workspaces, group) => {
-                        let workspaceId = group.ref.workspaceId;
-                        workspaces[String(workspaceId)] = true;
-                        return workspaces;
-                    }, {});
+                    // Now get the object and workspace info from the results itself :)
+                    let objectInfoMap = Object.keys(objectResults.objects_info)
+                        .reduce((objectInfoMap, key) => {
+                            let info = objectInfoToGenomeInfo(objectResults.objects_info[key]);
+                            objectInfoMap[info.ref] = info;
+                            return objectInfoMap;
+                        }, {});
 
-                    let workspaceIdentities = Object.keys(workspaces).map((workspaceId) => {
-                        return {
-                            id: parseInt(workspaceId, 10)
-                        };
+                    let workspaceInfoMap = Object.keys(objectResults.workspaces_info)
+                        .reduce((workspaceInfoMap, key) =>{
+                            let info = workspaceInfoToContainerInfo(objectResults.workspaces_info[key]);
+                            workspaceInfoMap[String(info.workspaceId)] = info;
+                            return workspaceInfoMap;
+                        }, {});
+
+                    groupedByObjectRef.forEach((group) => {
+                        group.genomeInfo = objectInfoMap[group.ref.objectRef];
+
+                        // ui controls
+
+                        // group details opened?
+                        group.isOpen = ko.observable(false);
+
+                        // group items showing...
+                        group.showItemDetail = ko.observable(false);
+                        group.showItemMatches = ko.observable(false);
+
+                        group.workspaceInfo = workspaceInfoMap[String(group.ref.workspaceId)];
                     });
 
-                    let objectSpecs = groupedByObjectRef.map((group) => {
-                        return {
-                            wsid: group.ref.workspaceId,
-                            objid: group.ref.objectId,
-                            ver: group.ref.version
-                        };
+                    // remove any groups for which the genome object does not exists
+                    // (deleted or permissions problem)
+                    groupedByObjectRef = groupedByObjectRef.filter((group) => {
+                        return group.genomeInfo ? true : false;
                     });
 
-                    let workspace = new GenericClient({
-                        module: 'Workspace',
-                        url: params.runtime.config('services.Workspace.url'),
-                        token: params.runtime.service('session').getAuthToken()
-                    });
-
-                    return Promise.all([
-                        Promise.all(workspaceIdentities.map((id) => {
-                            return workspace.callFunc('get_workspace_info', [id])
-                                .spread((info) => {
-                                    return workspaceInfoToContainerInfo(info);
-                                });
-                        })),
-                        Promise.try(() => {
-                            if (objectSpecs.length === 0) {
-                                return [];
-                            }
-                            return workspace.callFunc('get_object_info3', [{
-                                objects: objectSpecs,
-                                includeMetadata: 1,
-                                ignoreErrors: 1
-                            }]).spread((result) => {
-                                return result.infos.map((info, index) => {
-                                    if (info) {
-                                        return objectInfoToGenomeInfo(info);
-                                    } else {
-                                        // Sometimes an object may have been deleted, but it is still indexed.
-                                        console.warn('Cannot get info for object', objectSpecs[index]);
-                                        return null;
-                                    }
-                                });
-                            });
-                        })
-                    ])
-                        .spread((workspaceInfo, objectInfo) => {
-
-                            let objectInfoMap = {};
-                            objectInfo.forEach((info) => {
-                                if (!info) {
-                                    return;
-                                }
-                                objectInfoMap[info.ref] = info;
-                            });
-
-                            let workspaceInfoMap = {};
-                            workspaceInfo.forEach((info) => {
-                                workspaceInfoMap[String(info.workspaceId)] = info;
-                            });
-
-                            groupedByObjectRef.forEach((group) => {
-                                group.genomeInfo = objectInfoMap[group.ref.objectRef];
-
-                                // ui controls
-
-                                // group details opened?
-                                group.isOpen = ko.observable(false);
-
-                                // group items showing...
-                                group.showItemDetail = ko.observable(false);
-                                group.showItemMatches = ko.observable(false);
-
-                                group.workspaceInfo = workspaceInfoMap[String(group.ref.workspaceId)];
-                            });
-
-                            // remove any groups for which the genome object does not exists
-                            // (deleted or permissions problem)
-                            groupedByObjectRef = groupedByObjectRef.filter((group) => {
-                                return group.genomeInfo ? true : false;
-                            });
-
-                            return {
-                                items: objects,
-                                grouped: groupedByObjectRef,
-                                first: query.start,
-                                isTruncated: true,
-                                summary: {
-                                    // totalByType: totalByType,
-                                    totalSearchHits: totalSearchHits,
-                                    totalSearchSpace: objectResults.total,
-                                    isTruncated: (totalSearchHits < objectResults.total)
-                                },
-                                stats: {
-                                    objectSearch: objectResults.search_time,
-                                    // typeSearch: typeResults.search_time
-                                }
-                            };
-                        });
+                    return {
+                        items: objects,
+                        grouped: groupedByObjectRef,
+                        first: query.start,
+                        isTruncated: true,
+                        summary: {
+                            // totalByType: totalByType,
+                            totalSearchHits: totalSearchHits,
+                            totalSearchSpace: objectResults.total,
+                            isTruncated: (totalSearchHits < objectResults.total)
+                        },
+                        stats: {
+                            objectSearch: objectResults.search_time,
+                            // typeSearch: typeResults.search_time
+                        }
+                    };
                 });
         }
 
