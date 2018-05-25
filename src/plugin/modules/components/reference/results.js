@@ -626,7 +626,9 @@ define([
                         typedText: {
                             value: 'value',
                             type: 'type',
-                            format: 'format'
+                            format: 'format',
+                            default: '$data.default',
+                            missing: '$data.missing'
                         }
                     }
                 }),

@@ -93,13 +93,14 @@ define([
         },
         {
             id: 'source',
-            label: 'Source'
+            label: 'Source',
+            type: 'string'
         },
         {
-            id: 'sourceID',
-            label: 'Source ID'
+            id: 'sourceId',
+            label: 'Source ID', 
+            type: 'string'
         }
-
     ];
 
     const searchFields = {
@@ -213,7 +214,9 @@ define([
                 nonCodingFeatureCount: data.non_coding_features,
                 warnings: data.warnings,
                 featureCounts: data.feature_counts,
-                genomeTiers: data.genome_tiers
+                genomeTiers: data.genome_tiers,
+                source: data.source,
+                sourceId: data.source_id
             };
         }
     }
