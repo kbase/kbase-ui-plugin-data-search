@@ -96,8 +96,7 @@ define([
                     full_text_in_all: query,
                     exclude_subobjects: 1,
                     source_tags: ['refdata', 'noindex'],
-                    source_tags_blacklist: 1,
-                    addNarrativeInfo: 1
+                    source_tags_blacklist: 1
                 },
                 pagination: {
                     start: start,
@@ -108,7 +107,8 @@ define([
                     skip_info: 0,
                     skip_keys: 0,
                     skip_data: 0,
-                    include_highlight: 1
+                    include_highlight: 1,
+                    add_narrative_info: 1
                 },
                 access_filter: {
                     with_private: withPrivate,
@@ -192,8 +192,7 @@ define([
                     full_text_in_all: query,
                     exclude_subobjects: 0,
                     source_tags: sourceTags,
-                    source_tags_blacklist: blacklistTags ? 1 : 0,
-                    addWorkspaceInfo: 1
+                    source_tags_blacklist: blacklistTags ? 1 : 0
                 },
                 pagination: {
                     start: start,
@@ -204,7 +203,8 @@ define([
                     skip_info: 0,
                     skip_keys: 0,
                     skip_data: 0,
-                    include_highlight: 1
+                    include_highlight: 1,
+                    add_workspace_info: 1
                 },
                 access_filter: {
                     with_private: arg.withPrivateData ? 1 : 0,
