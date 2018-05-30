@@ -245,9 +245,9 @@ define([
                             return objectInfoMap;
                         }, {});
 
-                    let workspaceInfoMap = Object.keys(objectResults.workspaces_info)
+                    let workspaceInfoMap = Object.keys(objectResults.access_groups_info)
                         .reduce((workspaceInfoMap, key) =>{
-                            let info = workspaceInfoToContainerInfo(objectResults.workspaces_info[key]);
+                            let info = workspaceInfoToContainerInfo(objectResults.access_groups_info[key]);
                             workspaceInfoMap[String(info.workspaceId)] = info;
                             return workspaceInfoMap;
                         }, {});
