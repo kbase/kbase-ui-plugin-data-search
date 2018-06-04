@@ -63,6 +63,9 @@ define([
         // OUTPUT
         var status = ko.observable('none');
 
+        var error = ko.observable();
+        var errorMessage = ko.observable();
+
         var searching = ko.observable(false);
 
         // holds search result items for display
@@ -98,6 +101,8 @@ define([
             page: page,
             totalPages: totalPages,
             status: status,
+            error: error,
+            errorMessage: errorMessage,
             searching: searching,
             buffer: buffer,
             isTruncated: isTruncated,
@@ -153,6 +158,8 @@ define([
 
             searchState.searching(true);
             searchState.status('searching');
+            searchState.error(null);
+            searchState.errorMessage(null);
 
             var timer = Timer.make();
 
@@ -219,6 +226,9 @@ define([
                     }
                 }) 
                 .catch(function (err) {
+                    searchState.status('error');
+                    searchState.errorMessage(err.message);
+                    searchState.error(err);
                     appBus.send('error', {
                         error: err
                     });

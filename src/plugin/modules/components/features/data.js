@@ -1,18 +1,12 @@
 define([
     'bluebird',
-    'moment',
     'knockout-plus',
-    'kb_service/utils',
-    'kb_common/jsonRpc/genericClient',
     '../../lib/searchApi',
     '../../lib/types/utils',
     'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
-    moment,
     ko,
-    ServiceUtils,
-    GenericClient,
     SearchAPI,
     utils,
     stopWordsDb

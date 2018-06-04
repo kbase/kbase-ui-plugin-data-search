@@ -121,6 +121,9 @@ define([
             return Math.ceil(totalItems / pageSize());
         });
 
+        var errorMessage = ko.observable();
+        var error = ko.observable();
+
         return {
             includePrivateData: includePrivateData,
             includePublicData: includePublicData,
@@ -133,7 +136,9 @@ define([
             isTruncated: isTruncated,
             totalSearchHits: totalSearchHits,
             totalSearchSpace: totalSearchSpace,
-            summary: summary
+            summary: summary,
+            errorMessage: errorMessage,
+            error: error
         };
     }
 
@@ -194,6 +199,9 @@ define([
             var timer = Timer.make();
 
             timer.start('search');
+            searchState.errorMessage(null);
+            searchState.error(null);
+
 
             var searchJob = Promise.try(function () {
                 thisSearch.started();
@@ -265,6 +273,9 @@ define([
                     }
                 })
                 .catch(function (err) {
+                    searchState.status('error');
+                    searchState.errorMessage(err.message);
+                    searchState.error(err);
                     appBus.send('error', {
                         error: err
                     });
@@ -417,6 +428,8 @@ define([
                     featuresTotal: 'featuresTotal',
 
                     status: 'searchState.status',
+                    errorMessage: 'searchState.errorMessage',
+                    error: 'searchState.error',
                     view: 'view',
                     overlayComponent: 'overlayComponent',
                     selectedObjects: 'selectedObjects',

@@ -3,7 +3,6 @@ define([
     'knockout-plus',
     'kb_common/html',
     'kb_common/utils',
-    './header',
     './navbar',
     './results',
     './data',
@@ -14,7 +13,6 @@ define([
     ko,
     html,
     utils,
-    HeaderComponent,
     NavbarComponent,
     ResultsComponent,
     Data,
@@ -63,6 +61,10 @@ define([
         // OUTPUT
         var status = ko.observable('none');
 
+        var errorMessage = ko.observable();
+        var error = ko.observable();
+
+
         var searching = ko.observable(false);
 
         // holds search result items for display
@@ -104,6 +106,8 @@ define([
             page: page,
             totalPages: totalPages,
             status: status,
+            errorMessage: errorMessage,
+            error: error,
             searching: searching,
             buffer: buffer,
             grouped: grouped,
@@ -168,6 +172,8 @@ define([
 
             searchState.searching(true);
             searchState.status('searching');
+            searchState.errorMessage(null);
+            searchState.error(null);
 
             var timer = Timer.make();
 
@@ -241,6 +247,9 @@ define([
                     }
                 }) 
                 .catch(function (err) {
+                    searchState.status('error');
+                    searchState.errorMessage(err.message);
+                    searchState.error(err);
                     appBus.send('error', {
                         error: err
                     });
@@ -366,12 +375,6 @@ define([
                     withPublicData: 'searchState.withPublicData',
                 }
             })),
-            // div({
-            //     class: styles.classes.header
-            // },  ko.kb.komponent({
-            //     name: HeaderComponent.name(),
-            //     params: {}
-            // })),
             div({
                 class: styles.classes.results
             },  ko.kb.komponent({
