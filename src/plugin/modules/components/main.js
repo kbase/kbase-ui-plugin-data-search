@@ -1,9 +1,9 @@
 define([
     'knockout-plus',
     'kb_common/html',
+    'kb_ko/components/overlayPanelBootstrappish',
     './navBar',
     './searchBar',
-    './toolBar',
     './searchResults',
     './viewSelector',
     './copyObjectsControl',
@@ -15,9 +15,9 @@ define([
 ], function (
     ko,
     html,
+    OverlayPanelComponent,
     NavBarComponent,
     SearchBarComponent,
-    ToolBarComponent,
     SearchResultsComponent,
     ViewSelectorComponent,
     CopyObjectsControlComponent,
@@ -522,7 +522,7 @@ define([
                 buildResultsArea(),
             ]),
             ko.kb.komponent({
-                name: 'generic/overlay-panel-bootstrappish',
+                name: OverlayPanelComponent.name(),
                 params: {
                     component: 'overlayComponent',
                     hostVm: '$data'

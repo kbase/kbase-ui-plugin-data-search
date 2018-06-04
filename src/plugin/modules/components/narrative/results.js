@@ -1,11 +1,15 @@
 define([
-    'knockout-plus',
+    'knockout',
+    'kb_knockout/registry',
+    'kb_knockout/lib/generators',
     'kb_common/html',
     '../dialogs/duplicateNarrative',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt'
 ], function (
     ko,
+    reg,
+    gen,
     html,
     DuplicateNarrativeComponent,
     CopyObjectComponent,
@@ -229,7 +233,10 @@ define([
         }
     });
 
-    function viewModel(params) {
+    function viewModel(params, componentInfo) {
+        var context = ko.contextFor(componentInfo.element);
+        var appBus = context['$root'].appBus;
+
         // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
 
@@ -302,6 +309,12 @@ define([
             data.active(false);
         }
 
+        function doShowError() {
+            appBus.send('error', {
+                error: params.error()
+            });
+        }
+
         // LIFECYCLE
 
         function dispose() {
@@ -309,6 +322,7 @@ define([
         return {
             buffer: params.buffer,
             status: params.status,
+            errorMessage: params.errorMessage,
             // searchState: searchState,
             view: view,
 
@@ -335,6 +349,8 @@ define([
 
             doMouseOverRow: doMouseOverRow,
             doMouseOutRow: doMouseOutRow,
+
+            doShowError: doShowError,
 
             // LIFECYCLE
             dispose: dispose
@@ -1042,10 +1058,9 @@ define([
             }
         }, [
             p('Sorry, no User Data found.'),
-            '<!-- ko if: referenceDataTotal -->',
-            p([
+            gen.if('referenceDataTotal', p([
                 'However, there ',
-                ko.kb.pluralize('referenceDataTotal()', 'is ', 'are '),
+                gen.plural('referenceDataTotal()', 'is ', 'are '),
                 span({
                     style: {
                         fontWeight: 'bold'
@@ -1063,12 +1078,10 @@ define([
                     ' matching Reference Data object',
                     ko.kb.pluralize('referenceDataTotal()', '.', 's.')
                 ])
-            ]),
-            '<!-- /ko -->',
-            '<!-- ko if: featuresTotal -->',
-            p([
+            ])),
+            gen.if('featuresTotal', p([
                 'However, there ',
-                ko.kb.pluralize('featuresTotal()', 'is ', 'are '),
+                gen.plural('featuresTotal()', 'is ', 'are '),
                 span({
                     style: {
                         fontWeight: 'bold'
@@ -1086,13 +1099,39 @@ define([
                     ' matching Genome Feature',
                     ko.kb.pluralize('featuresTotal()', '.', 's.')
                 ])
-            ]),
-            '<!-- /ko -->'
+            ]))
+        ]);
+    }
+
+    function buildError() {
+        return div({
+            class: 'alert alert-danger',
+            dataKBTesthookAlert: 'error',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center',
+                padding: '20px',
+            }
+        }, [
+            p('Sorry, an error occurred with this search.'),
+            p({
+                dataBind: {
+                    text: 'errorMessage'
+                }
+            }),
+            p([
+                button({
+                    class: 'btn btn-default',
+                    dataBind: {
+                        click: '$component.doShowError'
+                    }
+                }, 'Show Error')
+            ])
         ]);
     }
 
     function buildSearching() {
-
         return div({
             class: 'well',
             style: {
@@ -1135,6 +1174,10 @@ define([
                 buildSearching(),
                 '<!-- /ko -->',
 
+                '<!-- ko case: "error" -->',
+                buildError(),
+                '<!-- /ko -->',
+
                 '<!-- ko case: "success" -->',
                 buildResults(),
                 '<!-- /ko -->',
@@ -1154,5 +1197,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return reg.registerComponent(component);
 });

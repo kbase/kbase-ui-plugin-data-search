@@ -345,7 +345,9 @@ define([
         },
     });        
 
-    function viewModel(params) {
+    function viewModel(params, componentInfo) {
+        var context = ko.contextFor(componentInfo.element);
+        var appBus = context['$root'].appBus;
         // If this is not an Element, it was installed with a comment and 
         // the first node in the template can be found as the next sibling.
         
@@ -452,6 +454,12 @@ define([
             data.isOpen(data.isOpen() ? false : true);
         }
 
+        function doShowError() {
+            appBus.send('error', {
+                error: searchState.error()
+            });
+        }
+
         // LIFECYCLE
 
         function dispose() {
@@ -459,6 +467,8 @@ define([
 
         return {
             searchState: searchState,
+            error: params.error,
+            errorMessage: params.errorMessage,
             view: params.view,
 
             narrativesTotal: params.narrativesTotal,
@@ -483,6 +493,8 @@ define([
             doMouseOutRow: doMouseOutRow,
 
             doToggleGenomeDetail: doToggleGenomeDetail,
+
+            doShowError: doShowError,
 
             // LIFECYCLE
             dispose: dispose
@@ -1694,6 +1706,35 @@ define([
         ]);
     }
 
+    function buildError() {
+        return div({
+            class: 'alert alert-danger',
+            dataKBTesthookAlert: 'error',
+            style: {
+                margin: '40px auto 0 auto',
+                maxWidth: '40em',
+                textAlign: 'center',
+                padding: '20px',
+            }
+        }, [
+            p('Sorry, an error occurred with this search.'),
+            p({
+                dataBind: {
+                    text: 'searchState.errorMessage'
+                }
+            }),
+            p([
+                button({
+                    class: 'btn btn-default',
+                    dataBind: {
+                        click: '$component.doShowError'
+                    }
+                }, 'Show Error')
+            ])
+           
+        ]);
+    }
+
     function buildSearching() {
         return div({
             class: 'well',
@@ -1731,6 +1772,10 @@ define([
 
                 '<!-- ko case: "notfound" -->',
                 buildNotFound(),
+                '<!-- /ko -->',              
+
+                '<!-- ko case: "error" -->',
+                buildError(),
                 '<!-- /ko -->',                
 
                 '<!-- ko case: "searching" -->',
@@ -1748,7 +1793,9 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: {
+                createViewModel: viewModel
+            },
             template: template(),
             stylesheet: styles.sheet
         };
