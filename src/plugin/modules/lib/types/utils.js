@@ -72,6 +72,7 @@ define([
         });
         return def;
     }
+
     function dataToDetail(data, detailFields) {
         var props = Props.make({data: data});
         return detailFields.map(function (field) {
@@ -88,10 +89,22 @@ define([
         });
     }
 
+    function parseBoolean(data, defaultValue) {
+        if (typeof data === 'undefined') {
+            return defaultValue;
+        }
+        if (data === 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return {
         padRight: padRight,
         parseTaxonomy: parseTaxonomy,
         processTypeDef: processTypeDef,
-        dataToDetail: dataToDetail
+        dataToDetail: dataToDetail,
+        parseBoolean: parseBoolean
     };
 });

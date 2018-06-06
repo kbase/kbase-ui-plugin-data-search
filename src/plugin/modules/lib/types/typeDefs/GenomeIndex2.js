@@ -213,6 +213,7 @@ define([
                 mrnaCount: data.mrnas,
                 nonCodingFeatureCount: data.non_coding_features,
                 warnings: data.warnings,
+                suspect: utils.parseBoolean(data.suspect),
                 featureCounts: data.feature_counts,
                 genomeTiers: data.genome_tiers,
                 source: data.source,

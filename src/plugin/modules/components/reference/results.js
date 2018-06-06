@@ -1,10 +1,14 @@
 define([
-    'knockout-plus',
+    'knockout',
+    'kb_knockout/registry',
+    'kb_knockout/lib/generators',
     'kb_common/html',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt'
 ], function (
     ko,
+    reg,
+    gen,
     html,
     CopyObjectComponent,
     FunnyRandomPromptComponent
@@ -962,5 +966,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return reg.registerComponent(component);
 });
