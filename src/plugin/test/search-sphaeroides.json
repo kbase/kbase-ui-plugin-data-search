@@ -97,7 +97,7 @@
                         ],
                         "wait": 10000,
                         "count": {
-                            "equal": 20
+                            "greaterThan": 0
                         }
                     },
                     {
@@ -155,7 +155,7 @@
                         ],
                         "wait": 10000,
                         "count": {
-                            "equal": 20
+                            "greaterThan": 0
                         }
                     },
 
@@ -213,7 +213,7 @@
                         ],
                         "wait": 10000,
                         "count": {
-                            "equal": 20
+                            "greaterThan": 0
                         }
                     }
                 ]
