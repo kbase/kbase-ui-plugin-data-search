@@ -4,7 +4,6 @@
         "specs": [
             {
                 "description": "should get the signin page",
-                "url": "/#search",
                 "baseSelector": [
                     {
                         "type": "plugin",
@@ -16,6 +15,12 @@
                     }
                 ],
                 "tasks": [
+                    {
+                        "title": "navigate to search ",
+                        "navigate": {
+                            "path": "search"
+                        }
+                    },
                     {
                         "selector": [
                             {
