@@ -1,6 +1,6 @@
 [
     {
-        "description": "Search for 'coli''",
+        "description": "Search for 'sphaeroides''",
         "specs": [
             {
                 "description": "should  should reveal 1 or more hits for each tab",
@@ -54,7 +54,7 @@
                         ],
                         "action": "keys",
                         "params": {
-                            "keys": ["c", "o", "l", "i", "Enter"]
+                            "keys": ["s", "p", "h", "a", "e", "r", "o", "i", "d", "e", "s", "Enter"]
                         }
                     },
                     {
