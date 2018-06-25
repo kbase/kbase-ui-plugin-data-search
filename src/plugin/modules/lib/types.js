@@ -25,13 +25,13 @@ define([
 
     function factory(params) {
         var runtime = params.runtime;
-        var objectTypes; 
+        var objectTypes;
         var objectTypeMap;
 
         function loadTypes() {
             return Promise.all(typeIndex.map(function (type) {
                 var modulePath =[
-                    './types/typeDefs', 
+                    './types/typeDefs',
                     type.module
                 ].join('/');
                 return prequire([modulePath])
@@ -44,7 +44,7 @@ define([
             }))
                 .then(function (types) {
                     var objectTypeMap = {};
-                    types.forEach(function (type) { 
+                    types.forEach(function (type) {
                         objectTypeMap[type.type.id + '.' + type.type.version] = type;
                     });
                     return {
@@ -59,10 +59,10 @@ define([
         }
 
         function getTypeForObject(object) {
-            let objectType = object.type.toLowerCase();
-            let objectTypeVersion = object.type_ver;
-            let objectTypeId = [objectType, objectTypeVersion].join('.');
-            let type = objectTypeMap[objectTypeId];
+            const objectType = object.type.toLowerCase();
+            const objectTypeVersion = object.type_ver;
+            const objectTypeId = [objectType, objectTypeVersion].join('.');
+            const type = objectTypeMap[objectTypeId];
 
             if (!type) {
                 // Use the default type class

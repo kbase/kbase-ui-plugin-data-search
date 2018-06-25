@@ -63,7 +63,7 @@ define([
                         foreach: 'items'
                     }
                 }, [
-                    tr([                    
+                    tr([
                         td({
                             dataBind: {
                                 text: '$data'

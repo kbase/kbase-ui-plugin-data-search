@@ -59,13 +59,13 @@ define([
                 if (field === 'source_tags') {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
-                } 
-            
+                }
+
                 var label = type.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
-                } 
+                }
 
                 matches.push({
                     id: field,
@@ -78,7 +78,7 @@ define([
                 });
                 return matches;
             }, []);
-           
+
             // Uncomment to re-enable highlights merging into details
             // detail.forEach(function (field) {
             //     if (matchMap[field.id]) {
@@ -106,7 +106,7 @@ define([
 
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
-                name: obj.object_name,                
+                name: obj.object_name,
                 date: new Date(obj.timestamp),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
 

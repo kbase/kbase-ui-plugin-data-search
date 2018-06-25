@@ -49,11 +49,11 @@ define([
                 '<!-- ko case: "none" -->',
                 '',
                 '<!-- /ko -->',
-    
+
                 '<!-- ko case: "notfound" -->',
                 '',
                 '<!-- /ko -->',
-    
+
                 '<!-- ko case: "success" -->',
 
                 'Found ',
@@ -92,7 +92,7 @@ define([
                             format: '"0,0"'
                         }
                     }
-                }), ' ', 
+                }), ' ',
                 span({
                     dataBind: {
                         labelText: {
@@ -101,7 +101,7 @@ define([
                             labels: '$root.labels'
                         }
                     }
-                }), 
+                }),
 
                 '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
                 ', ',

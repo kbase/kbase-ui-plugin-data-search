@@ -24,7 +24,7 @@ define([
         span = t('span'),
         input = t('input'),
         button = t('button'),
-        table = t('table'), 
+        table = t('table'),
         thead = t('thead'),
         tbody = t('tbody'),
         tr = t('tr'), td = t('td'), th = t('th'),
@@ -39,7 +39,7 @@ define([
         }
         return 0;
     }
-    
+
     var styles = html.makeStyles({
         viewTable: {
             css: {
@@ -115,7 +115,7 @@ define([
         var objectsToCopy = ko.unwrap(params.objectsToCopy);
         var objectToView = ko.observable();
         var subscriptions = ko.kb.SubscriptionManager.make();
-       
+
         function viewObject(ref) {
             data.getObjectInfo(ref)
                 .then(function (objectInfo) {
@@ -137,7 +137,7 @@ define([
                     objectId: data.objectInfo.id,
                     version: data.objectInfo.version
                 });
-            }           
+            }
         }
 
         var data = Data.make({
@@ -176,7 +176,7 @@ define([
                     }
                 }
                 return false;
-            
+
             case 'copying':
                 return false;
             case 'success':
@@ -230,7 +230,7 @@ define([
 
         function copyIntoNarrative(arg) {
             return data.copyObjects({
-                sourceObjectRefs: selectedObjects().map(function(object) {
+                sourceObjectRefs: selectedObjects().map(function (object) {
                     return object.objectInfo.ref;
                 }),
                 targetWorkspaceId: arg.workspaceId
@@ -243,7 +243,7 @@ define([
             })
                 .then(function (newNarrative) {
                     return data.copyObjects({
-                        sourceObjectRefs: selectedObjects().map(function(object) {
+                        sourceObjectRefs: selectedObjects().map(function (object) {
                             return object.objectInfo.ref;
                         }),
                         targetWorkspaceId: newNarrative.workspaceInfo.id
@@ -260,17 +260,17 @@ define([
             params.onClose();
         }
 
-        function doCopy () {
+        function doCopy() {
             errorMessage('');
             copyStatus('copying');
             switch (copyMethod()) {
             case 'new':
                 copyIntoNewNarrative(newNarrativeName())
-                    .then(function(newNarrative) {
+                    .then(function (newNarrative) {
                         var narrativeId = [
                             'ws',
                             newNarrative.workspaceInfo.id,
-                            'obj', 
+                            'obj',
                             newNarrative.objectInfo.id
                         ].join('.');
                         var narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId);
@@ -280,7 +280,7 @@ define([
                             url: narrativeUrl
                         });
                         copyStatus('success');
-                    })                    
+                    })
                     .catch(function (err) {
                         copyStatus('error');
                         errorMessage(err.message);
@@ -296,7 +296,7 @@ define([
                             var narrativeId = [
                                 'ws',
                                 narrative.workspaceInfo.id,
-                                'obj', 
+                                'obj',
                                 narrative.objectInfo.id
                             ].join('.');
                             var narrativeUrl = makeNarrativeUrl('/narrative/' + narrativeId);
@@ -306,7 +306,7 @@ define([
                                 url: narrativeUrl
                             });
                             copyStatus('success');
-                        })                        
+                        })
                         .catch(function (err) {
                             copyStatus('error');
                             errorMessage(err.message);
@@ -317,7 +317,7 @@ define([
                 break;
             }
         }
-       
+
         var selectedObjects = ko.observableArray();
 
         data.getObjectsInfo(objectsToCopy)
@@ -395,7 +395,7 @@ define([
                     'no objects selected',
                     '<!-- /ko -->',
                     '<!-- ko if: selectedObjects().length -->',
-                    table({ 
+                    table({
                         class: styles.classes.selectedObjectsTable
                     }, [
                         thead([
@@ -449,9 +449,9 @@ define([
                                 })))
                             ])
                         ])
-                    ]), 
+                    ]),
                     '<!-- /ko -->'
-                ]),               
+                ]),
                 div({
                     class: 'col-md-4'
                 }, div({
@@ -511,7 +511,7 @@ define([
                                 })])
                         ]),
                         '<!-- /ko -->',
-                        '<!-- /ko -->'                        
+                        '<!-- /ko -->'
                     ])
                 ]))
             ])
@@ -530,7 +530,7 @@ define([
     function buildCopyForm() {
         return div({class: 'container-fluid'}, [
             h3('Select Narrative'),
-            div({class: 'row'}, [           
+            div({class: 'row'}, [
                 div({class: 'col-md-8'}, [
                     div({
                         class: 'row'
@@ -538,9 +538,9 @@ define([
                         div({
                             class: 'col-sm-2'
                         }, input({
-                            type: 'radio', 
-                            name: 'copyMethod', 
-                            value: 'new', 
+                            type: 'radio',
+                            name: 'copyMethod',
+                            value: 'new',
                             dataBind: {
                                 checked: 'copyMethod'
                             }
@@ -609,9 +609,9 @@ define([
                         div({
                             class: 'col-sm-2'
                         }, input({
-                            type: 'radio', 
-                            name: 'copyMethod', 
-                            value: 'existing', 
+                            type: 'radio',
+                            name: 'copyMethod',
+                            value: 'existing',
                             dataBind: {
                                 checked: 'copyMethod'
                             }
@@ -633,7 +633,7 @@ define([
                     ])
                 ]),
                 div({class: 'col-md-4'}, [
-                    
+
                     div({class: 'panel panel-default'}, [
                         div({class: 'panel-heading'}, [
                             div({
@@ -668,9 +668,9 @@ define([
                             table({
                                 class: styles.classes.viewTable
                             }, [
-                                
+
                                 tr([
-                                    th('Name'), 
+                                    th('Name'),
                                     td({
                                         dataBind: {
                                             text: 'workspaceInfo.metadata.narrative_nice_name'
@@ -678,7 +678,7 @@ define([
                                     })
                                 ]),
                                 tr([
-                                    th('Ref'), 
+                                    th('Ref'),
                                     td({
                                         dataBind: {
                                             text: 'objectInfo.ref'
@@ -686,7 +686,7 @@ define([
                                     })
                                 ]),
                                 tr([
-                                    th('Owner'), 
+                                    th('Owner'),
                                     td({
                                         dataBind: {
                                             text: 'objectInfo.saved_by'
@@ -694,7 +694,7 @@ define([
                                     })
                                 ]),
                                 tr([
-                                    th('Modified'), 
+                                    th('Modified'),
                                     td({
                                         dataBind: {
                                             typedText: {
@@ -727,7 +727,7 @@ define([
         }, [
             div({
                 class: 'row'
-            }, [           
+            }, [
                 div({
                     class: 'col-md-8'
                 }, [
@@ -741,7 +741,7 @@ define([
                         dataBind: {
                             enable: 'canCopy',
                             click: 'doCopy'
-                        }                     
+                        }
                     }, [
                         'Copy Object',
                         '<!-- ko if: $component.selectedObjects().length > 1 -->',
@@ -787,7 +787,7 @@ define([
                                     href: 'selectedNarrativeObject().url'
                                 }
                             },
-                            class: 'btn btn-default', 
+                            class: 'btn btn-default',
                             target: '_blank'
                         }, 'Open this Narrative'))
                     ])
@@ -799,7 +799,7 @@ define([
 
     function buildErrorPanel() {
         return [
-            '<!-- ko if: copyStatus() === "error" -->',           
+            '<!-- ko if: copyStatus() === "error" -->',
             BS.buildPanel({
                 type: 'error',
                 title: 'Error',
@@ -825,7 +825,7 @@ define([
                 body:  div([
                     html.loading('Copying')
                 ])
-            }),            
+            }),
             '<!-- /ko -->'
         ];
     }
@@ -833,7 +833,7 @@ define([
     function template() {
         return div([
             ui.buildDialog({
-                title: span({dataBind: {text: 'title'}}), 
+                title: span({dataBind: {text: 'title'}}),
                 icon: 'clone',
                 body: div({
                     class: 'container-fluid'
@@ -850,9 +850,9 @@ define([
                         buildSuccessPanel(),
                         buildInProgressPanel(),
                         buildErrorPanel()
-                    ])                    
+                    ])
                 ]),
-                buttons: [                
+                buttons: [
                     {
                         type: 'default',
                         label: 'Close',

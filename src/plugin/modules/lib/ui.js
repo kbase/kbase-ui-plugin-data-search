@@ -5,13 +5,13 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
-        button = t('button'),    
+    const t = html.tag,
+        button = t('button'),
         span = t('span'),
         div = t('div');
 
     function buildDialog(arg) {
-        let type = arg.type || 'default';
+        const type = arg.type || 'default';
         let titleColor;
         let iconClass;
         switch (type) {
@@ -37,7 +37,7 @@ define([
             titleColor = '#2e618d';
             break;
         case 'default':
-        default: 
+        default:
             iconClass = null;
             titleColor = '#000';
         }
@@ -65,13 +65,13 @@ define([
             icon = '';
         }
 
-        let buttons = arg.buttons || [{
+        const buttons = arg.buttons || [{
             label: 'Close',
             onClick: 'onClose'
         }];
 
-        let buttonsContent = buttons.map(function (btn) {
-            let buttonBindings = {
+        const buttonsContent = buttons.map(function (btn) {
+            const buttonBindings = {
                 click: btn.onClick
             };
             if (btn.enable) {
@@ -153,14 +153,14 @@ define([
             color = '#777';
             break;
         case 'default':
-        default: 
+        default:
             color = '#000';
         }
         return color;
     }
 
     function buildFullHeightDialog(arg) {
-        let type = arg.type || 'default';
+        const type = arg.type || 'default';
         let titleColor;
         let iconClass;
         switch (type) {
@@ -186,7 +186,7 @@ define([
             titleColor = '#2e618d';
             break;
         case 'default':
-        default: 
+        default:
             titleColor = '#000';
         }
 
@@ -202,12 +202,12 @@ define([
             icon = '';
         }
 
-        let buttons = arg.buttons || [{
+        const buttons = arg.buttons || [{
             label: 'Close',
             onClick: 'onClose'
         }];
 
-        let buttonsContent = buttons.map(function (btn) {
+        const buttonsContent = buttons.map(function (btn) {
             return button({
                 type: 'button',
                 class: 'btn btn-' + (btn.type || 'default'),

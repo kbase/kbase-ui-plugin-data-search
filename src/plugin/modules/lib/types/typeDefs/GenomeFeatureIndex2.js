@@ -31,7 +31,7 @@ define([
         {
             id: 'featureType',
             label: 'Type'
-        }, 
+        },
         {
             id: 'aliases',
             label: 'Aliases',
@@ -69,7 +69,7 @@ define([
         },
         {
             id: 'proteinTranslation',
-            label: 'Protein Translation'                
+            label: 'Protein Translation'
         }
     ];
 
@@ -156,7 +156,7 @@ define([
     class GenomeFeature2 extends SubObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,

@@ -74,7 +74,7 @@ define([
             }, [
                 'Name'
             ]),
-           
+
             div({
                 class: styles.classes.headerCell,
                 style: {

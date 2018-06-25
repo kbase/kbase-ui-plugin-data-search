@@ -8,20 +8,20 @@ define([
     KeyValueListComponent
 ) {
     'use strict';
-  
-    
+
+
     // Assume nothing is sortable.
-    const sortFields = [       
+    const sortFields = [
     ];
 
     function isAtomic(value) {
         switch (typeof value) {
         case 'undefined':
         case 'string':
-        case 'number':                   
+        case 'number':
         case 'boolean':
             return true;
-        default: 
+        default:
             if (value === null) {
                 return true;
             }
@@ -30,9 +30,9 @@ define([
     }
 
     // Generate a generic detail field display spec.
-    function generateDetailFields(object) {        
+    function generateDetailFields(object) {
         return Object.keys(object.data).map((key) => {
-            let value = object.data[key];
+            const value = object.data[key];
             switch (typeof value) {
             case 'string':
             case 'number':
@@ -62,7 +62,7 @@ define([
                 } else {
                     // maybe a simple map?
                     if (Object.keys(value).some((key) => {
-                        let prop = value[key];
+                        const prop = value[key];
                         if (typeof prop === 'object' && prop !== null) {
                             return true;
                         }
@@ -90,7 +90,7 @@ define([
             // per-key search, which is not utilized in this module, other than for
             // internal implementation.
             // TODO: perhaps we can just remove the type then.
-            let fieldType = 'string';
+            const fieldType = 'string';
             searchFields[key] = {
                 label: key,
                 type: fieldType
@@ -103,18 +103,18 @@ define([
 
     class DefaultObjectIndexBase extends IndexBase {
         constructor(params) {
-            
-            let indexId = params.object.type.toLowerCase();
-            let indexVersion = params.object.type_ver;
+
+            const indexId = params.object.type.toLowerCase();
+            const indexVersion = params.object.type_ver;
             // TODO: search api needs to return this
-            let kbaseTypeModule = null;
-            let kbaseTypeId = null;
+            const kbaseTypeModule = null;
+            const kbaseTypeId = null;
             // the index id can suffice here - but it it is not "exactly" human-readable
-            let label = indexId;
+            const label = indexId;
 
-            let detailFieldDefs = generateDetailFields(params.object);
+            const detailFieldDefs = generateDetailFields(params.object);
 
-            let searchFields = generateSearchFields(params.object);
+            const searchFields = generateSearchFields(params.object);
 
             super({
                 runtime: params.runtime,
@@ -131,10 +131,10 @@ define([
         }
 
         /*
-        Transforms the search result object into a form suitable (and known) to the 
+        Transforms the search result object into a form suitable (and known) to the
         rest of the module.
         In the case of an object from an unkown index, we sinply return the entire
-        // 
+        //
         */
         objectToData() {
             // we need to convert some fields
@@ -142,8 +142,8 @@ define([
             // a top level property which is an array is inspected to ensure it is
             // just atomic values ... an object must be a "map" - key->atomic
 
-            let data = Object.keys(this.object.data).reduce((data, key) => {
-                let value = this.object.data[key];
+            const data = Object.keys(this.object.data).reduce((data, key) => {
+                const value = this.object.data[key];
                 if (isAtomic(value)) {
                     data[key] = value;
                 } else {
@@ -156,11 +156,11 @@ define([
                                 }
                             })) {
                                 data[key] = value;
-                            }                            
+                            }
                         } else {
                             // maybe a simple map? If not, ignore.
                             if (!Object.keys(value).some((key) => {
-                                let prop = value[key];
+                                const prop = value[key];
                                 if (!isAtomic(prop)) {
                                     return true;
                                 }
@@ -171,7 +171,7 @@ define([
                                         value: value[key]
                                     };
                                 });
-                            }                                                    
+                            }
                         }
                     }
                 }
@@ -190,6 +190,6 @@ define([
             };
         }
     }
- 
+
     return DefaultObjectIndexBase;
 });

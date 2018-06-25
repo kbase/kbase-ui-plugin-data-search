@@ -27,7 +27,7 @@ define([], function () {
             timers.forEach(function (name) {
                 var timer = timersMap[name];
                 var elapsed = timer.elapsed === undefined ? 'running' : timer.elapsed;
-                
+                /* eslint-disable no-console */
                 console.info('timer: ' + name + ':' + elapsed);
             });
         }

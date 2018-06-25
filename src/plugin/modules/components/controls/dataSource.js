@@ -7,13 +7,13 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
+    const t = html.tag,
         div = t('div'),
         span = t('span'),
         input = t('input'),
         label = t('label');
 
-    let styles = html.makeStyles({
+    const styles = html.makeStyles({
         component: {
             flex: '1 1 0px',
             display: 'flex',
@@ -82,8 +82,8 @@ define([
                 title: 'Search over data created by users in Narratives',
                 dataBind: {
                     css: 'withUserData() ? "' + styles.classes.activeFilterInput + '" : null'
-                }          
-            }, label({                
+                }
+            }, label({
                 class: styles.classes.checkboxLabel
             }, [
                 input({

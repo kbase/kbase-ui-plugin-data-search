@@ -232,7 +232,6 @@ define([
                     });
 
                     // Now get the object and workspace info from the results itself :)
-                    console.log('object results?', objectResults);
                     const objectInfoMap = Object.keys(objectResults.objects_info)
                         .reduce((objectInfoMap, key) => {
                             const info = objectInfoToGenomeInfo(objectResults.objects_info[key]);

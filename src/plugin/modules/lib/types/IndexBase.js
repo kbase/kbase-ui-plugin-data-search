@@ -1,5 +1,5 @@
 define([], function () {
-    'use strict'; 
+    'use strict';
 
     class IndexObjectBase {
         constructor(params) {
@@ -20,7 +20,7 @@ define([], function () {
             // via this.params.
             // TODO: bring them all into the object directly.
             this.searchFields = params.searchFields;
-            
+
             // this.label = params.label;
             // this.isViewable = params.isViewable;
             // this.isCopyable = params.isCopyable;
@@ -45,10 +45,10 @@ define([], function () {
             if (this.detailFields) {
                 return this.detailFields;
             }
-            // Creates an ordered list of detail fields, ready for 
+            // Creates an ordered list of detail fields, ready for
             // display.
             this.detailFields = [];
-            let data = this.getData();
+            const data = this.getData();
             this.detailFieldDefs.forEach((field) => {
                 this.detailFields.push({
                     id: field.id,
@@ -118,7 +118,7 @@ define([], function () {
             case 'object_name':
                 return 'Object Name';
             }
-            let field = this.searchFields[fieldId];
+            const field = this.searchFields[fieldId];
             if (!field) {
                 return;
             }

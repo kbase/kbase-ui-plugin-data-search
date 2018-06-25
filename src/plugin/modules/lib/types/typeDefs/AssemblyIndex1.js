@@ -58,7 +58,7 @@ define([
             type: 'integer'
         }
     };
-    
+
     const sortFields = [
         {
             key: 'name',
@@ -78,7 +78,7 @@ define([
     class AssemblyIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -99,6 +99,6 @@ define([
             };
         }
     }
- 
+
     return AssemblyIndex1;
 });

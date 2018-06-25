@@ -2,7 +2,7 @@ define([
     '../ObjectIndexBase',
     '../components/taxonomy',
     '../utils'
-    
+
 ], function (
     ObjectIndexBase,
     TaxonomyComponent,
@@ -124,12 +124,12 @@ define([
     };
 
     const sortFields = [];
-      
+
 
     class FBAModelIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -158,6 +158,6 @@ define([
             };
         }
     }
- 
+
     return FBAModelIndex1;
 });

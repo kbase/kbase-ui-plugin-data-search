@@ -7,10 +7,10 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
+    const t = html.tag,
         div = t('div'),
         span = t('span'),
-        a = t('a');        
+        a = t('a');
 
     /*
     params are:
@@ -18,7 +18,7 @@ define([
         searchHistory
     */
     function viewModel(params) {
-        let searchInputQueryValue = ko.pureComputed(function () {
+        const searchInputQueryValue = ko.pureComputed(function () {
             return encodeURIComponent(params.searchInput() || '');
         });
         return {
@@ -26,7 +26,7 @@ define([
         };
     }
 
-    let styles = html.makeStyles({
+    const styles = html.makeStyles({
         component: {
             flex: '1 1 0px',
             display: 'flex',
@@ -127,7 +127,7 @@ define([
             }
         }
     });
-  
+
     function buildNavBar() {
         return div({
             class:  styles.classes.navBar
@@ -142,10 +142,10 @@ define([
                     }
                 },
                 class: [styles.classes.navLink]
-            }, 'JGI'), 
+            }, 'JGI'),
             span({
                 class: [styles.classes.navLink, styles.scopes.active]
-            }, 'KBase - User Data, Reference Data, Features'), 
+            }, 'KBase - User Data, Reference Data, Features'),
             // span({
             //     class: [styles.classes.navLink, styles.scopes.active]
             // }, 'Reference Data')

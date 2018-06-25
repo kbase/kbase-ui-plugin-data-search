@@ -49,11 +49,11 @@ define([
                 '<!-- ko case: "none" -->',
                 '',
                 '<!-- /ko -->',
-    
+
                 '<!-- ko case: "notfound" -->',
                 '',
                 '<!-- /ko -->',
-    
+
                 '<!-- ko case: "success" -->',
 
                 'Found ',

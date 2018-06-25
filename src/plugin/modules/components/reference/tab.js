@@ -6,7 +6,7 @@ define([
     html
 ) {
     'use strict';
-    
+
     var t = html.tag,
         span = t('span');
 
@@ -30,7 +30,7 @@ define([
                     value: 'count',
                     type: '"number"',
                     format: '"0,0"'
-                }, 
+                },
                 style: {
                     'font-weight': 'count() ? "bold" : "normal"'
                 },

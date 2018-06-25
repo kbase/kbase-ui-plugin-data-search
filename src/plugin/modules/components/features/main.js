@@ -21,10 +21,10 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         div = t('div');
 
-    var styles = html.makeStyles({
+    const styles = html.makeStyles({
         main: {
             flex: '1 1 0px',
             display: 'flex',
@@ -50,7 +50,7 @@ define([
             display: 'flex',
             flexDirection: 'column'
         }
-    });     
+    });
 
     function SearchState(params) {
         var pageSize = ko.observable(20);
@@ -71,7 +71,7 @@ define([
         var buffer = ko.observableArray();
 
         var grouped = ko.observableArray();
-       
+
         // position of first item in the buffer in the total search results space.
         // var firstItemPosition = ko.observable();
 
@@ -154,7 +154,7 @@ define([
                 return;
             }
             lastQuery = query;
-            currentSearch.cancel();            
+            currentSearch.cancel();
 
             // ensure search is runnable
             if (!query.input) {
@@ -216,7 +216,7 @@ define([
                         return set;
                     }, {});
 
-                    // TODO: we need an ES5 
+                    // TODO: we need an ES5
                     // TODO: working? what does this do?
                     result.items.forEach(function (object) {
                         if (selected[object.matchClass.ref.ref]) {
@@ -245,7 +245,7 @@ define([
                             searchState.page(1);
                         }
                     }
-                }) 
+                })
                 .catch(function (err) {
                     searchState.status('error');
                     searchState.errorMessage(err.message);
@@ -287,13 +287,13 @@ define([
                 withPublicData: searchState.withPublicData()
             };
         });
-        
+
         subscriptions.add(searchQuery.subscribe(function (newValue) {
             runSearch(newValue);
         }));
 
         // // ACTIONS
-        
+
         function doToggleShowMatches(currentlyShowing) {
             searchState.buffer().forEach(function (item) {
                 if (currentlyShowing) {
@@ -381,7 +381,7 @@ define([
                 name: ResultsComponent.name(),
                 params: {
                     searchState: 'searchState',
-                    
+
                     narrativesTotal: 'narrativesTotal',
                     referenceDataTotal: 'referenceDataTotal',
                     featuresTotal: 'featuresTotal',

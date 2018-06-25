@@ -15,26 +15,26 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
+    const t = html.tag,
         div = t('div'),
         span = t('span'),
         input = t('input'),
         select = t('select');
 
     function viewModel(params, componentInfo) {
-        let context = ko.contextFor(componentInfo.element);
-        let runtime = context['$root'].runtime;
+        const context = ko.contextFor(componentInfo.element);
+        const runtime = context['$root'].runtime;
 
-        let subscriptions = new SubscriptionManager;
+        const subscriptions = new SubscriptionManager;
 
-        let data = Data.make({
+        const data = Data.make({
             runtime: runtime
         });
 
-        let selectedNarrative = ko.observable();
+        const selectedNarrative = ko.observable();
         selectedNarrative.syncWith(params.selectedNarrative);
 
-        let sortOptions = [
+        const sortOptions = [
             {
                 label: 'Title',
                 value: 'title',
@@ -51,9 +51,9 @@ define([
                 selected: ko.observable(false)
             },
         ];
-        let sortOption = ko.observable('date');
+        const sortOption = ko.observable('date');
 
-        let sortDirection = ko.observable('descending');
+        const sortDirection = ko.observable('descending');
 
         function doToggleSort() {
             sortDirection(sortDirection() === 'descending' ? 'ascending' : 'descending');
@@ -61,9 +61,9 @@ define([
 
         // TODO: a ready() flag so we can disable the control until data is loaded.
 
-        let ready = ko.observable(false);
-        let narratives = ko.observableArray([]);
-        let error = ko.observable();
+        const ready = ko.observable(false);
+        const narratives = ko.observableArray([]);
+        const error = ko.observable();
         data.getWritableNarratives()
             .then(function (writableNarratives) {
                 writableNarratives.forEach(function (narrative) {
@@ -93,11 +93,11 @@ define([
                 error(err);
             });
 
-        let inputValue = ko.observable().extend({rateLimit: 150});
+        const inputValue = ko.observable().extend({rateLimit: 150});
 
-        let loading = ko.observable(false);
+        const loading = ko.observable(false);
 
-        let searchExpression = ko.pureComputed(function () {
+        const searchExpression = ko.pureComputed(function () {
             if (!inputValue() || inputValue().length < 2) {
                 return null;
             }
@@ -113,23 +113,23 @@ define([
             return 0;
         }
 
-        let sortDir = ko.pureComputed(function () {
+        const sortDir = ko.pureComputed(function () {
             if (sortDirection() === 'ascending') {
                 return 1;
             } else {
                 return -1;
             }
-        }); 
+        });
 
-        // var narrativesFiltered = narratives            
+        // var narrativesFiltered = narratives
         //     .filter(function (narrative) {
         //         if (!searchExpression()) {
         //             return true;
         //         }
-                
+
         //         var searchString = searchExpression().toLowerCase();
         //         return Object.keys(narrative.searchable).some(function (key) {
-        //             return (narrative.searchable[key].indexOf(searchString) >= 0); 
+        //             return (narrative.searchable[key].indexOf(searchString) >= 0);
         //         });
         //     });
 
@@ -140,7 +140,7 @@ define([
         //         })
         // });
 
-        let narrativesFiltered = ko.pureComputed(function () {
+        const narrativesFiltered = ko.pureComputed(function () {
             var search = searchExpression();
 
             var nar;
@@ -151,7 +151,7 @@ define([
                 nar = narratives()
                     .filter(function (narrative) {
                         return Object.keys(narrative.searchable).some(function (key) {
-                            return (narrative.searchable[key].indexOf(searchString) >= 0); 
+                            return (narrative.searchable[key].indexOf(searchString) >= 0);
                         });
                     });
             }
@@ -162,13 +162,13 @@ define([
                 .sort(function (a, b) {
                     var dir = sortDir();
                     switch (sortField) {
-                    case 'title':                        
+                    case 'title':
                         return dir * cmp(a.sortable.title, b.sortable.title);
                     case 'username':
                         return dir * cmp(a.sortable.username, b.sortable.username);
                     case 'date':
                     default:
-                        return dir * cmp(a.sortable.date, b.sortable.date);                    
+                        return dir * cmp(a.sortable.date, b.sortable.date);
                     }
                 });
         });
@@ -188,7 +188,7 @@ define([
                 selected.selected(false);
                 selectedNarrative(null);
                 return;
-            } 
+            }
             narrativesFiltered().forEach(function (narrative) {
                 narrative.selected(false);
             });
@@ -207,7 +207,7 @@ define([
         function doClearSearch() {
             inputValue('');
             // inputValue.reset();
-            // restoring the value should be all we need to do... 
+            // restoring the value should be all we need to do...
         }
 
         function dispose() {
@@ -228,7 +228,7 @@ define([
             sortOption: sortOption,
             sortDirection: sortDirection,
             ready: ready,
-        
+
             doDeactivate: doDeactivate,
             doActivate: doActivate,
             doToggleSort: doToggleSort,
@@ -341,7 +341,7 @@ define([
                             click: 'doToggleSort'
                         }
                     }),
-                   
+
                     span({
                         class: ['input-group-addon', 'fa', 'fa-times', styles.classes.addonButton],
                         style: {
@@ -389,9 +389,9 @@ define([
                             }
                         }, [
                             'Showing ',
-                            gen.if('narrativesFiltered().length === totalCount()', 
+                            gen.if('narrativesFiltered().length === totalCount()',
                                 span([
-                                    'all ', 
+                                    'all ',
                                     span({
                                         dataBind: {
                                             typedText: {

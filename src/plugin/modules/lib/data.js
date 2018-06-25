@@ -34,7 +34,7 @@ define([
                     }
                     var objectInfo = apiUtils.objectInfoToObject(result.infos[0]);
                     return Promise.all([
-                        objectInfo, 
+                        objectInfo,
                         rpc.call('Workspace', 'get_workspace_info', {
                             id: objectInfo.wsid
                         })
@@ -141,10 +141,10 @@ define([
                 ref: arg.sourceObjectRef,
                 target_ws_id: arg.targetWorkspaceId
             })
-                .spread(function (copiedObjectInfo) {  
+                .spread(function (copiedObjectInfo) {
                     // NB: the narrative service will have already transformed
                     // the workspace object info into a structure compatible with
-                    // the venerable objectInfoToObject :)                 
+                    // the venerable objectInfoToObject :)
                     return copiedObjectInfo;
                 });
         }

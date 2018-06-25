@@ -39,7 +39,7 @@ define([
             marginLeft: '6px'
         }
     });
-            
+
 
     function viewModel(params) {
         var resultsView = params.resultsView;
@@ -59,13 +59,13 @@ define([
             }
         ];
 
-        return { 
+        return {
             resultsView: resultsView,
             viewOptions: viewOptions
         };
     }
 
-    function template () {
+    function template() {
         return div({
             class: 'form-inline pull-right'
         }, [

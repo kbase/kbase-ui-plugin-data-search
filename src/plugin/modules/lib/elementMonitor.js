@@ -36,10 +36,10 @@ define([], function () {
         function start() {
             notifyIfChanged();
             doLoop = true;
-            loop();                
+            loop();
         }
 
-        function stop () {
+        function stop() {
             doLoop = false;
             if (timer) {
                 window.clearTimeout(timer);

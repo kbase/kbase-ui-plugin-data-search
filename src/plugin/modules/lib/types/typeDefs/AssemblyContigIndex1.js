@@ -21,13 +21,13 @@ define([
         {
             id: 'description',
             label: 'Description'
-        },        
+        },
         {
             id: 'length',
             label: 'Length',
             type: 'number',
             format: '0,0'
-        }, 
+        },
         {
             id: 'gcContent',
             label: 'GC Content',
@@ -70,12 +70,12 @@ define([
             label: 'Length'
         }
     ];
-      
+
 
     class AssemblyContig1 extends SubObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -87,15 +87,15 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             return {
                 description: data.description,
                 contigId: data.contig_id,
                 length: data.value,
-                gcContent: data.gc_content, 
+                gcContent: data.gc_content,
             };
         }
     }
- 
+
     return AssemblyContig1;
 });

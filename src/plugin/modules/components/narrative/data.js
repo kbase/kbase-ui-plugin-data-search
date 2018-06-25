@@ -33,7 +33,7 @@ define([
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
             }
-            
+
             var ref = type.getRef();
             var detail = type.detail();
             var detailMap = detail.reduce(function (m, field) {
@@ -48,13 +48,13 @@ define([
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
-                
+
                 var label = type.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
-                }            
-               
+                }
+
                 matches.push({
                     id: field,
                     label: label,
@@ -94,7 +94,7 @@ define([
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
                 title: obj.object_name,
-                name: obj.object_name,                
+                name: obj.object_name,
                 date: new Date(obj.timestamp),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
 
@@ -133,7 +133,7 @@ define([
                     // get a separate array of items
                     .map(function (item) {
                         return item;
-                    });                    
+                    });
 
                 // Get the summary of object types per narrative.
                 var summary = {};
@@ -210,7 +210,7 @@ define([
                                 };
                             }
                             // console.log('narrative info?', objectResults);
-                            
+
                             var narrative =  {
                                 isNarrative: info[0] ? true : false,
                                 name: info[0],
@@ -226,17 +226,17 @@ define([
                                 },
                                 active: ko.observable(false)
                             };
-                            narrative.url = window.location.origin + 
-                                            '/narrative/ws.' + 
-                                            narrative.ref.workspaceId + 
-                                            '.obj.' + 
-                                            narrative.ref.objectId;                            
+                            narrative.url = window.location.origin +
+                                            '/narrative/ws.' +
+                                            narrative.ref.workspaceId +
+                                            '.obj.' +
+                                            narrative.ref.objectId;
                             return narrative;
                         })
                         .sort(function (a, b) {
                             return -(a.ref.workspaceId - b.ref.workspaceId);
                         });
-                    
+
                     return {
                         items: objects,
                         narratives: narratives,

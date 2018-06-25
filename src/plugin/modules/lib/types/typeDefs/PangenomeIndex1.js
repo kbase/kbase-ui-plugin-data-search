@@ -25,7 +25,7 @@ define([
             format: '0,0'
         }, {
             id: 'orthologCount',
-            label: 'Ortholog Count', 
+            label: 'Ortholog Count',
             type: 'number',
             format: '0,0'
         }
@@ -39,17 +39,17 @@ define([
         type: {
             label: 'Pangenome Type',
             type: 'string'
-        }, 
+        },
         genomes: {
             label: 'Genomes',
             type: 'integer'
-        },  
+        },
         orhtologs: {
             label: 'Orthologs',
             type: 'integer'
         }
     };
-    
+
     const sortFields = [
         {
             key: 'name',
@@ -64,7 +64,7 @@ define([
     class TaxonIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -76,15 +76,15 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             return {
                 name: data.name,
                 type: data.type,
                 genomeCount: data.genome_refs,
-                orthologCount: data.orthologs 
+                orthologCount: data.orthologs
             };
         }
     }
- 
+
     return TaxonIndex1;
 });

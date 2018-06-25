@@ -97,7 +97,7 @@ define([
                 },
                 // label: params.tab.label,
                 panel: {
-                    component: params.panel.component, 
+                    component: params.panel.component,
                     content: params.panel.content
                 },
                 // component: params.component,
@@ -167,7 +167,7 @@ define([
                 style: {
                     display: 'inline-block'
                 }
-            }, [                
+            }, [
                 span({
                     dataBind: {
                         text: 'tab.label'
@@ -206,7 +206,7 @@ define([
                     attr: {
                         active: 'active'
                     },
-                    css: { 
+                    css: {
                         in: 'active',
                         active: 'active'
                     },

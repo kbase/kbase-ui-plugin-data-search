@@ -40,7 +40,7 @@ define([
 
     function rowBackgroundColor(opacity) {
         return 'rgba(220,220,220,' + opacity + ')';
-    }        
+    }
 
     var styles = html.makeStyles({
         component: {
@@ -53,14 +53,14 @@ define([
         },
         body: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'column'
             }
-        },   
+        },
         row: {
             css: {
-                flex: '1 1 auto',                
+                flex: '1 1 auto',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center'
@@ -79,7 +79,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        },      
+        },
         objectRow: {
             css: {
                 backgroundColor: rowBackgroundColor(0.4),
@@ -89,7 +89,7 @@ define([
                     backgroundColor: rowBackgroundColor(0.6)
                 }
             }
-        },   
+        },
         rowCell: {
             css: {
                 padding: '4px',
@@ -113,7 +113,7 @@ define([
                     backgroundColor: 'yellow',
                     fontWeight: 'bold'
                 }
-            }            
+            }
         },
         resultsTable: {
             css: {
@@ -141,7 +141,7 @@ define([
                     wordBreak: 'break-word'
                 }
             }
-        }, 
+        },
         highlightsTable: {
             css: {
                 // border: '0.5px solid rgba(220,220,220,0.5)',
@@ -343,14 +343,14 @@ define([
             display: 'flex',
             flexDirection: 'column'
         },
-    });        
+    });
 
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
         var appBus = context['$root'].appBus;
-        // If this is not an Element, it was installed with a comment and 
+        // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
-        
+
         var searchState = params.searchState;
 
         // ACTIONS
@@ -423,9 +423,9 @@ define([
                 });
             }
         }
-       
+
         function doNextPage() {
-            
+
             params.doNextPage();
         }
 
@@ -580,7 +580,7 @@ define([
             '<!-- /ko -->'
         ];
     }
-    
+
     function buildSubObjectLink() {
         return [
             '<!-- ko switch: matchClass.id -->',
@@ -708,7 +708,7 @@ define([
             // as either a raw value (e.g. string) or
             // component, just as we do for detail view
             // and in other search tools...
-            // but expediency says, just get it done 
+            // but expediency says, just get it done
             // quickly first.
             div({
                 class: styles.classes.rowCell,
@@ -725,7 +725,7 @@ define([
                     }
                 }
             })),
-            
+
             // div({
             //     dataBind: {
             //         text: 'featureFunctions'
@@ -804,7 +804,7 @@ define([
                     }
                 }),
                 // '<!-- ko if: $data.highlights -->',
-            
+
                 // td([
                 //     '<!-- ko foreach: $data.highlights -->',
                 //     span({
@@ -823,7 +823,7 @@ define([
                 //     //         text: 'match'
                 //     //     },
                 //     //     class: 'highlight'
-                //     // }), ' ', 
+                //     // }), ' ',
                 //     // span({
                 //     //     dataBind: {
                 //     //         text: 'after'
@@ -831,14 +831,14 @@ define([
                 //     // }),
                 //     '<!-- /ko -->',
                 // ]),
-                
+
                 // '<!-- /ko -->',
                 // '<!-- ko ifnot: $data.highlights -->',
-                
+
                 '<!-- ko ifnot: $data.value -->',
                 td(ui.buildNA()),
                 '<!-- /ko -->',
-                
+
                 '<!-- ko if: $data.value -->',
 
                 '<!-- ko if: $data.type -->',
@@ -936,7 +936,7 @@ define([
                                 div({
                                     class: styles.classes.sectionTitle
                                 }, 'Matches'),
-        
+
                                 '<!-- ko if: matches.length > 0 -->',
                                 buildMatchHighlightsTable(),
                                 '<!-- /ko -->',
@@ -947,13 +947,13 @@ define([
                                         fontStyle: 'italic'
                                     }
                                 }, [
-                                    'No matches reported ... ', 
+                                    'No matches reported ... ',
                                     span({class: 'fa fa-bug fa-rotate-90'}),
                                     ' ... it is a mystery!'
                                 ]),
                                 '<!-- /ko -->',
                             ]),
-        
+
                             '<!-- /ko -->'
                         ]),
                         div({
@@ -1211,7 +1211,7 @@ define([
             //         click: 'function(d,e){$component.doToggleShowDetails.call($component,d,e);}',
             //         // text: 'isOpen() ? "Close genome detail":"Open genome detail"'
             //     }
-            // }, gen.if('showItemDetail()', 
+            // }, gen.if('showItemDetail()',
             //     span([
             //         'hide feature details ',
             //         span({
@@ -1275,7 +1275,7 @@ define([
                     width: '100%',
                     textAlign: 'center'
                 }
-            }, 'N') )
+            }, 'N'))
         ]);
     }
 
@@ -1307,7 +1307,7 @@ define([
                     dataBind: {
                         text: 'workspaceInfo.title',
                         attr: {
-                            href: '"narrative/ws." + workspaceInfo.workspaceId + ".obj." + workspaceInfo.objectId' 
+                            href: '"narrative/ws." + workspaceInfo.workspaceId + ".obj." + workspaceInfo.objectId'
                         }
                     },
                     target: '_blank'
@@ -1512,7 +1512,7 @@ define([
                     //     'workspaceInfo.type === "unknown"',
                     //     buildUnknownInfo(),
                     // ]),
-                    
+
                     // div([
                     //     span({
                     //         style: {
@@ -1637,8 +1637,8 @@ define([
                     width: '50%'
                 }
             }),
-          
-            p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' + 
+
+            p('All search terms are "and"ed together -- you will get objects which include all of the terms you submit. ' +
               ' In addition, terms are matched against whole words (no partial matches) and wildcards are not supported.')
         ]);
     }
@@ -1702,7 +1702,7 @@ define([
                 ])
             ]),
             '<!-- /ko -->',
-           
+
         ]);
     }
 
@@ -1731,7 +1731,7 @@ define([
                     }
                 }, 'Show Error')
             ])
-           
+
         ]);
     }
 
@@ -1772,11 +1772,11 @@ define([
 
                 '<!-- ko case: "notfound" -->',
                 buildNotFound(),
-                '<!-- /ko -->',              
+                '<!-- /ko -->',
 
                 '<!-- ko case: "error" -->',
                 buildError(),
-                '<!-- /ko -->',                
+                '<!-- /ko -->',
 
                 '<!-- ko case: "searching" -->',
                 buildSearching(),

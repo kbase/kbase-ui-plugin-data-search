@@ -51,7 +51,7 @@ define([
             type: 'string'
         }
     };
-    
+
     const sortFields = [
         {
             key: 'scientific_name',
@@ -66,7 +66,7 @@ define([
     class TaxonIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -78,7 +78,7 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             return {
                 scientificName: data.scientific_name,
                 scientificLineage: utils.parseTaxonomy(data.scientific_lineage),
@@ -87,6 +87,6 @@ define([
             };
         }
     }
- 
+
     return TaxonIndex1;
 });

@@ -81,7 +81,7 @@ define([
                         }
                     };
 
-                    // Don't want to really replace, but update_user_profile only 
+                    // Don't want to really replace, but update_user_profile only
                     return updateUserProfile(profileUpdate);
                 })
                 .catch(function (err) {

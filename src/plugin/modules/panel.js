@@ -7,16 +7,16 @@ define([
     './lib/types',
     './lib/nanoBus'
 ], function (
-    Promise, 
+    Promise,
     ko,
-    html, 
+    html,
     BS,
     MainComponent,
     Types,
     NanoBus
 ) {
     'use strict';
-    
+
     function factory(config) {
         var hostNode, container,
             runtime = config.runtime,
@@ -106,9 +106,9 @@ define([
                     ko.applyBindings(viewModel, container, function (context) {
                         context.runtime = runtime;
                     });
-        
+
                     runtime.send('ui', 'setTitle', 'Data Search (BETA)');
-                });            
+                });
         }
 
         function stop() {

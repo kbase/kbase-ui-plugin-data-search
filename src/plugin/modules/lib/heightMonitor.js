@@ -21,8 +21,8 @@ define([], function () {
             }, rateLimitTimeout);
         }
 
-        function start() {                
-            onHeightCalc(calcHeight());                
+        function start() {
+            onHeightCalc(calcHeight());
             window.addEventListener('resize', doResize, false);
         }
 
