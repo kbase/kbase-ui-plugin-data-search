@@ -57,14 +57,14 @@ define([
                 if (field === 'source_tags') {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
-                } 
+                }
 
                 var label = type.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
-                }  
-               
+                }
+
                 matches.push({
                     id: field,
                     label: label,
@@ -76,7 +76,7 @@ define([
                 });
                 return matches;
             }, []);
-           
+
             // Uncomment to re-enable highlights merging into details
             // detail.forEach(function (field) {
             //     if (matchMap[field.id]) {
@@ -103,7 +103,7 @@ define([
 
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
-                name: obj.object_name,                
+                name: obj.object_name,
                 date: new Date(obj.timestamp),
 
                 id: detailMap.id.value,
@@ -121,10 +121,10 @@ define([
         }
 
         function objectInfoToGenomeInfo(info) {
-            let [objectId, objectName, /* type */, saveDate, objectVersion, savedBy,
+            const [objectId, objectName, /* type */, saveDate, objectVersion, savedBy,
                 workspaceId, /* workspaceName */, /* checksum */, /*size */, meta] = info;
-            // JS doesn't like the +0000 offset in the date string.            
-            let savedDate = saveDate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
+            // JS doesn't like the +0000 offset in the date string.
+            const savedDate = saveDate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
                 return '+' + hours + ':' + minutes;
             });
             return {
@@ -156,14 +156,14 @@ define([
         }
 
         function workspaceInfoToContainerInfo(info) {
-            let [id, workspace, owner, moddate, /* max_objid */, 
-                /* user_permission */, 
+            const [id, workspace, owner, moddate, /* max_objid */,
+                /* user_permission */,
                 /* globalread */, /* lockstat */, metadata] = info;
             // ServiceUtils.workspaceInfoToObject(info);
-            let modifiedDate = moddate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
+            const modifiedDate = moddate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
                 return '+' + hours + ':' + minutes;
             });
-            let containerInfo = {
+            const containerInfo = {
                 workspaceId: id,
                 owner: owner,
                 modificationDate: new Date(modifiedDate)
@@ -216,7 +216,7 @@ define([
 
                     // Group the results by object reference.
                     var byObjectRef = objects.reduce((byObjectRef, object) => {
-                        let ref = object.ref.objectRef;
+                        const ref = object.ref.objectRef;
                         if (!byObjectRef[ref]) {
                             byObjectRef[ref] = {
                                 ref: object.ref,
@@ -227,21 +227,21 @@ define([
                         return byObjectRef;
                     }, {});
                     let groupedByObjectRef = Object.keys(byObjectRef).map((ref) => {
-                        let group = byObjectRef[ref];
+                        const group = byObjectRef[ref];
                         return group;
                     });
 
                     // Now get the object and workspace info from the results itself :)
-                    let objectInfoMap = Object.keys(objectResults.objects_info)
+                    const objectInfoMap = Object.keys(objectResults.objects_info)
                         .reduce((objectInfoMap, key) => {
-                            let info = objectInfoToGenomeInfo(objectResults.objects_info[key]);
+                            const info = objectInfoToGenomeInfo(objectResults.objects_info[key]);
                             objectInfoMap[info.ref] = info;
                             return objectInfoMap;
                         }, {});
 
-                    let workspaceInfoMap = Object.keys(objectResults.access_groups_info)
+                    const workspaceInfoMap = Object.keys(objectResults.access_groups_info)
                         .reduce((workspaceInfoMap, key) =>{
-                            let info = workspaceInfoToContainerInfo(objectResults.access_groups_info[key]);
+                            const info = workspaceInfoToContainerInfo(objectResults.access_groups_info[key]);
                             workspaceInfoMap[String(info.workspaceId)] = info;
                             return workspaceInfoMap;
                         }, {});

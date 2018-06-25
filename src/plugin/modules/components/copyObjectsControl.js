@@ -2,7 +2,7 @@ define([
     'knockout-plus',
     'kb_common/html',
     './dialogs/copyObjects'
-], function(
+], function (
     ko,
     html,
     CopyObjectComponent
@@ -32,7 +32,7 @@ define([
             }
         });
 
-        return { 
+        return {
             doCopyObjects: doCopyObjects,
             selectedObjects: params.selectedObjects,
             buttonTitle: buttonTitle

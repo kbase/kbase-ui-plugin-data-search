@@ -20,7 +20,7 @@ define([], function () {
                         job.cancel();
                     } catch (ex) {
                         console.error('Error canceling search', ex);
-                    }                        
+                    }
                     state = 'canceled';
                 }
             }

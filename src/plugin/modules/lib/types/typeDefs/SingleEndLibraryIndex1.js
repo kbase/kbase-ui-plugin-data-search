@@ -84,7 +84,7 @@ define([
             type: 'float'
         }
     };
-        
+
     const sortFields = [
         {
             key: 'technology',
@@ -103,7 +103,7 @@ define([
     class SingleEndLibraryIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -115,7 +115,7 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             return {
                 sequencingTechnology: data.sequencing_tech,
                 phredType: data.phred_type,

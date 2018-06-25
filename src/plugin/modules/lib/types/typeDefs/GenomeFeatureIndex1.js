@@ -127,7 +127,7 @@ define([
             type: 'string'
         }
     };
-        
+
     const sortFields = [
         {
             isObjectName: false,
@@ -148,7 +148,7 @@ define([
             label: 'Start'
         }
     ];
-      
+
 
     function parseAliases(aliases) {
         if (!aliases) {
@@ -165,7 +165,7 @@ define([
     class GenomeFeature1 extends SubObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -218,13 +218,13 @@ define([
                 functions: [data.function],
                 location: location,
                 proteinTranslation: proteinTranslation,
-                proteinLength: proteinLength 
+                proteinLength: proteinLength
                 // domain: this.object.parent_data.domain,
                 // scientificName: this.object.parent_data.scientific_name,
                 // taxonomy: utils.parseTaxonomy(this.object.parent_data.taxonomy)
             };
         }
     }
- 
+
     return GenomeFeature1;
 });

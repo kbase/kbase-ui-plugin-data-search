@@ -52,7 +52,7 @@ define([
             display: 'flex',
             flexDirection: 'column'
         }
-    });     
+    });
 
     function SearchState() {
         var pageSize = ko.observable(20);
@@ -70,7 +70,7 @@ define([
 
         // holds search result items for display
         var buffer = ko.observableArray();
-       
+
         // position of first item in the buffer in the total search results space.
         // var firstItemPosition = ko.observable();
 
@@ -140,7 +140,7 @@ define([
                 return;
             }
             lastQuery = query;
-            currentSearch.cancel();            
+            currentSearch.cancel();
 
             // ensure search is runnable
             if (!query.input) {
@@ -198,7 +198,7 @@ define([
                         return set;
                     }, {});
 
-                    // TODO: we need an ES5 
+                    // TODO: we need an ES5
                     result.items.forEach(function (object) {
                         if (selected[object.matchClass.ref.objectRef]) {
                             object.selected(true);
@@ -224,7 +224,7 @@ define([
                             searchState.page(1);
                         }
                     }
-                }) 
+                })
                 .catch(function (err) {
                     searchState.status('error');
                     searchState.errorMessage(err.message);
@@ -262,13 +262,13 @@ define([
                 forced: params.forceSearch()
             };
         });
-        
+
         subscriptions.add(searchQuery.subscribe(function (newValue) {
             runSearch(newValue);
         }));
 
         // // ACTIONS
-        
+
         function doToggleShowMatches(currentlyShowing) {
             searchState.buffer().forEach(function (item) {
                 if (currentlyShowing) {

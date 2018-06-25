@@ -6,22 +6,22 @@ define([
     'use strict';
 
     const isViewable = true;
-    const isCopyable = true; 
-    const uiClass = 'dataObject';  
+    const isCopyable = true;
+    const uiClass = 'dataObject';
 
     class ObjectIndexBase extends IndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
                 isViewable, isCopyable, uiClass
-            }));            
+            }));
         }
-       
+
         getRef() {
             if (this.objectRef) {
                 return this.objectRef;
             }
-            let m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-            let objectRef = m.slice(1, 4).join('/');
+            const m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
+            const objectRef = m.slice(1, 4).join('/');
             this.objectRef =  {
                 workspaceId: parseInt(m[1]),
                 objectId: parseInt(m[2]),

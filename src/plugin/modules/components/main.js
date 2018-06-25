@@ -89,16 +89,16 @@ define([
                 var stopWords = whiteSpaceStripped.filter(function (term) {
                     return data.isStopWord(term);
                 });
-                if (stopWordsStripped.length === 0) {                    
+                if (stopWordsStripped.length === 0) {
                     return {
                         terms: [],
-                        diagnosis: 'just-stopwords',                    
+                        diagnosis: 'just-stopwords',
                         theStopWords: stopWords
                     };
                 }
                 return {
                     terms: stopWordsStripped,
-                    diagnosis: 'some-stopwords',                    
+                    diagnosis: 'some-stopwords',
                     theStopWords: stopWords
                 };
             }
@@ -132,7 +132,7 @@ define([
                 return [
                     'The search included some "stop words".',
                     'Stop words are considered too common to be usefully applied to a search ' +
-                    'and are removed from the terms before submitting the query.',                
+                    'and are removed from the terms before submitting the query.',
                     'The following stop words were detected and removed: ' + terms.theStopWords.join(', ') + '.',
                     'The terms sent were: ' + terms.terms.join(' ')
                 ];
@@ -223,8 +223,8 @@ define([
         }));
 
         var narrativesTotalQuery = ko.pureComputed(function () {
-            var terms = searchTerms().terms;            
-            
+            var terms = searchTerms().terms;
+
             return {
                 query: terms.join(' '),
                 withPrivateData: withPrivateData(),
@@ -251,7 +251,7 @@ define([
                 withPublicData: withPublicData()
             };
         });
-        
+
         if (runtime.allow('alpha')) {
             subscriptions.add(featuresTotalQuery.subscribe(function (newQuery) {
                 if (!newQuery.query) {
@@ -492,7 +492,7 @@ define([
                 narrativesTotal: 'narrativesTotal',
                 referenceDataTotal: 'referenceDataTotal',
                 featuresTotal: 'featuresTotal',
-                
+
                 withPrivateData: 'withPrivateData',
                 withPublicData: 'withPublicData'
             }
@@ -502,7 +502,7 @@ define([
     function template() {
         return div({
             class: styles.classes.component,
-            dataKBTesthookComponent: 'main',            
+            dataKBTesthookComponent: 'main',
         }, [
             div({
                 class: styles.classes.navArea

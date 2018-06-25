@@ -130,7 +130,7 @@ define([
         // hack to ensure that clicking in side the history control does not close it!
         var historyContainerId = html.genId();
 
-        function clickListener (ev) {
+        function clickListener(ev) {
             var elementType = ev.target.getAttribute('data-type');
             if (['history-toggle-button', 'history-toggle-button-icon', 'history-item'].indexOf(elementType) == -1) {
                 showHistory(false);
@@ -312,7 +312,7 @@ define([
             }, [
                 input({
                     class: 'form-control',
-                    title: 'Enter one or more search terms here, the press Enter/Return or click the search icon',               
+                    title: 'Enter one or more search terms here, the press Enter/Return or click the search icon',
                     dataBind: {
                         textInput: 'searchControlValue',
                         // value: 'searchInput',
@@ -336,7 +336,7 @@ define([
                     }
                 }, [
                     '<!-- ko if: searchHistory().length > 0 -->',
-                    '<!-- ko foreach: searchHistory -->',                    
+                    '<!-- ko foreach: searchHistory -->',
                     div({
                         dataBind: {
                             text: '$data',
@@ -360,7 +360,7 @@ define([
                 div({
                     class: styles.classes.warningContainer,
                 }, [
-                   
+
                     div({
                         dataBind: {
                             foreach: 'warnings'

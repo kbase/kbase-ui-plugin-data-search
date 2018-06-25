@@ -880,7 +880,7 @@ define([
                     width: '100%',
                     textAlign: 'center'
                 }
-            }, 'N') )
+            }, 'N'))
         ]);
     }
 

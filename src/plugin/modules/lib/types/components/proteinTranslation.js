@@ -15,7 +15,7 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
+    const t = html.tag,
         button = t('button'),
         span = t('span'),
         div = t('div');
@@ -59,7 +59,7 @@ define([
                     click: 'function (d,e) {return $component.doToggleShow.call($component,d,e);}',
                     // text: 'showing() ? "Hide" : "Show"'
                 }
-            },  gen.if('showing()', 
+            },  gen.if('showing()',
                 span([
                     'hide ',
                     span({
@@ -72,16 +72,16 @@ define([
                         class: 'fa fa-caret-right'
                     })
                 ])))),
-            gen.if('showing', 
+            gen.if('showing',
                 div({
                     dataBind: {
                         text: 'value'
                     }
-                }))                
+                }))
         ]);
     }
 
-    function template() {        
+    function template() {
         return div([
             gen.if('isEmpty', ui.buildNA(), buildProtein())
         ]);

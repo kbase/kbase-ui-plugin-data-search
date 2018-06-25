@@ -54,7 +54,7 @@ define([
                         format: '"0,0"'
                     }
                 }
-            }), ' ', 
+            }), ' ',
             span({
                 dataBind: {
                     labelText: {
@@ -63,7 +63,7 @@ define([
                         labels: '$root.labels'
                     }
                 }
-            }), 
+            }),
 
             '<!-- ko if: $index() !== $parent.typeCounts().length - 1 -->',
             ', ',
@@ -83,7 +83,7 @@ define([
                     display: 'flex',
                     alignItems: 'center'
                 }
-            }, buildSearchSummary())            
+            }, buildSearchSummary())
         ]);
     }
 

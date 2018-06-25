@@ -78,7 +78,7 @@ define([
     function template() {
         return ui.buildDialog({
             type: 'error',
-            title: buildTitle(), 
+            title: buildTitle(),
             body: buildErrorViewer()
         });
     }

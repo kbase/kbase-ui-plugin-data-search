@@ -98,7 +98,7 @@ define([
 
     function template() {
         return buildLocationTable();
-        
+
     }
 
     function component() {

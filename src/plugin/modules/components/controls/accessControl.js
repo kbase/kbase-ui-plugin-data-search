@@ -82,8 +82,8 @@ define([
                 title: 'Indicate whether to show private data - your data or shared directly with you',
                 dataBind: {
                     css: 'withPrivateData() ? "' + styles.classes.activeFilterInput + '" : null'
-                }          
-            }, label({                
+                }
+            }, label({
                 class: styles.classes.checkboxLabel
             }, [
                 input({
@@ -114,7 +114,7 @@ define([
         ]);
     }
 
-  
+
     function template() {
         return div({
             style: {

@@ -44,7 +44,7 @@ define([
             } else {
                 formatted = label.singular;
             }
-          
+
             element.innerText = formatted;
         }
     };
@@ -97,7 +97,7 @@ define([
 
         // holds search result items for display
         var buffer = ko.observableArray();
-       
+
         // position of first item in the buffer in the total search results space.
         // var firstItemPosition = ko.observable();
 
@@ -186,7 +186,7 @@ define([
                 searchState.isTruncated(null);
                 searchState.totalSearchHits(null);
                 searchState.summary.removeAll();
-                searchState.totalSearchSpace(null);               
+                searchState.totalSearchSpace(null);
                 return;
             }
 
@@ -214,7 +214,7 @@ define([
                         withPublicData: query.withPublicData
                     });
                 })
-                .then(function(result) {
+                .then(function (result) {
                     timer.stop('search');
                     timer.start('processing');
                     return result;
@@ -265,7 +265,7 @@ define([
                     // query terms.
                     // TODO: this will span the searchQuery, but since the page is transformed
                     // into the start field, and the start field value will be the same for an
-                    // initial search, the check for identical searchQuery in the subscription 
+                    // initial search, the check for identical searchQuery in the subscription
                     if (!searchState.page()) {
                         if (result.items.length > 0) {
                             searchState.page(1);
@@ -289,7 +289,7 @@ define([
             thisSearch.running(searchJob);
             return searchJob;
         }
-         
+
         var searchQuery = ko.pureComputed(function () {
             var page = searchState.page();
             var start;
@@ -298,7 +298,7 @@ define([
             } else {
                 start = 0;
             }
-           
+
             var terms = params.searchTerms();
 
             var forced = params.forceSearch();
@@ -314,12 +314,12 @@ define([
             };
         });
 
-        subscriptions.add(searchQuery.subscribe(function (newValue) {           
+        subscriptions.add(searchQuery.subscribe(function (newValue) {
             runSearch(newValue);
         }));
 
         // // ACTIONS
-        
+
         function doToggleShowObjects(currentlyShowingObjects) {
             searchState.buffer().forEach(function (item) {
                 if (currentlyShowingObjects) {

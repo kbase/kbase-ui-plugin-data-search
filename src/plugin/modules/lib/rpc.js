@@ -43,8 +43,8 @@ define([
                         });
                     } else if (err instanceof exceptions.RpcError) {
                         console.error('RPC Error', err);
-                        let message = 'An error was encountered running an rpc method';
-                        let detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
+                        const message = 'An error was encountered running an rpc method';
+                        const detail = 'The module is "' + err.module + '", the method "' + err.func + '", ' +
                                       'the error returned from the service is "' + (err.message || 'unknown') + '"';
                         throw new errors.DataSearchError('service-call-error', err.name, message, detail , {
                             originalError: err

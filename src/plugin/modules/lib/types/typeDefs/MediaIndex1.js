@@ -96,7 +96,7 @@ define([
     class MediaIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -121,6 +121,6 @@ define([
             };
         }
     }
- 
+
     return MediaIndex1;
 });

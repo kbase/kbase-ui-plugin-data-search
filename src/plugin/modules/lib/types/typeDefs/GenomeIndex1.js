@@ -68,7 +68,7 @@ define([
         },
         {
             id: 'sourceId',
-            label: 'Source ID', 
+            label: 'Source ID',
             type: 'string'
         }
 
@@ -148,12 +148,12 @@ define([
     //         return defaultValue;
     //     }
     // }
-      
+
 
     class GenomeIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -165,7 +165,7 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             return {
                 id: data.id,
                 domain: data.domain,

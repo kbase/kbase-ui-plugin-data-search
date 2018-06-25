@@ -7,7 +7,7 @@ define([
 ) {
     'use strict';
 
-    
+
     var t = html.tag,
         span = t('span'),
         label = t('label'),
@@ -42,17 +42,17 @@ define([
             marginLeft: '6px'
         }
     });
-            
+
 
     function viewModel(params) {
         var resultsView = params.resultsView;
 
-        return { 
+        return {
             resultsView: resultsView,
         };
     }
 
-    function template () {
+    function template() {
         return div({
             class: 'form-inline pull-right'
         }, [
@@ -61,7 +61,7 @@ define([
                 dataBind: {
                     css: 'resultsView() === "list" ? "' + styles.classes.activeFilterInput + '" : null'
                 },
-                class: ['form-control', styles.classes.radioControl]               
+                class: ['form-control', styles.classes.radioControl]
             }, label({
                 class: styles.classes.radioLabel
             }, [
@@ -79,7 +79,7 @@ define([
                 dataBind: {
                     css: 'resultsView() === "matches" ? "' + styles.classes.activeFilterInput + '" : null'
                 },
-                class: ['form-control', styles.classes.radioControl]    
+                class: ['form-control', styles.classes.radioControl]
             }, label({
                 class: styles.classes.radioLabel
             }, [
@@ -97,7 +97,7 @@ define([
                 dataBind: {
                     css: 'resultsView() === "detail" ? "' + styles.classes.activeFilterInput + '" : null'
                 },
-                class: ['form-control', styles.classes.radioControl]    
+                class: ['form-control', styles.classes.radioControl]
             }, label({
                 class: styles.classes.radioLabel
             }, [

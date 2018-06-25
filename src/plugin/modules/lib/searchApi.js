@@ -204,7 +204,7 @@ define([
                     skip_keys: 0,
                     skip_data: 0,
                     include_highlight: 1,
-                    add_workspace_info: 1
+                    add_access_group_info: 1
                 },
                 access_filter: {
                     with_private: arg.withPrivateData ? 1 : 0,
@@ -299,7 +299,7 @@ define([
                 throw new Error('Invalid data source: ' + arg.dataSource);
             }
 
-            return rpc.call('KBaseSearchEngine', 'search_types', param)            
+            return rpc.call('KBaseSearchEngine', 'search_types', param)
                 .spread(function (result) {
                     return result;
                 });

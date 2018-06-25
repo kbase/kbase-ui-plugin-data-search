@@ -13,7 +13,7 @@ define([
 
     const label = 'Narrative';
     const isViewable = false;
-    const isCopyable = false; 
+    const isCopyable = false;
     const uiClass = 'narrative';
 
     const detailFieldDefs = [
@@ -58,7 +58,7 @@ define([
             type: 'string'
         }
     };
-        
+
     const sortFields = [
         {
             key: 'title',
@@ -85,7 +85,7 @@ define([
     class NarrativeIndex1 extends IndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -121,6 +121,6 @@ define([
             return this.objectRef;
         }
     }
- 
+
     return NarrativeIndex1;
 });

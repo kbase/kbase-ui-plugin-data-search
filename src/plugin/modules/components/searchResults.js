@@ -35,7 +35,7 @@ define([
             tabsetBus.send('add-tab', {
                 tab: {
                     id: 'user-data',
-                    tab: {                        
+                    tab: {
                         label: 'User Data',
                         component: {
                             name: NarrativeTabComponent.name(),
@@ -71,7 +71,7 @@ define([
                 tabsetBus.send('add-tab', {
                     tab: {
                         id: 'genome-features',
-                        tab: {                           
+                        tab: {
                             label: 'Genome Features',
                             component: {
                                 name: FeaturesTabComponent.name(),
@@ -95,7 +95,7 @@ define([
                                     referenceDataTotal: params.referenceDataTotal,
                                     featuresTotal: params.featuresTotal,
                                     withPrivateData: params.withPrivateData,
-                                    withPublicData: params.withPublicData                                
+                                    withPublicData: params.withPublicData
                                 }
                             }
                         }
@@ -136,7 +136,7 @@ define([
                 }
             }, false);
 
-           
+
             tabsetBus.send('select-tab', 0);
         });
 
@@ -155,7 +155,7 @@ define([
             }
         });
     }
-    
+
     function template() {
         return div({
             style: {

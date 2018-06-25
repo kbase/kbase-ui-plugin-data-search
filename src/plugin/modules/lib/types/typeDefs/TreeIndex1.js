@@ -37,7 +37,7 @@ define([
             type: 'string'
         }
     };
-    
+
     const sortFields = [
         {
             key: 'type',
@@ -48,7 +48,7 @@ define([
     class TreeIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -60,7 +60,7 @@ define([
         }
 
         objectToData() {
-            let data = this.object.data;
+            const data = this.object.data;
             var labels = Object.keys(data.default_node_labels).map(function (key) {
                 return {
                     key: key,
@@ -73,6 +73,6 @@ define([
             };
         }
     }
- 
+
     return TreeIndex1;
 });

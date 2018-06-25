@@ -6,7 +6,7 @@ define([
     html
 ) {
     'use strict';
-    
+
     var t = html.tag,
         span = t('span');
 

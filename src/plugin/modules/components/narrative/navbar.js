@@ -139,7 +139,7 @@ define([
                 style: {
                     flex: '0 0 auto'
                 }
-            }, buildNavButtons()),            
+            }, buildNavButtons()),
             div({
                 class: styles.classes.cell,
                 style: {
@@ -164,7 +164,7 @@ define([
                         dataBind: {
                             text: 'page'
                         }
-                    }), 
+                    }),
                     ' of ',
                     span({
                         dataBind: {
@@ -227,7 +227,7 @@ define([
                     }
                 }
             }))
-            
+
         ]);
     }
 

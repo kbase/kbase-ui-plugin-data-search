@@ -3,7 +3,7 @@ define([
     'kb_common/html',
     './dialogs/copyObjects',
     './viewSelector'
-], function(
+], function (
     ko,
     html,
     CopyObjectComponent,
@@ -27,7 +27,7 @@ define([
             });
         }
 
-        return { 
+        return {
             resultsView: resultsView,
             doCopyObjects: doCopyObjects,
             selectedObjects: params.selectedObjects
@@ -73,7 +73,7 @@ define([
         }, 'Copy Selected...');
     }
 
-   
+
 
     function buildToolbar() {
         return div({

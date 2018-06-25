@@ -13,7 +13,7 @@ define([
 ) {
     'use strict';
 
-    let t = html.tag,
+    const t = html.tag,
         span = t('span'),
         div = t('div');
 
@@ -50,7 +50,7 @@ define([
         ]);
     }
 
-    function template() {        
+    function template() {
         return div([
             gen.if('isEmpty', ui.buildNA(), buildLineage())
         ]);

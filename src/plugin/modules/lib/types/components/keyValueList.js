@@ -24,7 +24,7 @@ define([
         constructor(params) {
             super(params);
 
-            let fieldParams = params.params || {};
+            const fieldParams = params.params || {};
 
             this.value = params.value;
             this.col1Header = fieldParams.col1 || 'key';

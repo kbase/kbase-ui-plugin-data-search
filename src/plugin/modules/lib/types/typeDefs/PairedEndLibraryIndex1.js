@@ -96,7 +96,7 @@ define([
             type: 'float'
         }
     };
-        
+
     const sortFields = [
         {
             key: 'technology',
@@ -115,7 +115,7 @@ define([
     class PairedEndLibraryIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
-                indexId, 
+                indexId,
                 indexVersion,
                 detailFieldDefs,
                 searchFields,
@@ -140,6 +140,6 @@ define([
             };
         }
     }
- 
+
     return PairedEndLibraryIndex1;
 });

@@ -11,7 +11,7 @@ define([
         span = t('span');
 
     /*
-        padRight pads the string to the right in order to have size 
+        padRight pads the string to the right in order to have size
         characters after the decimal place. If no decimal place, imagine.
     */
     function padRight(s, size) {
@@ -56,7 +56,7 @@ define([
             return (item.trim(' ').length !== 0);
         });
     }
-    
+
     function processTypeDef(def) {
         def.searchKeysMap = {};
         def.searchKeys.forEach(function (searchKey) {

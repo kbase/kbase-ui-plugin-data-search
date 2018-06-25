@@ -111,7 +111,7 @@ define([
                     dataBind: {
                         text: 'error'
                     }
-                })         
+                })
             }),
             '<!-- /ko -->'
         ];
@@ -192,7 +192,7 @@ define([
                             }
                         }))
                     ])
-                ]),                
+                ]),
                 '<!-- ko if: newNarrativeName -->',
                 p({
                     style: {
@@ -245,14 +245,14 @@ define([
                     }, 'Open It')
                 ]),
                 '<!-- /ko -->',
-                '<!-- /ko -->'                
+                '<!-- /ko -->'
             ])
         ]);
     }
 
     function template() {
         return ui.buildDialog({
-            title: span({dataBind: {text: 'title'}}), 
+            title: span({dataBind: {text: 'title'}}),
             icon: 'copy',
             body: buildBody(),
             buttons: [
