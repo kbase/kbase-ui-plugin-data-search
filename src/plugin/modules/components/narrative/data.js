@@ -194,6 +194,23 @@ define([
                     var narratives = Object.keys(objectResults.access_group_narrative_info)
                         .map(function (workspaceId) {
                             var info = objectResults.access_group_narrative_info[workspaceId];
+
+                            if (info === null) {
+                                return {
+                                    isNarrative: false,
+                                    name: 'not a narrative (name)',
+                                    title: 'not a narrative (title)',
+                                    ref: {
+                                        workspaceId: parseInt(workspaceId, 10),
+                                        objectId: null
+                                    },
+                                    modified: null,
+                                    owner: null,
+                                    active: ko.observable(false)
+                                };
+                            }
+                            // console.log('narrative info?', objectResults);
+                            
                             var narrative =  {
                                 isNarrative: info[0] ? true : false,
                                 name: info[0],
@@ -209,7 +226,11 @@ define([
                                 },
                                 active: ko.observable(false)
                             };
-                            narrative.url = window.location.origin + '/narrative/ws.' + narrative.ref.workspaceId + '.obj.' + narrative.ref.objectId;                            
+                            narrative.url = window.location.origin + 
+                                            '/narrative/ws.' + 
+                                            narrative.ref.workspaceId + 
+                                            '.obj.' + 
+                                            narrative.ref.objectId;                            
                             return narrative;
                         })
                         .sort(function (a, b) {
