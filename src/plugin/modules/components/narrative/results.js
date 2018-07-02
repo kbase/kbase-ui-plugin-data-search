@@ -962,7 +962,7 @@ define([
                 style: {
                     flex: '1'
                 }
-            }, a({
+            }, gen.if('owner === null', '(null)', a({
                 target: '_blank',
                 dataBind: {
                     attr: {
@@ -970,7 +970,7 @@ define([
                     },
                     text: 'owner.realName'
                 }
-            })),
+            }))),
             div({
                 class: styles.classes.rowCell,
                 style: {
