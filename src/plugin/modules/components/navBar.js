@@ -135,6 +135,9 @@ define([
             span({
                 class: styles.classes.label
             }, 'Search:'),
+            span({
+                class: [styles.classes.navLink, styles.scopes.active]
+            }, 'KBase - User Data, Genome Features, Reference Data'),
             a({
                 dataBind: {
                     attr: {
@@ -142,13 +145,7 @@ define([
                     }
                 },
                 class: [styles.classes.navLink]
-            }, 'JGI'),
-            span({
-                class: [styles.classes.navLink, styles.scopes.active]
-            }, 'KBase - User Data, Reference Data, Features'),
-            // span({
-            //     class: [styles.classes.navLink, styles.scopes.active]
-            // }, 'Reference Data')
+            }, 'JGI')
         ]);
     }
 
