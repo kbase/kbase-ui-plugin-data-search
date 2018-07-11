@@ -204,6 +204,8 @@ define([
 
         var withPrivateData = ko.observable(true);
         var withPublicData = ko.observable(true);
+        var withUserData = ko.observable(true);
+        var withReferenceData = ko.observable(true);
 
         var referenceDataTotalQuery = ko.pureComputed(function () {
             var terms = searchTerms().terms;
@@ -248,7 +250,9 @@ define([
             return {
                 query: terms.join(' '),
                 withPrivateData: withPrivateData(),
-                withPublicData: withPublicData()
+                withPublicData: withPublicData(),
+                withUserData: withUserData(),
+                withReferenceData: withReferenceData()
             };
         });
 
@@ -367,6 +371,8 @@ define([
 
             withPrivateData: withPrivateData,
             withPublicData: withPublicData,
+            withUserData: withUserData,
+            withReferenceData: withReferenceData,
 
             dispose: dispose
         };
@@ -494,7 +500,9 @@ define([
                 featuresTotal: 'featuresTotal',
 
                 withPrivateData: 'withPrivateData',
-                withPublicData: 'withPublicData'
+                withPublicData: 'withPublicData',
+                withUserData: 'withUserData',
+                withReferenceData: 'withReferenceData'
             }
         });
     }

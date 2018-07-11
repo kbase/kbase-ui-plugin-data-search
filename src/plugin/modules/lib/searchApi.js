@@ -238,13 +238,35 @@ define([
         function featuresSearchTotal(arg) {
             var query = arg.query;
 
+            let sourceTags;
+            let blacklistTags = false;
+            // TODO: if we ever get "narrative" as a source tag for
+            // user data, this logic will change.
+            if (arg.withReferenceData) {
+                if (arg.withUserData) {
+                    // need all data, just omit any source tag filtering
+                    sourceTags = [];
+                } else {
+                    // just ref data, so use the refdata source
+                    sourceTags = ['refdata'];
+                }
+            } else if (arg.withUserData) {
+                // Just user data, so blacklist refdata.
+                sourceTags = ['refdata'];
+                blacklistTags = 1;
+            } else {
+                // Neither selected, use a source tag which is
+                // ensured not to match.
+                sourceTags = ['nothing'];
+            }
+
             var param = {
                 object_types: ['GenomeFeature'],
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 0,
-                    source_tags: ['noindex'],
-                    source_tags_blacklist: 1
+                    source_tags: sourceTags,
+                    source_tags_blacklist: blacklistTags ? 1 : 0
                 },
                 pagination: {
                     start: 0,
@@ -255,7 +277,8 @@ define([
                     skip_info: 1,
                     skip_keys: 1,
                     skip_data: 1,
-                    include_highlight: 1
+                    include_highlight: 0,
+                    add_access_group_info: 0
                 },
                 access_filter: {
                     with_private: arg.withPrivateData ? 1 : 0,

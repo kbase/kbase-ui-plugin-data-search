@@ -28,12 +28,6 @@ define([], function () {
             });
         }
 
-        // function dumpListeners() {
-        //     Object.keys(messageReceivers).forEach(function (messageId) {
-        //         console.log('bus id: ' + busId + ', msg id: ' + messageId + ', ' + messageReceivers[messageId].length + ' listeners');
-        //     });
-        // }
-
         function run() {
             if (queue.length === 0) {
                 return;
