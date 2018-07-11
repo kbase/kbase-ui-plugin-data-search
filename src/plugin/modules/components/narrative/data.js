@@ -209,7 +209,6 @@ define([
                                     active: ko.observable(false)
                                 };
                             }
-                            // console.log('narrative info?', objectResults);
 
                             var narrative =  {
                                 isNarrative: info[0] ? true : false,

@@ -98,8 +98,9 @@ define([
         });
 
         var withPrivateData = params.withPrivateData;
-
         var withPublicData = params.withPublicData;
+        var withUserData = params.withUserData;
+        var withReferenceData = params.withReferenceData;
 
         return {
             pageSize: pageSize,
@@ -116,8 +117,8 @@ define([
             totalSearchSpace: totalSearchSpace,
             summary: summary,
 
-            withUserData: ko.observable(true),
-            withReferenceData: ko.observable(true),
+            withUserData: withUserData,
+            withReferenceData: withReferenceData,
             withPrivateData: withPrivateData,
             withPublicData: withPublicData
         };
@@ -135,6 +136,8 @@ define([
         var searchState = SearchState({
             withPrivateData: params.withPrivateData,
             withPublicData: params.withPublicData,
+            withUserData: params.withUserData,
+            withReferenceData: params.withReferenceData
         });
 
         var data = Data.make({
@@ -274,7 +277,6 @@ define([
             }
 
             var terms = params.searchTerms();
-
             return {
                 input: params.searchInput(),
                 terms: terms.terms,

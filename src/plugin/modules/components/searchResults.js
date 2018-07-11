@@ -95,7 +95,9 @@ define([
                                     referenceDataTotal: params.referenceDataTotal,
                                     featuresTotal: params.featuresTotal,
                                     withPrivateData: params.withPrivateData,
-                                    withPublicData: params.withPublicData
+                                    withPublicData: params.withPublicData,
+                                    withUserData: params.withUserData,
+                                    withReferenceData: params.withReferenceData
                                 }
                             }
                         }
