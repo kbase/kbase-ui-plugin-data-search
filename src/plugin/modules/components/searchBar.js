@@ -267,39 +267,7 @@ define([
         }, div({
             class: 'input-group'
         }, [
-            div({
-                class: 'input-group-addon ' + styles.classes.addonButton,
-                title: 'Click me to run the search',
-                style: {
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                    borderTopRightRadius: '0',
-                    borderBottomRightRadius: '0',
-                    paddingLeft: '8px',
-                    paddingRight: '8px'
-                },
-                dataBind: {
-                    click: 'doRunSearch'
-                }
-            }, span({
-                style: {
-                    display: 'inline-block',
-                    width: '2em',
-                    textAlign: 'center'
-                }
-            }, span({
-                class: 'fa',
-                style: {
-                    fontSize: '100%',
-                    color: '#000'
-                },
-                dataBind: {
-                    css: {
-                        'fa-search': '!searching()',
-                        'fa-spinner fa-pulse': 'searching()'
-                    }
-                }
-            }))),
+
             div({
                 class: 'form-control',
                 style: {
@@ -393,6 +361,39 @@ define([
                 ]),
                 '<!-- /ko -->'
             ]),
+            div({
+                class: 'input-group-addon ' + styles.classes.addonButton,
+                title: 'Click me to run the search',
+                style: {
+                    cursor: 'pointer',
+                    // borderRadius: '4px',
+                    // borderTopRightRadius: '0',
+                    // borderBottomRightRadius: '0',
+                    paddingLeft: '4px',
+                    paddingRight: '4px'
+                },
+                dataBind: {
+                    click: 'doRunSearch'
+                }
+            }, span({
+                style: {
+                    display: 'inline-block',
+                    width: '2em',
+                    textAlign: 'center'
+                }
+            }, span({
+                class: 'fa',
+                style: {
+                    fontSize: '100%',
+                    color: '#000'
+                },
+                dataBind: {
+                    css: {
+                        'fa-search': '!searching()',
+                        'fa-spinner fa-pulse': 'searching()'
+                    }
+                }
+            }))),
             div({
                 class: 'input-group-addon ' + styles.classes.addonButton,
                 title: 'Click me to clear the search input area to the left',
