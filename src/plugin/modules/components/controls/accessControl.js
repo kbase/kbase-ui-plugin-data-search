@@ -89,7 +89,8 @@ define([
                 input({
                     type: 'checkbox',
                     dataBind: {
-                        checked: 'withPrivateData'
+                        checked: 'withPrivateData',
+                        enable: 'withPublicData'
                     }
                 }),
                 ' Private'
@@ -106,7 +107,8 @@ define([
                 input({
                     type: 'checkbox',
                     dataBind: {
-                        checked: 'withPublicData'
+                        checked: 'withPublicData',
+                        enable: 'withPrivateData'
                     }
                 }),
                 ' Public'
