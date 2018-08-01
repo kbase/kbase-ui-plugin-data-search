@@ -264,7 +264,7 @@ define([
             };
         });
 
-        if (runtime.featureEnabled('search_features')) {
+        if (!runtime.featureDisabled('search_features')) {
             subscriptions.add(featuresTotalQuery.subscribe(function (newQuery) {
                 if (!newQuery.query) {
                     featuresTotal(null);

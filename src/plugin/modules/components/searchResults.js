@@ -67,7 +67,7 @@ define([
                 }
             }, false);
 
-            if (this.runtime.featureEnabled('search_features')) {
+            if (!runtime.featureDisabled('search_features')) {
                 tabsetBus.send('add-tab', {
                     tab: {
                         id: 'genome-features',
