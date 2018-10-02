@@ -1,6 +1,6 @@
 [
     {
-        "description": "No search alert should show on each tab",
+        "description": "No-search alert should show on each tab",
         "specs": [
             {
                 "description": "should get the signin page",
@@ -75,6 +75,9 @@
                     },
                     {
                         "title": "select the features data tab",
+                        "disable": {
+                            "envs": ["next", "appdev", "prod"]
+                        },
                         "selector": [
                             {
                                 "type": "component",
@@ -88,6 +91,9 @@
                         "action": "click"
                     },
                     {
+                        "disable": {
+                            "envs": ["next", "appdev", "prod"]
+                        },
                         "selector": [
                             {
                                 "type": "component",

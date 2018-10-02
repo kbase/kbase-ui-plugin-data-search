@@ -1,6 +1,9 @@
 [
     {
         "description": "Search for 'sphaeroides''",
+        "disable": {
+            "envs": ["next", "appdev", "prod"]
+        },
         "specs": [
             {
                 "description": "should  should reveal 1 or more hits for each tab",
