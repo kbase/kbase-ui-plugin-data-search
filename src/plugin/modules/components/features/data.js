@@ -38,6 +38,7 @@ define([
         };
 
         function objectToViewModel(obj) {
+            console.log('object', obj);
             var type = types.getTypeForObject(obj);
             if (!type) {
                 console.error('ERROR cannot type object', obj);
