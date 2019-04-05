@@ -1,32 +1,32 @@
-## YAML Template.
+## Plugin Configuration
 ---
 package:
-    author: Erik Pearson
+    author: KBase Developer
     name: data-search
-    description: The next generation data search tool, working against the KBaseSearchEngine module
+    description: The data-search panel and associated widgets
 source:
+    ## sources are relative to build/plugins/PACKAGE/source/javascript
+    ## NB: need to quote file names, otherwise
+    modules:
     styles:
-        -
-            file: styles.css
+        # - file: styles.css
 install:
     widgets:
-        -
-            id: data-search_panel
-            module: panel
-            type: factory           
+        - module: ./panel
+          id: kb_plugin_data-search
+          type: es6
     routes:
-        -
-            path: [search]
-            queryParams: 
-                q: {}
-            widget: data-search_panel
-            authorization: true           
+        - path: ['search']
+          queryParams: {
+              q: {}
+          }
+          params: {
+              view: 'search'
+          }
+          widget: kb_plugin_data-search
+          authorization: true
     menu:
-        -
-            name: search
-            path: [search]
-            
-            label: Search
-            icon: search
-            beta: true
-        
+        - name: search
+          path: ['search']
+          label: Search
+          icon: search
