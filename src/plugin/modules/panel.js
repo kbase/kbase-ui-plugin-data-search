@@ -1,138 +1,87 @@
-define([
-    'bluebird',
-    'knockout-plus',
-    'kb_common/html',
-    'kb_common/bootstrapUtils',
-    './components/main',
-    './lib/types',
-    './lib/nanoBus'
-], function (
-    Promise,
-    ko,
-    html,
-    BS,
-    MainComponent,
-    Types,
-    NanoBus
-) {
+define(['module', './iframer', 'css!./panel.css'], function(module, Iframer) {
     'use strict';
 
-    function factory(config) {
-        var hostNode, container,
-            runtime = config.runtime,
-            types = Types.make({
-                runtime: runtime
-            });
+    // The module url includes the initial / and, so we start after that,
+    // and we also remove this file and the modules directory.
+    const pluginPath = module.uri
+        .split('/')
+        .slice(1, -2)
+        .join('/');
 
-        var initialQuery;
+    class Panel {
+        constructor(config) {
+            this.runtime = config.runtime;
+            this.iframer = null;
+            this.hostNode = null;
+            this.container = null;
+            this.firstTime = true;
+        }
 
-        function template() {
-            return ko.kb.komponent({
-                name: MainComponent.name(),
+        attach(node) {
+            this.hostNode = node;
+            this.container = node.appendChild(document.createElement('div'));
+            this.container.classList.add('plugin_dashboard_panel');
+            this.container.style.flex = '1 1 0px';
+            this.container.style.display = 'flex';
+            this.container.style['flex-direction'] = 'column';
+        }
+
+        start(params) {
+            params = params || {};
+
+            if (params.viewParams) {
+                params.viewParams = JSON.parse(params.viewParams);
+            }
+
+            if (params.orgId) {
+                params.view = 'org';
+                params.viewParams = {
+                    id: params.orgId
+                };
+            }
+
+            this.iframer = new Iframer({
+                runtime: this.runtime,
+                node: this.container,
+                pluginPath: pluginPath,
                 params: {
-                    initialQuery: 'initialQuery'
+                    // config: this.runtime.rawConfig(),
+                    // token: this.runtime.service('session').getAuthToken(),
+                    // username: this.runtime.service('session').getUsername(),
+                    originalPath: window.location.pathname,
+                    routeParams: params || {}
                 }
             });
+
+            this.runtime.send('ui', 'setTitle', 'Example');
+
+            return this.iframer.start();
         }
 
-        var appBus = NanoBus.make();
+        run(params) {
+            // console.log('re-running the panel!', params);
+            // The route to get here provides an optional path and
+            // query. We simply pass those into the already-running
+            // iframe-based app.
 
-        // Root viewmodel
-        function viewModel() {
-            return {
-                appBus: appBus,
-                runtime: runtime,
-                types: types,
-                initialQuery: initialQuery,
-                // TODO: generate from the registered types.
-                labels: {
-                    narrative: {
-                        singular: 'Narrative',
-                        plural: 'Narratives'
-                    },
-                    genome: {
-                        singular: 'Genome',
-                        plural: 'Genomes'
-                    },
-                    assembly: {
-                        singular: 'Assembly',
-                        plural: 'Assemblies'
-                    },
-                    pairedendlibrary: {
-                        singular: 'Paired End Library',
-                        plural: 'Paired End Libraries'
-                    },
-                    singleendlibrary: {
-                        singular: 'Single End Library',
-                        plural: 'Single End Libraries'
-                    },
-                    fbamodel: {
-                        singular: 'FBA Model',
-                        plural: 'FBA Models'
-                    },
-                    media: {
-                        singular: 'Media',
-                        plural: 'Media'
-                    },
-                    taxon: {
-                        singular: 'Taxon',
-                        plural: 'Taxa'
-                    },
-                    tree: {
-                        singular: 'Tree',
-                        plural: 'Trees'
-                    }
-                }
-            };
-        }
-        function attach(node) {
-            hostNode = node;
-            container = hostNode.appendChild(document.createElement('div'));
-            container.style.flex = '1 1 0px';
-            container.style.display = 'flex';
-            container.style['flex-direction'] = 'column';
-            container.setAttribute('data-k-b-testhook-plugin', 'data-search');
+            // in the params, the 'path' property represents the rest of the
+            // nav path (hash) after #auth.
+            // We remove that and call it the path for the sake of the
+            // navigate event.
+            const path = params.path;
+            delete params.path;
 
-            return null;
-        }
-        function start(params) {
-            initialQuery = params.q;
-            return types.start()
-                .then(function () {
-                    return appBus.start();
-                })
-                .then(function () {
-                    container.innerHTML = template();
-                    ko.applyBindings(viewModel, container, function (context) {
-                        context.runtime = runtime;
-                    });
-
-                    runtime.send('ui', 'setTitle', 'Data Search (BETA)');
-                });
+            this.iframer.channel.send('navigate', { path, params });
         }
 
-        function stop() {
-            return appBus.stop();
-        }
-        function detach() {
-            if (hostNode && container) {
-                hostNode.removeChild(container);
+        stop() {
+            if (this.hostNode && this.container) {
+                this.hostNode.removeChild(this.container);
+            }
+            if (this.iframer) {
+                return this.iframer.stop();
             }
         }
-
-        /* Returning the widget
-        The widget is returned as a simple JS object. In this case we have also hardened the object
-        by usinng Object.freeze, which ensures that properties may not be added or modified.
-        */
-        return Object.freeze({
-            attach: attach,
-            start: start,
-            stop: stop,
-            detach: detach
-        });
     }
-
-    return {
-        make: factory
-    };
+    return Panel;
 });
