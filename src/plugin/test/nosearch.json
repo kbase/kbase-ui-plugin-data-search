@@ -4,26 +4,40 @@
         "specs": [
             {
                 "description": "should get the signin page",
-                "baseSelector": [
-                    {
-                        "type": "plugin",
-                        "value": "data-search"
-                    },
-                    {
-                        "type": "component",
-                        "value": "main"
-                    }
-                ],
+                "baseSelector": [],
                 "tasks": [
                     {
                         "title": "login",
-                        "subtask": "dashboard"
+                        "subtask": "login"
                     },
                     {
-                        "title": "now go to search",
+                        "title": "now navigate to search",
                         "navigate": {
                             "path": "search"
                         }
+                    },
+                    {
+                        "switchToFrame": {
+                            "selector": [
+                                {
+                                    "type": "iframe",
+                                    "value": "plugin-iframe"
+                                }
+                            ],
+                            "wait": 1000
+                        }
+                    },
+                    {
+                        "baseSelector": [
+                            {
+                                "type": "plugin",
+                                "value": "data-search"
+                            },
+                            {
+                                "type": "component",
+                                "value": "main"
+                            }
+                        ]
                     },
                     {
                         "selector": [
