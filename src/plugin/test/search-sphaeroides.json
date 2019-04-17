@@ -7,26 +7,40 @@
         "specs": [
             {
                 "description": "should  should reveal 1 or more hits for each tab",
-                "baseSelector": [
-                    {
-                        "type": "plugin",
-                        "value": "data-search"
-                    },
-                    {
-                        "type": "component",
-                        "value": "main"
-                    }
-                ],
+                "baseSelector": [],
                 "tasks": [
                     {
                         "title": "login",
-                        "subtask": "dashboard"
+                        "subtask": "login"
                     },
                     {
                         "title": "now go to search",
                         "navigate": {
                             "path": "search"
                         }
+                    },
+                    {
+                        "switchToFrame": {
+                            "selector": [
+                                {
+                                    "type": "iframe",
+                                    "value": "plugin-iframe"
+                                }
+                            ],
+                            "wait": 1000
+                        }
+                    },
+                    {
+                        "baseSelector": [
+                            {
+                                "type": "plugin",
+                                "value": "data-search"
+                            },
+                            {
+                                "type": "component",
+                                "value": "main"
+                            }
+                        ]
                     },
                     {
                         "title": "Click the search input to focus on it",
@@ -41,8 +55,8 @@
                             }
                         ],
                         "wait": 5000,
-                        "action": "click"                       
-                    },                   
+                        "action": "click"
+                    },
                     {
                         "title": "Do a search which returns nothing",
                         "selector": [
@@ -70,7 +84,7 @@
                             {
                                 "type": "tab",
                                 "value": "user-data"
-                            },                            
+                            },
                             {
                                 "type": "component",
                                 "value": "tab-total-count"
@@ -138,7 +152,7 @@
                         ],
                         "action": "click"
                     },
-                   
+
                     {
                         "title": "Check that user data search results are rendered",
                         "disabled": false,
