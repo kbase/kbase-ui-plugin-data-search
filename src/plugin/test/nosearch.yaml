@@ -1,0 +1,71 @@
+---
+- description: No-search alert should show on each tab
+  specs:
+  - description: should get the signin page
+    baseSelector: []
+    tasks:
+    - title: login
+      subtask: login
+    - title: now navigate to search
+      navigate:
+        path: search
+    - switchToFrame:
+        selector:
+        - type: iframe
+          value: plugin-iframe
+        wait: 1000
+    - baseSelector:
+      - type: plugin
+        value: data-search
+      - type: component
+        value: main
+    - selector:
+      - type: component
+        value: narrative-main
+      - type: component
+        value: results
+      - type: alert
+        value: no-search
+      wait: 10000
+    - title: select the reference data tab
+      selector:
+      - type: component
+        value: tabset
+      - type: tab
+        value: reference-data
+      action: click
+    - selector:
+      - type: component
+        value: reference-data-main
+      - type: component
+        value: results
+      - type: alert
+        value: no-search
+      wait: 10000
+    - title: select the features data tab
+      disable:
+        envs:
+        - next
+        - appdev
+        - prod
+      selector:
+      - type: component
+        value: tabset
+      - type: tab
+        value: genome-features
+      action: click
+    - disable:
+        envs:
+        - next
+        - appdev
+        - prod
+      selector:
+      - type: component
+        value: genome-features-main
+      - type: component
+        value: results
+      - type: alert
+        value: no-search
+      wait: 10000
+    - title: logout
+      subtask: logout
