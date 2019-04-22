@@ -1,20 +1,14 @@
 ---
-- description: Ensure main view appears
-  specs:
+description: Ensure main view appears
+specs:
   - description: Should have main panel framing appear when hit the path
     baseSelector: []
     tasks:
-    - title: login
-      subtask: login
-    - title: navigate to feeds
-      navigate:
+      - subtask: login
+      - action: navigate
         path: search
-    - switchToFrame:
+      - subtask: plugin
+      - wait: forElement
         selector:
-        - type: iframe
-          value: plugin-iframe
-        wait: 1000
-    - selector:
-      - type: plugin
-        value: data-search
-      wait: 10000
+          - type: plugin
+            value: data-search
