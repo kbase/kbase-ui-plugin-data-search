@@ -1,46 +1,42 @@
 ---
-- description: Search for 'sphaeroides''
-  disable:
-    envs:
-    - next
-    - appdev
-    - prod
-  specs:
-  - description: should  should reveal 1 or more hits for each tab
-    baseSelector: []
-    tasks:
-    - title: login
-      subtask: login
-    - title: now go to search
-      navigate:
-        path: search
-    - switchToFrame:
-        selector:
-        - type: iframe
-          value: plugin-iframe
-        wait: 1000
-    - baseSelector:
+description: Search for 'sphaeroides''
+disable:
+  envs:
+  - next
+  - appdev
+  - prod
+specs:
+- description: should  should reveal 1 or more hits for each tab
+  baseSelector: []
+  tasks:
+  - subtask: login
+  - action: navigate
+    path: search
+  - subtask: plugin
+  - action: baseSelector
+    selector:
       - type: plugin
         value: data-search
       - type: component
         value: main
-    - title: Click the search input to focus on it
-      selector:
+  - wait: forElement
+    title: Click the search input to focus on it
+    selector:
       - type: component
         value: search-bar
       - type: input
         value: search-input
-      wait: 5000
-      action: click
-    - title: Do a search which returns nothing
-      selector:
+  - action: click
+  - wait: forElement
+    title: Do a search which returns nothing
+    selector:
       - type: component
         value: search-bar
       - type: input
         value: search-input
-      action: keys
-      params:
-        keys:
+  - action: keys
+    params:
+      keys:
         - s
         - p
         - h
@@ -53,92 +49,88 @@
         - e
         - s
         - Enter
-    - title: Check that the user data tab result count is rendered
-      selector:
+  - wait: forNumber
+    title: Check that the user data tab result count is rendered
+    selector:
       - type: component
         value: tabset
       - type: tab
         value: user-data
       - type: component
         value: tab-total-count
-      waitUntilNumber:
-        value:
-          greaterThan: 0
-        wait: 10000
-    - title: Check that user data search results are rendered
-      disabled: false
-      selector:
+    number:
+      greaterThan: 0
+  - wait: forCount
+    title: Check that user data search results are rendered
+    disabled: false
+    selector:
       - type: component
         value: narrative-main
       - type: component
         value: results
       - type: element
         value: object-row
-      waitUntilCount:
-        value:
-          greaterThan: 0
-        wait: 10000
-    - title: Check that the reference data tab result count is rendered
-      selector:
+    count:
+      greaterThan: 0
+  - wait: forNumber
+    title: Check that the reference data tab result count is rendered
+    selector:
       - type: component
         value: tabset
       - type: tab
         value: reference-data
       - type: component
         value: tab-total-count
-      waitUntilNumber:
-        value:
-          greaterThan: 0
-        wait: 10000
-    - title: select the reference data tab
-      selector:
+    number:
+      greaterThan: 0
+  - wait: forElement
+    title: select the reference data tab
+    selector:
       - type: component
         value: tabset
       - type: tab
         value: reference-data
-      action: click
-    - title: Check that user data search results are rendered
-      disabled: false
-      selector:
+  - action: click
+  - wait: forCount
+    title: Check that user data search results are rendered
+    disabled: false
+    selector:
       - type: component
         value: reference-data-main
       - type: component
         value: results
       - type: element
         value: object-row
-      waitUntilCount:
-        value:
-          greaterThan: 0
-        wait: 10000
-    - title: Check that the features tab result count is rendered
-      selector:
+    count:
+      greaterThan: 0
+  - wait: forCount
+    title: Check that the features tab result count is rendered
+    selector:
       - type: component
         value: tabset
       - type: tab
         value: genome-features
       - type: component
         value: tab-total-count
-      waitUntilCount:
-        value:
-          greaterThan: 0
-        wait: 10000
-    - title: select the features data tab
-      selector:
+    count:
+      greaterThan: 0
+  - wait: forElement
+    title: select the features data tab
+    selector:
       - type: component
         value: tabset
       - type: tab
         value: genome-features
-      action: click
-    - title: Check that features search results are rendered
-      disabled: false
-      selector:
+  - action: click
+  - wait: forCount
+    title: Check that features search results are rendered
+    disabled: false
+    selector:
       - type: component
         value: genome-features-main
       - type: component
         value: results
       - type: element
         value: object-row
-      waitUntilCount:
-        value:
-          greaterThan: 0
-        wait: 10000
+    count:
+      greaterThan: 0
