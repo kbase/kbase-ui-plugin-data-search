@@ -60,6 +60,32 @@ specs:
         value: tab-total-count
     number:
       greaterThan: 0
+  # Check the total search results displayed in the tabs themselves.
+  
+  - wait: forNumber
+    title: Check that the reference data tab result count is rendered
+    selector:
+      - type: component
+        value: tabset
+      - type: tab
+        value: reference-data
+      - type: component
+        value: tab-total-count
+    number:
+      greaterThan: 0
+  - wait: forNumber
+    title: Check that the features tab result count is rendered
+    selector:
+      - type: component
+        value: tabset
+      - type: tab
+        value: genome-features
+      - type: component
+        value: tab-total-count
+    number:
+      greaterThan: 0
+  # Now click through the tabs and inspect the resulting tables, ensuring
+  # that there are at least some rows displaying.
   - wait: forCount
     title: Check that user data search results are rendered
     disabled: false
@@ -71,17 +97,6 @@ specs:
       - type: element
         value: object-row
     count:
-      greaterThan: 0
-  - wait: forNumber
-    title: Check that the reference data tab result count is rendered
-    selector:
-      - type: component
-        value: tabset
-      - type: tab
-        value: reference-data
-      - type: component
-        value: tab-total-count
-    number:
       greaterThan: 0
   - wait: forElement
     title: select the reference data tab
@@ -103,17 +118,7 @@ specs:
         value: object-row
     count:
       greaterThan: 0
-  - wait: forCount
-    title: Check that the features tab result count is rendered
-    selector:
-      - type: component
-        value: tabset
-      - type: tab
-        value: genome-features
-      - type: component
-        value: tab-total-count
-    count:
-      greaterThan: 0
+      
   - wait: forElement
     title: select the features data tab
     selector:
