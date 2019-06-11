@@ -23,11 +23,6 @@ define([
             label: 'Genome Count',
             type: 'number',
             format: '0,0'
-        }, {
-            id: 'orthologCount',
-            label: 'Ortholog Count',
-            type: 'number',
-            format: '0,0'
         }
     ];
 
@@ -42,10 +37,6 @@ define([
         },
         genomes: {
             label: 'Genomes',
-            type: 'integer'
-        },
-        orhtologs: {
-            label: 'Orthologs',
             type: 'integer'
         }
     };
@@ -78,10 +69,9 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                name: data.name,
-                type: data.type,
-                genomeCount: data.genome_refs,
-                orthologCount: data.orthologs
+                name: [this.object.obj_name, data.pangenome_name].join(' - '),
+                type: data.pangenome_type,
+                genomeCount: data.genome_upas.length
             };
         }
     }

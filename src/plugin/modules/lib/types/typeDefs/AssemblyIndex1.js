@@ -90,12 +90,13 @@ define([
         }
 
         objectToData() {
+            const data = this.object.data;
             return {
-                name: this.object.data.name,
-                dnaSize: this.object.data.dna_size,
-                gcContent: this.object.data.gc_content,
-                externalSourceId: this.object.data.external_source_id,
-                contigCount: this.object.data.contigs
+                name: this.object.obj_name,
+                dnaSize: data.size,
+                gcContent: data.gc_content,
+                externalSourceId: data.external_source_id,
+                contigCount: data.num_contigs
             };
         }
     }

@@ -33,10 +33,6 @@ define([
             label: 'Scientific name'
         },
         {
-            id: 'domain',
-            label: 'Domain'
-        },
-        {
             id: 'taxonomy',
             label: 'Lineage',
             component: TaxonomyComponent.name()
@@ -108,10 +104,6 @@ define([
             label: 'ID',
             type: 'string'
         },
-        domain: {
-            label: 'Domain',
-            type: 'string'
-        },
         taxonomy: {
             label: 'Taxonomy',
             type: 'string'
@@ -175,10 +167,6 @@ define([
             label: 'ID'
         },
         {
-            key: 'domain',
-            label: 'Domain'
-        },
-        {
             key: 'scientific_name',
             label: 'Scientific name'
         }
@@ -202,18 +190,16 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                id: data.id,
-                domain: data.domain,
+                id: data.guid,
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
                 notes: data.notes,
-                featureCount: data.features,
-                contigCount: data.contigs,
-                cdsCount: data.cdss,
-                mrnaCount: data.mrnas,
-                nonCodingFeatureCount: data.non_coding_features,
+                featureCount: data.feature_count,
+                contigCount: data.num_contigs,
+                cdsCount: data.cds_count,
+                mrnaCount: data.mrna_count,
+                nonCodingFeatureCount: data.non_coding_feature_count,
                 warnings: data.warnings,
-                suspect: utils.parseBoolean(data.suspect),
                 featureCounts: data.feature_counts,
                 genomeTiers: data.genome_tiers,
                 source: data.source,

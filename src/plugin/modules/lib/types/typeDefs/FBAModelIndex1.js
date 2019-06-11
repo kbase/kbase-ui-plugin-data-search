@@ -143,8 +143,8 @@ define([
         objectToData() {
             var data = this.object.data;
             return {
-                id: data.id,
-                name: data.name,
+                id: data.kbase_id,
+                name: this.object.obj_name,
                 source: data.source,
                 type: data.type,
                 modelCompartments: data.modelcompartments,
@@ -152,9 +152,9 @@ define([
                 modelReactions: data.modelreactions,
                 // genomeGuid: object.data.genome_guid,
                 genomeRef: data.genome_ref,
-                scientificName: this.object.key_props.scientific_name,
-                taxonomy: utils.parseTaxonomy(this.object.key_props.taxonomy),
-                genomeName: this.object.key_props.genome_name
+                scientificName: data.scientific_name,
+                taxonomy: utils.parseTaxonomy(data.taxonomy),
+                genomeName: data.genome_name
             };
         }
     }

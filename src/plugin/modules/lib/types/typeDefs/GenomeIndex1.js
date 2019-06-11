@@ -29,10 +29,6 @@ define([
             label: 'Scientific name'
         },
         {
-            id: 'domain',
-            label: 'Domain'
-        },
-        {
             id: 'taxonomy',
             label: 'Lineage',
             component: TaxonomyComponent.name()
@@ -79,10 +75,6 @@ define([
             label: 'ID',
             type: 'string'
         },
-        domain: {
-            label: 'Domain',
-            type: 'string'
-        },
         taxonomy: {
             label: 'Lineage',
             type: 'string'
@@ -127,10 +119,6 @@ define([
             label: 'ID'
         },
         {
-            key: 'domain',
-            label: 'Domain'
-        },
-        {
             key: 'scientific_name',
             label: 'Scientific name'
         }
@@ -167,16 +155,12 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                id: data.id,
-                domain: data.domain,
+                id: data.kbase_id,
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
-                featureCount: data.features,
-                mrnaCount: data.mrnas,
-                cdsCount: data.cdss,
-                // featureCount: keyPropsIntValue(this.object, 'feature_count', null),
-                // mrnaCount: keyPropsIntValue(this.object, 'mrna_count', null),
-                // cdsCount: keyPropsIntValue(this.object, 'cds_count', null),
+                featureCount: data.feature_count,
+                mrnaCount: data.mrna_count,
+                cdsCount: data.cds_count,
                 contigCount: data.num_contigs,
                 source: data.source,
                 sourceId: data.source_id
