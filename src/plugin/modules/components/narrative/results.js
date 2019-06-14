@@ -977,6 +977,7 @@ define([
                     flex: '0 0 4em'
                 }
             }),
+            /*
             div({
                 class: styles.classes.rowCell,
                 style: {
@@ -990,6 +991,7 @@ define([
                     }
                 }
             }),
+            */
             div({
                 class: styles.classes.rowCell,
                 style: {

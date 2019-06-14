@@ -161,7 +161,7 @@ define([
             const containerInfo = {
                 workspaceId: id,
                 owner: owner,
-                modificationDate: new Date() // modifiedDate)
+                modificationDate: null
             };
             return containerInfo;
         }

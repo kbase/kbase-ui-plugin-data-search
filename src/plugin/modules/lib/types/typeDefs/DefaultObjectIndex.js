@@ -21,11 +21,9 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
-            const m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-            const objectRef = m.slice(1, 4).join('/');
             this.objectRef =  {
                 workspaceId: this.object.access_group,
-                objectId: this.object.object_id,
+                objectId: this.object.obj_id,
                 version: this.object.version,
                 objectRef: this.object.kbase_id,
                 dataviewId: this.object.kbase_id
