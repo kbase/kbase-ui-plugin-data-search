@@ -1150,6 +1150,7 @@ define([
                     fontStyle: 'italic'
                 }
             }, 'Show: '),
+            /*
             button({
                 type: 'button',
                 class: 'btn btn-default btn-kb-flat',
@@ -1172,6 +1173,7 @@ define([
                 }),
                 ' genome details '
             ]),
+            */
             button({
                 type: 'button',
                 class: 'btn btn-default btn-kb-flat',
