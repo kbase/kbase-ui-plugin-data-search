@@ -67,10 +67,13 @@ define([
 
         objectToData() {
             const data = this.object.data;
+            const name = [this.object.obj_name, data.tree_name]
+                .filter(s => s && s.length)
+                .join(' - ');
             return {
                 type: data.type,
                 labels: data.labels,
-                name: [this.object.obj_name, data.tree_name].join(' - ')
+                name
             };
         }
     }

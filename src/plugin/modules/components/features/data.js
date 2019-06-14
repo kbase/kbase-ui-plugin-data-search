@@ -38,7 +38,6 @@ define([
         };
 
         function objectToViewModel(obj) {
-            console.log('object', obj);
             var type = types.getTypeForObject(obj);
             if (!type) {
                 console.error('ERROR cannot type object', obj);
@@ -108,10 +107,9 @@ define([
                 date: new Date(obj.timestamp),
 
                 id: detailMap.id.value,
-                featureType: detailMap.featureType.value,
-                featureFunctions: detailMap.functions.value,
-                // scientificName: detailMap.scientificName.value,
-
+                featureType: detailMap.feature_type.value,
+                functions: detailMap.functions.value,
+                scientificName: detailMap.genome_scientific_name.value,
                 matches: matches,
                 selected: ko.observable(),
                 showMatches: ko.observable(false),
@@ -121,65 +119,50 @@ define([
             return vm;
         }
 
-        function objectInfoToGenomeInfo(info) {
-            const [objectId, objectName, /* type */, saveDate, objectVersion, savedBy,
-                workspaceId, /* workspaceName */, /* checksum */, /*size */, meta] = info;
+        function objectInfoToGenomeInfo(group) {
+            const item = group.items[0];
             // JS doesn't like the +0000 offset in the date string.
+            /*
             const savedDate = saveDate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
                 return '+' + hours + ':' + minutes;
             });
+            */
             return {
                 // genome info extracted mostly from the metadata
-                scientificName: meta['Name'],
-                kbaseGenomeId: null,
-                domain: meta['Domain'],
-                lineage: utils.parseTaxonomy(meta['Taxonomy']),
-                source: meta['Source'],
-                sourceId: meta['Source ID'],
-                dnaSize: parseInt(meta['Size'], 10),
-                contigCount: parseInt(meta['Number contigs']),
-                featureCount: parseInt(meta['Number features']),
-                gcContent: parseFloat(meta['GC content']),
+                scientificName: item.scientificName,
+                kbaseGenomeId: group.ref.objectRef,
+                domain: null,
+                lineage: null,
+                source: null,
+                sourceId: null,
+                dnaSize: null,
+                contigCount: null,
+                featureCount: null,
+                gcContent: null,
 
                 // object ref
-                ref: [workspaceId, objectId, objectVersion].map(String).join('/'),
-                objectId: objectId,
-                workspaceId: workspaceId,
-                objectVersion: objectVersion,
-                objectName: objectName,
+                ref: group.ref.objectRef,
+                objectId: group.ref.objectId,
+                workspaceId: group.ref.workspaceId,
+                objectVersion: group.ref.version,
+                objectName: null,
 
                 // object stats
-                lastSavedAt: new Date(savedDate),
-                lastSavedBy: savedBy,
+                lastSavedAt: item.timestamp,
+                lastSavedBy: item.creator
 
                 // source info ... narrative or ref data
             };
         }
 
         function workspaceInfoToContainerInfo(info) {
-            const [id, workspace, owner, moddate, /* max_objid */,
-                /* user_permission */,
-                /* globalread */, /* lockstat */, metadata] = info;
-            // ServiceUtils.workspaceInfoToObject(info);
-            const modifiedDate = moddate.replace(/[+](\d\d)(\d\d)$/, (_match, hours, minutes) => {
-                return '+' + hours + ':' + minutes;
-            });
+            const id = info[0];
+            const owner = info[2];
             const containerInfo = {
                 workspaceId: id,
                 owner: owner,
-                modificationDate: new Date(modifiedDate)
+                modificationDate: new Date() // modifiedDate)
             };
-            if ('narrative' in metadata) {
-                containerInfo.type = 'narrative';
-                containerInfo.title = metadata['narrative_nice_name'];
-                containerInfo.objectId = parseInt(metadata['narrative'], 10);
-            } else if (metadata['searchtags'] && metadata['searchtags'].match(/refdata/)) {
-                containerInfo.type = 'refdata';
-                containerInfo.title = workspace;
-            } else {
-                containerInfo.type = 'unknown';
-                containerInfo.title = workspace;
-            }
             return containerInfo;
         }
 
@@ -232,15 +215,7 @@ define([
                         return group;
                     });
 
-                    // Now get the object and workspace info from the results itself :)
-                    const objectInfoMap = Object.keys(objectResults.objects_info)
-                        .reduce((objectInfoMap, key) => {
-                            const info = objectInfoToGenomeInfo(objectResults.objects_info[key]);
-                            objectInfoMap[info.ref] = info;
-                            return objectInfoMap;
-                        }, {});
-
-                    const workspaceInfoMap = Object.keys(objectResults.access_groups_info)
+                    const workspaceInfoMap = Object.keys(objectResults.access_groups_info || {})
                         .reduce((workspaceInfoMap, key) =>{
                             const info = workspaceInfoToContainerInfo(objectResults.access_groups_info[key]);
                             workspaceInfoMap[String(info.workspaceId)] = info;
@@ -248,7 +223,7 @@ define([
                         }, {});
 
                     groupedByObjectRef.forEach((group) => {
-                        group.genomeInfo = objectInfoMap[group.ref.objectRef];
+                        group.genomeInfo = objectInfoToGenomeInfo(group);
 
                         // ui controls
 

@@ -583,9 +583,6 @@ define([
 
     function buildSubObjectLink() {
         return [
-            '<!-- ko switch: matchClass.id -->',
-
-            '<!-- ko case: "subObject" -->',
             '<!-- ko if: matchClass.viewable -->',
             a({
                 dataBind: {
@@ -604,9 +601,6 @@ define([
                 }
             }),
             '<!-- /ko -->',
-            '<!-- /ko -->',
-
-            '<!-- /ko -->'
         ];
     }
 
@@ -720,7 +714,7 @@ define([
                     component: {
                         name: StringArrayComponent.quotedName(),
                         params: {
-                            value: 'featureFunctions'
+                            value: 'functions'
                         }
                     }
                 }
@@ -728,7 +722,7 @@ define([
 
             // div({
             //     dataBind: {
-            //         text: 'featureFunctions'
+            //         text: 'functions'
             //     }
             // })),
             // div({

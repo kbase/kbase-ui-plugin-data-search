@@ -20,19 +20,18 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
-            const m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
-            const featureType = m[4];
-            const featureId = m[5];
+            const featureType = this.object.data.feature_type;
+            const featureId = this.object.data.id;
             // e.g. https://ci.kbase.us/#dataview/29768/2?sub=Feature&subid=b0001
-            const subObjectRef = m.slice(1, 4).join('/') +
+            const objectRef = this.object.kbase_id;
+            const subObjectRef = objectRef +
                             '?sub=' + featureType +
                             '&subid=' + featureId;
-            const objectRef = m.slice(1, 4).join('/');
 
             this.objectRef = {
-                workspaceId: parseInt(m[1]),
-                objectId: parseInt(m[2]),
-                version: parseInt(m[3]),
+                workspaceId: parseInt(this.object.access_group),
+                objectId: parseInt(this.object.obj_id),
+                version: parseInt(this.object.version),
                 objectRef: objectRef,
                 subObjectRef: subObjectRef,
                 featureType: featureType,

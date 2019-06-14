@@ -155,7 +155,7 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                id: data.kbase_id,
+                id: this.object.kbase_id,
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
                 featureCount: data.feature_count,

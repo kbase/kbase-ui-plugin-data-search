@@ -143,7 +143,7 @@ define([
         objectToData() {
             var data = this.object.data;
             return {
-                id: data.kbase_id,
+                id: this.object.kbase_id,
                 name: this.object.obj_name,
                 source: data.source,
                 type: data.type,

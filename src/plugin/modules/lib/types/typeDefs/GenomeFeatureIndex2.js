@@ -38,38 +38,9 @@ define([
             component: AliasesComponent.name()
         },
         {
-            id: 'location',
-            label: 'Location',
-            component: LocationComponent.name()
-        },
-        // {
-        //     id: 'domain',
-        //     label: 'Domain'
-        // },
-        // {
-        //     id: 'scientificName',
-        //     label: 'Scientific name'
-        // },
-        // {
-        //     id: 'taxonomy',
-        //     label: 'Lineage',
-        //     component: TaxonomyComponent.name()
-        // },
-        {
             id: 'functions',
             label: 'Functions',
             component: StringArrayComponent.name()
-        },
-        {
-            id: 'proteinLength',
-            label: 'Protein Length',
-            unit: 'aa',
-            type: 'number',
-            format: '0,0'
-        },
-        {
-            id: 'proteinTranslation',
-            label: 'Protein Translation'
         }
     ];
 
@@ -78,7 +49,7 @@ define([
             label: 'ID',
             type: 'string'
         },
-        functions : {
+        functions: {
             label: 'Functions',
             type: 'string'
         },
@@ -133,10 +104,6 @@ define([
         {
             key: 'function',
             label: 'Function'
-        },
-        {
-            key: 'start',
-            label: 'Start'
         }
     ];
 
@@ -169,50 +136,12 @@ define([
 
         objectToData() {
             var data = this.object.data;
-            var proteinLength;
-            var proteinTranslation = data.protein_translation;
-            if (proteinTranslation) {
-                proteinLength = proteinTranslation.length;
-            }
-
-            var location = data.location.map(function (location) {
-                var start = location[1];
-                var length = location[3];
-                var direction = location[2];
-                var end;
-                switch (direction) {
-                case '+':
-                case '>':
-                    end = start + length - 1;
-                    break;
-                case '-':
-                case '<':
-                    end = start - length + 1;
-                    break;
-                default:
-                    console.error('error: Invalid location direction symbol: ' + direction, location);
-                    throw new Error('Invalid location direction symbol: ' + direction);
-                }
-                return {
-                    genome: location[0],
-                    start: start,
-                    direction: direction,
-                    length: length,
-                    end: end
-                };
-            });
-
             return {
-                featureType: data.type,
+                featureType: data.feature_type,
                 id: data.id,
                 aliases: parseAliases(data.aliases),
                 functions: data.functions,
-                location: location,
-                proteinTranslation: proteinTranslation,
-                proteinLength: proteinLength,
-                // domain: this.object.parent_data.domain,
-                // scientificName: this.object.parent_data.scientific_name,
-                // taxonomy: utils.parseTaxonomy(this.object.parent_data.taxonomy)
+                scientificName: data.genome_scientific_name,
             };
         }
     }

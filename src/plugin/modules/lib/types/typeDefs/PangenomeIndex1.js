@@ -68,8 +68,11 @@ define([
 
         objectToData() {
             const data = this.object.data;
+            const name = [this.object.obj_name, data.pangenome_name]
+                .filter(s => s && s.length)
+                .join(' - ');
             return {
-                name: [this.object.obj_name, data.pangenome_name].join(' - '),
+                name,
                 type: data.pangenome_type,
                 genomeCount: data.genome_upas.length
             };

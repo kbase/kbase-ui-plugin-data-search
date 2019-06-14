@@ -124,7 +124,7 @@ define([
                 phredType: data.phred_type,
                 meanQuality: data.mean_quality_score,
                 readCount: data.size,
-                meanReadLength: data.meand_read_length,
+                meanReadLength: data.mean_read_length,
                 sequencingTechnology: data.sequencing_tech
             };
         }
