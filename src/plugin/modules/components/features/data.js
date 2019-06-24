@@ -105,11 +105,10 @@ define([
                 // Generic fields
                 name: obj.object_name,
                 date: new Date(obj.timestamp),
-
                 id: detailMap.id.value,
-                featureType: detailMap.feature_type.value,
-                functions: detailMap.functions.value,
-                scientificName: detailMap.genome_scientific_name.value,
+                featureType: detailMap.feature_type && detailMap.feature_type.value,
+                functions: detailMap.functions && detailMap.functions.value,
+                scientificName: detailMap.genome_scientific_name && detailMap.genome_scientific_name.value,
                 matches: matches,
                 selected: ko.observable(),
                 showMatches: ko.observable(false),
