@@ -1,25 +1,25 @@
 {
-  "name": "kbase-ui-plugin-data-search",
-  "version": "1.0.0",
-  "description": "This repo contains a data search plugin for the KBase UI.",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kbase/kbase-ui-plugin-data-search.git"
-  },
-  "author": "",
-  "license": "SEE LICENSE IN LICENSE",
-  "bugs": {
-    "url": "https://github.com/kbase/kbase-ui-plugin-data-search/issues"
-  },
-  "homepage": "https://github.com/kbase/kbase-ui-plugin-data-search#readme",
-  "devDependencies": {
-    "eslint": "4.18.2"
-  }
+    "name": "kbase-ui-plugin-data-search",
+    "version": "1.0.0",
+    "description": "This repo contains a data search plugin for the KBase UI.",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kbase/kbase-ui-plugin-data-search.git"
+    },
+    "author": "",
+    "license": "SEE LICENSE IN LICENSE.md",
+    "bugs": {
+        "url": "https://github.com/kbase/kbase-ui-plugin-data-search/issues"
+    },
+    "homepage": "https://github.com/kbase/kbase-ui-plugin-data-search#readme",
+    "devDependencies": {
+        "eslint": "6.0.1"
+    }
 }
