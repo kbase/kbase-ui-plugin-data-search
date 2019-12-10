@@ -128,7 +128,6 @@ require([
                     if (path && path.length) {
                         view = path[0];
                     }
-                    console.log('nav?', path, params);
                     dispatcher.dispatch({ view, path, params });
                 });
                 integration.started();
