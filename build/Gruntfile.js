@@ -8,7 +8,7 @@ module.exports = function (grunt) {
             'pure-uuid': {
                 expand: true,
                 flatten: true,
-                src: 'node_modules/pure-uuid/uuid',
+                src: 'node_modules/pure-uuid/uuid.js',
                 dest: '../src/plugin/iframe_root/modules/vendor/pure-uuid'
             }
         },

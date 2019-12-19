@@ -37,7 +37,6 @@
                     "bower_components/font-awesome/fonts/**": "fonts/"
                 }
             ],
-            "pure-uuid": "bower_components/pure-uuid/uuid.js",
             "kbase-knockout-extensions-es6": "bower_components/kbase-knockout-extensions-es6/src/**",
             "knockout-arraytransforms": "bower_components/knockout-arraytransforms/dist/knockout-arraytransforms.js",
             "knockout-switch-case": "bower_components/knockout-switch-case/knockout-switch-case.js",
@@ -74,7 +73,6 @@
         "numeral": "2.0.6",
         "requirejs-text": "2.0.16",
         "requirejs-yaml": "eapearson/requirejs-yaml#1.0.5",
-        "pure-uuid": "eapearson/pure-uuid#1.1.1",
         "kbase-service-clients-js": "3.3.5",
         "spark-md5": "3.0.0",
         "font-awesome": "4.7.0",
