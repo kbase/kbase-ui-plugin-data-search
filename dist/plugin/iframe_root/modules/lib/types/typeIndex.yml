@@ -1,0 +1,59 @@
+# Type index
+# search types to kbase types and ui resources
+---
+- 
+  id: narrative
+  version: 1
+  module: NarrativeIndex1
+- 
+  id: genome
+  version: 1
+  module: GenomeIndex1
+- 
+  id: genome
+  version: 2
+  module: GenomeIndex2
+- 
+  id: assembly
+  version: 1
+  module: AssemblyIndex1
+- 
+  id: genomefeature
+  version: 1
+  module: GenomeFeatureIndex1
+- 
+  id: genomefeature
+  version: 2
+  module: GenomeFeatureIndex2
+- 
+  id: assemblycontig
+  version: 1
+  module: AssemblyContigIndex1
+- 
+  id: pairedendlibrary
+  version: 1
+  module: PairedEndLibraryIndex1
+-
+  id: pangenome
+  version: 1
+  module: PangenomeIndex1
+- 
+  id: singleendlibrary
+  version: 1
+  module: SingleEndLibraryIndex1
+-
+  id: fbamodel
+  version: 1
+  module: FBAModelIndex1
+-
+  id: media
+  version: 1
+  module: MediaIndex1
+-
+  id: taxon
+  version: 1
+  module: TaxonIndex1
+-
+  id: tree
+  version: 1
+  module: TreeIndex1
