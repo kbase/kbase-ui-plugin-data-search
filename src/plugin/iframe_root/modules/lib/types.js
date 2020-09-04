@@ -61,7 +61,7 @@ define([
         function getTypeForObject(object) {
             const objectType = object.type.toLowerCase();
             const objectTypeVersion = object.type_ver;
-            const objectTypeId = [objectType, objectTypeVersion].join('.');
+            const objectTypeId = [objectType, objectTypeVersion + 1].join('.');
             const type = objectTypeMap[objectTypeId];
 
             if (!type) {
@@ -69,7 +69,6 @@ define([
                 return new DefaultObjectIndex({runtime, object});
             }
 
-            // return type.module.make({object: searchObject});
             // return a new instance of this index class.
             return new type.moduleClass({runtime, object});
         }
@@ -92,12 +91,12 @@ define([
         }
 
         return {
-            start: start,
+            start,
             types: objectTypes,
             typesMap: objectTypeMap,
-            getTypeForObject: getTypeForObject,
-            getType: getType,
-            getLookup: getLookup,
+            getTypeForObject,
+            getType,
+            getLookup,
             // getIcon: getIcon
         };
     }

@@ -14,21 +14,18 @@ define([
         var runtime = config.runtime;
 
         // TODO: this should go in to the ui services
-        function call(moduleName, functionName, params) {
-            var override = runtime.config(['services', moduleName, 'url'].join('.'));
-            var token = runtime.service('session').getAuthToken();
+        function call(moduleName, functionName, params, urlKey) {
+            const serviceConfig = runtime.config(`services.${moduleName}`);
+            const module = serviceConfig.module || moduleName;
+            const url = runtime.config(['services', moduleName, urlKey || 'url'].join('.'));
+            const token = runtime.service('session').getAuthToken();
             var client;
-            if (override) {
-                client = new GenericClient({
-                    module: moduleName,
-                    url: override,
-                    token: token
-                });
+            if (url) {
+                client = new GenericClient({module, url, token});
             } else {
                 client = new DynamicService({
-                    url: runtime.config('services.service_wizard.url'),
-                    token: token,
-                    module: moduleName
+                    url: runtime.config('services.ServiceWizard.url'),
+                    token, module
                 });
             }
             return client.callFunc(functionName, [

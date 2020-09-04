@@ -6,10 +6,18 @@ define([
     '../dialogs/duplicateNarrative',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt'
-], function (ko, reg, gen, html, DuplicateNarrativeComponent, CopyObjectComponent, FunnyRandomPromptComponent) {
+], function (
+    ko,
+    reg,
+    gen,
+    html,
+    DuplicateNarrativeComponent,
+    CopyObjectComponent,
+    FunnyRandomPromptComponent
+) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         p = t('p'),
         hr = t('hr'),
         button = t('button'),

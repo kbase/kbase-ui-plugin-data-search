@@ -110,8 +110,8 @@ define([
         objectToData() {
             var data = this.object.data;
             return {
-                id: data.id,
-                name: data.name,
+                id: data.kbase_id,
+                name: this.object.obj_name,
                 externalSourceId: data.external_source_id,
                 type: data.type,
                 modelCompounds: data.modelcompounds,

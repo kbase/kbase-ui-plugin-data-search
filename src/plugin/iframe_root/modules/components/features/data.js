@@ -19,11 +19,9 @@ define([
 
     // For now, this fakes the search...
     function factory(params) {
-        var maxSearchResults = params.maxSearchItems;
-
-        var types = params.types;
-
-        var searchConfig = {
+        const maxSearchResults = params.maxSearchItems;
+        const types = params.types;
+        const searchConfig = {
             // max number of search result items to hold in the buffer
             // before we start removing those out of view
             maxBufferSize: params.maxBufferSize || 100,
@@ -32,28 +30,26 @@ define([
         };
 
         function objectToViewModel(obj) {
-            var type = types.getTypeForObject(obj);
+            const type = types.getTypeForObject(obj);
             if (!type) {
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
             }
 
-            var icon = type.getIcon();
-
-            var ref = type.getRef();
-            var detail = type.detail();
-            var detailMap = detail.reduce(function (m, field) {
-                m[field.id] = field;
-                return m;
+            const icon = type.getIcon();
+            const ref = type.getRef();
+            const detail = type.detail();
+            const detailMap = detail.reduce(function (detailMap, field) {
+                detailMap[field.id] = field;
+                return detailMap;
             }, {});
-
-            var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
+            const matches = Object.keys(obj.highlight).reduce(function (matches, field) {
                 if (field === 'source_tags') {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
 
-                var label = type.getSearchFieldLabel(field);
+                let label = type.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
@@ -78,7 +74,7 @@ define([
             //     }
             // });
 
-            var vm = {
+            const vm = {
                 type: {
                     label: type.getLabel(),
                     icon: icon
@@ -101,9 +97,9 @@ define([
                 date: new Date(obj.timestamp),
 
                 id: detailMap.id.value,
-                featureType: detailMap.featureType.value,
-                featureFunctions: detailMap.functions.value,
-                // scientificName: detailMap.scientificName.value,
+                featureType: detailMap.feature_type && detailMap.feature_type.value,
+                functions: detailMap.functions && detailMap.functions.value,
+                scientificName: detailMap.genome_scientific_name && detailMap.genome_scientific_name.value,
 
                 matches: matches,
                 selected: ko.observable(),
@@ -114,7 +110,7 @@ define([
             return vm;
         }
 
-        function objectInfoToGenomeInfo(info) {
+        function objectInfoToGenomeInfo(item, info) {
             const [
                 objectId,
                 objectName /* type */,
@@ -134,19 +130,19 @@ define([
             });
             return {
                 // genome info extracted mostly from the metadata
-                scientificName: meta['Name'],
-                kbaseGenomeId: null,
-                domain: meta['Domain'],
-                lineage: utils.parseTaxonomy(meta['Taxonomy']),
-                source: meta['Source'],
-                sourceId: meta['Source ID'],
-                dnaSize: parseInt(meta['Size'], 10),
-                contigCount: parseInt(meta['Number contigs']),
-                featureCount: parseInt(meta['Number features']),
-                gcContent: parseFloat(meta['GC content']),
+                scientificName: item.scientificName,
+                kbaseGenomeId: info.ref,
+                domain: null,
+                lineage: null,
+                source: null,
+                sourceId: null,
+                dnaSize: null,
+                contigCount: null,
+                featureCount: null,
+                gcContent: null,
 
                 // object ref
-                ref: [workspaceId, objectId, objectVersion].map(String).join('/'),
+                ref: item.ref,
                 objectId: objectId,
                 workspaceId: workspaceId,
                 objectVersion: objectVersion,
@@ -227,7 +223,7 @@ define([
                 }
 
                 // Group the results by object reference.
-                var byObjectRef = objects.reduce((byObjectRef, object) => {
+                const byObjectRef = objects.reduce((byObjectRef, object) => {
                     const ref = object.ref.objectRef;
                     if (!byObjectRef[ref]) {
                         byObjectRef[ref] = {
@@ -238,16 +234,20 @@ define([
                     byObjectRef[ref].items.push(object);
                     return byObjectRef;
                 }, {});
-                let groupedByObjectRef = Object.keys(byObjectRef).map((ref) => {
+                const groupedByObjectRef = Object.keys(byObjectRef).map((ref) => {
                     const group = byObjectRef[ref];
                     return group;
                 });
 
                 // Now get the object and workspace info from the results itself :)
-                const objectInfoMap = Object.keys(objectResults.objects_info).reduce((objectInfoMap, key) => {
-                    const info = objectInfoToGenomeInfo(objectResults.objects_info[key]);
-                    objectInfoMap[info.ref] = info;
-                    return objectInfoMap;
+                const genomeInfoMap = Object.keys(objectResults.objects_info).reduce((genomeInfoMap, objectRef) => {
+                    const objectInfo = objectResults.objects_info[objectRef];
+                    // console.log('genome info map', objectRef, byObjectRef);
+                    const firstItem = byObjectRef[objectRef].items[0];
+                    // console.log('firstItem??', firstItem, objectInfo);
+                    const info = objectInfoToGenomeInfo(firstItem, objectInfo);
+                    genomeInfoMap[objectRef] = info;
+                    return genomeInfoMap;
                 }, {});
 
                 const workspaceInfoMap = Object.keys(objectResults.access_groups_info).reduce(
@@ -260,7 +260,7 @@ define([
                 );
 
                 groupedByObjectRef.forEach((group) => {
-                    group.genomeInfo = objectInfoMap[group.ref.objectRef];
+                    group.genomeInfo = genomeInfoMap[group.ref.objectRef];
 
                     // ui controls
 
@@ -276,13 +276,15 @@ define([
 
                 // remove any groups for which the genome object does not exists
                 // (deleted or permissions problem)
-                groupedByObjectRef = groupedByObjectRef.filter((group) => {
+                const grouped = groupedByObjectRef.filter((group) => {
                     return group.genomeInfo ? true : false;
                 });
 
+                // console.log('objects??', objects);
+
                 return {
                     items: objects,
-                    grouped: groupedByObjectRef,
+                    grouped,
                     first: query.start,
                     isTruncated: true,
                     summary: {

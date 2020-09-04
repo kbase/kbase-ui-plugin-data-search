@@ -8,7 +8,8 @@
     },
     "scripts": {
         "build": "bash scripts/build-plugin.bash",
-        "build-dev": "bash scripts/build-plugin-dev.bash"
+        "build-dev": "bash scripts/build-plugin-dev.bash",
+        "watch": "nodemon --watch ./src --ext js,css,yml,yaml,json --exec 'yarn build-dev'"
     },
     "repository": {
         "type": "git",
@@ -21,6 +22,7 @@
     },
     "homepage": "https://github.com/kbase/kbase-ui-plugin-data-search#readme",
     "devDependencies": {
-        "eslint": "6.0.1"
+        "eslint": "6.0.1",
+        "nodemon": "2.0.4"
     }
 }

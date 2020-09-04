@@ -167,13 +167,13 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                id: data.id,
+                id: data.genome_id,
                 domain: data.domain,
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
-                featureCount: data.features,
-                mrnaCount: data.mrnas,
-                cdsCount: data.cdss,
+                featureCount: data.feature_count,
+                mrnaCount: data.mrna_count,
+                cdsCount: data.cds_count,
                 // featureCount: keyPropsIntValue(this.object, 'feature_count', null),
                 // mrnaCount: keyPropsIntValue(this.object, 'mrna_count', null),
                 // cdsCount: keyPropsIntValue(this.object, 'cds_count', null),

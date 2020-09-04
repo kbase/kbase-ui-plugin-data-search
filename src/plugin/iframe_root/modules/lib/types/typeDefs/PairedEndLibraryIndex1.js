@@ -15,16 +15,6 @@ define([
 
     const detailFieldDefs = [
         {
-            id: 'scientificName',
-            label: 'Scientific Name',
-        },
-        {
-            id: 'insertSize',
-            label: 'Insert Size',
-            type: 'number',
-            format: '0,0'
-        },
-        {
             id: 'readCount',
             label: 'Read Length',
             type: 'number',
@@ -129,13 +119,12 @@ define([
         objectToData() {
             var data = this.object.data;
             return {
-                scientificName: data.scientific_name,
                 gcContent: data.gc_content,
                 meanInsertSize: data.insert_size_mean,
                 phredType: data.phred_type,
-                meanQuality: data.qual_mean,
-                readCount: data.read_count,
-                meanReadLength: data.read_length_mean,
+                meanQuality: data.mean_quality_score,
+                readCount: data.size,
+                meanReadLength: data.mean_read_length,
                 sequencingTechnology: data.sequencing_tech
             };
         }
