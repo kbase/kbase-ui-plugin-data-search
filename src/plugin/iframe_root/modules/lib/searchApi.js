@@ -45,7 +45,7 @@ define([
                 }]
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result;
                 });
@@ -78,7 +78,7 @@ define([
                 }
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result.total;
                 });
@@ -125,7 +125,7 @@ define([
                 }]
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result;
                 });
@@ -160,7 +160,7 @@ define([
                 }
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result.total;
                 });
@@ -229,7 +229,7 @@ define([
                 }]
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result;
                 });
@@ -286,7 +286,7 @@ define([
                 }
             };
 
-            return rpc.call('KBaseSearchEngine', 'search_objects', param)
+            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
                 .spread(function (result) {
                     return result.total;
                 });
@@ -322,20 +322,20 @@ define([
                 throw new Error('Invalid data source: ' + arg.dataSource);
             }
 
-            return rpc.call('KBaseSearchEngine', 'search_types', param)
+            return rpc.call('SearchAPI2Legacy', 'search_types', param)
                 .spread(function (result) {
                     return result;
                 });
         }
 
         return {
-            referenceObjectSearch: referenceObjectSearch,
-            narrativeObjectSearch: narrativeObjectSearch,
-            referenceObjectSearchTotal: referenceObjectSearchTotal,
-            narrativeObjectSearchTotal: narrativeObjectSearchTotal,
-            featuresSearch: featuresSearch,
-            featuresSearchTotal: featuresSearchTotal,
-            typeSearch: typeSearch
+            referenceObjectSearch,
+            narrativeObjectSearch,
+            referenceObjectSearchTotal,
+            narrativeObjectSearchTotal,
+            featuresSearch,
+            featuresSearchTotal,
+            typeSearch
         };
     }
 

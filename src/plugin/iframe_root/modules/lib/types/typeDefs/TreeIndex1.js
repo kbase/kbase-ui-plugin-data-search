@@ -33,7 +33,10 @@ define([
             label: 'Labels',
             type: 'string'
         }, type: {
-            label: 'Type',
+            label: 'Tree Type',
+            type: 'string'
+        }, name: {
+            label: 'Name',
             type: 'string'
         }
     };
@@ -61,15 +64,10 @@ define([
 
         objectToData() {
             const data = this.object.data;
-            var labels = Object.keys(data.default_node_labels).map(function (key) {
-                return {
-                    key: key,
-                    value: data.default_node_labels[key]
-                };
-            });
             return {
-                labels: labels,
-                type: data.type
+                name: [this.object.obj_name, data.tree_name].join(' - '),
+                type: data.type,
+                labels: data.labels,
             };
         }
     }

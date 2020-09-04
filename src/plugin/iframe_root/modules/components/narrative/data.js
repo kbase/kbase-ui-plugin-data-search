@@ -15,7 +15,9 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
         };
 
         function objectToViewModel(obj) {
+            // console.log('[objectToViewModel]', obj);
             var type = types.getTypeForObject(obj);
+            // console.log('[objectToViewModel] type', type);
             if (!type) {
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
@@ -61,6 +63,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
             //     }
             // });
 
+            // console.log('[objectToViewModel] match class', ref, type.getUIClass(), type.isCopyable(), type.isViewable());
             var vm = {
                 type: {
                     label: type.getLabel(),
@@ -162,24 +165,26 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                 })
             ])
                 .spread(function (objectResults, typeResults) {
-                    var objects = objectResults.objects.map(function (object) {
+                    const objects = objectResults.objects.map(function (object) {
                         return objectToViewModel(object);
                     });
-                    var totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
-                        return {
-                            id: typeName.toLowerCase(),
-                            count: typeResults.type_to_count[typeName]
-                        };
-                    });
-                    var totalSearchHits;
+                    const totalByType = Object.keys(typeResults.type_to_count)
+                        .map(function (typeName) {
+                            return {
+                                id: typeName.toLowerCase(),
+                                count: typeResults.type_to_count[typeName]
+                            };
+                        });
+                    let totalSearchHits;
                     if (objectResults.total > maxSearchResults) {
                         totalSearchHits = maxSearchResults;
                     } else {
                         totalSearchHits = objectResults.total;
                     }
-                    var narratives = Object.keys(objectResults.access_group_narrative_info)
+
+                    const narratives = Object.keys(objectResults.access_group_narrative_info)
                         .map(function (workspaceId) {
-                            var info = objectResults.access_group_narrative_info[workspaceId];
+                            const info = objectResults.access_group_narrative_info[workspaceId];
 
                             if (info === null) {
                                 return {
@@ -196,7 +201,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                                 };
                             }
 
-                            var narrative = {
+                            const narrative = {
                                 isNarrative: info[0] ? true : false,
                                 name: info[0],
                                 title: info[0],
@@ -225,7 +230,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
 
                     return {
                         items: objects,
-                        narratives: narratives,
+                        narratives,
                         first: query.start,
                         isTruncated: true,
                         summary: {
@@ -246,7 +251,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
         }
 
         return {
-            search: search
+            search
         };
     }
 

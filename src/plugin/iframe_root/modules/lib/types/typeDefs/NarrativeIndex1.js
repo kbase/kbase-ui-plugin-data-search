@@ -20,11 +20,23 @@ define([
         {
             id: 'title',
             label: 'Title'
+        },
+        {
+            id: 'author',
+            label: 'Author'
+        },
+        {
+            id: 'object_count',
+            label: 'Total Objects'
+        },
+        {
+            id: 'cell_count',
+            label: 'Total Cells'
         }
     ];
 
     const searchFields = {
-        title:  {
+        narrative_title:  {
             disableSort: true,
             label: 'Title',
             type: 'string'
@@ -100,8 +112,12 @@ define([
         }
 
         objectToData() {
+            const data = this.object.data;
             return {
-                title: this.object.key_props.title
+                title: data.narrative_title,
+                author: this.object.creator,
+                object_count: data.data_objects.length,
+                cell_count: data.total_cells
             };
         }
 

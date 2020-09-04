@@ -177,14 +177,14 @@ define([
         }
 
         objectToData() {
-            var data = this.object.data;
-            var proteinLength;
-            var proteinTranslation = data.protein_translation;
+            const data = this.object.data;
+            let proteinLength;
+            const proteinTranslation = data.protein_translation;
             if (proteinTranslation) {
                 proteinLength = proteinTranslation.length;
             }
 
-            var location = data.location.map(function (location) {
+            const location = data.location.map(function (location) {
                 var start = location[1];
                 var length = location[3];
                 var direction = location[2];
@@ -215,10 +215,10 @@ define([
                 featureType: data.type,
                 id: data.id,
                 aliases: parseAliases(data.aliases),
-                functions: [data.function],
-                location: location,
-                proteinTranslation: proteinTranslation,
-                proteinLength: proteinLength
+                functions: data.functions,
+                location,
+                proteinTranslation,
+                proteinLength
                 // domain: this.object.parent_data.domain,
                 // scientificName: this.object.parent_data.scientific_name,
                 // taxonomy: utils.parseTaxonomy(this.object.parent_data.taxonomy)

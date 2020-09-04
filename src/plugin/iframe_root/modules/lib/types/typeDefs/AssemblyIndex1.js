@@ -91,11 +91,11 @@ define([
 
         objectToData() {
             return {
-                name: this.object.data.name,
-                dnaSize: this.object.data.dna_size,
+                name: this.object.data.obj_name,
+                dnaSize: this.object.data.size,
                 gcContent: this.object.data.gc_content,
                 externalSourceId: this.object.data.external_source_id,
-                contigCount: this.object.data.contigs
+                contigCount: this.object.data.num_contigs
             };
         }
     }

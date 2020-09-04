@@ -129,20 +129,20 @@ define([
         var error = ko.observable();
 
         return {
-            includePrivateData: includePrivateData,
-            includePublicData: includePublicData,
-            pageSize: pageSize,
-            page: page,
-            totalPages: totalPages,
-            status: status,
-            searching: searching,
-            buffer: buffer,
-            isTruncated: isTruncated,
-            totalSearchHits: totalSearchHits,
-            totalSearchSpace: totalSearchSpace,
-            summary: summary,
-            errorMessage: errorMessage,
-            error: error
+            includePrivateData,
+            includePublicData,
+            pageSize,
+            page,
+            totalPages,
+            status,
+            searching,
+            buffer,
+            isTruncated,
+            totalSearchHits,
+            totalSearchSpace,
+            summary,
+            errorMessage,
+            error
         };
     }
 
@@ -379,7 +379,7 @@ define([
         }
 
         return {
-            searchState: searchState,
+            searchState,
             view: params.view,
             overlayComponent: params.overlayComponent,
             selectedObjects: params.selectedObjects,
@@ -393,7 +393,7 @@ define([
             referenceDataTotal: params.referenceDataTotal,
             featuresTotal: params.featuresTotal,
 
-            dispose: dispose
+            dispose
         };
     }
 

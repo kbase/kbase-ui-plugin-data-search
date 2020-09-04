@@ -232,9 +232,10 @@ define([
                     referenceDataTotal(null);
                     return;
                 }
-                return searchApi.referenceObjectSearchTotal(newQuery).then(function (total) {
-                    referenceDataTotal(total);
-                });
+                return searchApi.referenceObjectSearchTotal(newQuery)
+                    .then(function (total) {
+                        referenceDataTotal(total);
+                    });
             })
         );
 

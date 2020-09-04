@@ -15,12 +15,6 @@ define([
 
     const detailFieldDefs = [
         {
-            id: 'meanInsertSize',
-            label: 'Mean Insert Size',
-            type: 'number',
-            format: '0,0.00'
-        },
-        {
             id: 'readCount',
             label: 'Read Length',
             type: 'number',
@@ -76,8 +70,8 @@ define([
             type: 'integer'
         },
         quality: {
-            label: 'float',
-            type: 'Quality'
+            label: 'Quality',
+            type: 'float'
         },
         gc_content: {
             label: 'GC Content',
@@ -119,10 +113,9 @@ define([
             return {
                 sequencingTechnology: data.sequencing_tech,
                 phredType: data.phred_type,
-                readCount: data.read_count,
-                meanReadLength: data.read_length_mean,
-                meanInsertSize: data.insert_size_mean,
-                meanQuality: data.qual_mean,
+                readCount: data.size,
+                meanReadLength: data.mean_read_length,
+                meanQuality: data.mean_quality_score,
                 gcContent: data.gc_content
             };
         }

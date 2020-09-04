@@ -23,7 +23,7 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         p = t('p'),
         hr = t('hr'),
         button = t('button'),
@@ -42,7 +42,7 @@ define([
         return 'rgba(220,220,220,' + opacity + ')';
     }
 
-    var styles = html.makeStyles({
+    const styles = html.makeStyles({
         component: {
             css: {
                 flex: '1 1 0px',
@@ -751,7 +751,7 @@ define([
                             component: {
                                 name: StringArrayComponent.quotedName(),
                                 params: {
-                                    value: 'featureFunctions'
+                                    value: 'functions'
                                 }
                             }
                         }
@@ -760,7 +760,7 @@ define([
 
                 // div({
                 //     dataBind: {
-                //         text: 'featureFunctions'
+                //         text: 'functions'
                 //     }
                 // })),
                 // div({
