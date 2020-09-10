@@ -15,22 +15,60 @@ define([
         {
             id: 'name',
             label: 'Name'
-        }, {
-            id: 'contigCount',
-            label: '# Contigs',
+        },
+        {
+            id: 'meanContigLength',
+            label: 'Mean Contig Length',
             type: 'number',
             format: '0,0'
-        }, {
-            id: 'dnaSize',
-            label: 'DNA Size',
+        },
+        {
+            id: 'percentCompleteContigs',
+            label: 'Percent Complete Contigs',
             type: 'number',
-            format: '0,0'
-        }, {
+            format: '0.00%'
+        },
+        {
+            id: 'percentCircleContigs',
+            label: 'Percent Circle Contigs',
+            type: 'number',
+            format: '0.00%'
+        },
+        {
+            id: 'assemblyId',
+            label: 'Assembly ID'
+        },
+        {
             id: 'gcContent',
             label: 'GC Content',
             type: 'number',
             format: '0.000%'
-        }, {
+        },
+        {
+            id: 'dnaSize',
+            label: 'DNA Size',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'contigCount',
+            label: '# Contigs',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'taxonRef',
+            label: 'Taxon Reference'
+        },
+        {
+            id: 'externalSource',
+            label: 'External Source'
+        },
+        {
+            id: 'externalOriginationDate',
+            label: 'External Origination Date'
+        },
+        {
             id: 'externalSourceId',
             label: 'External Source ID'
         }
@@ -40,22 +78,6 @@ define([
         name: {
             label: 'Name',
             type: 'string'
-        },
-        dna_size: {
-            label: 'DNA Size',
-            type: 'integer'
-        },
-        gc_content: {
-            label: 'GC Content',
-            type: 'float'
-        },
-        external_source_id: {
-            label: 'External Source ID',
-            type: 'string'
-        },
-        contigs: {
-            label: 'Contigs',
-            type: 'integer'
         }
     };
 
@@ -90,12 +112,20 @@ define([
         }
 
         objectToData() {
+            const data = this.object.data;
             return {
-                name: this.object.data.obj_name,
-                dnaSize: this.object.data.size,
-                gcContent: this.object.data.gc_content,
-                externalSourceId: this.object.data.external_source_id,
-                contigCount: this.object.data.num_contigs
+                name: data.assembly_name,
+                meanContigLength: data.mean_contig_length,
+                percentCompleteContigs: data.percent_complete_contigs,
+                percentCircleContigs: data.percent_circle_contigs,
+                assemblyId: data.assembly_id,
+                gcContent: data.gc_content,
+                dnaSize: data.size,
+                contigCount: data.num_contigs,
+                taxonRef: data.taxon_ref,
+                externalOriginationDate: data.external_origination_date,
+                externalSourceId: data.external_source_id,
+                externalSource: data.external_source
             };
         }
     }

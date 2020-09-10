@@ -33,27 +33,50 @@ define([
             label: 'Scientific name'
         },
         {
-            id: 'domain',
-            label: 'Domain'
+            id: 'size',
+            label:'DNA Size (bp)',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'contigCount',
+            label:' # Contigs',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'genomeType',
+            label: 'Genome Type',
+            type: 'string'
+        },
+        {
+            id: 'gcContent',
+            label: 'GC Content',
+            type: 'number',
+            format: '0.000'
         },
         {
             id: 'taxonomy',
             label: 'Lineage',
             component: TaxonomyComponent.name()
         },
+
         {
-            id: 'notes',
-            label: 'Notes'
+            id: 'meanContigLength',
+            label:'Mean Contig Length',
+            type: 'number',
+            format: '0,0.0'
         },
+
         {
-            id: 'featureCount',
-            label:' # Features',
+            id: 'cdsCount',
+            label: '# CDSs',
             type: 'number',
             format: '0,0'
         },
         {
-            id: 'cdsCount',
-            label: '# CDSs',
+            id: 'featureCount',
+            label:' # Features',
             type: 'number',
             format: '0,0'
         },
@@ -70,6 +93,11 @@ define([
             format: '0,0'
         },
         {
+            id: 'assemblyRef',
+            label: 'Assembly Reference',
+            type: 'string'
+        },
+        {
             id: 'featureCounts',
             label: 'Feature Counts',
             component: FeatureCountsComponent.name()
@@ -84,12 +112,16 @@ define([
             label: 'Warnings',
             component: StringArrayComponent.name()
         },
+
         {
-            id: 'suspect',
-            label: 'Suspect',
-            type: 'boolean',
-            // default: false,
-            missing: 'n/a'
+            id: 'externalOriginationDate',
+            label: 'External Origination Date',
+            type: 'string'
+        },
+        {
+            id: 'externalOriginationFileName',
+            label: 'External Origination File Name',
+            type: 'string'
         },
         {
             id: 'source',
@@ -101,71 +133,28 @@ define([
             label: 'Source ID',
             type: 'string'
         }
+
     ];
 
     const searchFields = {
-        id: {
-            label: 'ID',
+        scientific_name: {
+            label: 'Scientific Name',
             type: 'string'
         },
-        domain: {
-            label: 'Domain',
+        genome_type: {
+            label: 'Genome Type',
             type: 'string'
         },
         taxonomy: {
             label: 'Taxonomy',
             type: 'string'
         },
-        scientific_name: {
-            label: 'Scientific Name',
-            type: 'string'
-        },
-        notes: {
-            label: 'Notes',
+        assembly_ref: {
+            label: 'Assembly Reference',
             type: 'string'
         },
         source: {
             label: 'Source',
-            type: 'string'
-        },
-        source_id: {
-            label: 'Source ID',
-            type: 'string'
-        },
-        features: {
-            label: 'Feature Count',
-            type: 'integer'
-        },
-        cdss: {
-            label: 'CDS Count',
-            type: 'integer'
-        },
-        mrnas: {
-            label: 'MRNA Count',
-            type: 'integer'
-        },
-        non_coding_features: {
-            label: 'Non Coding Features',
-            type: 'integer'
-        },
-        warnings: {
-            label: 'Warnings',
-            type: 'string'
-        },
-        feature_counts: {
-            label: 'Feature Counts',
-            type: 'string'
-        },
-        genome_tiers: {
-            label: 'Genome Tiers',
-            type: 'string'
-        },
-        suspect: {
-            label: 'Suspect',
-            type: 'boolean'
-        },
-        assembl_ref: {
-            label: 'Asssembly Ref',
             type: 'string'
         }
     };
@@ -203,20 +192,24 @@ define([
             const data = this.object.data;
             return {
                 id: data.genome_id,
-                domain: data.domain,
-                taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
-                notes: data.notes,
-                featureCount: data.feature_count,
-                contigCount: data.contig_count,
+                size: data.size,
+                contigCount: data.num_contigs,
+                genomeType: data.genome_type,
+                gcContent: data.gc_content,
+                taxonomy: utils.parseTaxonomy(data.taxonomy),
+                meanContigLength: data.mean_contig_length,
+                externalOriginationDate: data.external_origination_date,
+                originalSourceFileName: data.original_source_file_name,
                 cdsCount: data.cds_count,
+                featureCount: data.feature_count,
                 mrnaCount: data.mrna_count,
                 nonCodingFeatureCount: data.non_coding_feature_count,
+                assemblyRef: data.assembly_ref,
+                sourceId: data.source_id,
                 warnings: data.warnings,
-                featureCounts: data.feature_counts,
-                genomeTiers: data.genome_tiers,
-                source: data.source,
-                sourceId: data.source_id
+                publicationTitles: data.publication_titles,
+                publicationAuthors: data.publication_authors
             };
         }
     }

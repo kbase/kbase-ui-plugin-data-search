@@ -79,6 +79,33 @@ define([], function () {
         return color;
     }
 
+    const baseSearchFields = {
+        obj_name: {
+            label: 'Object Name',
+            type: 'string'
+        },
+        shared_users: {
+            label: 'Shared Users',
+            type: 'string'
+        },
+        creator: {
+            label: 'Creator',
+            type: 'string'
+        },
+        tags: {
+            label: 'Tags',
+            type: 'string'
+        },
+        obj_type_module: {
+            label: 'Object Type Module',
+            type: 'string'
+        },
+        obj_type_name: {
+            label: 'Object Type Name',
+            type: 'string'
+        }
+    };
+
     class IndexObjectBase {
         constructor(params) {
             // from params
@@ -97,7 +124,7 @@ define([], function () {
             // The rest of what is passed in params remains available
             // via this.params.
             // TODO: bring them all into the object directly.
-            this.searchFields = params.searchFields;
+            this.searchFields = Object.assign({}, baseSearchFields, params.searchFields);
 
             // this.label = params.label;
             // this.isViewable = params.isViewable;

@@ -41,32 +41,24 @@ define([
             label: 'Title',
             type: 'string'
         },
-        source: {
-            label: 'Source',
+        owner: {
+            label: 'Owner',
             type: 'string'
         },
-        code_output: {
-            label: 'Code Output',
+        // creator: {
+        //     label: 'Creator',
+        //     type: 'string'
+        // },
+        'data_objects.name': {
+            label: 'Data Object Name',
             type: 'string'
         },
-        app_output: {
-            label: 'App Output',
+        'data_objects.obj_type': {
+            label: 'Data Object Type',
             type: 'string'
         },
-        app_info: {
-            label: 'App Info',
-            type: 'string'
-        },
-        app_input: {
-            label: 'App Input',
-            type: 'string'
-        },
-        job_ids: {
-            label: 'Job Ids',
-            type: 'string'
-        },
-        creator: {
-            label: 'Creator',
+        'cells.desc': {
+            label: 'Markdown Cells',
             type: 'string'
         }
     };
@@ -116,6 +108,7 @@ define([
             return {
                 title: data.narrative_title,
                 author: this.object.creator,
+                owner: data.owner,
                 object_count: data.data_objects.length,
                 cell_count: data.total_cells
             };
