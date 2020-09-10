@@ -761,22 +761,6 @@ define([
                                     html: 'highlight'
                                 }
                             }),
-                            // span({
-                            //     dataBind: {
-                            //         text: 'before'
-                            //     }
-                            // }), ' ',
-                            // span({
-                            //     dataBind: {
-                            //         text: 'match'
-                            //     },
-                            //     class: 'highlight'
-                            // }), ' ',
-                            // span({
-                            //     dataBind: {
-                            //         text: 'after'
-                            //     }
-                            // }),
                             '<!-- /ko -->'
                         ]),
 
@@ -790,14 +774,15 @@ define([
                                     value: 'value',
                                     type: 'type',
                                     format: 'format',
-                                    default: '$data.default',
-                                    missing: '$data.missing'
+                                    default: '$data.default || "-"',
+                                    missing: '$data.missing || "-"'
                                 }
                             }
                         }),
                         '<!-- /ko -->',
 
                         '<!-- ko if: $data.component -->',
+
                         td({
                             dataBind: {
                                 component: {
@@ -814,7 +799,7 @@ define([
                         '<!-- ko ifnot: $data.type || $data.component -->',
                         td({
                             dataBind: {
-                                text: 'value'
+                                text: 'value || "-"'
                             }
                         }),
                         '<!-- /ko -->',

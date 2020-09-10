@@ -38,21 +38,21 @@ define([
         },
         {
             id: 'isDefined',
-            label: 'Defined',
+            label: 'Defined?',
             type: 'boolean',
-            format: 'Yes:No'
+            format: ['Yes', 'No']
         },
         {
             id: 'isMinimal',
-            label: 'Minimal',
+            label: 'Minimal?',
             type: 'boolean',
-            format: 'Yes:No'
+            format: ['Yes', 'No']
         },
         {
             id: 'isAerobic',
-            label: 'Aerobic',
+            label: 'Aerobic?',
             type: 'boolean',
-            format: 'Yes:No'
+            format: ['Yes', 'No']
         }
     ];
 

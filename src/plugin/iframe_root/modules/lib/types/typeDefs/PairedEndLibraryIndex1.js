@@ -15,30 +15,41 @@ define([
 
     const detailFieldDefs = [
         {
+            id: 'sequencingTechnology',
+            label: 'Sequencing Technology'
+        },
+        {
             id: 'readCount',
             label: 'Read Length',
             type: 'number',
             format: '0,0'
         },
         {
-            id: 'meanReadLength',
-            label: 'Mean Read Length',
-            type: 'number',
-            format: '0,0.00'
+            id: 'interleaved',
+            label: 'Interleaved?',
+            type: 'boolean',
+            format: ['Yes', 'No']
         },
         {
-            id: 'quality',
-            label:'Quality',
-            type: 'number',
-            format: '0.000'
+            id: 'singleGenome',
+            label: 'Single Genome?',
+            type: 'boolean',
+            format: ['Yes', 'No']
+        },
+        {
+            id: 'provenanceServices',
+            label: 'Provenance Services',
+            type: 'string'
         },
         {
             id: 'phredType',
             label: 'Phred Type'
         },
         {
-            id: 'files',
-            label: 'Files'
+            id: 'meanQuality',
+            label:'Mean Quality',
+            type: 'number',
+            format: '0.000'
         },
         {
             id: 'gcContent',
@@ -47,43 +58,23 @@ define([
             format: '0.000'
         },
         {
-            id: 'sequencingTechnology',
-            label: 'Sequencing Technology'
+            id: 'meanQualityScore',
+            label: 'Mean Quality Score',
+            type: 'number',
+            format: '0.000'
+        },
+        {
+            id: 'meanReadLength',
+            label: 'Mean Read Length',
+            type: 'number',
+            format: '0,0.00'
         }
     ];
 
     const searchFields = {
-        technology: {
+        sequencing_tech: {
             label: 'Sequencing Technology',
             type: 'string'
-        },
-        files: {
-            label: 'Files',
-            type: 'string'
-        },
-        phred_type: {
-            label: 'Phred Type',
-            type: 'string'
-        },
-        read_count: {
-            label: 'Read Count',
-            type: 'integer'
-        },
-        read_length: {
-            label: 'Mean Read Length',
-            type: 'integer'
-        },
-        insert_size: {
-            label: 'Mean Insert Size',
-            type: 'integer'
-        },
-        quality: {
-            label: 'Quality',
-            type: 'float'
-        },
-        gc_content: {
-            label: 'GC Content',
-            type: 'float'
         }
     };
 
@@ -93,12 +84,8 @@ define([
             label: 'Sequencing Technology'
         },
         {
-            key: 'read_count',
-            label: 'Read Count'
-        },
-        {
-            key: 'read_length',
-            label: 'Mean Read Length'
+            key: 'provenance_services',
+            label: 'Provenance Services'
         }
     ];
 
@@ -119,13 +106,16 @@ define([
         objectToData() {
             var data = this.object.data;
             return {
-                gcContent: data.gc_content,
-                meanInsertSize: data.insert_size_mean,
+                sequencingTechnology: data.sequencing_tech,
+                readCount: data.size,
+                interleaved: data.interleaved,
+                singleGenome: data.single_genome,
+                provenanceServices: data.provenance_services || '',
                 phredType: data.phred_type,
                 meanQuality: data.mean_quality_score,
-                readCount: data.size,
-                meanReadLength: data.mean_read_length,
-                sequencingTechnology: data.sequencing_tech
+                gcContent: data.gc_content,
+                meanQualityScore: data.mean_quality_score,
+                meanReadLength: data.mean_read_length
             };
         }
     }

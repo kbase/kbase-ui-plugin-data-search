@@ -15,10 +15,12 @@ define([
         {
             id: 'name',
             label: 'Name'
-        }, {
+        },
+        {
             id: 'type',
             label: 'Pangenome Type'
-        },  {
+        },
+        {
             id: 'genomeCount',
             label: 'Genome Count',
             type: 'number',
@@ -36,18 +38,18 @@ define([
             type: 'string'
         },
         genomes: {
-            label: 'Genomes',
-            type: 'integer'
+            label: 'GenomeRefs',
+            type: 'string'
         }
     };
 
     const sortFields = [
         {
-            key: 'name',
+            key: 'pangenome_name',
             label: 'Name Name'
         },
         {
-            key: 'type',
+            key: 'pangenome_type',
             label: 'Pangenome Type'
         }
     ];
@@ -69,7 +71,7 @@ define([
         objectToData() {
             const data = this.object.data;
             return {
-                name: [this.object.obj_name, data.pangenome_name].join(' - '),
+                name: data.pangenome_name,
                 type: data.pangenome_type,
                 genomeCount: data.genome_upas.length
             };

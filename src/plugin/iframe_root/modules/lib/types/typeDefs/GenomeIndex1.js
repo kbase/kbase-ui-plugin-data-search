@@ -2,17 +2,21 @@ define([
     'kb_common/props',
     '../utils',
     '../ObjectIndexBase',
-    '../components/taxonomy'
+    '../components/taxonomy',
+    '../components/featureCounts',
+    '../components/stringArray'
 ], function (
     Props,
     utils,
     ObjectIndexBase,
-    TaxonomyComponent
+    TaxonomyComponent,
+    FeatureCountsComponent,
+    StringArrayComponent
 ) {
     'use strict';
 
     const indexId = 'Genome';
-    const indexVersion = 1;
+    const indexVersion = 2;
 
     const kbaseTypeModule = 'KBaseGenomes';
     const kbaseTypeId = 'Genome';
@@ -29,13 +33,46 @@ define([
             label: 'Scientific name'
         },
         {
-            id: 'domain',
-            label: 'Domain'
+            id: 'size',
+            label:'DNA Size (bp)',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'contigCount',
+            label:' # Contigs',
+            type: 'number',
+            format: '0,0'
+        },
+        {
+            id: 'genomeType',
+            label: 'Genome Type',
+            type: 'string'
+        },
+        {
+            id: 'gcContent',
+            label: 'GC Content',
+            type: 'number',
+            format: '0.000'
         },
         {
             id: 'taxonomy',
             label: 'Lineage',
             component: TaxonomyComponent.name()
+        },
+
+        {
+            id: 'meanContigLength',
+            label:'Mean Contig Length',
+            type: 'number',
+            format: '0,0.0'
+        },
+
+        {
+            id: 'cdsCount',
+            label: '# CDSs',
+            type: 'number',
+            format: '0,0'
         },
         {
             id: 'featureCount',
@@ -44,22 +81,37 @@ define([
             format: '0,0'
         },
         {
-            id: 'cdsCount',
-            label: '# CDSs',
-            type: 'number',
-            format: '0,0'
-        },
-        {
             id: 'mrnaCount',
-            label: '# mRNAs',
+            label: '# MRNAs',
             type: 'number',
             format: '0,0'
         },
         {
-            id: 'contigCount',
-            label: '# Contigs',
+            id: 'nonCodingFeatureCount',
+            label: '# Non Coding Features',
             type: 'number',
             format: '0,0'
+        },
+        {
+            id: 'assemblyRef',
+            label: 'Assembly Reference',
+            type: 'string'
+        },
+        {
+            id: 'warnings',
+            label: 'Warnings',
+            component: StringArrayComponent.name()
+        },
+
+        {
+            id: 'externalOriginationDate',
+            label: 'External Origination Date',
+            type: 'string'
+        },
+        {
+            id: 'externalOriginationFileName',
+            label: 'External Origination File Name',
+            type: 'string'
         },
         {
             id: 'source',
@@ -75,52 +127,27 @@ define([
     ];
 
     const searchFields = {
-        id: {
-            label: 'ID',
-            type: 'string'
-        },
-        domain: {
-            label: 'Domain',
-            type: 'string'
-        },
-        taxonomy: {
-            label: 'Lineage',
-            type: 'string'
-        },
         scientific_name: {
             label: 'Scientific Name',
             type: 'string'
         },
-        feature_count: {
-            label: 'Feature Count',
-            type: 'integer'
+        genome_type: {
+            label: 'Genome Type',
+            type: 'string'
         },
-        cds_count: {
-            label: 'CDS Count',
-            type: 'integer'
+        taxonomy: {
+            label: 'Taxonomy',
+            type: 'string'
         },
-        mrna_count: {
-            label: 'mRNA Count',
-            type: 'integer'
-        },
-        // assembly_ref: {
-        //     label: 'Asssembly Ref',
-        //     type: 'string'
-        // },
-        contigs: {
-            label: 'Contig Count',
-            type: 'integer'
+        assembly_ref: {
+            label: 'Assembly Reference',
+            type: 'string'
         },
         source: {
             label: 'Source',
             type: 'string'
-        },
-        source_id: {
-            label: 'Source ID',
-            type: 'string'
         }
     };
-
     const sortFields = [
         {
             key: 'id',
@@ -135,19 +162,6 @@ define([
             label: 'Scientific name'
         }
     ];
-
-    // function keyPropsIntValue(object, prop, defaultValue) {
-    //     let propsValue = object.key_props[prop];
-    //     if (propsValue) {
-    //         try {
-    //             return parseInt(propsValue, 10);
-    //         } catch (ex) {
-    //             return defaultValue;
-    //         }
-    //     } else {
-    //         return defaultValue;
-    //     }
-    // }
 
 
     class GenomeIndex1 extends ObjectIndexBase {
@@ -168,18 +182,24 @@ define([
             const data = this.object.data;
             return {
                 id: data.genome_id,
-                domain: data.domain,
-                taxonomy: utils.parseTaxonomy(data.taxonomy),
                 scientificName: data.scientific_name,
+                size: data.size,
+                contigCount: data.num_contigs,
+                genomeType: data.genome_type,
+                gcContent: data.gc_content,
+                taxonomy: utils.parseTaxonomy(data.taxonomy),
+                meanContigLength: data.mean_contig_length,
+                externalOriginationDate: data.external_origination_date,
+                originalSourceFileName: data.original_source_file_name,
+                cdsCount: data.cds_count,
                 featureCount: data.feature_count,
                 mrnaCount: data.mrna_count,
-                cdsCount: data.cds_count,
-                // featureCount: keyPropsIntValue(this.object, 'feature_count', null),
-                // mrnaCount: keyPropsIntValue(this.object, 'mrna_count', null),
-                // cdsCount: keyPropsIntValue(this.object, 'cds_count', null),
-                contigCount: data.num_contigs,
-                source: data.source,
-                sourceId: data.source_id
+                nonCodingFeatureCount: data.non_coding_feature_count,
+                assemblyRef: data.assembly_ref,
+                sourceId: data.source_id,
+                warnings: data.warnings,
+                publicationTitles: data.publication_titles,
+                publicationAuthors: data.publication_authors
             };
         }
     }

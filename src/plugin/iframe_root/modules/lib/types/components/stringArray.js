@@ -1,4 +1,15 @@
-define(['kb_knockout/registry', 'kb_knockout/lib/viewModelBase', 'kb_lib/html'], function (reg, ViewModelBase, html) {
+define([
+    'kb_knockout/registry',
+    'kb_knockout/lib/generators',
+    'kb_knockout/lib/viewModelBase',
+    'kb_lib/html'
+],
+function (
+    reg,
+    gen,
+    ViewModelBase,
+    html
+) {
     'use strict';
 
     var t = html.tag,
@@ -41,34 +52,40 @@ define(['kb_knockout/registry', 'kb_knockout/lib/viewModelBase', 'kb_lib/html'],
         constructor(params) {
             super(params);
             this.items = params.value;
+            this.isEmpty = typeof this.items === 'undefined' ||
+                this.items === null ||
+                !Array.isArray(this.items) ||
+                this.items.length === 0;
         }
     }
 
     function template() {
         return div({}, [
-            table(
-                {
-                    class: styles.classes.table
-                },
-                [
-                    tbody(
-                        {
-                            dataBind: {
-                                foreach: 'items'
-                            }
-                        },
-                        [
-                            tr([
-                                td({
-                                    dataBind: {
-                                        text: '$data'
-                                    }
-                                })
-                            ])
-                        ]
-                    )
-                ]
-            )
+            gen.if('isEmpty',
+                div('-'),
+                table(
+                    {
+                        class: styles.classes.table
+                    },
+                    [
+                        tbody(
+                            {
+                                dataBind: {
+                                    foreach: 'items'
+                                }
+                            },
+                            [
+                                tr([
+                                    td({
+                                        dataBind: {
+                                            text: '$data'
+                                        }
+                                    })
+                                ])
+                            ]
+                        )
+                    ]
+                ))
         ]);
     }
 
