@@ -17,6 +17,7 @@ define([
 
             this.configDB = new props.Props({ data: config });
             this.pluginConfigDB = pluginConfigDB;
+
             // TODO: fix this!
             this.pluginPath = '/modules/plugins/' + pluginConfigDB.getItem('package.name') + '/iframe_root';
             this.pluginResourcePath = this.pluginPath + '/resources';
@@ -28,10 +29,10 @@ define([
             this.services = {
                 session: new SessionService({ runtime: this }),
                 widget: new WidgetService({ runtime: this }),
-                // type: new TypeService({
-                //     runtime: this,
-                //     config: this.pluginConfigDB.getItem('install.types')
-                // }),
+                type: new TypeService({
+                    runtime: this,
+                    config: this.pluginConfigDB.getItem('install.types')
+                }),
                 rpc: new RPCService({ runtime: this })
             };
 
