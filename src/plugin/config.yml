@@ -4,17 +4,15 @@ package:
   name: data-search
   description: The data-search panel and associated widgets
   type: iframe
-install:
+services:
   route:
-    mode: auto
     routes:
-      - path: "?q=:-q"
+      - path: "{{plugin}}?:-q"
         view: search
         authorization: true
   menu:
-    mode: auto
     items:
       - name: search2
-        path: []
+        path: "{{plugin}}"
         label: Search2
         icon: search
