@@ -7,12 +7,12 @@ package:
 services:
   route:
     routes:
-      - path: "{{plugin}}?:-q"
+      - path: search?:-q
         view: search
         authorization: true
   menu:
     items:
-      - name: search2
-        path: "{{plugin}}"
-        label: Search2
+      - name: search
+        path: search
+        label: Search
         icon: search

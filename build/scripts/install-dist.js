@@ -39,7 +39,7 @@ async function minify(rootDir) {
         matches.map(async (match) => {
             // console.log(`minifying ${match}...`);
             const contents = await fs.readFileAsync(match, 'utf8');
-            const result = Terser.minify(contents, {
+            const result = await Terser.minify(contents, {
                 output: {
                     beautify: false,
                     max_line_len: 80,
@@ -85,14 +85,29 @@ async function main() {
     const projectPath = path.normalize(cwd.join('/'));
     console.log(`Project path: ${projectPath}`);
     console.log('Copying files to dist...');
+    try {
+        await copyFiles(projectPath);
+    } catch (ex) {
+        console.error(`Error copying files ${projectPath}: ${ex.message}`)
+        console.error('Exiting build!');
+        process.exit(1);
+    }
     await copyFiles(projectPath);
     console.log('Minifying dist...');
-    await minify(projectPath);
+    try {
+        await minify(projectPath);
+    } catch (ex) {
+        console.error(`Error minifying ${projectPath}: ${ex.message}`)
+        console.error('Exiting build!');
+        process.exit(1);
+    }
     console.log('tar-ing dist...');
     try {
         await taritup(projectPath.split('/'));
     } catch (ex) {
         console.error('Error tarring up dist! ' + ex.message);
+        console.error('Exiting build!')
+        process.exit(1);
     }
     console.log('done');
 }
