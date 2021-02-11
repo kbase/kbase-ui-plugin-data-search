@@ -14,6 +14,10 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
             fetchSize: params.pageSize || 20
         };
 
+        function isBlacklistedHighlightField(fieldName) {
+            return ['tags'].includes(fieldName);
+        }
+
         function objectToViewModel(obj) {
             // console.log('[objectToViewModel]', obj);
             var type = types.getTypeForObject(obj);
@@ -33,7 +37,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
             var icon = type.getIcon();
 
             var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
-                if (field === 'source_tags') {
+                if (isBlacklistedHighlightField(field)) {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
