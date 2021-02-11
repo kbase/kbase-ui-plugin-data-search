@@ -19,30 +19,28 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
         }
 
         function objectToViewModel(obj) {
-            // console.log('[objectToViewModel]', obj);
-            var type = types.getTypeForObject(obj);
-            // console.log('[objectToViewModel] type', type);
-            if (!type) {
+            const typedObject = types.getTypeForObject(obj);
+            if (!typedObject) {
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
             }
 
-            var ref = type.getRef();
-            var detail = type.detail();
-            var detailMap = detail.reduce(function (m, field) {
+            const ref = typedObject.getRef();
+            const detail = typedObject.detail();
+            const detailMap = detail.reduce(function (m, field) {
                 m[field.id] = field;
                 return m;
             }, {});
 
-            var icon = type.getIcon();
+            const icon = typedObject.getIcon();
 
-            var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
+            const matches = Object.keys(obj.highlight).reduce(function (matches, field) {
                 if (isBlacklistedHighlightField(field)) {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
 
-                var label = type.getSearchFieldLabel(field);
+                var label = typedObject.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
@@ -67,16 +65,15 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
             //     }
             // });
 
-            // console.log('[objectToViewModel] match class', ref, type.getUIClass(), type.isCopyable(), type.isViewable());
             var vm = {
                 type: {
-                    label: type.getLabel(),
+                    label: typedObject.getLabel(),
                     icon: icon
                 },
                 matchClass: {
-                    id: type.getUIClass(),
-                    copyable: type.isCopyable(),
-                    viewable: type.isViewable(),
+                    id: typedObject.getUIClass(),
+                    copyable: typedObject.isCopyable(),
+                    viewable: typedObject.isViewable(),
                     ref: ref
                 },
 
@@ -87,7 +84,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
 
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
-                title: obj.object_name,
+                title: typedObject.getTitle(),
                 name: obj.object_name,
                 date: new Date(obj.timestamp),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
@@ -220,12 +217,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                                 },
                                 active: ko.observable(false)
                             };
-                            narrative.url =
-                                window.location.origin +
-                                '/narrative/ws.' +
-                                narrative.ref.workspaceId +
-                                '.obj.' +
-                                narrative.ref.objectId;
+                            narrative.url = `${window.location.origin}/narrative/${narrative.ref.workspaceId}`;
                             return narrative;
                         })
                         .sort(function (a, b) {

@@ -97,12 +97,16 @@ define([
             label: 'Assembly Reference',
             type: 'string'
         },
-        {
-            id: 'warnings',
-            label: 'Warnings',
-            component: StringArrayComponent.name()
-        },
-
+        // {
+        //     id: 'warnings',
+        //     label: 'Warnings',
+        //     component: StringArrayComponent.name()
+        // },
+        // {
+        //     id: 'publicationTitles',
+        //     label: 'Publications',
+        //     component: StringArrayComponent.name()
+        // },
         {
             id: 'externalOriginationDate',
             label: 'External Origination Date',
@@ -146,6 +150,14 @@ define([
         source: {
             label: 'Source',
             type: 'string'
+        },
+        publication_titles: {
+            label: 'Publications',
+            type: 'string'
+        },
+        publication_authors: {
+            label: 'Publication Authors',
+            type: 'string'
         }
     };
     const sortFields = [
@@ -163,7 +175,6 @@ define([
         }
     ];
 
-
     class GenomeIndex1 extends ObjectIndexBase {
         constructor(params) {
             super(Object.assign({}, params, {
@@ -178,6 +189,11 @@ define([
             }));
         }
 
+        getTitle() {
+            return this.object.data.scientific_name ||
+                   this.object.object_name;
+        }
+
         objectToData() {
             const data = this.object.data;
             return {
@@ -190,16 +206,17 @@ define([
                 taxonomy: utils.parseTaxonomy(data.taxonomy),
                 meanContigLength: data.mean_contig_length,
                 externalOriginationDate: data.external_origination_date,
-                originalSourceFileName: data.original_source_file_name,
+                externalOriginationFileName: data.original_source_file_name,
                 cdsCount: data.cds_count,
                 featureCount: data.feature_count,
                 mrnaCount: data.mrna_count,
                 nonCodingFeatureCount: data.non_coding_feature_count,
                 assemblyRef: data.assembly_ref,
+                source: data.source,
                 sourceId: data.source_id,
-                warnings: data.warnings,
-                publicationTitles: data.publication_titles,
-                publicationAuthors: data.publication_authors
+                // warnings: data.warnings,
+                // publicationTitles: data.publication_titles,
+                // publicationAuthors: data.publication_authors
             };
         }
     }

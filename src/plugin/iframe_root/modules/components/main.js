@@ -213,7 +213,6 @@ define([
         // These are just to support showing preview totals on the tabs.
         var narrativesTotal = ko.observable();
         var referenceDataTotal = ko.observable();
-        var featuresTotal = ko.observable();
 
         var withPrivateData = ko.observable(true);
         var withPublicData = ko.observable(true);
@@ -259,32 +258,6 @@ define([
                 });
             })
         );
-
-        var featuresTotalQuery = ko.pureComputed(function () {
-            var terms = searchTerms().terms;
-
-            return {
-                query: terms.join(' '),
-                withPrivateData: withPrivateData(),
-                withPublicData: withPublicData(),
-                withUserData: withUserData(),
-                withReferenceData: withReferenceData()
-            };
-        });
-
-        if (runtime.featureEnabled('search_features')) {
-            subscriptions.add(
-                featuresTotalQuery.subscribe(function (newQuery) {
-                    if (!newQuery.query) {
-                        featuresTotal(null);
-                        return;
-                    }
-                    return searchApi.featuresSearchTotal(newQuery).then(function (total) {
-                        featuresTotal(total);
-                    });
-                })
-            );
-        }
 
         function grokErrorMessage(message) {
             if (message.error) {
@@ -383,7 +356,6 @@ define([
 
             narrativesTotal: narrativesTotal,
             referenceDataTotal: referenceDataTotal,
-            featuresTotal: featuresTotal,
 
             withPrivateData: withPrivateData,
             withPublicData: withPublicData,
@@ -531,7 +503,6 @@ define([
 
                 narrativesTotal: 'narrativesTotal',
                 referenceDataTotal: 'referenceDataTotal',
-                featuresTotal: 'featuresTotal',
 
                 withPrivateData: 'withPrivateData',
                 withPublicData: 'withPublicData',

@@ -151,7 +151,7 @@ define(['knockout', 'kb_knockout/registry', 'kb_lib/html'], function (ko, reg, h
                     {
                         class: styles.classes.selectedNavLink
                     },
-                    'KBase - User Data, Genome Features, Reference Data'
+                    'KBase - User and Reference Data'
                 ),
                 a(
                     {

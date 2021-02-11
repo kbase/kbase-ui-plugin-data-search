@@ -74,17 +74,7 @@ specs:
             value: tab-total-count
         number:
           greaterThan: 0
-      - wait: forNumber
-        title: Check that the features tab result count is rendered
-        selector:
-          - type: component
-            value: tabset
-          - type: tab
-            value: genome-features
-          - type: component
-            value: tab-total-count
-        number:
-          greaterThan: 0
+
       # Now click through the tabs and inspect the resulting tables, ensuring
       # that there are at least some rows displaying.
       - wait: forCount
@@ -113,27 +103,6 @@ specs:
         selector:
           - type: component
             value: reference-data-main
-          - type: component
-            value: results
-          - type: element
-            value: object-row
-        count:
-          greaterThan: 0
-
-      - wait: forElement
-        title: select the features data tab
-        selector:
-          - type: component
-            value: tabset
-          - type: tab
-            value: genome-features
-      - action: click
-      - wait: forCount
-        title: Check that features search results are rendered
-        disabled: false
-        selector:
-          - type: component
-            value: genome-features-main
           - type: component
             value: results
           - type: element

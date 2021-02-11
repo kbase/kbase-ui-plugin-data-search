@@ -307,7 +307,6 @@ define([
 
             narrativesTotal: params.narrativesTotal,
             referenceDataTotal: params.referenceDataTotal,
-            featuresTotal: params.featuresTotal,
 
             // scroller: scroller,
 
@@ -920,32 +919,6 @@ define([
                             }),
                             ' matching User Data object',
                             gen.plural('narrativesTotal()', '.', 's.')
-                        ]
-                    )
-                ]),
-                '<!-- /ko -->',
-                '<!-- ko if: featuresTotal -->',
-                p([
-                    'However, there ',
-                    gen.plural('featuresTotal()', 'is ', 'are '),
-                    span(
-                        {
-                            style: {
-                                fontWeight: 'bold'
-                            }
-                        },
-                        [
-                            span({
-                                dataBind: {
-                                    typedText: {
-                                        value: 'featuresTotal',
-                                        type: '"number"',
-                                        format: '"0,0"'
-                                    }
-                                }
-                            }),
-                            ' matching Genome Feature',
-                            gen.plural('featuresTotal()', '.', 's.')
                         ]
                     )
                 ]),

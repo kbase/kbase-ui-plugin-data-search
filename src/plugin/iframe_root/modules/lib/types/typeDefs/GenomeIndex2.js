@@ -112,7 +112,11 @@ define([
             label: 'Warnings',
             component: StringArrayComponent.name()
         },
-
+        {
+            id: 'publication_titles',
+            label: 'Publications',
+            type: 'string'
+        },
         {
             id: 'externalOriginationDate',
             label: 'External Origination Date',
@@ -143,6 +147,10 @@ define([
         },
         genome_type: {
             label: 'Genome Type',
+            type: 'string'
+        },
+        publication_titles: {
+            label: 'Publications',
             type: 'string'
         },
         taxonomy: {
