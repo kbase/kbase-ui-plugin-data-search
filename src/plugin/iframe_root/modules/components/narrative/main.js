@@ -391,7 +391,6 @@ define([
 
             narrativesTotal: params.narrativesTotal,
             referenceDataTotal: params.referenceDataTotal,
-            featuresTotal: params.featuresTotal,
 
             dispose
         };
@@ -440,7 +439,6 @@ define([
                             buffer: 'searchState.buffer',
                             narrativesTotal: 'narrativesTotal',
                             referenceDataTotal: 'referenceDataTotal',
-                            featuresTotal: 'featuresTotal',
 
                             status: 'searchState.status',
                             errorMessage: 'searchState.errorMessage',

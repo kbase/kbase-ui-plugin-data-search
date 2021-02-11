@@ -84,7 +84,7 @@ define([
     }
 
     function generateSearchFields(object) {
-        return Object.keys(object.key_props).reduce((searchFields, key) => {
+        return Object.keys(object.data).reduce((searchFields, key) => {
             // currently all key_props are returned as strings; we use the type
             // to indicate the actual type indexed. This is necessary for implementing
             // per-key search, which is not utilized in this module, other than for

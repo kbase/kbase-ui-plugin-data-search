@@ -114,6 +114,10 @@ define([
             };
         }
 
+        getTitle() {
+            return this.object.data.narrative_title;
+        }
+
         getRef() {
             if (this.objectRef) {
                 return this.objectRef;

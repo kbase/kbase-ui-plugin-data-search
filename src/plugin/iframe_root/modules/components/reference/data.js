@@ -1,4 +1,9 @@
-define(['bluebird', 'knockout', '../../lib/searchApi', 'yaml!../../data/stopWords.yml'], function (
+define([
+    'bluebird', 
+    'knockout', 
+    '../../lib/searchApi', 
+    'yaml!../../data/stopWords.yml'
+], function (
     Promise,
     ko,
     SearchAPI,
@@ -14,6 +19,11 @@ define(['bluebird', 'knockout', '../../lib/searchApi', 'yaml!../../data/stopWord
             return true;
         }
         return false;
+    }
+
+    // TODO: configure this somewhere
+    function isBlacklistedHighlightField(fieldName) {
+        return ['tags'].includes(fieldName);
     }
 
     // For now, this fakes the search...
@@ -46,8 +56,8 @@ define(['bluebird', 'knockout', '../../lib/searchApi', 'yaml!../../data/stopWord
                 return m;
             }, {});
 
-            var matches = Object.keys(obj.highlight).reduce(function (matches, field) {
-                if (field === 'source_tags') {
+            var matches = Object.keys(obj.highlight).reduce((matches, field) => {
+                if (isBlacklistedHighlightField(field)) {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
@@ -58,15 +68,17 @@ define(['bluebird', 'knockout', '../../lib/searchApi', 'yaml!../../data/stopWord
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
                 }
 
-                matches.push({
-                    id: field,
-                    label: label,
-                    highlights: obj.highlight[field].map(function (highlight) {
-                        return {
-                            highlight: highlight
-                        };
-                    })
-                });
+                matches
+                    .push({
+                        id: field,
+                        label: label,
+                        highlights: obj.highlight[field]
+                            .map((highlight) => {
+                                return {
+                                    highlight
+                                };
+                            })
+                    });
                 return matches;
             }, []);
 

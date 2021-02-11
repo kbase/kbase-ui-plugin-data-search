@@ -8,9 +8,7 @@ define([
     './narrative/main',
     './narrative/tab',
     './reference/main',
-    './reference/tab',
-    './features/main',
-    './features/tab'
+    './reference/tab'
 ], function (
     ko,
     reg,
@@ -21,9 +19,7 @@ define([
     NarrativeResultsComponent,
     NarrativeTabComponent,
     ReferenceDataResultsComponent,
-    ReferenceDataTabComponent,
-    FeaturesResultsComponent,
-    FeaturesTabComponent
+    ReferenceDataTabComponent
 ) {
     'use strict';
 
@@ -64,7 +60,6 @@ define([
                                     selectedObjects: params.selectedObjects,
                                     narrativesTotal: params.narrativesTotal,
                                     referenceDataTotal: params.referenceDataTotal,
-                                    featuresTotal: params.featuresTotal,
                                     withPrivateData: params.withPrivateData,
                                     withPublicData: params.withPublicData
                                 }
@@ -74,48 +69,6 @@ define([
                 },
                 false
             );
-
-            // if (runtime.featureEnabled('search_features')) {
-            //     tabsetBus.send(
-            //         'add-tab',
-            //         {
-            //             tab: {
-            //                 id: 'genome-features',
-            //                 tab: {
-            //                     label: 'Genome Features',
-            //                     component: {
-            //                         name: FeaturesTabComponent.name(),
-            //                         params: {
-            //                             count: params.featuresTotal
-            //                         }
-            //                     }
-            //                 },
-            //                 panel: {
-            //                     component: {
-            //                         name: FeaturesResultsComponent.name(),
-            //                         // NB these params are bound here, not in the tabset.
-            //                         params: {
-            //                             view: params.view,
-            //                             searchInput: params.searchInput,
-            //                             forceSearch: params.forceSearch,
-            //                             searchTerms: params.searchTerms,
-            //                             overlayComponent: params.overlayComponent,
-            //                             selectedObjects: params.selectedObjects,
-            //                             narrativesTotal: params.narrativesTotal,
-            //                             referenceDataTotal: params.referenceDataTotal,
-            //                             featuresTotal: params.featuresTotal,
-            //                             withPrivateData: params.withPrivateData,
-            //                             withPublicData: params.withPublicData,
-            //                             withUserData: params.withUserData,
-            //                             withReferenceData: params.withReferenceData
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //         },
-            //         false
-            //     );
-            // }
 
             tabsetBus.send(
                 'add-tab',
@@ -143,8 +96,7 @@ define([
                                     overlayComponent: params.overlayComponent,
                                     selectedObjects: params.selectedObjects,
                                     narrativesTotal: params.narrativesTotal,
-                                    referenceDataTotal: params.referenceDataTotal,
-                                    featuresTotal: params.featuresTotal
+                                    referenceDataTotal: params.referenceDataTotal
                                 }
                             }
                         }

@@ -71,8 +71,8 @@ define([
         });
 
         function doOpenNarrative(data) {
-            var narrativeId = 'ws.' + data.workspaceInfo.id + '.obj.' + data.objectInfo.id;
-            window.open(window.location.origin + '/narrative/' + narrativeId);
+            const url  = `${window.location.origin}/narrative/${data.workspaceInfo.id}`;
+            window.open(url);
         }
 
         data.getNarrative(params.narrative).then(function (info) {

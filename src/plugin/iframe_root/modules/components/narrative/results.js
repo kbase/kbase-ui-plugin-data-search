@@ -35,7 +35,7 @@ define([
         return 'rgba(220,220,220,' + opacity + ')';
     }
 
-    var styles = html.makeStyles({
+    const styles = html.makeStyles({
         component: {
             css: {
                 flex: '1 1 0px',
@@ -327,7 +327,6 @@ define([
 
             narrativesTotal: params.narrativesTotal,
             referenceDataTotal: params.referenceDataTotal,
-            featuresTotal: params.featuresTotal,
 
             // scroller: scroller,
 
@@ -520,7 +519,7 @@ define([
                 dataBind: {
                     attr: {
                         title:
-                            'selected() ? "Click to udeselect this object" : "Click to select this object for copying"'
+                            'selected() ? "Click to unselect this object" : "Click to select this object for copying"'
                     },
                     class: 'selected() ? "fa-check-square-o" : "fa-square-o"',
                     click: '$component.doToggleSelected'
@@ -542,7 +541,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: '"/narrative/ws." + matchClass.ref.workspaceId + ".obj." + matchClass.ref.objectId'
+                        href: '"/narrative/" + matchClass.ref.workspaceId'
                     },
                     text: 'title'
                 },
@@ -1017,7 +1016,7 @@ define([
                             {
                                 dataBind: {
                                     attr: {
-                                        href: '"/narrative/ws." + ref.workspaceId + ".obj." + ref.objectId'
+                                        href: '"/narrative/" + ref.workspaceId'
                                     }
                                 },
                                 style: {
@@ -1194,33 +1193,6 @@ define([
                                 }),
                                 ' matching Reference Data object',
                                 gen.plural('referenceDataTotal()', '.', 's.')
-                            ]
-                        )
-                    ])
-                ),
-                gen.if(
-                    'featuresTotal',
-                    p([
-                        'However, there ',
-                        gen.plural('featuresTotal()', 'is ', 'are '),
-                        span(
-                            {
-                                style: {
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            [
-                                span({
-                                    dataBind: {
-                                        typedText: {
-                                            value: 'featuresTotal',
-                                            type: '"number"',
-                                            format: '"0,0"'
-                                        }
-                                    }
-                                }),
-                                ' matching Genome Feature',
-                                gen.plural('featuresTotal()', '.', 's.')
                             ]
                         )
                     ])

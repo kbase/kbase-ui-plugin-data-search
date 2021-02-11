@@ -121,6 +121,8 @@ define([], function () {
             this.kbaseTypeModule = params.kbaseTypeModule;
             this.kbaseTypeId = params.kbaseTypeId;
 
+            this.titleField = params.titleField;
+
             // The rest of what is passed in params remains available
             // via this.params.
             // TODO: bring them all into the object directly.
@@ -146,6 +148,10 @@ define([], function () {
             return this.data;
         }
 
+        getTitle() {
+            return this.object.object_name;
+        }
+
         detail() {
             if (this.detailFields) {
                 return this.detailFields;
@@ -169,23 +175,6 @@ define([], function () {
             });
             return this.detailFields;
         }
-
-        // getRef() {
-        //     if (this.objectRef) {
-        //         return this.objectRef;
-        //     }
-        //     let m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-        //     let objectRef = m.slice(1, 4).join('/');
-        //     this.objectRef =  {
-        //         workspaceId: parseInt(m[1]),
-        //         objectId: parseInt(m[2]),
-        //         version: parseInt(m[3]),
-        //         ref: objectRef,
-
-        //         dataviewId: objectRef
-        //     };
-        //     return this.objectRef;
-        // }
 
         getIcon() {
             // TODO: get this working, yuck!

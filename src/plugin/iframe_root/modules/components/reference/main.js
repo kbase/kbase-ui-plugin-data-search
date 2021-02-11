@@ -321,7 +321,6 @@ define([
 
             narrativesTotal: params.narrativesTotal,
             referenceDataTotal: params.referenceDataTotal,
-            featuresTotal: params.featuresTotal,
 
             // ACTIONS
             doToggleShowMatches: doToggleShowMatches,
@@ -375,7 +374,6 @@ define([
                             searchState: 'searchState',
                             narrativesTotal: 'narrativesTotal',
                             referenceDataTotal: 'referenceDataTotal',
-                            featuresTotal: 'featuresTotal',
 
                             view: 'view',
                             overlayComponent: 'overlayComponent',

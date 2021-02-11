@@ -12,17 +12,16 @@ function (
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         div = t('div'),
         table = t('table'),
         tbody = t('tbody'),
         tr = t('tr'),
         td = t('td');
 
-    var styles = html.makeStyles({
+    const styles = html.makeStyles({
         table: {
             css: {
-                // border: '0.5px solid rgba(220,220,220,0.5)',
                 width: '100%',
                 maxWidth: '60em'
             },
