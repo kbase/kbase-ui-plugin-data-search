@@ -29,7 +29,7 @@ define([
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         div = t('div');
 
     ko.bindingHandlers.labelText = {
