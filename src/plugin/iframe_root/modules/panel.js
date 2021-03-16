@@ -47,6 +47,10 @@ define(['knockout', 'kb_knockout/lib/generators', './components/main', './lib/ty
                         singular: 'Genome',
                         plural: 'Genomes'
                     },
+                    annotatedmetagenomeassembly: {
+                        singular: 'AnnotatedMetagenomeAssembly',
+                        plural: 'AnnotatedMetagenomeAssemblies"'
+                    },
                     assembly: {
                         singular: 'Assembly',
                         plural: 'Assemblies'

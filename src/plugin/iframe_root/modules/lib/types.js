@@ -24,27 +24,27 @@ define([
     }
 
     function factory(params) {
-        var runtime = params.runtime;
-        var objectTypes;
-        var objectTypeMap;
+        const runtime = params.runtime;
+        let objectTypes;
+        let objectTypeMap;
 
         function loadTypes() {
-            return Promise.all(typeIndex.map(function (type) {
-                var modulePath =[
+            return Promise.all(typeIndex.map((type) => {
+                const modulePath = [
                     './types/typeDefs',
                     type.module
                 ].join('/');
                 return prequire([modulePath])
-                    .spread(function (module) {
+                    .spread((module) => {
                         return {
                             type: type,
                             moduleClass: module
                         };
                     });
             }))
-                .then(function (types) {
-                    var objectTypeMap = {};
-                    types.forEach(function (type) {
+                .then((types) => {
+                    const objectTypeMap = {};
+                    types.forEach((type) => {
                         objectTypeMap[type.type.id + '.' + type.type.version] = type;
                     });
                     return {
