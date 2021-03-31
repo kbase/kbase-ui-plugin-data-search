@@ -6,7 +6,7 @@ define(['kb_knockout/registry', 'kb_knockout/lib/viewModelBase', 'kb_lib/html', 
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         div = t('div'),
         table = t('table'),
         thead = t('thead'),
@@ -57,12 +57,12 @@ define(['kb_knockout/registry', 'kb_knockout/lib/viewModelBase', 'kb_lib/html', 
                         tr([
                             td({
                                 dataBind: {
-                                    text: 'key'
+                                    text: '$data[$component.col1Header]'
                                 }
                             }),
                             td({
                                 dataBind: {
-                                    text: 'value'
+                                    text: '$data[$component.col2Header]'
                                 }
                             })
                         ])
