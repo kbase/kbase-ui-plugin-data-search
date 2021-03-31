@@ -19,7 +19,7 @@ define([
             label: 'Labels',
             component: KeyValueListComponent.name(),
             params: {
-                col1: 'type',
+                col1: 'node_id',
                 col2: 'label'
             }
         }, {
