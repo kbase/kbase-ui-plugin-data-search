@@ -9,13 +9,13 @@ define([
 ) {
     'use strict';
 
-    const indexId = 'AnnootatedMetagenomeAssembly';
+    const indexId = 'AnnotatedMetagenomeAssembly';
     const indexVersion = 1;
 
     const kbaseTypeModule = 'KBaseMetagenomes';
-    const kbaseTypeId = 'AnnootatedMetagenomeAssembly';
+    const kbaseTypeId = 'AnnotatedMetagenomeAssembly';
 
-    const label = 'AnnootatedMetagenomeAssembly';
+    const label = 'AnnotatedMetagenomeAssembly';
 
     const detailFieldDefs = [
 
