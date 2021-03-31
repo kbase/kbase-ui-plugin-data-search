@@ -8,19 +8,19 @@ By hand:
 
 ```text
 cd build
-yarn install
-yarn clean
-yarn install
-yarn install-bower
-yarn install-npm
-yarn remove-source-maps
-yarn install-dist
+npm run install
+npm run clean
+npm run install
+npm run install-bower
+npm run install-npm
+npm run remove-source-maps
+npm run install-dist
 ```
 
 or
 
 ```zsh
-yarn install && yarn clean && yarn install && yarn install-bower && yarn install-npm &&yarn remove-source-maps && yarn install-dist
+npm install && npm run clean && npm install && npm run install-bower && npm run install-npm && npm run remove-source-maps && npm run install-dist
 ```
 
 or
@@ -32,19 +32,19 @@ bash scripts/build.sh
 or
 
 ```zsh
-yarn build
+npm run build
 ```
 
 (or your choice of shell - it is a very simple shell script without any special binding to a shell.)
 
-> Only use yarn clean if you want to clean out the stuff installed in vendor, as well as the node and bower packages installed in build.
+> Only use npm run clean if you want to clean out the stuff installed in vendor, as well as the node and bower packages installed in build.
 
 ## Iterating in Development
 
 Use
 
 ```text
-yarn update
+npm run update
 ```
 
 to update the source in dist with an unminified copy of all source files. This must be done after an initial build.
