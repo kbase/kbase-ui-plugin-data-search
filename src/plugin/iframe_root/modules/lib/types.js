@@ -59,9 +59,10 @@ define([
         }
 
         function getTypeForObject(object) {
-            const objectType = object.type.toLowerCase();
-            const objectTypeVersion = object.type_ver;
-            const objectTypeId = [objectType, objectTypeVersion + 1].join('.');
+            const {index_name} = object;
+            // strip off the index iteration from the index name.
+            // const [, indexBaseName] = index_name.match(/^(.*)_\d+$/);
+            const objectTypeId = [index_name, 1].join('.');
             const type = objectTypeMap[objectTypeId];
 
             if (!type) {

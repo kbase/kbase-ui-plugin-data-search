@@ -8,7 +8,7 @@ define([
 ], function (ko, reg, gen, html, CopyObjectComponent, FunnyRandomPromptComponent) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         p = t('p'),
         hr = t('hr'),
         button = t('button'),
@@ -26,7 +26,7 @@ define([
         return 'rgba(220,220,220,' + opacity + ')';
     }
 
-    var styles = html.makeStyles({
+    const styles = html.makeStyles({
         component: {
             css: {
                 flex: '1 1 0px',
@@ -216,12 +216,12 @@ define([
     });
 
     function viewModel(params, componentInfo) {
-        var context = ko.contextFor(componentInfo.element);
-        var appBus = context['$root'].appBus;
+        const context = ko.contextFor(componentInfo.element);
+        const appBus = context['$root'].appBus;
         // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
 
-        var searchState = params.searchState;
+        const searchState = params.searchState;
 
         // ACTIONS
 

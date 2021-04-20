@@ -21,22 +21,29 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
-            const m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
-            const featureType = m[4];
-            const featureId = m[5];
+            const {
+                workspace_id: workspaceId,
+                object_id: objectId,
+                object_version: version
+            } = this.object;
+            const objectRef = [workspaceId, objectId, version].join('/');
+            // const m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+):(.*?)\/(.*)$/);
+            // TODO: Restore This to Re-Enable Sub Objects
+            const featureType = 'x'; //m[4];
+            const featureId = 'y'; // m[5];
             // e.g. https://ci.kbase.us/#dataview/29768/2?sub=Feature&subid=b0001
-            const subObjectRef = m.slice(1, 4).join('/') +
+            const subObjectRef = objectRef +
                             '?sub=' + featureType +
                             '&subid=' + featureId;
 
-            const objectRef = m.slice(1, 4).join('/');
-
+            // const objectRef = m.slice(1, 4).join('/');
+            // TODO: fix this
             this.objectRef = {
-                workspaceId: parseInt(m[1]),
-                objectId: parseInt(m[2]),
-                version: parseInt(m[3]),
-                objectRef: objectRef,
-                subObjectRef: subObjectRef,
+                workspaceId,
+                objectId,
+                version,
+                objectRef,
+                subObjectRef,
                 featureType: featureType,
                 feature: featureId,
                 featureId: featureId,

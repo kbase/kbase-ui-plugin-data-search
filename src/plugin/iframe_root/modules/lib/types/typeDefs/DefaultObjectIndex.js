@@ -21,12 +21,19 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
+            // TODO: fix this;
+            const {
+                workspace_id: workspaceId,
+                object_id: objectId,
+                object_version: version
+            } = this.object;
+            const objectRef = [workspaceId, objectId, version].join('/');
             this.objectRef =  {
-                workspaceId: this.object.access_group,
-                objectId: this.object.obj_id,
-                version: this.object.version,
-                objectRef: this.object.kbase_id,
-                dataviewId: this.object.kbase_id
+                workspaceId,
+                objectId,
+                version,
+                objectRef,
+                dataviewId: objectRef
             };
             return this.objectRef;
         }

@@ -141,7 +141,7 @@ define([
         }
 
         objectToData() {
-            var data = this.object.data;
+            const data = this.object.data;
             return {
                 id: data.kbase_id,
                 name: this.object.obj_name,

@@ -74,7 +74,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                     id: typedObject.getUIClass(),
                     copyable: typedObject.isCopyable(),
                     viewable: typedObject.isViewable(),
-                    ref: ref
+                    ref
                 },
 
                 // Detail, type-specific
@@ -86,7 +86,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                 // Generic fields
                 title: typedObject.getTitle(),
                 name: obj.object_name,
-                date: new Date(obj.timestamp),
+                date: new Date(obj.modified_at),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
 
                 matches: matches,

@@ -41,7 +41,7 @@ define([], function () {
             numeral: 'vendor/numeral/numeral',
             preact: 'vendor/preact/preact.umd',
             text: 'vendor/requirejs-text/text',
-            underscore: 'vendor/underscore/underscore',
+            underscore: 'vendor/underscore/underscore-umd',
             uuid: 'vendor/pure-uuid/uuid',
             yaml: 'vendor/requirejs-yaml/yaml'
         },

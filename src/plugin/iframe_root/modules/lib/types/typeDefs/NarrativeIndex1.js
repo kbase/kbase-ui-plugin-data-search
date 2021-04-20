@@ -122,13 +122,18 @@ define([
             if (this.objectRef) {
                 return this.objectRef;
             }
-            var m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
-            var objectRef = m.slice(1, 4).join('/');
+            // var m = this.object.guid.match(/^WS:(\d+)\/(\d+)\/(\d+)$/);
+            const {
+                workspace_id: workspaceId,
+                object_id: objectId,
+                object_version: version
+            } = this.object;
+            const objectRef = [workspaceId, objectId, version].join('/');
             this.objectRef =  {
-                workspaceId: parseInt(m[1]),
-                objectId: parseInt(m[2]),
-                version: parseInt(m[3]),
-                objectRef: objectRef,
+                workspaceId,
+                objectId,
+                version,
+                objectRef,
                 dataviewId: objectRef
             };
             return this.objectRef;

@@ -152,6 +152,23 @@ define([], function () {
             return this.object.object_name;
         }
 
+        getRef() {
+            if (this.objectRef) {
+                return this.objectRef;
+            }
+            const {
+                workspace_id: workspaceId,
+                object_id: objectId,
+                object_version: version
+            } = this.object;
+            const objectRef = [workspaceId, objectId, version].join('/');
+            this.objectRef = {
+                workspaceId, objectId, version,
+                objectRef
+            };
+            return this.objectRef;
+        }
+
         detail() {
             if (this.detailFields) {
                 return this.detailFields;
