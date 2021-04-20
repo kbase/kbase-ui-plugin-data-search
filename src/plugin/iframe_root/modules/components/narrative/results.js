@@ -234,13 +234,11 @@ define([
     });
 
     function viewModel(params, componentInfo) {
-        var context = ko.contextFor(componentInfo.element);
-        var appBus = context['$root'].appBus;
+        const context = ko.contextFor(componentInfo.element);
+        const appBus = context['$root'].appBus;
 
         // If this is not an Element, it was installed with a comment and
         // the first node in the template can be found as the next sibling.
-
-        // var searchState = params.searchState;
 
         // ACTIONS
 
@@ -270,7 +268,7 @@ define([
             window.open(data.url, '_blank');
         }
 
-        var view = params.view;
+        const view = params.view;
 
         function doShowObjects() {
             view('list');
@@ -318,12 +316,13 @@ define([
         // LIFECYCLE
 
         function dispose() {}
+
         return {
             buffer: params.buffer,
             status: params.status,
             errorMessage: params.errorMessage,
             // searchState: searchState,
-            view: view,
+            view,
 
             narrativesTotal: params.narrativesTotal,
             referenceDataTotal: params.referenceDataTotal,

@@ -9,6 +9,9 @@ define([
 ) {
     'use strict';
 
+    const isViewable = true;
+    const isCopyable = true;
+    const uiClass = 'dataObject';
 
     // Assume nothing is sortable.
     const sortFields = [
@@ -104,16 +107,15 @@ define([
     class DefaultObjectIndexBase extends IndexBase {
         constructor(params) {
 
-            const indexId = params.object.type.toLowerCase();
-            const indexVersion = params.object.type_ver;
+            const indexId = params.object.index_name.toLowerCase();
+            const indexVersion = params.object.index_version;
             // TODO: search api needs to return this
+            // TODO: now it does, so fix it!
             const kbaseTypeModule = null;
             const kbaseTypeId = null;
             // the index id can suffice here - but it it is not "exactly" human-readable
             const label = indexId;
-
             const detailFieldDefs = generateDetailFields(params.object);
-
             const searchFields = generateSearchFields(params.object);
 
             super({
@@ -126,7 +128,10 @@ define([
                 sortFields,
                 kbaseTypeModule,
                 kbaseTypeId,
-                label
+                label,
+                isViewable,
+                isCopyable,
+                uiClass
             });
         }
 

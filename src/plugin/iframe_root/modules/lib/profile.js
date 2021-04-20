@@ -1,16 +1,17 @@
 define([
-    'kb_common/jsonRpc/genericClient',
-    'kb_common/props'
+    'kb_lib/jsonRpc/genericClient',
+    'kb_lib/props'
 ], function (
     GenericClient,
-    Props
+    props
 ) {
     'use strict';
 
-    function factory(config) {
-        var runtime = config.runtime;
+    const {Props} = props;
 
-        var profileService = new GenericClient({
+    function factory(config) {
+        const runtime = config.runtime;
+        const profileService = new GenericClient({
             url: runtime.config('services.UserProfile.url'),
             token: runtime.service('session').getAuthToken(),
             module: 'UserProfile'
@@ -18,10 +19,11 @@ define([
 
         function updateUserProfile(profileUpdate) {
             return profileService.callFunc('update_user_profile', [profileUpdate])
-                .then(function () {
+                .then(() => {
                     return [true, null];
                 })
-                .catch(function (err) {
+                .catch((err) => {
+                    console.error('ERROR', err);
                     return [null, {
                         source: 'ProfileService:update_user_profile',
                         code: 'error-in-call',
@@ -49,18 +51,17 @@ define([
         }
 
         function saveHistory(name, history) {
-            var username = runtime.service('session').getUsername();
-
-            var key = ['data-search', 'settings', 'history', name];
-
+            const username = runtime.service('session').getUsername();
+            const key = ['data-search', 'settings', 'history', name];
             return profileService.callFunc('get_user_profile', [[username]])
-                .spread(function (profiles) {
-                    var profile = Props.make({
+                .then(([profiles]) => {
+                    const profile = new Props({
                         data: profiles[0]
                     });
 
-                    var prefs = Props.make({ data: profile.getItem('profile.plugins', {}) });
-
+                    const prefs = new Props({
+                        data: profile.getItem('profile.plugins', {})
+                    });
                     if (prefs.hasItem(key)) {
                         if (sameArray(prefs.getItem(key).history, history)) {
                             return [true, null];
@@ -72,10 +73,10 @@ define([
                         time: new Date().getTime()
                     });
 
-                    var profileUpdate = {
+                    const profileUpdate = {
                         profile: {
                             profile: {
-                                plugins: prefs.debug()
+                                plugins: prefs.getRaw()
                             },
                             user: profile.getItem('user')
                         }
@@ -85,15 +86,16 @@ define([
                     return updateUserProfile(profileUpdate);
                 })
                 .catch(function (err) {
+                    console.error('ERROR', err);
                     return [null, {
-                        source: 'ProfileService:get_user_profile',
-                        code: 'error-getting-user-profile',
+                        source: 'ProfileService:update_user_profile',
+                        code: 'error-updating-user-profile',
                         message: 'An error occurred attempting to save the user preferences: ' + err.message,
                         errors: [
                             err
                         ],
                         info: {
-                            username: username
+                            username
                         }
                     }];
                 });
@@ -109,19 +111,18 @@ define([
         }
 
         function getHistory(name) {
-            var username = runtime.service('session').getUsername();
-
-            var key = ['profile', 'plugins', 'data-search', 'settings', 'history', name];
+            const username = runtime.service('session').getUsername();
+            const key = ['profile', 'plugins', 'data-search', 'settings', 'history', name];
 
             return profileService.callFunc('get_user_profile', [[username]])
                 .spread(function (profiles) {
-                    var profile = Props.make({
+                    const profile = new Props({
                         data: profiles[0]
                     });
 
-                    var keys = [key];
+                    const keys = [key];
 
-                    var history= firstSuccess(keys, function (key) {
+                    let history= firstSuccess(keys, function (key) {
                         return profile.getItem(key);
                     });
 

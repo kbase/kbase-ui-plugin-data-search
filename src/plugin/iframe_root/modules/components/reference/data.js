@@ -1,7 +1,7 @@
 define([
-    'bluebird', 
-    'knockout', 
-    '../../lib/searchApi', 
+    'bluebird',
+    'knockout',
+    '../../lib/searchApi',
     'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
@@ -28,11 +28,11 @@ define([
 
     // For now, this fakes the search...
     function factory(params) {
-        var maxSearchResults = params.maxSearchItems;
+        const maxSearchResults = params.maxSearchItems;
 
-        var types = params.types;
+        const types = params.types;
 
-        var searchConfig = {
+        const searchConfig = {
             // max number of search result items to hold in the buffer
             // before we start removing those out of view
             maxBufferSize: params.maxBufferSize || 100,
@@ -41,28 +41,28 @@ define([
         };
 
         function objectToViewModel(obj) {
-            var type = types.getTypeForObject(obj);
+            const type = types.getTypeForObject(obj);
             if (!type) {
                 console.error('ERROR cannot type object', obj);
                 throw new Error('Cannot type this object');
             }
 
-            var icon = type.getIcon(type);
+            const icon = type.getIcon(type);
 
-            var ref = type.getRef();
-            var detail = type.detail();
-            var detailMap = detail.reduce(function (m, field) {
+            const ref = type.getRef();
+            const detail = type.detail();
+            const detailMap = detail.reduce(function (m, field) {
                 m[field.id] = field;
                 return m;
             }, {});
 
-            var matches = Object.keys(obj.highlight).reduce((matches, field) => {
+            const matches = Object.keys(obj.highlight).reduce((matches, field) => {
                 if (isBlacklistedHighlightField(field)) {
                     console.warn('highlight field ' + field + ' ignored');
                     return matches;
                 }
 
-                var label = type.getSearchFieldLabel(field);
+                let label = type.getSearchFieldLabel(field);
                 if (!label) {
                     label = field;
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
@@ -89,17 +89,18 @@ define([
             //     }
             // });
 
-            var vm = {
+            const vm = {
                 type: {
                     id: obj.type,
                     label: type.getLabel(),
                     icon: icon
                 },
+                // TODO: I don't remember why I named this "matchClass", but it confuses me now.
                 matchClass: {
                     id: type.getUIClass(),
                     copyable: type.isCopyable(),
                     viewable: type.isViewable(),
-                    ref: ref
+                    ref
                 },
 
                 // Detail, type-specific
@@ -110,7 +111,7 @@ define([
                 // should be different per object type? E.g. narrative - nice name, others object name??
                 // Generic fields
                 name: obj.object_name,
-                date: new Date(obj.timestamp),
+                date: new Date(obj.modified_at),
                 scientificName: detailMap.scientificName ? detailMap.scientificName.value || '' : '',
 
                 matches: matches,
@@ -139,16 +140,16 @@ define([
                     dataSource: 'referenceData'
                 })
             ]).spread(function (objectResults, typeResults) {
-                var objects = objectResults.objects.map(function (object) {
+                const objects = objectResults.objects.map((object) => {
                     return objectToViewModel(object);
                 });
-                var totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
+                const totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
                     return {
                         id: typeName.toLowerCase(),
                         count: typeResults.type_to_count[typeName]
                     };
                 });
-                var totalSearchHits;
+                let totalSearchHits;
                 if (objectResults.total > maxSearchResults) {
                     totalSearchHits = maxSearchResults;
                 } else {
