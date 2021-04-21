@@ -159,7 +159,7 @@ define([
         }
 
         function createNarrative(arg) {
-            var commentCell = [
+            const commentCell = [
                 '# ' + arg.title,
                 '',
                 'This narrative was created by the "Copy Object" dialog in the "Data Search" web app.',
