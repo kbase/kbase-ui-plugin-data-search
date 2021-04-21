@@ -11,12 +11,17 @@ define([
 ) {
     'use strict';
     function factory(config) {
-        var runtime = config.runtime;
+        const runtime = config.runtime;
 
         // TODO: this should go in to the ui services
         function call(moduleName, functionName, params, urlKey) {
             const serviceConfig = runtime.config(`services.${moduleName}`);
-            const module = serviceConfig.module || moduleName;
+            const module = (() => {
+                if (serviceConfig && 'module' in serviceConfig) {
+                    return serviceConfig.module;
+                }
+                return moduleName;
+            })();
             const url = runtime.config(['services', moduleName, urlKey || 'url'].join('.'));
             const token = runtime.service('session').getAuthToken();
             var client;
