@@ -7,19 +7,19 @@ define(['knockout', 'kb_knockout/registry', 'kb_knockout/components/error', 'kb_
 ) {
     'use strict';
 
-    var t = html.tag,
+    const t = html.tag,
         div = t('div'),
         span = t('span');
 
     function viewModel(params) {
-        var error = ko.unwrap(params.error);
+        const error = ko.unwrap(params.error);
 
-        var source = error.source;
-        var code = error.code;
-        var message = error.message;
-        var detail = error.detail;
-        var info = error.info;
-        var stackTrace = error.stackTrace;
+        const source = error.source;
+        const code = error.code;
+        const message = error.message;
+        const detail = error.detail;
+        const info = error.info;
+        const stackTrace = error.stackTrace;
 
         function doClose() {
             params.onClose();

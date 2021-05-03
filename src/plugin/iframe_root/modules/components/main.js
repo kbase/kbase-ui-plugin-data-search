@@ -14,8 +14,10 @@ define([
     '../lib/searchApi',
     '../lib/data',
     '../lib/errors',
-    '../lib/profile'
-], function (
+    '../lib/profile',
+    'lib/jsonrpc/1.1/JSON-RPC_1.1'
+// eslint-disable-next-line strict
+], (
     ko,
     reg,
     gen,
@@ -31,11 +33,10 @@ define([
     SearchApi,
     Data,
     errors,
-    Profile
-) {
-    'use strict';
-
-    var t = html.tag,
+    Profile,
+    {JSONRPCError}
+) => {
+    const t = html.tag,
         div = t('div');
 
     function viewModel(params, componentInfo) {
@@ -138,7 +139,7 @@ define([
                 return [
                     'The search included some "stop words".',
                     'Stop words are considered too common to be usefully applied to a search ' +
-                            'and are removed from the terms before submitting the query.',
+                    'and are removed from the terms before submitting the query.',
                     'The following stop words were detected and removed: ' + terms.theStopWords.join(', ') + '.',
                     'The terms sent were: ' + terms.terms.join(' ')
                 ];
@@ -232,8 +233,11 @@ define([
                     return;
                 }
                 return searchApi.referenceObjectSearchTotal(newQuery)
-                    .then(function (total) {
+                    .then((total) => {
                         referenceDataTotal(total);
+                    })
+                    .catch((err) => {
+                        console.error('Error running referenceObjectSearchTotal', err);
                     });
             })
         );
@@ -255,7 +259,10 @@ define([
                 }
                 return searchApi.narrativeObjectSearchTotal(newQuery).then(function (total) {
                     narrativesTotal(total);
-                });
+                })
+                    .catch((err) => {
+                        console.error('Error running narrativeObjectSearchTotal', err);
+                    });
             })
         );
 
@@ -263,7 +270,7 @@ define([
             if (message.error) {
                 // The caller just passed us some error thing and asked us
                 // to grok it!
-                var stackTrace;
+                let stackTrace;
                 if (message.error instanceof errors.DataSearchError) {
                     stackTrace = message.error.stack.split('\n');
                     console.error('data search error', message.error);
@@ -274,6 +281,18 @@ define([
                         detail: message.error.detail,
                         info: message.error.info,
                         stackTrace: message.error.info.originalError.stack.split('\n')
+                    };
+                } else if (message.error instanceof JSONRPCError) {
+                    // TODO: handle all specific cases of search error
+                    // either here or somewhere else (anc convert to DataSearchError).
+                    stackTrace = message.error.stack.split('\n');
+                    return {
+                        // source: 'Error',
+                        code: message.error.error.code,
+                        id: message.error.name,
+                        message: message.error.error.error.message,
+                        detail: message.error.error.error.exception_message || 'No details',
+                        stackTrace: stackTrace
                     };
                 } else if (message.error instanceof Error) {
                     stackTrace = message.error.stack.split('\n');
@@ -308,12 +327,12 @@ define([
         }
 
         appBus.on('error', function (message) {
-            var error = grokErrorMessage(message);
+            const error = grokErrorMessage(message);
             overlayComponent({
                 name: SearchErrorComponent.name(),
                 type: 'error',
                 viewModel: {
-                    error: error
+                    error
                 }
             });
         });

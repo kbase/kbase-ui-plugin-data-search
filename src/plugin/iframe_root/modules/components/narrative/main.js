@@ -276,6 +276,7 @@ define([
                     }
                 })
                 .catch(function (err) {
+                    console.error('ERROR', err);
                     searchState.status('error');
                     searchState.errorMessage(err.message);
                     searchState.error(err);

@@ -1,22 +1,31 @@
 define([
-    './rpc'
-], function (
-    Rpc
-) {
+    './rpc',
+    'lib/jsonrpc/1.1/ServiceClient'
+], (
+    Rpc,
+    ServiceClient
+) => {
     'use strict';
 
     function factory(config) {
         var runtime = config.runtime;
-        var rpc = Rpc.make({
-            runtime: runtime
+        // var rpc = Rpc.make({
+        //     runtime
+        // });
+
+        const searchAPI = new ServiceClient({
+            module: 'KBaseSearchEngine',
+            url: runtime.config('services.SearchAPI2Legacy.url'),
+            token: runtime.service('session').getAuthToken(),
+            timeout: 60000
         });
 
         function referenceObjectSearch(arg) {
-            var query = arg.query;
-            var start = arg.page * arg.pageSize;
-            var count = arg.pageSize;
+            const query = arg.query;
+            const start = arg.page * arg.pageSize;
+            const count = arg.pageSize;
 
-            var param = {
+            const params = {
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
@@ -45,16 +54,15 @@ define([
                 }]
             };
 
-            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
-                .spread(function (result) {
+            return searchAPI.callFunc('search_objects', [params])
+                .then(([result]) => {
                     return result;
                 });
         }
 
         function referenceObjectSearchTotal(arg) {
-            var query = arg.query;
-
-            var param = {
+            const query = arg.query;
+            const param = {
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
@@ -78,20 +86,19 @@ define([
                 }
             };
 
-            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
-                .spread(function (result) {
+            return searchAPI.callFunc('search_objects', [param])
+                .then(([result]) => {
                     return result.total;
                 });
         }
 
         function narrativeObjectSearch(arg) {
-            var query = arg.query;
-            var start = arg.page * arg.pageSize;
-            var count = arg.pageSize;
-            var withPrivate = arg.withPrivateData ?  1 : 0;
-            var withPublic = arg.withPublicData ? 1 : 0;
-
-            var param = {
+            const query = arg.query;
+            const start = arg.page * arg.pageSize;
+            const count = arg.pageSize;
+            const withPrivate = arg.withPrivateData ? 1 : 0;
+            const withPublic = arg.withPublicData ? 1 : 0;
+            const param = {
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
@@ -125,18 +132,22 @@ define([
                 }]
             };
 
-            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
-                .spread(function (result) {
-                    return result;
+            return searchAPI.callFunc('search_objects', [param])
+                .then((result) => {
+                    console.log('narrativeObjectSearch', result);
+                    return result[0];
+                })
+                .catch((err) => {
+                    console.error('narrativeObjectSearch error', err);
+                    throw err;
                 });
         }
 
         function narrativeObjectSearchTotal(arg) {
-            var query = arg.query;
-            var withPrivate = arg.withPrivateData ?  1 : 0;
-            var withPublic = arg.withPublicData ? 1 : 0;
-
-            var param = {
+            const query = arg.query;
+            const withPrivate = arg.withPrivateData ? 1 : 0;
+            const withPublic = arg.withPublicData ? 1 : 0;
+            const param = {
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
@@ -160,18 +171,17 @@ define([
                 }
             };
 
-            return rpc.call('SearchAPI2Legacy', 'search_objects', param)
-                .spread(function (result) {
+            return searchAPI.callFunc('search_objects', [param])
+                .then(([result]) => {
                     return result.total;
                 });
         }
 
         function typeSearch(arg) {
-            var query = arg.query;
-            var withPrivate = arg.withPrivateData ?  1 : 0;
-            var withPublic = arg.withPublicData ? 1 : 0;
-
-            var param = {
+            const query = arg.query;
+            const withPrivate = arg.withPrivateData ? 1 : 0;
+            const withPublic = arg.withPublicData ? 1 : 0;
+            const param = {
                 match_filter: {
                     full_text_in_all: query,
                     exclude_subobjects: 1,
@@ -196,8 +206,8 @@ define([
                 throw new Error('Invalid data source: ' + arg.dataSource);
             }
 
-            return rpc.call('SearchAPI2Legacy', 'search_types', param)
-                .spread(function (result) {
+            return searchAPI.callFunc('search_types', [param])
+                .then(([result]) => {
                     return result;
                 });
         }

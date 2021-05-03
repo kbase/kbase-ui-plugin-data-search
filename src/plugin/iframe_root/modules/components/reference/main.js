@@ -231,7 +231,7 @@ define([
                         }
                     }
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     searchState.status('error');
                     searchState.errorMessage(err.message);
                     searchState.error(err);
