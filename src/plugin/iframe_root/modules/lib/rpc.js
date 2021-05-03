@@ -36,7 +36,7 @@ define([
             return client.callFunc(functionName, [
                 params
             ])
-                .catch(function (err) {
+                .catch((err) => {
                     if (err instanceof exceptions.AjaxError) {
                         console.error('AJAX Error', err);
                         // let message = 'An error was encountered connecting to a service';
@@ -60,7 +60,7 @@ define([
         }
 
         return {
-            call: call
+            call
         };
     }
 

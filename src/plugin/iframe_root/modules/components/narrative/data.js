@@ -147,7 +147,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
         }
 
         function search(query) {
-            var searchApi = SearchAPI.make({
+            const searchApi = SearchAPI.make({
                 runtime: params.runtime
             });
             return Promise.all([
@@ -165,7 +165,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                     dataSource: 'narratives'
                 })
             ])
-                .spread(function (objectResults, typeResults) {
+                .then(([objectResults, typeResults]) => {
                     const objects = objectResults.objects.map(function (object) {
                         return objectToViewModel(object);
                     });

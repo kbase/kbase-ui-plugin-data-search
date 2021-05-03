@@ -11,6 +11,10 @@
     },
     "author": "KBase Developers",
     "license": "SEE LICENSE IN LICENSE",
+    "dependencies": {
+        "@kbase/common-es6": "0.12.3",
+        "pure-uuid": "1.6.2"
+    },
     "devDependencies": {
         "bluebird": "3.7.2",
         "bower": "1.8.12",
@@ -24,7 +28,6 @@
         "grunt-contrib-copy": "1.0.0",
         "js-yaml": "4.0.0",
         "numeral": "2.0.6",
-        "pure-uuid": "1.6.2",
         "tar": "6.1.0",
         "terser": "5.5.1"
     }

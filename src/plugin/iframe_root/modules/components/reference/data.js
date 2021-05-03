@@ -124,7 +124,7 @@ define([
         }
 
         function search(query) {
-            var searchApi = SearchAPI.make({
+            const searchApi = SearchAPI.make({
                 runtime: params.runtime
             });
             return Promise.all([
@@ -139,43 +139,44 @@ define([
                     withPublicData: 1,
                     dataSource: 'referenceData'
                 })
-            ]).spread(function (objectResults, typeResults) {
-                const objects = objectResults.objects.map((object) => {
-                    return objectToViewModel(object);
-                });
-                const totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
+            ])
+                .then(([objectResults, typeResults]) => {
+                    const objects = objectResults.objects.map((object) => {
+                        return objectToViewModel(object);
+                    });
+                    const totalByType = Object.keys(typeResults.type_to_count).map(function (typeName) {
+                        return {
+                            id: typeName.toLowerCase(),
+                            count: typeResults.type_to_count[typeName]
+                        };
+                    });
+                    let totalSearchHits;
+                    if (objectResults.total > maxSearchResults) {
+                        totalSearchHits = maxSearchResults;
+                    } else {
+                        totalSearchHits = objectResults.total;
+                    }
                     return {
-                        id: typeName.toLowerCase(),
-                        count: typeResults.type_to_count[typeName]
+                        items: objects,
+                        first: query.start,
+                        isTruncated: true,
+                        summary: {
+                            totalByType: totalByType,
+                            totalSearchHits: totalSearchHits,
+                            totalSearchSpace: objectResults.total,
+                            isTruncated: totalSearchHits < objectResults.total
+                        },
+                        stats: {
+                            objectSearch: objectResults.search_time,
+                            typeSearch: typeResults.search_time
+                        }
                     };
                 });
-                let totalSearchHits;
-                if (objectResults.total > maxSearchResults) {
-                    totalSearchHits = maxSearchResults;
-                } else {
-                    totalSearchHits = objectResults.total;
-                }
-                return {
-                    items: objects,
-                    first: query.start,
-                    isTruncated: true,
-                    summary: {
-                        totalByType: totalByType,
-                        totalSearchHits: totalSearchHits,
-                        totalSearchSpace: objectResults.total,
-                        isTruncated: totalSearchHits < objectResults.total
-                    },
-                    stats: {
-                        objectSearch: objectResults.search_time,
-                        typeSearch: typeResults.search_time
-                    }
-                };
-            });
         }
 
         return {
-            search: search,
-            isStopWord: isStopWord
+            search,
+            isStopWord
         };
     }
 
