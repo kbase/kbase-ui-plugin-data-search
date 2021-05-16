@@ -7,17 +7,16 @@ define([
 ) => {
     'use strict';
 
+    const REQUEST_TIMEOUT = 60000;
+
     function factory(config) {
-        var runtime = config.runtime;
-        // var rpc = Rpc.make({
-        //     runtime
-        // });
+        const runtime = config.runtime;
 
         const searchAPI = new ServiceClient({
             module: 'KBaseSearchEngine',
             url: runtime.config('services.SearchAPI2Legacy.url'),
             token: runtime.service('session').getAuthToken(),
-            timeout: 60000
+            timeout: REQUEST_TIMEOUT
         });
 
         function referenceObjectSearch(arg) {
@@ -134,7 +133,6 @@ define([
 
             return searchAPI.callFunc('search_objects', [param])
                 .then((result) => {
-                    console.log('narrativeObjectSearch', result);
                     return result[0];
                 })
                 .catch((err) => {

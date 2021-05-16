@@ -2,7 +2,7 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
     'use strict';
 
     class Integration {
-        constructor({ rootWindow, pluginConfigDB }) {
+        constructor({ rootWindow, pluginConfig }) {
             this.rootWindow = rootWindow;
             this.container = rootWindow.document.body;
             // channelId, frameId, hostId, parentHost
@@ -11,7 +11,7 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
 
             // The original params from the plugin (taken from the url)
             this.pluginParams = this.hostParams.params;
-            this.pluginConfigDB = pluginConfigDB;
+            this.pluginConfig = pluginConfig;
 
             this.authorized = null;
 
@@ -43,42 +43,29 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
             if (this.navigationListeners.length === 1) {
                 const queue = this.navigationQueue;
                 this.navigationQueue = [];
-                queue.forEach(({ view, params }) => {
+                queue.forEach(({ path, params, view }) => {
                     this.navigationListeners.forEach((listener) => {
-                        listener({ view, params });
+                        listener({ path, params, view });
                     });
                 });
             }
         }
 
-        handleNavigation({ view, params }) {
+        handleNavigation({ path, params, view }) {
             // If no listeners yet, queue up the navigation.
             if (this.navigationListeners.length === 0) {
-                this.navigationQueue.push({ view, params });
+                this.navigationQueue.push({ path, params, view });
             } else {
                 this.navigationListeners.forEach((listener) => {
-                    listener({ view, params });
+                    listener({ path, params, view });
                 });
             }
         }
 
-        setupDOMListeners() {
-            window.document.addEventListener('click', () => {
-                this.channel.send('clicked', {});
-            });
-        }
-
         setupListeners() {
             this.channel.on('navigate', (message) => {
-                const { view, params } = message;
-
-                // TODO: proper routing to error page
-                // if ((!path || path.length === 0) && !params.view) {
-                //     alert('no view provided...');
-                //     return;
-                // }
-
-                this.handleNavigation({ view, params });
+                const { path, params, view } = message;
+                this.handleNavigation({ path, params , view });
             });
         }
 
@@ -88,6 +75,16 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
                 message: 'navigate',
                 handler: (to) => {
                     this.channel.send('ui-navigate', to);
+                }
+            });
+            this.runtime.messenger.receive({
+                channel: 'app',
+                message: 'auth-navigate',
+                handler: ({ nextRequest, tokenInfo }) => {
+                    this.channel.send('ui-auth-navigate', {
+                        nextRequest,
+                        tokenInfo
+                    });
                 }
             });
             this.runtime.messenger.receive({
@@ -104,10 +101,30 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
                     this.channel.send('set-title', { title });
                 }
             });
+            // TODO: should be a way to simply forward messages to the ui...
+            this.runtime.messenger.receive({
+                channel: 'profile',
+                message: 'reload',
+                handler: () => {
+                    this.channel.send('reload-profile', {});
+                }
+            });
         }
 
         started() {
             this.channel.send('started', {});
+        }
+
+        startError(error) {
+            const info = {};
+            if (error.trace) {
+                info.trace = error.trace.split('\n');
+            }
+            console.error('ERROR starting plugin', error);
+            this.channel.send('start-error', {
+                message: error.message,
+                info
+            });
         }
 
         start() {
@@ -119,27 +136,19 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
                 // ready message, is itself ready, and is ready for
                 // the iframe app to start running.
                 this.channel.on('start', (payload) => {
-                    const {
-                        authorization,
-                        config
-                    } = payload;
-                    const { token, username, realname } = authorization;
-                    if (token) {
-                        this.authorization = { token, username, realname };
-                    } else {
-                        this.authorization = null;
-                    }
+                    const { authorization, config} = payload;
+                    this.authorization = authorization || null;
+                    const {token, username} = authorization;
                     this.token = token;
                     this.username = username;
                     this.config = config;
-                    this.authorized = token ? true : false;
+                    this.authorized = !!token;
 
                     this.runtime = new Runtime({
-                        authorization,
                         config,
                         token,
                         username,
-                        pluginConfigDB: this.pluginConfigDB
+                        pluginConfig: this.pluginConfig
                     });
 
                     this.runtime
@@ -152,64 +161,6 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
                         .catch((err) => {
                             reject(err);
                         });
-
-                    // this.runtime = new runtime.Runtime({ config, token, username, realname, email });
-                    // this.render(ko);
-
-                    // this.rootViewModel.bus.on('set-plugin-params', ({ pluginParams }) => {
-                    //     this.hostChannel.send('set-plugin-params', { pluginParams });
-                    // });
-
-                    // this.channel.on('show-help', () => {
-                    //     this.showHelp();
-                    // });
-
-                    this.channel.on('loggedin', ({ token, username, realname, email }) => {
-                        // console.log('loggedin', token, username, realname, email);
-                        this.runtime.send('session', 'loggedin');
-                        // this.runtime.auth({ token, username, realname, email });
-                        // this.rootViewModel.authorized(true);
-                        // this.rootViewModel.authorization({ token, username, realname, email });
-                        // really faked for now.
-                        // this.runtime.service('session').
-                    });
-
-                    this.channel.on('loggedout', () => {
-                        this.runtime.send('session', 'loggedout');
-                        // this.runtime.unauth();
-                        // this.rootViewModel.authorized(false);
-                        // this.rootViewModel.authorization(null);
-                    });
-
-                    // this.rootViewModel.bus.on('instrumentation', (payload) => {
-                    //     this.hostChannel.send('send-instrumentation', payload);
-                    // });
-
-                    // this.hostChannel.send('add-button', {
-                    //     button: {
-                    //         name: 'feedback',
-                    //         label: 'Feedback',
-                    //         style: 'default',
-                    //         icon: 'bullhorn',
-                    //         toggle: false,
-                    //         params: {
-                    //         },
-                    //         callbackMessage: ['show-feedback', null]
-                    //     }
-                    // });
-
-                    // this.hostChannel.send('add-button', {
-                    //     button: {
-                    //         name: 'help',
-                    //         label: 'Help',
-                    //         style: 'default',
-                    //         icon: 'question-circle',
-                    //         toggle: false,
-                    //         params: {
-                    //         },
-                    //         callbackMessage: ['show-help', null]
-                    //     }
-                    // });
                 });
 
                 window.document.addEventListener('click', () => {
@@ -226,7 +177,7 @@ define(['./windowChannel', './runtime'], (WindowChannel, Runtime) => {
             });
         }
 
-        stop() {}
+        stop() { }
     }
 
     return Integration;

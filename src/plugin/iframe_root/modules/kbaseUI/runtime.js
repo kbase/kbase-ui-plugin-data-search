@@ -10,16 +10,16 @@ define([
     'use strict';
 
     class Runtime {
-        constructor({ authorization, token, username, config, pluginConfigDB }) {
+        constructor({ authorization, token, username, config, pluginConfig }) {
             this.authorization = authorization;
             this.token = token;
             this.username = username;
 
             this.configDB = new props.Props({ data: config });
-            this.pluginConfigDB = pluginConfigDB;
+            this.pluginConfigDB = new props.Props({data: pluginConfig});
 
             // TODO: fix this!
-            this.pluginPath = '/modules/plugins/' + pluginConfigDB.getItem('package.name') + '/iframe_root';
+            this.pluginPath = '/modules/plugins/' + this.pluginConfigDB.getItem('package.name') + '/iframe_root';
             this.pluginResourcePath = this.pluginPath + '/resources';
 
             this.messenger = new Messenger();
