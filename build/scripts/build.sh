@@ -1,6 +1,6 @@
-npm run install
+npm install
 npm run clean
-npm run install
+npm install
 npm run install-bower
 npm run install-npm
 npm run remove-source-maps

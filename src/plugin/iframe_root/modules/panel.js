@@ -8,14 +8,14 @@ define(['knockout', 'kb_knockout/lib/generators', './components/main', './lib/ty
     'use strict';
 
     function factory(config) {
-        var hostNode,
-            container,
-            runtime = config.runtime,
+        let hostNode,
+            container;
+        const runtime = config.runtime,
             types = Types.make({
                 runtime: runtime
             });
 
-        var initialQuery;
+        let initialQuery;
 
         function template() {
             return gen
@@ -28,7 +28,7 @@ define(['knockout', 'kb_knockout/lib/generators', './components/main', './lib/ty
                 .join('');
         }
 
-        var appBus = NanoBus.make();
+        const appBus = NanoBus.make();
 
         // Root viewmodel
         function viewModel() {
@@ -120,7 +120,7 @@ define(['knockout', 'kb_knockout/lib/generators', './components/main', './lib/ty
 
         /* Returning the widget
         The widget is returned as a simple JS object. In this case we have also hardened the object
-        by usinng Object.freeze, which ensures that properties may not be added or modified.
+        by using Object.freeze, which ensures that properties may not be added or modified.
         */
         return Object.freeze({
             attach: attach,
