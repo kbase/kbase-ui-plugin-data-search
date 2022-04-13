@@ -1,12 +1,16 @@
 define([
     'bluebird',
     'knockout',
+    'uuid',
     '../../lib/searchApi',
+    '../../lib/security',
     'yaml!../../data/stopWords.yml'
 ], function (
     Promise,
     ko,
+    Uuid,
     SearchAPI,
+    security,
     stopWordsDb
 ) {
     'use strict';
@@ -68,6 +72,7 @@ define([
                     console.warn('highlight field ' + field + ' not found in type spec', obj);
                 }
 
+
                 matches
                     .push({
                         id: field,
@@ -75,7 +80,7 @@ define([
                         highlights: obj.highlight[field]
                             .map((highlight) => {
                                 return {
-                                    highlight
+                                    highlight: security.scrubHighlight(highlight)
                                 };
                             })
                     });
