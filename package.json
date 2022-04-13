@@ -1,28 +1,28 @@
 {
-    "name": "kbase-ui-plugin-data-search",
-    "version": "1.0.0",
-    "description": "This repo contains a data search plugin for the KBase UI.",
-    "main": "index.js",
-    "directories": {
-        "doc": "docs"
-    },
-    "scripts": {
-        "build": "bash scripts/build-plugin.bash",
-        "build-dev": "bash scripts/build-plugin-dev.bash",
-        "watch": "nodemon --watch ./src --ext js,css,yml,yaml,json --exec 'npm run build-dev'"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kbase/kbase-ui-plugin-data-search.git"
-    },
-    "author": "",
-    "license": "SEE LICENSE IN LICENSE.md",
-    "bugs": {
-        "url": "https://github.com/kbase/kbase-ui-plugin-data-search/issues"
-    },
-    "homepage": "https://github.com/kbase/kbase-ui-plugin-data-search#readme",
-    "devDependencies": {
-        "eslint": "6.0.1",
-        "nodemon": "2.0.4"
-    }
+  "name": "kbase-ui-plugin-data-search",
+  "version": "1.0.0",
+  "description": "This repo contains a data search plugin for the KBase UI.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "bash scripts/build-plugin.bash",
+    "build-dev": "bash scripts/build-plugin-dev.bash",
+    "watch": "nodemon --watch ./src --ext js,css,yml,yaml,json --exec 'npm run build-dev'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbase/kbase-ui-plugin-data-search.git"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/kbase/kbase-ui-plugin-data-search/issues"
+  },
+  "homepage": "https://github.com/kbase/kbase-ui-plugin-data-search#readme",
+  "devDependencies": {
+    "eslint": "8.13.0",
+    "nodemon": "2.0.15"
+  }
 }
