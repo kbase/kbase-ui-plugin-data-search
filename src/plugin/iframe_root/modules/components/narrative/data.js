@@ -1,4 +1,10 @@
-define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Promise, moment, ko, SearchAPI) {
+define([
+    'bluebird',
+    'moment',
+    'knockout',
+    '../../lib/searchApi',
+    '../../lib/security'],
+(Promise, moment, ko, SearchAPI, security) => {
     'use strict';
 
     // For now, this fakes the search...
@@ -51,7 +57,7 @@ define(['bluebird', 'moment', 'knockout', '../../lib/searchApi'], function (Prom
                     label: label,
                     highlights: obj.highlight[field].map(function (highlight) {
                         return {
-                            highlight: highlight
+                            highlight: security.scrubHighlight(highlight)
                         };
                     })
                 });
