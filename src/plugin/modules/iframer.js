@@ -67,6 +67,7 @@ define(['kb_lib/html', './windowChannel', 'kb_lib/httpUtils'], function (html, W
 
         attach(node) {
             this.node = node;
+            // xss safe
             this.node.innerHTML = this.content;
             this.iframe = document.getElementById(this.id);
             this.window = this.iframe.contentWindow;
@@ -257,6 +258,7 @@ define(['kb_lib/html', './windowChannel', 'kb_lib/httpUtils'], function (html, W
                 paramsInputs
             );
             const donorNode = document.createElement('div');
+            // xss safe
             donorNode.innerHTML = content;
             document.body.appendChild(donorNode);
 
@@ -306,6 +308,7 @@ define(['kb_lib/html', './windowChannel', 'kb_lib/httpUtils'], function (html, W
         }
 
         stop() {
+            // xss safe
             this.container.innerHTML = '';
 
             const currentLocation = window.location.toString();

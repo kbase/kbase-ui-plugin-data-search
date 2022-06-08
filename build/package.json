@@ -12,7 +12,8 @@
   "author": "KBase Developers",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "pure-uuid": "1.6.2"
+    "pure-uuid": "1.6.2",
+    "dompurify": "2.3.8"
   },
   "devDependencies": {
     "bluebird": "3.7.2",

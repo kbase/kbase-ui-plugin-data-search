@@ -66,17 +66,18 @@ require([
             .then(() => {
                 // place a loader.
                 loadingTimer = window.setTimeout(() => {
+                    // xss safe
                     rootNode.innerHTML = loader('Loading Search Plugin ...');
                 }, SHOW_LOADER_AFTER);
 
                 // // This installs all widgets from the config file.
-                const widgets = pluginConfigDB.getItem('install.widgets', []);
-                widgets.forEach((widgetDef) => {
-                    integration.runtime
-                        .service('widget')
-                        .getWidgetManager()
-                        .addWidget(widgetDef);
-                });
+                // const widgets = pluginConfigDB.getItem('install.widgets', []);
+                // widgets.forEach((widgetDef) => {
+                //     integration.runtime
+                //         .service('widget')
+                //         .getWidgetManager()
+                //         .addWidget(widgetDef);
+                // });
             })
             .then(() => {
                 // Add routes to panels here

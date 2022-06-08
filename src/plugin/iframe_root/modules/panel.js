@@ -100,6 +100,7 @@ define(['knockout', 'kb_knockout/lib/generators', './components/main', './lib/ty
                     return appBus.start();
                 })
                 .then(function () {
+                    // xss safe
                     container.innerHTML = template();
                     ko.applyBindings(viewModel, container, function (context) {
                         context.runtime = runtime;
