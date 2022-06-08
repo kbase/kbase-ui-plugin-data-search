@@ -12,6 +12,7 @@ define(['knockout', 'kb_knockout/registry', 'kb_knockout/components/error', 'kb_
         span = t('span');
 
     function viewModel(params) {
+        // xss safe (false positive)
         const error = ko.unwrap(params.error);
 
         const source = error.source;

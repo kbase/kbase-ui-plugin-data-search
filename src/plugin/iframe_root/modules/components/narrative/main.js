@@ -35,8 +35,11 @@ define([
     ko.bindingHandlers.labelText = {
         update: function (element, valueAccessor) {
             var value = valueAccessor();
+            // xss safe (false positive)
             var valueUnwrapped = ko.unwrap(value.label);
+            // xss safe (false positive)
             var quantity = ko.unwrap(value.quantity);
+            // xss safe (false positive)
             var labels = ko.unwrap(value.labels);
             // var missing = value.missing || '';
             var formatted;

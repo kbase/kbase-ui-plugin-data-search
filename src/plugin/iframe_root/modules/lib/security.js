@@ -3,6 +3,7 @@ define(['uuid'], (Uuid) => {
 
     function encodeHTML(possibleHTML) {
         const node = document.createElement('div');
+        // xss safe
         node.innerHTML = possibleHTML;
         return node.innerText;
     }

@@ -46,6 +46,7 @@
             datatables_css: 'vendor/datatables/jquery.dataTables',
             datatables_bootstrap_css: 'vendor/datatables-bootstrap3-plugin/datatables-bootstrap3',
             datatables_bootstrap: 'vendor/datatables-bootstrap3-plugin/datatables-bootstrap3',
+            dompurify: 'vendor/dompurify/purify',
             fileSaver: 'vendor/file-saver/FileSaver',
             font_awesome: 'vendor/font-awesome/css/font-awesome',
             handlebars: 'vendor/handlebars/handlebars',

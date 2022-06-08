@@ -34,6 +34,7 @@ define([
     function viewModel(params, componentInfo) {
         var context = ko.contextFor(componentInfo.element);
         var runtime = context['$root'].runtime;
+        // xss safe (false positive)
         var objectsToCopy = ko.unwrap(params.objectsToCopy);
         var objectToView = ko.observable();
         var subscriptions = new SubscriptionManager();

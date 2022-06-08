@@ -3,10 +3,9 @@ define([
     'kb_lib/props',
     'kb_lib/messenger',
     './services/session',
-    './services/widget',
     './services/type',
     './services/rpc'
-], (Promise, props, Messenger, SessionService, WidgetService, TypeService, RPCService) => {
+], (Promise, props, Messenger, SessionService,  TypeService, RPCService) => {
     'use strict';
 
     class Runtime {
@@ -28,7 +27,6 @@ define([
 
             this.services = {
                 session: new SessionService({ runtime: this }),
-                widget: new WidgetService({ runtime: this }),
                 type: new TypeService({
                     runtime: this,
                     config: this.pluginConfigDB.getItem('install.types')
