@@ -2,10 +2,6 @@ define([], function () {
     'use strict';
 
     function getIcon(arg) {
-        // var icon = types.getItem(['types', arg.type.module, arg.type.name, 'icon']) || defaultIcon,
-        //     classes = icon.classes.map(function (x) {
-        //         return x;
-        //     });
         const defaultIcon = {
             type: 'fontAwesome',
             classes: ['fa-file-o']
