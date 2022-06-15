@@ -1,5 +1,6 @@
 require([
     'bluebird',
+    'dompurify',
     'kbaseUI/integration',
     'kbaseUI/dispatcher',
     'kb_knockout/load',
@@ -7,7 +8,7 @@ require([
     'yaml!./config.yml',
     'bootstrap',
     'css!font_awesome'
-], (Promise, Integration, Dispatcher, knockoutLoader,props,  pluginConfig) => {
+], (Promise, DOMPurify, Integration, Dispatcher, knockoutLoader,props,  pluginConfig) => {
     'use strict';
 
     const SHOW_LOADER_AFTER = 1000;
@@ -59,6 +60,20 @@ require([
                 // and in the past introduced problems which were resolved
                 // in knockout 3.5.0.
                 ko.options.deferUpdates = true;
+
+                // replace the html binding handler.
+                ko.bindingHandlers.html = {
+                    init(element, valueAccessor) {
+                        const value = ko.unwrap(valueAccessor()) || '';
+                        // xss safe
+                        element.innerHTML = DOMPurify.sanitize(value);
+                    },
+                    update(element, valueAccessor) {
+                        const value = ko.unwrap(valueAccessor()) || '';
+                        // xss safe
+                        element.innerHTML = DOMPurify.sanitize(value);
+                    }
+                };
             })
             .then(() => {
                 return integration.start();

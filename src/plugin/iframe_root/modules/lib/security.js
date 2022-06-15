@@ -17,8 +17,10 @@ define(['uuid'], (Uuid) => {
     function scrubHighlight(highlight) {
         const emStart = new Uuid(4).format();
         const emFinish = new Uuid(4).format();
+        // xss safe (false positive)
         const safe1 = highlight.replaceAll('<em>', emStart).replaceAll('</em>', emFinish);
         const safe2 = encodeHTML(safe1);
+        // xss safe (false positive)
         return safe2.replaceAll(emStart, '<em>').replaceAll(emFinish, '</em>');
     }
 
