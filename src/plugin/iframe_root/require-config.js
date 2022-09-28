@@ -75,7 +75,8 @@
             text: 'vendor/requirejs-text/text',
             underscore: 'vendor/underscore/underscore-umd',
             uuid: 'vendor/pure-uuid/uuid',
-            yaml: 'vendor/requirejs-yaml/yaml'
+            yaml: 'vendor/requirejs-yaml/yaml',
+            json: 'vendor/requirejs-json/json'
         },
         shim: {
             bootstrap: {

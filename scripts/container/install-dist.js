@@ -38,28 +38,31 @@ async function minify(rootDir) {
     return Promise.all(
         matches.map(async (match) => {
             // console.log(`minifying ${match}...`);
-            const contents = await fs.readFileAsync(match, 'utf8');
-            const result = await Terser.minify(contents, {
-                output: {
-                    beautify: false,
-                    max_line_len: 80,
-                    quote_style: 0
-                },
-                compress: {
-                    // required in uglify-es 3.3.10 in order to work
-                    // around a bug in the inline implementation.
-                    // it should be fixed in an upcoming release.
-                    inline: 1
-                },
-                safari10: true
-            });
-            if (result.error) {
-                console.error('Error minifying file: ' + match, result);
-                throw new Error('Error minifying file ' + match) + ':' + result.error;
-            } else if (result.code.length === 0) {
-                console.warn('Skipping empty file: ' + match);
-            } else {
-                return fs.writeFileAsync(match, result.code);
+            try {
+                const contents = await fs.readFileAsync(match, 'utf8');
+                const result = await Terser.minify(contents, {
+                    output: {
+                        beautify: false,
+                        max_line_len: 80,
+                        quote_style: 0
+                    },
+                    compress: {
+                        // required in uglify-es 3.3.10 in order to work
+                        // around a bug in the inline implementation.
+                        // it should be fixed in an upcoming release.
+                        inline: 1
+                    },
+                    safari10: true
+                });
+
+                if (result.code.length === 0) {
+                    console.warn('Skipping empty file: ' + match);
+                } else {
+                    return fs.writeFileAsync(match, result.code);
+                }
+            } catch (ex) {
+                console.error('Error minifying file: ' + match, ex);
+                throw new Error('Error minifying file ' + match) + ':' + ex.error;
             }
         })
     );
@@ -81,33 +84,17 @@ async function taritup(rootDir) {
 
 async function main() {
     const cwd = process.cwd().split('/');
-    cwd.push('..');
     const projectPath = path.normalize(cwd.join('/'));
     console.log(`Project path: ${projectPath}`);
     console.log('Copying files to dist...');
-    try {
-        await copyFiles(projectPath);
-    } catch (ex) {
-        console.error(`Error copying files ${projectPath}: ${ex.message}`)
-        console.error('Exiting build!');
-        process.exit(1);
-    }
     await copyFiles(projectPath);
     console.log('Minifying dist...');
-    try {
-        await minify(projectPath);
-    } catch (ex) {
-        console.error(`Error minifying ${projectPath}: ${ex.message}`)
-        console.error('Exiting build!');
-        process.exit(1);
-    }
+    await minify(projectPath);
     console.log('tar-ing dist...');
     try {
         await taritup(projectPath.split('/'));
     } catch (ex) {
         console.error('Error tarring up dist! ' + ex.message);
-        console.error('Exiting build!')
-        process.exit(1);
     }
     console.log('done');
 }
