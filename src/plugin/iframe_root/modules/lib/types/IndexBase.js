@@ -1,79 +1,79 @@
-define([], function () {
+define(['./TypeIcon'], function (TypeIcon) {
     'use strict';
 
-    function getIcon(arg) {
-        const defaultIcon = {
-            type: 'fontAwesome',
-            classes: ['fa-file-o']
-        };
-        var icon = defaultIcon,
-            classes = icon.classes.map(function (x) {
-                return x;
-            });
-        switch (icon.type) {
-        case 'kbase':
-            classes.push('icon');
-            if (arg.size) {
-                switch (arg.size) {
-                case 'small':
-                    classes.push('icon-sm');
-                    break;
-                case 'medium':
-                    classes.push('icon-md');
-                    break;
-                case 'large':
-                    classes.push('icon-lg');
-                    break;
-                }
-            }
-            break;
-        case 'fontAwesome':
-            classes.push('fa');
-            break;
-        }
-        if (classes) {
-            return {
-                classes: classes,
-                type: icon.type,
-                color: icon.color || getColor(arg.type),
-                html: '<span class="' + classes.join(' ') + '"></span>'
-            };
-        }
-    }
+    // function getIcon(arg) {
+    //     const defaultIcon = {
+    //         type: 'fontAwesome',
+    //         classes: ['fa-file-o']
+    //     };
+    //     var icon = defaultIcon,
+    //         classes = icon.classes.map(function (x) {
+    //             return x;
+    //         });
+    //     switch (icon.type) {
+    //     case 'kbase':
+    //         classes.push('icon');
+    //         if (arg.size) {
+    //             switch (arg.size) {
+    //             case 'small':
+    //                 classes.push('icon-sm');
+    //                 break;
+    //             case 'medium':
+    //                 classes.push('icon-md');
+    //                 break;
+    //             case 'large':
+    //                 classes.push('icon-lg');
+    //                 break;
+    //             }
+    //         }
+    //         break;
+    //     case 'fontAwesome':
+    //         classes.push('fa');
+    //         break;
+    //     }
+    //     if (classes) {
+    //         return {
+    //             classes: classes,
+    //             type: icon.type,
+    //             color: icon.color || getColor(arg.type),
+    //             html: '<span class="' + classes.join(' ') + '"></span>'
+    //         };
+    //     }
+    // }
 
-    function getColor(type) {
-        var code = 0,
-            i,
-            colors = [
-                '#F44336',
-                '#E91E63',
-                '#9C27B0',
-                '#3F51B5',
-                '#2196F3',
-                '#673AB7',
-                '#FFC107',
-                '#0277BD',
-                '#00BCD4',
-                '#009688',
-                '#4CAF50',
-                '#33691E',
-                '#2E7D32',
-                '#AEEA00',
-                '#03A9F4',
-                '#FF9800',
-                '#FF5722',
-                '#795548',
-                '#006064',
-                '#607D8B'
-            ],
-            color;
+    // function getColor(type) {
+    //     var code = 0,
+    //         i,
+    //         colors = [
+    //             '#F44336',
+    //             '#E91E63',
+    //             '#9C27B0',
+    //             '#3F51B5',
+    //             '#2196F3',
+    //             '#673AB7',
+    //             '#FFC107',
+    //             '#0277BD',
+    //             '#00BCD4',
+    //             '#009688',
+    //             '#4CAF50',
+    //             '#33691E',
+    //             '#2E7D32',
+    //             '#AEEA00',
+    //             '#03A9F4',
+    //             '#FF9800',
+    //             '#FF5722',
+    //             '#795548',
+    //             '#006064',
+    //             '#607D8B'
+    //         ],
+    //         color;
 
-        for (i = 0; i < type.name.length; i += 1) {
-            code += type.name.charCodeAt(i);
-        }
-        color = colors[code % colors.length];
-        return color;
-    }
+    //     for (i = 0; i < type.name.length; i += 1) {
+    //         code += type.name.charCodeAt(i);
+    //     }
+    //     color = colors[code % colors.length];
+    //     return color;
+    // }
 
     const baseSearchFields = {
         obj_name: {
@@ -191,16 +191,18 @@ define([], function () {
 
         getIcon() {
             // TODO: get this working, yuck!
-            return getIcon({
-                type: {
-                    module: this.kbaseTypeModule,
-                    name: this.kbaseTypeId,
-                    version: {
-                        major: null,
-                        minor: null
-                    }
-                }
-            });
+            // return getIcon({
+            //     type: {
+            //         module: this.kbaseTypeModule,
+            //         name: this.kbaseTypeId,
+            //         version: {
+            //             major: null,
+            //             minor: null
+            //         }
+            //     }
+            // });
+            const icon = new TypeIcon({typeName: this.kbaseTypeId});
+            return icon.getIcon();
         }
 
         isViewable() {

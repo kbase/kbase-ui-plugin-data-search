@@ -479,7 +479,7 @@ define([
             span({
                 // class: 'fa-2x',
                 dataBind: {
-                    class: 'type.icon.classes.join(" ")',
+                    class: 'type.icon.classNames.join(" ")',
                     style: {
                         color: 'type.icon.color'
                     }
@@ -490,7 +490,7 @@ define([
             '<!-- ko if: type.icon.type === "kbase" -->',
             span({
                 dataBind: {
-                    class: 'type.icon.classes.join(" ")',
+                    class: 'type.icon.classNames.join(" ")',
                     style: {
                         color: 'type.icon.color'
                     }

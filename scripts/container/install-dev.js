@@ -15,11 +15,13 @@ async function updateFiles(rootDir) {
 
 async function main() {
     const cwd = process.cwd().split('/');
-    cwd.push('..');
     const projectPath = path.normalize(cwd.join('/'));
+    // eslint-disable-next-line no-console
     console.log(`Project path: ${projectPath}`);
+    // eslint-disable-next-line no-console
     console.log('Copying files to dist...');
     await updateFiles(projectPath);
+    // eslint-disable-next-line no-console
     console.log('done');
 }
 
