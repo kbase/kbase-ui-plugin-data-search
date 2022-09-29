@@ -573,32 +573,57 @@ define([
             '<!-- /ko -->'
         ];
     }
-
     function buildObjectIcon() {
         return [
             '<!-- ko if: type.icon -->',
 
             '<!-- ko if: type.icon.type === "fontAwesome" -->',
             span({
-                // class: 'fa-2x',
-                dataBind: {
-                    class: 'type.icon.classNames.join(" ")',
-                    style: {
-                        color: 'type.icon.color'
-                    }
+                style: {
+                    fontSize: "50%"
                 }
-            }),
+            }, span({
+                class: "fa-stack fa-2x"
+            }, [
+                span({
+                    class: "fa fa-circle fa-stack-2x",
+                    dataBind: {
+                        style: {
+                            color: 'type.icon.color'
+                        }
+                    }
+                }),
+                span({
+                    dataBind: {
+                        class: '["fa", "fa-inverse", "fa-stack-1x"].concat(type.icon.classNames).join(" ")'
+                    }
+                })
+            ])),
             '<!-- /ko -->',
 
             '<!-- ko if: type.icon.type === "kbase" -->',
+
             span({
-                dataBind: {
-                    class: 'type.icon.classNames.join(" ")',
-                    style: {
-                        color: 'type.icon.color'
-                    }
+                style: {
+                    fontSize: "50%"
                 }
-            }),
+            }, span({
+                class: "fa-stack fa-2x"
+            }, [
+                span({
+                    class: "fa fa-circle fa-stack-2x",
+                    dataBind: {
+                        style: {
+                            color: 'type.icon.color'
+                        }
+                    }
+                }),
+                span({
+                    dataBind: {
+                        class: '["fa", "fa-inverse", "fa-stack-1x"].concat(type.icon.classNames).join(" ")'
+                    }
+                })
+            ])),
             '<!-- /ko -->',
 
             '<!-- /ko -->',
