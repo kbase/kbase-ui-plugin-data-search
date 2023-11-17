@@ -33,7 +33,7 @@ define([
             const featureId = 'y'; // m[5];
             // e.g. https://ci.kbase.us/#dataview/29768/2?sub=Feature&subid=b0001
             const subObjectRef = objectRef +
-                            '?sub=' + featureType +
+                            '&sub=' + featureType +
                             '&subid=' + featureId;
 
             // const objectRef = m.slice(1, 4).join('/');

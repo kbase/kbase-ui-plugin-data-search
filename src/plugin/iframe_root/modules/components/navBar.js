@@ -157,11 +157,11 @@ define(['knockout', 'kb_knockout/registry', 'kb_lib/html'], function (ko, reg, h
                     {
                         dataBind: {
                             attr: {
-                                href: '"/#jgi-search?q=" + searchInputQueryValue()'
+                                href: '"/#jgi-search&q=" + searchInputQueryValue()'
                             }
                         },
                         class: styles.classes.navLink,
-                        target: '_parent'
+                        target: '_top'
                     },
                     'JGI'
                 )
