@@ -533,6 +533,10 @@ define([
     }
 
     function buildObjectLink() {
+        // can we cheat like this, since it is all strings to start with?
+        const hostname = window.location.hostname.split('.').slice(1).join('.');
+        const europaOrigin = new URL(`https://${hostname}`).origin;
+
         return [
             '<!-- ko switch: matchClass.id -->',
 
@@ -540,7 +544,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: '"/narrative/" + matchClass.ref.workspaceId'
+                        href: `"${europaOrigin}/narrative/" + matchClass.ref.workspaceId`
                     },
                     text: 'title'
                 },
@@ -554,7 +558,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            '"/#dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version'
+                            `"${europaOrigin}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'title'
                 },
@@ -1018,6 +1022,9 @@ define([
     }
 
     function buildNarrativeRow() {
+        const hostname = window.location.hostname.split('.').slice(1).join('.');
+        const europaOrigin = new URL(`https://${hostname}`).origin;
+
         return div(
             {
                 class: [styles.classes.row, styles.classes.narrativeRow],
@@ -1040,7 +1047,7 @@ define([
                             {
                                 dataBind: {
                                     attr: {
-                                        href: '"/narrative/" + ref.workspaceId'
+                                        href: `"${europaOrigin}/narrative/" + ref.workspaceId`
                                     }
                                 },
                                 style: {
@@ -1093,7 +1100,7 @@ define([
                             target: '_blank',
                             dataBind: {
                                 attr: {
-                                    href: '"/#people/" + owner.username'
+                                    href: `"${europaOrigin}/legacy/people/" + owner.username`
                                 },
                                 text: 'owner.realName'
                             }

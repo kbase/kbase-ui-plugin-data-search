@@ -189,6 +189,9 @@ define([
                         totalSearchHits = objectResults.total;
                     }
 
+                    const hostname = window.location.hostname.split('.').slice(1).join('.');
+                    const europaOrigin = new URL(`https://${hostname}`).origin;
+
                     const narratives = Object.keys(objectResults.access_group_narrative_info)
                         .map(function (workspaceId) {
                             const info = objectResults.access_group_narrative_info[workspaceId];
@@ -223,7 +226,8 @@ define([
                                 },
                                 active: ko.observable(false)
                             };
-                            narrative.url = `${window.location.origin}/narrative/${narrative.ref.workspaceId}`;
+                           
+                            narrative.url = `${europaOrigin}/narrative/${narrative.ref.workspaceId}`;
                             return narrative;
                         })
                         .sort(function (a, b) {

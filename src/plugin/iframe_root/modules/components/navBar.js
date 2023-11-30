@@ -136,6 +136,9 @@ define(['knockout', 'kb_knockout/registry', 'kb_lib/html'], function (ko, reg, h
     });
 
     function buildNavBar() {
+        const hostname = window.location.hostname.split('.').slice(1).join('.');
+        const europaOrigin = new URL(`https://${hostname}`).origin;
+
         return div(
             {
                 class: styles.classes.navBar
@@ -157,7 +160,7 @@ define(['knockout', 'kb_knockout/registry', 'kb_lib/html'], function (ko, reg, h
                     {
                         dataBind: {
                             attr: {
-                                href: '"/#jgi-search&q=" + searchInputQueryValue()'
+                                href: `"${europaOrigin}/legacy/jgi-search$q=" + searchInputQueryValue()`
                             }
                         },
                         class: styles.classes.navLink,

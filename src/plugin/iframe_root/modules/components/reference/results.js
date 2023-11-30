@@ -436,6 +436,9 @@ define([
     }
 
     function buildObjectLink() {
+        const hostname = window.location.hostname.split('.').slice(1).join('.');
+        const europaOrigin = new URL(`https://${hostname}`).origin;
+
         return [
             // 'x',
             // span({
@@ -451,7 +454,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            '"/#dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version'
+                            `"${europaOrigin}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'name'
                 },
