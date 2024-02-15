@@ -3,6 +3,7 @@ define([
     'kb_knockout/registry',
     'kb_knockout/lib/generators',
     'kb_lib/html',
+    'lib/europaSupport',
     '../dialogs/duplicateNarrative',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt'
@@ -11,12 +12,11 @@ define([
     reg,
     gen,
     html,
+    {europaBaseURL},
     DuplicateNarrativeComponent,
     CopyObjectComponent,
     FunnyRandomPromptComponent
 ) {
-    'use strict';
-
     const t = html.tag,
         p = t('p'),
         hr = t('hr'),
@@ -533,10 +533,6 @@ define([
     }
 
     function buildObjectLink() {
-        // can we cheat like this, since it is all strings to start with?
-        const hostname = window.location.hostname.split('.').slice(1).join('.');
-        const europaOrigin = new URL(`https://${hostname}`).origin;
-
         return [
             '<!-- ko switch: matchClass.id -->',
 
@@ -544,7 +540,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: `"${europaOrigin}/narrative/" + matchClass.ref.workspaceId`
+                        href: `"${europaBaseURL()}narrative/" + matchClass.ref.workspaceId`
                     },
                     text: 'title'
                 },
@@ -558,7 +554,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            `"${europaOrigin}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
+                            `"${europaBaseURL()}legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'title'
                 },
@@ -577,6 +573,7 @@ define([
             '<!-- /ko -->'
         ];
     }
+
     function buildObjectIcon() {
         return [
             '<!-- ko if: type.icon -->',
@@ -1022,9 +1019,6 @@ define([
     }
 
     function buildNarrativeRow() {
-        const hostname = window.location.hostname.split('.').slice(1).join('.');
-        const europaOrigin = new URL(`https://${hostname}`).origin;
-
         return div(
             {
                 class: [styles.classes.row, styles.classes.narrativeRow],
@@ -1047,7 +1041,7 @@ define([
                             {
                                 dataBind: {
                                     attr: {
-                                        href: `"${europaOrigin}/narrative/" + ref.workspaceId`
+                                        href: `"${europaBaseURL()}narrative/" + ref.workspaceId`
                                     }
                                 },
                                 style: {
@@ -1100,7 +1094,7 @@ define([
                             target: '_blank',
                             dataBind: {
                                 attr: {
-                                    href: `"${europaOrigin}/legacy/people/" + owner.username`
+                                    href: `"${europaBaseURL()}legacy/people/" + owner.username`
                                 },
                                 text: 'owner.realName'
                             }

@@ -1,6 +1,14 @@
-define([], () => {
+define([
+    'constants'
+], (
+    {EUROPA_LEGACY_PATH}
+) => {
     function kbaseUIURL(hash, params) {
+        // We take the base name from the kbase-ui window.
+        const baseName = window.parent.location.pathname;
         const url = new URL(window.location.origin);
+
+        url.pathname = baseName;
         url.hash = `#${hash}`;
         if (params && Object.keys(params).length > 0) {
             const searchParams = new URLSearchParams(params);
@@ -10,16 +18,20 @@ define([], () => {
         return url;
     }
 
+    /**
+     * Creates a url to some other kbase user interface; so just a regular
+     * url on the current origin.
+     *
+     * @param {*} param0
+     * @returns
+     */
     function otherUIURL({hash, pathname, params}) {
-        let hostname;
-        if (!window.location.hostname.endsWith('kbase.us')) {
-            hostname = 'ci.kbase.us';
-        } else {
-            hostname = window.location.hostname.split('.').slice(1).join('.');
-        }
-        const url = new URL(`https://${hostname}`);
+        const url = new URL(window.location.origin);
 
-        url.pathname = hash ? `legacy/${hash}` : pathname || '';
+        // We assume that a hash refers back to kbase-ui, so we create a
+        // legacy path for europa.
+        // TODO: Only if pathname is empty.
+        url.pathname = hash ? `${EUROPA_LEGACY_PATH}/${hash}` : pathname || '';
 
         // So in this case we use a standard search fragment.
         if (params && Object.keys(params).length > 0) {
@@ -44,5 +56,14 @@ define([], () => {
         return otherUIURL(hashPath);
     }
 
-    return {kbaseUIURL, otherUIURL, europaURL};
+    function europaBaseURL(path) {
+        const europaHostname = window.parent.location.hostname.split('.')
+            .slice(-3)
+            .join('.');
+        const url = new URL(window.location.origin);
+        url.hostname = europaHostname;
+        return url.toString();
+    }
+
+    return {kbaseUIURL, otherUIURL, europaURL, europaBaseURL};
 });
