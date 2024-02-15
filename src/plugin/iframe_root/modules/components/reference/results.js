@@ -3,11 +3,18 @@ define([
     'kb_knockout/registry',
     'kb_knockout/lib/generators',
     'kb_lib/html',
+    'lib/europaSupport',
     '../dialogs/copyObjects',
     '../funnyRandomPrompt'
-], function (ko, reg, gen, html, CopyObjectComponent, FunnyRandomPromptComponent) {
-    'use strict';
-
+], function (
+    ko, 
+    reg, 
+    gen, 
+    html, 
+    { europaBaseURL },
+    CopyObjectComponent, 
+    FunnyRandomPromptComponent
+) {
     const t = html.tag,
         p = t('p'),
         hr = t('hr'),
@@ -436,8 +443,8 @@ define([
     }
 
     function buildObjectLink() {
-        const hostname = window.location.hostname.split('.').slice(1).join('.');
-        const europaOrigin = new URL(`https://${hostname}`).origin;
+        // const hostname = window.location.hostname.split('.').slice(1).join('.');
+        // const europaOrigin = new URL(`https://${hostname}`).origin;
 
         return [
             // 'x',
@@ -454,7 +461,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            `"${europaOrigin}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
+                            `"${europaBaseURL()}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'name'
                 },
