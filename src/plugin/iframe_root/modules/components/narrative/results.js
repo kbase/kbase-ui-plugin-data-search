@@ -12,7 +12,7 @@ define([
     reg,
     gen,
     html,
-    {europaBaseURL},
+    {otherUIURL},
     DuplicateNarrativeComponent,
     CopyObjectComponent,
     FunnyRandomPromptComponent
@@ -540,7 +540,7 @@ define([
             a({
                 dataBind: {
                     attr: {
-                        href: `"${europaBaseURL()}narrative/" + matchClass.ref.workspaceId`
+                        href: `"${otherUIURL({pathname: 'narrative'})}/" + matchClass.ref.workspaceId`
                     },
                     text: 'title'
                 },
@@ -554,7 +554,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            `"${europaBaseURL()}legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
+                            `"${otherUIURL({hash: 'dataview'})}/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'title'
                 },
@@ -1041,7 +1041,7 @@ define([
                             {
                                 dataBind: {
                                     attr: {
-                                        href: `"${europaBaseURL()}narrative/" + ref.workspaceId`
+                                        href: `"${otherUIURL({pathname: 'narrative'})}/" + ref.workspaceId`
                                     }
                                 },
                                 style: {
@@ -1094,7 +1094,7 @@ define([
                             target: '_blank',
                             dataBind: {
                                 attr: {
-                                    href: `"${europaBaseURL()}legacy/people/" + owner.username`
+                                    href: `"${otherUIURL({hash: 'people'})}/" + owner.username`
                                 },
                                 text: 'owner.realName'
                             }

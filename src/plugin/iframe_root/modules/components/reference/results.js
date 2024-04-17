@@ -11,7 +11,7 @@ define([
     reg, 
     gen, 
     html, 
-    { europaBaseURL },
+    { otherUIURL },
     CopyObjectComponent, 
     FunnyRandomPromptComponent
 ) {
@@ -461,7 +461,7 @@ define([
                 dataBind: {
                     attr: {
                         href:
-                            `"${europaBaseURL()}/legacy/dataview/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
+                            `"${otherUIURL({hash: 'dataview'})}/" + matchClass.ref.workspaceId + "/" + matchClass.ref.objectId + "/" + matchClass.ref.version`
                     },
                     text: 'name'
                 },

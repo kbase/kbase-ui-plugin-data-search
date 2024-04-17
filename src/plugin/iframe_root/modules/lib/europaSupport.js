@@ -3,13 +3,13 @@ define([
 ], (
     {EUROPA_LEGACY_PATH}
 ) => {
-    function kbaseUIURL(hash, params) {
-        // We take the base name from the kbase-ui window.
-        const baseName = window.parent.location.pathname;
-        const url = new URL(window.location.origin);
+    function kbaseUIURL(path, params) {
+        // We take the base url from kbase-ui
+        const url = new URL(window.parent.location.href);
 
-        url.pathname = baseName;
-        url.hash = `#${hash}`;
+        // Set the hash, or empty it.
+        url.hash = `#${path}`;
+
         if (params && Object.keys(params).length > 0) {
             const searchParams = new URLSearchParams(params);
             // Use our special notation for params on the hash
@@ -26,7 +26,12 @@ define([
      * @returns
      */
     function otherUIURL({hash, pathname, params}) {
+        const domain = window.parent.location.hostname.split('.')
+            .slice(-3)
+            .join('.');
+
         const url = new URL(window.location.origin);
+        url.hostname = domain;
 
         // We assume that a hash refers back to kbase-ui, so we create a
         // legacy path for europa.
@@ -56,14 +61,5 @@ define([
         return otherUIURL(hashPath);
     }
 
-    function europaBaseURL(path) {
-        const europaHostname = window.parent.location.hostname.split('.')
-            .slice(-3)
-            .join('.');
-        const url = new URL(window.location.origin);
-        url.hostname = europaHostname;
-        return url.toString();
-    }
-
-    return {kbaseUIURL, otherUIURL, europaURL, europaBaseURL};
+    return {kbaseUIURL, otherUIURL, europaURL};
 });
